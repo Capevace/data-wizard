@@ -1,0 +1,33 @@
+{
+    "name": "capevace/magic-import",
+    "description": "A package to magically import complex data structures using LLMs and AI methods.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Capevace\\MagicImport\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lukas Mateffy",
+            "email": "github@mateffy.me"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    },
+    "require": {
+        "openai-php/client": "^0.8.4",
+        "symfony/http-client": "^7.0",
+        "nyholm/psr7": "^1.8",
+        "openai-php/laravel": "^0.8.1",
+        "greghunt/partial-json": "^1.1",
+      "ext-fileinfo": "*",
+        "illuminate/collections": "*",
+        "swaggest/json-schema": "^0.12.42",
+        "aws/aws-sdk-php": "^3.315"
+    }
+}

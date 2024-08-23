@@ -1,0 +1,348 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.immo/FeatureList",
+  "title": "FeatureList",
+  "description": "A collection of features applicable to estates, buildings and rental spaces",
+  "type": "object",
+  "properties": {
+    "access-control": {
+      "type": "boolean"
+    },
+    "acoustic-ceiling": {
+      "type": "boolean"
+    },
+    "air-conditioning": {
+      "type": "boolean"
+    },
+    "balcony": {
+      "$ref": "/Feature/Countable"
+    },
+    "bees": {
+      "type": "boolean"
+    },
+    "bike-slots": {
+      "$ref": "/Feature/ParkingSpot"
+    },
+    "block-heating": {
+      "type": "boolean"
+    },
+    "cctv": {
+      "type": "boolean"
+    },
+    "cantina": {
+      "type": "boolean"
+    },
+    "carpet-flooring": {
+      "type": "boolean"
+    },
+    "carsharing": {
+      "type": "boolean"
+    },
+    "central-fire-alarm-system": {
+      "type": "boolean"
+    },
+    "central-fire-alarm-system-fire-department": {
+      "type": "boolean"
+    },
+    "central-heating": {
+      "type": "boolean"
+    },
+    "ceramic-facade": {
+      "type": "boolean"
+    },
+    "cleaning-service": {
+      "type": "boolean"
+    },
+    "close-to-public-transport": {
+      "type": "boolean"
+    },
+    "completely-renovated": {
+      "$ref": "/Feature/PositiveInteger"
+    },
+    "cooled-halls": {
+      "type": "boolean"
+    },
+    "cooling": {
+      "type": "boolean"
+    },
+    "delivery-for-24h": {
+      "type": "boolean"
+    },
+    "distance-airport": {
+      "$ref": "/Feature/Distance"
+    },
+    "distance-main-station": {
+      "$ref": "/Feature/Distance"
+    },
+    "distance-port": {
+      "$ref": "/Feature/Distance"
+    },
+    "district-heating": {
+      "type": "boolean"
+    },
+    "double-floor": {
+      "type": "boolean"
+    },
+    "dressing-room": {
+      "type": "boolean"
+    },
+    "electric-heating": {
+      "type": "boolean"
+    },
+    "electric-vehicle-charging-station": {
+      "$ref": "/Feature/ParkingSpot"
+    },
+    "electronic-lock": {
+      "type": "boolean"
+    },
+    "elevators": {
+      "$ref": "/Feature/Countable"
+    },
+    "fiberglass-connection": {
+      "type": "boolean"
+    },
+    "floor-heating": {
+      "type": "boolean"
+    },
+    "floored-windows": {
+      "type": "boolean"
+    },
+    "floors": {
+      "$ref": "/Feature/Countable"
+    },
+    "gas-heating": {
+      "type": "boolean"
+    },
+    "gastronomy-on-site": {
+      "type": "boolean"
+    },
+    "geo-thermal": {
+      "type": "boolean"
+    },
+    "green-courtyard": {
+      "type": "boolean"
+    },
+    "green-lease-contracts": {
+      "type": "boolean"
+    },
+    "greened-facade": {
+      "type": "boolean"
+    },
+    "greened-roof": {
+      "type": "boolean"
+    },
+    "ground-level-access": {
+      "type": "boolean"
+    },
+    "guarded": {
+      "type": "boolean"
+    },
+    "handicap-accessible": {
+      "type": "boolean"
+    },
+    "handicap-fully-accessible": {
+      "type": "boolean"
+    },
+    "hardwood-flooring": {
+      "type": "boolean"
+    },
+    "heat-pump": {
+      "type": "boolean"
+    },
+    "heated-halls": {
+      "type": "boolean"
+    },
+    "heavy-duty-crane": {
+      "type": "boolean"
+    },
+    "heavy-duty-elevator": {
+      "$ref": "/Feature/Weight"
+    },
+    "high-ceilings": {
+      "$ref": "/Feature/Height"
+    },
+    "high-voltage-outlet": {
+      "$ref": "/Feature/Voltage"
+    },
+    "hydraulic-lift": {
+      "$ref": "/Feature/Countable"
+    },
+    "individually-expandable": {
+      "type": "boolean"
+    },
+    "infrared-heating": {
+      "type": "boolean"
+    },
+    "kindergarden": {
+      "type": "boolean"
+    },
+    "kitchen": {
+      "$ref": "/Feature/Countable"
+    },
+    "lkw-slots": {
+      "$ref": "/Feature/Countable"
+    },
+    "laboratory-s1": {
+      "type": "boolean"
+    },
+    "laboratory-s2": {
+      "type": "boolean"
+    },
+    "led-lighting": {
+      "type": "boolean"
+    },
+    "lighting-with-motion-detection": {
+      "type": "boolean"
+    },
+    "marketing-website": {
+      "$ref": "/Feature/Website"
+    },
+    "max-floor-load": {
+      "$ref": "/Feature/Weight"
+    },
+    "maximum-surface-desealing": {
+      "type": "boolean"
+    },
+    "meeting-rooms": {
+      "type": "boolean"
+    },
+    "modernized": {
+      "$ref": "/Feature/PositiveInteger"
+    },
+    "monument-protection": {
+      "type": "boolean"
+    },
+    "nearby-sports": {
+      "type": "boolean"
+    },
+    "needs-renovation": {
+      "type": "boolean"
+    },
+    "nesting-box": {
+      "type": "boolean"
+    },
+    "new-construction": {
+      "type": "boolean"
+    },
+    "number-of-rooms": {
+      "$ref": "/Feature/Countable"
+    },
+    "number-of-workplaces": {
+      "$ref": "/Feature/Countable"
+    },
+    "open-rooms": {
+      "type": "boolean"
+    },
+    "outdoor-sunshade": {
+      "type": "boolean"
+    },
+    "outdoor-sunshade-electric": {
+      "type": "boolean"
+    },
+    "pkw-slots": {
+      "$ref": "/Feature/ParkingSpot"
+    },
+    "parking-garage": {
+      "$ref": "/Feature/ParkingSpot"
+    },
+    "places-for-socializing": {
+      "type": "boolean"
+    },
+    "plot-area": {
+      "$ref": "/Feature/Area"
+    },
+    "ramp-access": {
+      "$ref": "/Feature/Countable"
+    },
+    "receptionist": {
+      "type": "boolean"
+    },
+    "recycling": {
+      "type": "boolean"
+    },
+    "rentable-area": {
+      "$ref": "/Feature/Area"
+    },
+    "representative-foyer": {
+      "type": "boolean"
+    },
+    "revitalized": {
+      "$ref": "/Feature/PositiveInteger"
+    },
+    "rolling-gates": {
+      "$ref": "/Feature/Countable"
+    },
+    "roof-terrace": {
+      "type": "boolean"
+    },
+    "server-room": {
+      "type": "boolean"
+    },
+    "shower": {
+      "$ref": "/Feature/Countable"
+    },
+    "smart-metering": {
+      "type": "boolean"
+    },
+    "social-tenant": {
+      "type": "boolean"
+    },
+    "solar-energy": {
+      "type": "boolean"
+    },
+    "solar-heating": {
+      "type": "boolean"
+    },
+    "sprinkler-system": {
+      "type": "boolean"
+    },
+    "storage-rack": {
+      "type": "boolean"
+    },
+    "storey-heating": {
+      "type": "boolean"
+    },
+    "tee-kitchen": {
+      "$ref": "/Feature/Countable"
+    },
+    "think-tanks": {
+      "$ref": "/Feature/Countable"
+    },
+    "urban-gardening": {
+      "type": "boolean"
+    },
+    "variable-room-division": {
+      "type": "boolean"
+    },
+    "ventilation": {
+      "type": "boolean"
+    },
+    "washing-clothes": {
+      "type": "boolean"
+    },
+    "water-retention": {
+      "type": "boolean"
+    },
+    "wild-flower-grasses": {
+      "type": "boolean"
+    },
+    "wind-energy": {
+      "type": "boolean"
+    },
+    "wired-with-cat7": {
+      "type": "boolean"
+    },
+    "wood-hybrid-construction": {
+      "type": "boolean"
+    },
+    "wooden-fa\u00e7ade": {
+      "type": "boolean"
+    },
+    "year-of-construction": {
+      "$ref": "/Feature/PositiveInteger"
+    },
+    "year-of-renovation": {
+      "$ref": "/Feature/PositiveInteger"
+    }
+  }
+}

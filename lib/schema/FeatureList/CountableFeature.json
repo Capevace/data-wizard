@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.immo/FeatureList/CountableFeature",
+  "title": "CountableFeature",
+  "description": "A feature that can be counted",
+  "type": "object",
+  "required": ["count"],
+  "properties": {
+    "count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The number of times the feature is present"
+    }
+  }
+}

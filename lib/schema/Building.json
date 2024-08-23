@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.immo/Building",
+  "title": "Building",
+  "description": "A building on an estate",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier for this building (UUID)",
+      "type": "string"
+    },
+    "name": {
+      "description": "Name of the building",
+      "type": "string"
+    },
+    "address": {
+      "description": "Address of the building",
+      "$ref": "https://schema.immo/Address"
+    },
+    "rentables": {
+      "description": "List of rentable units",
+      "type": "array",
+      "items": {
+        "$ref": "https://schema.immo/Rentable"
+      }
+    },
+    "features": {
+      "$ref": "https://schema.immo/FeatureList",
+      "description": "The features of the rental space"
+    },
+    "estate": {
+      "$ref": "https://schema.immo/Estate",
+      "description": "The estate where the building/rental space is located"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

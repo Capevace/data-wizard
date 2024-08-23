@@ -1,0 +1,4 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+@import "/vendor/tempest/highlight/src/Themes/Css/highlight-light-lite.css";
+
+@config 'tailwind.config.js';

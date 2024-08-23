@@ -1,0 +1,42 @@
+# fly.toml app configuration file generated for magic-import on 2024-08-13T04:15:00+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'magic-import'
+primary_region = 'cdg'
+console_command = 'php /app/artisan tinker'
+
+[build]
+  [build.args]
+    NODE_VERSION = '18'
+    PHP_VERSION = '8.3'
+
+[env]
+  APP_ENV = 'production'
+  APP_URL = 'https://magic-import.fly.dev'
+  DB_CONNECTION = 'pgsql'
+  LOG_CHANNEL = 'stderr'
+  LOG_LEVEL = 'info'
+  LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
+  SERVER_NAME = ':80'
+  SESSION_DRIVER = 'cookie'
+  SESSION_SECURE_COOKIE = 'true'
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[mounts]
+    source = "magic_import_fs"
+    destination = "/app/storage/app"
+    snapshot_retention = 14

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.immo/Rentable",
+  "title": "Rentable",
+  "description": "A rentable space in a building on an estate",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The identifier of the rentable"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name / identifier of the rental space"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the rental space"
+    },
+    "spaces": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schema.immo/Space"
+      },
+      "description": "The spaces in the rental space"
+    },
+    "images": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schema.immo/Image"
+      },
+      "description": "The images of the rental space"
+    },
+    "floorplans": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schema.immo/Floorplan"
+      },
+      "description": "The floorplans of the rental space"
+    },
+    "features": {
+      "$ref": "https://schema.immo/FeatureList",
+      "description": "The features of the rental space"
+    },
+    "building": {
+      "$ref": "https://schema.immo/Building",
+      "description": "The building where the rental space is located"
+    },
+    "estate": {
+      "$ref": "https://schema.immo/Estate",
+      "description": "The estate where the building/rental space is located"
+    }
+  }
+}

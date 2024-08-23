@@ -1,0 +1,11 @@
+tests/
+database/database.sqlite
+storage/logs
+storage/app/public
+storage/app/framework
+storage/app/storage
+storage/app/views
+.env.example
+.env.testing
+.env.testing.example
+.env.testing.example.php

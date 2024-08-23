@@ -1,0 +1,1638 @@
+Projekt
+
+Start
+
+Objekt
+
+03
+Flottenstraße 54-55
+13407 Berlin
+
+Bericht für
+
+Ersteller
+
+Stand
+Version
+
+IntReal International Real Estate Kapitalanlagegesellschaft mbH
+Fuhlentwiete 12
+20355 Hamburg
+THProjektmanagement GmbH
+Alte Leipziger Straße 4
+10117 Berlin
+30.06.2010
+v4
+
+© THP GmbH 2010
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+1
+
+Inhaltsverzeichnis
+
+1Inhaltsverzeichnis
+
+1 Inhaltsverzeichnis...................................................................................................2
+2 Bild und Lage.........................................................................................................3
+3 Einleitung...............................................................................................................4
+4 Objektbeschreibung................................................................................................5
+5 Baubeschreibung und technischer Zustand............................................................7
+6 Umweltaspekte.....................................................................................................11
+7 Stichprobenhafte Desktop-Flächenplausibilisierung............................................15
+8 Prüfung der Nutzung............................................................................................16
+9 Zusammenfassung Instandsetzungsbedarf...........................................................18
+10 Potenzielle Maßnahmen und Kosten....................................................................20
+11 Anhang.................................................................................................................21
+12 Definitionen und Hinweise...................................................................................27
+13 Haftungsbeschränkung.........................................................................................29
+
+© THP GmbH 2010
+
+v4 Seite 2
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+2
+
+Bild und Lage
+
+2Bild und Lage
+
+2.1
+
+Hauptansicht
+
+2.2
+
+Karte 1
+
+2.3
+
+Karte 2
+
+© THP GmbH 2010
+
+v4 Seite 3
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+3
+
+Einleitung
+
+3Einleitung
+
+Die THProjektmanagement GmbH (THP) wurde von der IntReal International Real Estate Kapitalanlagegesellschaft
+mbH im Zusammenhang mit dem Ankauf verschiedener Gewerbeimmobilien beauftragt, eine Technische Due Diligence (TechDD) vorzunehmen. Die Immobilien werden derzeit von der BEOS GmbH (BEOS) verwaltet.
+Es wurde der technische Zustand der Liegenschaft im Rahmen einer Begehung und unter Berücksichtigung eines Zeitraumes von 10 Jahren erfasst. Dabei wurden auch offensichtliche Brandschutzmängel aufgenommen. Es erfolgte keine
+grundsätzliche Überprüfung der Übereinstimmung der Gebäude mit vorliegenden Baugenehmigungen, jedoch wurde
+die Zulässigkeit der derzeitigen Nutzung der 25 größten Mieter im Rahmen der vorliegenden Baugenehmigungen überprüft.
+Erfasst wurden nur wesentliche Mängel oberhalb eines Schwellenwertes der Beseitigungskosten von 25.000 EUR. Angaben zu Kosten für die Beseitigung kleinerer Mängel (ungeplante und laufende Instandhaltung) sowie von Kosten bei
+Mieterwechsel, Umbau und Erweiterung erfolgen auftragsgemäß nicht.
+Auftragsgemäß ist eine Desktop-Umweltprüfung (ausschließlich Auswertung vorhandener Unterlagen, ohne Begehung)
+und eine stichprobenhafte Desktop-Flächenplausibilisierung durchgeführt worden. Die Erfassung von Standortinformationen war nicht Auftragsgegenstand von THP.
+Ziel der TechDD ist die unabhängige Darstellung und finanzielle Bewertung des gegenwärtigen Bauzustandes für das
+Portfolio. Die von THP getroffene Einschätzung der Immobilien geschah unter der Voraussetzung, dass die derzeitige
+Nutzung und die reaktive Instandhaltungsstrategie unverändert fortgeführt werden. Der in diesem Bericht genannte Instandsetzungsbedarf wurde mit BEOS diskutiert. Auskunftsgemäß sind dort außer den aufgeführten keine weiteren wesentlichen Mängel bekannt.
+Die verwendeten Ausgangsdaten und dieser Bericht haben vertraulichen Charakter und sind ausschließlich für die Verwendung durch den Auftraggeber sowie durch von diesem bevollmächtigte Dritte bestimmt.
+
+3.1
+
+Versionen
+
+Version Nr.
+
+Datum
+
+Beschreibung
+
+v1
+
+15.04.2010
+
+Entwurf
+
+v2
+
+27.04.2010
+
+Finaler Entwurf
+
+v3
+
+21.05.2010
+
+Final
+
+v4
+
+30.06.2010
+
+Final (Aktualisierung Umwelteinschätzung)
+
+Tabelle 1: Versionsfortschreibung
+
+© THP GmbH 2010
+
+v4 Seite 4
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+4
+
+Objektbeschreibung
+
+4Objektbeschreibung
+
+4.1
+
+4.2
+
+4.3
+
+Daten
+Projekt
+
+Start
+
+Objekt
+
+03
+
+Straße
+
+Flottenstraße 54-55
+
+PLZ
+
+13407
+
+Stadt
+
+Berlin
+
+Bundesland
+
+Berlin
+
+Land
+
+Deutschland
+
+Besichtigung
+Besichtigungsdatum
+
+25.03.2010
+
+Witterung
+
+heiter
+
+Führung durch
+
+Hr. Bacherer (BEOS)
+Hr. Rethschulte (Mieter Freudenberg)
+
+Begehung durch
+
+Fr. Broniecki
+Hr. Thiergart
+Hr. Strugar
+
+Nicht zugängliche Bereiche
+
+keine
+
+Gebäudeinformation
+Objekttyp
+
+Produktionsflächen
+Büroflächen
+
+Anzahl Gebäude
+
+3
+
+Anzahl Untergeschosse
+
+0
+
+Anzahl Obergeschosse
+
+1 (Hallen)
+2 (Büroflächen)
+
+Baujahr
+
+1957 (Halle 3)
+1964 (Halle 2)
+1985 (Halle 1)
+
+Modernisierungen
+
+2007 Erneuerung Dachfläche und Regenwasserleitungen (Halle 1)
+2007 Erneuerung Kälte (Halle 1)
+2009 Erneuerung Dachfläche (Halle 2)
+
+© THP GmbH 2010
+
+v4 Seite 5
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+4
+4.4
+
+Objektbeschreibung
+Technisch relevante Grunddienstbarkeiten
+Vorhandene Grunddienstbarkeiten
+
+Teilerbbaurecht bis zum 30.Juni 2035, Grunddienstbarkeit (Wege
+und Fahrtrecht), beschränkte persönliche Dienstbarkeit (Nutzungsrecht für die Anlage und den Betrieb einer Anschlußbahn)
+
+Auswirkungen auf derzeitige
+Nutzung (aus technischer
+Sicht)
+
+Keine offensichtlichen vorhanden
+
+© THP GmbH 2010
+
+v4 Seite 6
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+5
+
+Baubeschreibung und technischer Zustand
+
+5Baubeschreibung und technischer Zustand
+
+5.1
+
+5.2
+
+Außenanlagen
+Beschreibung Außenanlagen
+
+Die Außenanlage ist weitgehend mit Betonpflaster befestigt. Die
+verbliebene Grünfläche beträgt ca. 3% der gesamten Freifläche
+und besteht aus Rasenflächen mit einzelnen Bäumen. Das Gelände
+ist eingezäunt, an der Zufahrt befindet sich eine Schrankenanlage.
+Gemäß Aussage des Eigentümers soll die westliche Freifläche in
+Kürze verkauft werden. Aus diesem Grund werden dafür keine Instandsetzungskosten berücksichtigt.
+
+Anzahl Stellplätze
+
+120
+
+Mietfläche pro Stellplatz
+
+144 m²/Stellplatz
+
+Gebäudekonstruktion
+Dachform
+
+flach
+Sheddach (Halle 2)
+
+Dachdeckung
+
+Bitumenbahnen (Kopfbauten, Halle 3, Flächen der Sheds Halle 2)
+Bitumenbahnen und Kies (Flachdachfläche Halle 2)
+Folie (Halle 1)
+
+Dachdämmung
+
+gedämmt, entsprechend Baualter
+
+Dachentwässerung
+
+Titanzink
+innenliegend
+
+Dachtragwerk
+
+Stahlbetonkonstruktion, Trapezblech (Halle 1)
+Stahlbetonkonstruktion, Betonschalen (Halle 2)
+Stahlbetonkonstruktion, Stahlbetonkassetten (Halle 3)
+
+Fassadenoberfläche
+
+Beton, Profilblech (Halle 1)
+Mauerwerk, Anstrich (Halle 2)
+Putz, Anstrich (Halle 3)
+
+Fassadendämmung
+
+ungedämmt
+gedämmt entsprechend Baualter (nur Teilbereich Kopfbau Halle 2)
+
+Fassadenkonstruktion
+
+mehrschalig (Halle 1)
+einschalig (Halle 2 und 3)
+
+Fenster - Rahmen
+
+Aluminium (Halle 1)
+Kunststoff, Stahl, Holz (Halle 2)
+Kunststoff (Halle 3)
+
+Fenster - Verglasung
+
+Isolierglas
+Einfachverglasung (nur anteilig Halle 2)
+
+Sonnenschutz
+
+außenliegend, Horizontallamellen (anteilig)
+
+Außenwände
+
+Sandwichelemente (Halle 1)
+Mauerwerk (Hallen 2 und 3)
+
+Innenwände
+
+Mauerwerk
+
+© THP GmbH 2010
+
+v4 Seite 7
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+5
+
+Baubeschreibung und technischer Zustand
+Leichtbauwände Gipskarton
+Elementwände
+
+5.3
+
+Deckenkonstruktion
+
+Massivdecke
+
+Tragwerk
+
+Stahlbetonskelett, Sandwichelemente vorgehängt (Halle 1)
+Stahlbetonskelett, Ausfachung Mauerwerk (Hallen 2 und 3)
+
+Fundament
+
+nicht bekannt
+
+Haustechnikzentralen und technische Anlagen
+Beschreibung Sanitäranlagen
+
+In allen Hallen bzw. den ihnen zugeordneten Verwaltungsbereiche
+befinden sich Sanitäranlagen, zusätzlich verfügt der Kopfbau der
+Halle 1 über Duschräume. Hauseinführungen (Frischwasser und
+Abwasser) sind einmal für Halle 1 und einmal für die Hallen 2 und
+3 vorhanden. Die Warmwasserbereitung erfolgt dezentral. Das
+Objekt verfügt über 3 Hebeanlagen.
+
+Beschreibung Heizungsanlage
+
+Die Wärmeversorgung des Gesamtobjektes erfolgt über eine ölgefeuerte Zentralheizung. Die Zentrale befindet sich in Halle 2. Die
+Wärmemengenzählung erfolgt je Halle.
+Laut Aussage des Eigentümers wird für die Heizungsanlage in
+Kürze ein Contracting-Vertrag abgeschlossen. Aus diesem Grund
+werden hierfür nur potenzielle Sanierungskosten ausgewiesen.
+
+Beschreibung Lüftungs- und
+Kälteanlagen
+
+Das Objekt verfügt über 21 Lüftungsanlagen mit einem Volumen
+von 1.500 bis 60.000 m³/h. Be- und entlüftet werden die Produktionsflächen und teilweise die Büroflächen. Teile der Flächen sind
+teilklimatisiert (Prozesskühlung). Die Kälteanlagen werden zum
+Teil noch mit dem ozonschädlichen Kältemittel R 22 betrieben.
+Laut Aussage des Eigentümers wird für die Kälte- und Lüftunganlagen in Kürze ein Contracting-Vertrag abgeschlossen. Aus diesem
+Grund werden hierfür nur potenzielle Sanierungskosten ausgewiesen. Die Kälteanlagen befinden sich nach Auskunft des Eigentümers teilweise im Mietereigentum, für die betreffenden Anlagen
+werden daher ebenfalls keine Instandsetzungkosten berücksichtigt.
+
+Beschreibung Elektrische
+Anlagen
+
+Das Objekt wird mit Mittelspannung versorgt. Unterverteilungen
+existieren je Mieteinheit. Die Verteilung erfolgt unter Putz, auf
+Putz, in Brüstungskanälen bzw. auf Kabelpritschen. Auf dem Gelände befindet sich ein freistehender Diesel-Notstromgenerator.
+
+Beschreibung Beleuchtung
+
+Die Beleuchtung erfolgt mit Langfeld- und Rasterleuchten. Die
+Notbeleuchtung ist teilweise in die Langfeldleuchten integriert.
+Die Außenanlage wird mit Mast- und Fassadenleuchten beleuchtet.
+
+Beschreibung Blitzschutzund Erdungsanlagen
+
+Alle Gebäude verfügen über eine Blitzschutzanlage mit Potenzialausgleich.
+
+Beschreibung Fernmeldeund informationstechnische
+Anlagen
+
+Das Objekt ist an das öffentliche Fernmelde- und Kommunikationsnetz angeschlossen.
+
+Beschreibung Förderanlagen
+
+Im Kopfbau der Halle 1 im Kantinenbereich befindet sich ein
+Kleinlastenaufzug (300 kg).
+
+Beschreibung Mess-, Steuer-
+
+nicht vorhanden
+
+© THP GmbH 2010
+
+v4 Seite 8
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+5
+
+Baubeschreibung und technischer Zustand
+und Regelungstechnik
+
+5.4
+
+Ausbau Gemeinschaftsflächen
+vorhanden
+
+5.5
+
+nein
+
+Ausbau Mietflächen - Gewerbe
+Büro
+
+Vorhanden: ja; Besichtigte Einheiten: Die nachfolgend benannten
+Büroeinheiten wurden besichtigt und bilden die Grundlage für die
+Bewertung:, Büroflächen in den Kopfbauten der Hallen; Ausstattungsstandard: mittel; Hauptnutzungsbereich - Böden: Kunststoffbelag, Teppich; Decken: abgehängte Decke, Blechpaneele, abgehängte Decke, Gipskarton, Putz, Anstrich; Türen: Röhrenspantüren; Wände: Putz, leichte Trennwände mit Anstrich, Elementwände; Nutzerspezifische technische Ausstattung: Umkleide- und
+Duschräume;
+
+Produktion
+
+Vorhanden: ja; Besichtigte Einheiten: Die nachfolgend benannte
+Produktionsfläche wurde besichtigt und bildet die Grundlage für
+die Bewertung:, Produktionsflächen Halle 1 - 3; Böden: Estrich,
+beschichtet, Fliesen; Decken: abgehängte Decken (teilweise); Türen: Metalltüren (teilweise mit Brandschutzqualitäten); Wände:
+Beton, Mauerwerk, Putz, leichte Trennwände mit Anstrich; Nutzerspezifische technische Ausstattung: Räume mit spezifischen
+Prozessanforderungen;
+
+Lager
+
+Vorhanden: nein;
+
+Sonstige Mietflächen
+
+Vorhanden: nein;
+
+Bewertung
+Das Objekt weist einen Reparatur- bzw. Erneuerungsbedarf auf.
+Folgende wesentliche Mängel wurden identifiziert:
+sofort zu beseitigen
+• Kabel- und Leitungsdurchführungen durch Wände und Decken sind teilweise nicht gemäß MLAR geschottet, Brandschutzmanschetten und -klappen entsprechen teilweise
+nicht den gültigen Bestimmungen.
+• Wände zum notwendigen Flur weisen keine fh-Qualität auf, Rauchschutztüren zum
+Treppenhaus sind ohne Dichtung ausgeführt (Halle 2, Bürobereich).
+• Fehlende Brandschutztür (Halle 3, Kopfbau)
+mittelfristig zu beseitigen
+• Stahlfenster zu Aufenthaltsräumen mit Roststellen und Einfachverglasung (Halle 2),
+verzogene Kunststoff-Hallenfenster (Halle 3), desolates Holzfenster (Bürobereich Halle
+2)
+
+© THP GmbH 2010
+
+v4 Seite 9
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+5
+
+Baubeschreibung und technischer Zustand
+langfristig zu beseitigen
+• Nachweise über die Durchführung der Dichtigkeitsprüfung der Grundleitungen liegen
+nicht vor.
+Die Instandsetzungskosten zur Beseitigung der aufgeführten Mängel sind der entsprechenden
+Tabelle zu entnehmen.
+
+© THP GmbH 2010
+
+v4 Seite 10
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+6
+
+Umweltaspekte
+
+6Umweltaspekte
+
+6.1
+
+Allgemein
+Derzeitige Nutzung
+
+Produktions- und Lagerstandort Automotive-Branche
+
+Verfügbare Datenraumdokumente Thema Umwelt (Auszug aus Datenraumindex)
+
+4.2.7 Umweltsituation, Altlasten, Gebäudeschadstoffe
+4.2.7.1 Altlastenverdachtsflächenkataster
+4.2.7.1.1 Auskunft Bodenbelastungskataster, Flottenstr. 54-56,
+10.07.08
+4.2.7.1.2 Auskunft Bodenbelastungskataster Nr. 13752, Flottenstrasse, 15.04.2010
+4.2.7.1.3 Auskunft Bodenbelastungskataster Nr. 373+, Flottenstrasse, 15.04.2010
+4.2.7.1.4 Auskunft Bodenbelastungskataster Nr. 373a,c,d, Flottenstrasse, 15.04.2010
+4.2.7.1.5 Auskunft Bodenbelastungskataster Nr. 13751, Flottenstrasse, 15.04.2010
+4.2.7.1.6 Auskunft Bodenbelastungskataster Nr. 13756, Flottenstrasse, 15.04.2010
+4.2.7.1.7 Auskunft Bodenbelastungskataster Nr. 13754, Flottenstrasse, 15.04.2010
+4.2.7.2 Umwelt DD-Gutachten
+4.2.7.2.1 Grundwassermonitoring, Landplus GmbH, Flottenstr. 5456, 56-57, 03.06.08
+4.2.7.2.2 Anlagen Grundwassermonitoring, Landplus GmbH, Flottenstr. 54-56, 56-57, 03.06.08
+4.2.7.2.3 Altlastenuntersuchung, Landplus GmbH, Flottenstr. 5657, 16.05.07
+4.2.7.2.4 Monitoringkonzeptvorschlag, Landplus GmbH, Flottenstr. 54-56, 56-57, 06.06.07
+4.2.7.2.5 Anlage 4 Altlastenuntersuchung, Landplus GmbH, Flottenstr. 56-57, 16.05.07
+4.2.7.2.6 Anlage 6 Altlastenuntersuchung, Landplus GmbH, Flottenstr. 56-57, 16.05.07
+4.2.7.2.7 Environmental assessment, Alstom Power, Flottenstr. 5456, 03.02.05
+4.2.7.2.8 Grundwasseruntersuchung, Landplus GmbH, Flottenstr.
+54-56, 20.11.06
+4.2.7.2.9 Monitoring 2008 Teil 1, 03.06.08
+4.2.7.2.10 Monitoring 2008 Teil 2, 03.06.08
+4.2.7.2.11 Monitoring 2009, 22.05.09
+4.2.7.3 Sonstige relevante Unterlagen
+4.2.7.3.1 Datenraumvermerk (Siehe Dokumente 2.5.5 Grundstücksarchiv),08.07.08
+4.2.7.3.2 Sachstand Gebäudeschadstoffe (Landplus), 07.05.10
+4.2.7.3.3 Kostenschätzung Altlastensanierung (Landplus), undatiert
+4.2.7.3.4 Kostenschätzung Altlastensanierung Plan (Landplus), undatiert
+
+© THP GmbH 2010
+
+v4 Seite 11
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+6
+
+Umweltaspekte
+Weitere Informationsquellen
+
+6.2
+
+- Q&A-Session bei BEOS am 21.04.2010, Rücksprache mit Dr.
+Friebertshäuser (Landplus GmbH)
+- Schreiben „Sachstand zur Abstimmung mit den zuständigen Behörden und zum Anlass ggf. durchgeführter Altlastenuntersuchungen (Stand 22.04.2010)“ (Landplus GmbH)
+- Dokument „Zustimmung Umweltamt Monitoringkonzept
+070627“ erhalten am 23.04.2010
+- Grundstückskaufvertrag vom 03.Juli 2007
+- E-Mail von Fenja Winkelmann (BEOS) vom Dienstag, 18. Mai
+2010 15:03
+- E-Mail von Fenja Winkelmann (BEOS) vom Mittwoch, 19. Mai
+2010 11:02
+- E-Mail von Fenja Winkelmann (BEOS) vom Mittwoch, 26. Mai
+2010 16:40
+
+Gebäudeschadstoffe
+Vorliegende Gutachten
+
+Im Bericht von Alstom Power (03.02.05) wird darauf hingewiesen,
+dass keine asbesthaltigen Materialien und kein PCB in elektrischen
+Anlagen (Transformatoren) während der Begehung festgestellt
+werden konnten. Weiterhin werden Asbestmessungen der Firma
+Dr. Fechter in den Gebäuden 2 und FPC1 im Jahr 2003 erwähnt,
+bei denen keine Asbestfasern gefunden wurden. Aus welchem Anlass die Untersuchung durchgeführt wurde oder ob es sich um
+Raumluftproben oder Materialuntersuchungen handelt, ist nicht
+dargestellt.
+Nach mündlichen Aussagen von Dr. Friebertshäuser (Landplus
+GmbH) und Herrn Bacherer (BEOS) während der Q&A-Session
+am 21.04.2010 wurde während des Ankaufs eine Begehung auch
+in Hinblick auf vorhandene Schadstoffe durchgeführt. Im Rahmen
+dieser Begehung wurden keine relevanten Vorkommen an Gebäudeschadstoffen vorgefunden.
+Gemäß dem Protokoll "Sachstand Gebäudeschadstoffe" vom
+7.5.2010 von Landplus wurden auch in den aktuellen Begehungen
+vom 5./6.5.2010 keine Gebäudeschadstoffe festgestellt, von denen
+eine unmittelbare Gefahr ausgeht, für die eine gesetzliche Rückbauverpflichtung besteht oder die zu Nutzungseinschränkungen
+führen. Erhöhte Rückbau- und Entsorgungskosten für ggf. notwendige Maßnahmen bei zukünftigen Umbau- und Rückbaumaßnahmen sind nach Auskunft von BEOS mit 15.000 € in den Businessplänen enthalten.
+
+Status Quo
+
+Laut der vorliegenden Dokumente wurden keine Gebäudeschadstoffe identifiziert, welche Handlungsbedarf auslösen und somit
+Sanierungskosten verursachen oder zu Nutzungseinschränkungen
+führen.
+Aufwendungen, die eventuell durch erhöhte Ausbau- und Entsorgungskosten bei zukünftigen Rückbau- und Umbauarbeiten entstehen, sind in den Businessplänen berücksichtigt.
+
+© THP GmbH 2010
+
+v4 Seite 12
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+6
+6.3
+
+Umweltaspekte
+Boden- und Grundwassersituation
+Vorliegende Gutachten
+
+Im Datenraum liegen sechs Berichte zum Thema Boden und
+Grundwasserkontamination vor.
+Der älteste Bericht ist vom 03.02.05, Environmental Assessment,
+erstellt durch Alstom Power. Neben anderen Umweltthemen wird
+auch auf die Altlastenproblematik eingegangen. Hier wurden 4
+Schadensbereiche (REC 1-4) festgestellt. Die Bereiche REC 2-4
+sind analog den Sanierungsbereichen 1-3 in den Landplus Berichten.
+REC 1 ist ein Mineralölschaden im Pumpensumpf des Kompressorraums, welcher bei der Begehung durch Alstom festgestellt
+wurde. Hier wurden daraufhin zwei bis zu 4 m Tiefe Bohrungen
+abgeteuft. In den obersten Bodenschichten wurden lokal begrenzt
+hohe MKW-Gehalte gemessen. Das Risiko für eine signifikante
+Grundwasserkontamination wird von Alstom als gering eingeschätzt.
+Fünf weitere Berichte wurden durch Landplus erstellt: Im ersten
+dieser Berichte vom 20.11.06 wird festgestellt, dass es auf dem
+Gelände drei Schadensbereiche gibt, die bereits Sanierungsmaßnahmen unterzogen wurden.
+Hierbei wird in Sanierungsbereich 1 (Dieselschaden Nordwesten),
+Sanierungsbereich 2 (LCKW-Schaden Nordosten) und Sanierungsbereich 3 (Mineral- und Teerölschaden, zentraler und südlicher
+Bereich) unterschieden.
+Der Dieselschaden (Austritt von 50.000 Liter Diesel aus defekter
+Tankleitung 1999) im Sanierungsbereich 1 wurde umfassend saniert (Austausch von 12.000 t Boden), hier konnten 1,5 Jahre nach
+der Sanierung keine Schadstoffe mehr nachgewiesen werden. Das
+begleitende Monitoring wurde daraufhin eingestellt.
+Im Sanierungsbereich 2 wurde 1991 eine Bodenluftabsaugung
+durchgeführt, das Grundwassermonitoring wurde aufgrund zurückgehender Werte 1997 eingestellt.
+Im Sanierungsbereich 3 wurden 1985-86 ca. 15.000 t Boden in der
+ungesättigten Zone ausgetauscht. Eine Grundwassersanierung erfolgte nicht. Hier ist auch die Hauptbelastung des Grundwassers zu
+finden.
+Im Monitoringkonzeptvorschlag der Landplus GmbH vom
+06.06.07 an das Umweltamt wird ein Konzept zur Überwachung
+des Grundwasserschadens unterbreitet.
+In einem handschriftlichen Vermerk auf dem Monitoringkonzeptvorschlag mit dem Datum 28.6.07 und dem Stempel des Bezirksamts Reinickendorf von Berlin wird dem Vorschlag zugestimmt. Weitere Maßnahmen werden von den Ergebnissen des 3jährigen Monitorings abhängig gemacht. (Dokument „Zustimmung
+Umweltamt Monitoringkonzept 070627“ erhalten am 23.04.2010)
+Die folgenden Berichte vom 03.06.08 und 22.05.09 dokumentieren
+die Ergebnisse. Es bestätigen sich sowohl die hohen PAK- und
+BTEX-Werte (bis zu 40.591 / 2.751 µg/l) im südlichen Bereich als
+auch an einigen Pegeln im nördlichen Bereich.
+Landplus geht in demSchreiben „Sachstand zur Abstimmung mit
+den zuständigen Behörden und zum Anlass ggf. durchgeführter
+Altlastenuntersuchungen (Stand 22.04.2010)“ davon aus, dass die
+Behörde keinen weiteren Handlungsbedarf sieht und somit keine
+© THP GmbH 2010
+
+v4 Seite 13
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+6
+
+Umweltaspekte
+weiteren Maßnahmen fordert.
+Laut vorliegenden Unterlagen fallen für den Käufer Sanierungskosten von maximal 125.500 EUR an. (5% vom Kaufpreis
+[2.510.000 EUR], über diesen Betrag hinausgehende Kosten trägt
+das Land Berlin)
+Altlastenkatasterauskunft
+
+Altlastenkatasterauskunft vom 09./10.07.08 (Stand
+24.06./10.07.2008) und 15.04.2010:
+Das Grundstück wird unter den Nummern 373+, 373a, 373c, 373d,
+10388, im Bodenbelastungskataster des Landes Berlin geführt.
+Das untersuchte Grundstück ist Teil eines seit ca. 100 Jahren genutzten Gewerbegebiets mit diversen altlastenrelevanten Vornutzungen. Es gibt ein komplexes Schadensbild in Boden und Grundwasser, welches durch fortlaufende Untersuchungen beobachtet
+wird. Es erfolgten schon punktuell Sanierungsmaßnahmen durch
+Bodenaushub und Grundwasserreinigung.
+Bei baubedingten Eingriffen in das Erdreich ist die Beteiligung der
+Bodenschutzbehörde erforderlich.
+
+Status Quo
+
+Zusammenfassend kann gesagt werden, dass auf dem untersuchten
+Gelände trotz erfolgter Sanierungsmaßnahmen eine in Teilbereichen starke Grundwasserkontamination durch PAK- und BTEX
+vorliegt. Diese Schäden werden derzeit durch ein laufendes Monitoring begleitet.
+Da die Kosten für die Feststellung und Beseitigung von schädlichen Bodenverunreinigungen lt. vorliegendem Kaufvertrag (Land
+Berlin/BEBAU GEPRO L.L.C. vom 03.07.2007) bis zum
+31.12.2017 erstattet werden, wenn diese Kosten 5% des vereinbarten Kaufpreises übersteigen, ist mit maximal 125.000 EUR Sanierungskosten zu Lasten des Käufers zu rechnen. Die Wirksamkeit
+der entspechende Verpflichtung des Voreigentümers ist juristisch
+zu prüfen und die Ansprüche sind auf den Käufer zu übertragen.
+
+© THP GmbH 2010
+
+v4 Seite 14
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+7
+
+Stichprobenhafte Desktop-Flächenplausibilisierung
+
+7Stichprobenhafte Desktop-Flächenplausibilisierung
+
+Untersuchte Flächen
+
+Halle 1-3
+überdachte Lagerfläche
+
+Verwendete Unterlagen
+
+- Flächenliste, 21.01.2010
+- Grundrisspläne, unvermaßt
+
+Fläche laut Mieterliste (soll)
+
+14854 m²
+
+Bewertung
+Die vorliegenden Grundrisspläne sind unvermaßt, eine Flächenberechnung lag nicht vor. Eine
+Plausibilisierung der Mietfläche war daher nicht möglich.
+
+© THP GmbH 2010
+
+v4 Seite 15
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+8
+
+Prüfung der Nutzung
+
+8Prüfung der Nutzung
+
+8.1
+
+8.2
+
+Mieter 1
+Name
+
+Freudenberg NOK Mechatronik GmbH & Co. KG
+
+Mietvertragliche Nutzung
+
+Gebäude 1 - EG: 5.017 m² Produktion
+Gebäude 1 - EG: 531,4 m² Büro
+Gebäude 1 - 1. OG: 577 m² Büro, 800 m² Kantine
+Gebäude 3 - EG: 1.279 m² Produktion
+Gebäude 3 - 1. OG: 188 m² Büro
+Gebäude - EG: 141 m² Büro
+
+Derzeitige Nutzung (laut Begehung)
+
+Gebäude 1 Produktion/Lager (Freudenberg)
+Gebäude 1 - EG: Produktion (Prüfplätze, Werkstatt), Büro
+Gebäude 1 - 1. OG: Kantine, Büro, Personalräume
+Gebäude 3: Produktion (Freudenberg)
+Gebäude 3 - EG: Büro, Technik
+Gebäude 3 - OG: Büro
+
+Genehmigungen
+
+Gebäude 1 : Errichtung eines Produktionsgebäudes und einer überdachten Ladezone (Bezirksamt Reinickendorf von Berlin, Abteilung Bauwesen, bau- und Wohnungsaufsichtsamt, 25.03.1985,
+DR-Index: 4.2.4.2.2)
+Gebäude 3: Umbaumaßnahmen der Produktionshalle wegen Nutzungsänderung (Bezirksamt Reinickendorf von Berlin, Abteilung
+Bauwesen, bau- und Wohnungsaufsichtsamt, 12.07.1991, DR-Index: 4.2.4.2.4)
+
+Bewertung
+
+Nach Sichtung der vom Eigentümer zur Verfügung gestellten
+Baugenehmigungsunterlagen erscheint die derzeitige und mietvertraglich vereinbarte Nutzung ohne Bedenken.
+
+Mieter 2
+Name
+
+ISI Automotive Berlin GmbH
+
+Mietvertragliche Nutzung
+
+Gebäude 2 - EG: 5.447 m² Produktion
+Gebäude 2 - EG: 340,9 m² Büro
+Gebäude 2 - 1. OG: 533 m² Büro
+
+Derzeitige Nutzung (laut Begehung)
+
+Gebäude 2 Produktion (ISI)
+Gebäude 2 - EG: Büro, Personalräume, Heizung
+Gebäude 2 - 2. OG: Büro
+
+Genehmigungen
+
+Gebäude 2: Umbau eines Verwaltungsgebäudes und der Halle 2
+(Bezirksamt Reinickendorf von Berlin, Bau-, Grundstücks- und
+Gebäudemanagement, Bau- und Wohnungsaufsicht, 02.06.2005,
+DR-Index: 4.2.4.2.5)
+
+Bewertung
+
+Nach Sichtung der vom Eigentümer zur Verfügung gestellten
+Baugenehmigungsunterlagen erscheint die derzeitige und mietvertraglich vereinbarte Nutzung ohne Bedenken.
+
+© THP GmbH 2010
+
+v4 Seite 16
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+9
+
+Zusammenfassung Instandsetzungsbedarf
+
+9Zusammenfassung Instandsetzungsbedarf
+
+9.1
+
+Maßnahmen
+
+sofort
+[EUR]
+
+kurzfristig
+[EUR]
+
+mittelfristig
+[EUR]
+
+langfristig
+[EUR]
+
+Summe
+[EUR]
+
+Öffnungen
+Ersatz beschädigter Hallenfenster
+(tw. mit Einfachverglasung) durch
+Kunststoffelemente, Ersatz desolates Holzfenster
+
+0
+
+0
+
+37.000
+
+0
+
+Zwischensumme Öffnungen
+
+0
+
+0
+
+37.000
+
+0
+
+Einbau oder Ertüchtigung von
+Brandschutzklappen und -manschetten, Schotten von Kabelund Rohrdurchführungen
+
+22.500
+
+0
+
+0
+
+0
+
+Wandbeplankung in fh-Qualität
+herstellen, Dichtungsgummis
+
+10.000
+
+0
+
+0
+
+0
+
+Nachrüsten einer Brandschutztür
+
+750
+
+0
+
+0
+
+0
+
+Zwischensumme Brandschutz
+
+33.250
+
+0
+
+0
+
+0
+
+Prüfung der Grundleitungen auf
+Dichtigkeit, ggf. Sanierungsmaßnahmen (50% nach Aussage des
+Eigentümers bereits erledigt)
+
+0
+
+0
+
+0
+
+95.500
+
+Zwischensumme Heizung, Lüftung, Sanitär
+
+0
+
+0
+
+0
+
+95.500
+
+95.500
+
+33.250
+
+0
+
+37.000
+
+95.500
+
+165.750
+
+37.000
+
+Brandschutz
+
+33.250
+
+Heizung, Lüftung, Sanitär
+
+Summe
+Tabelle 2: Maßnahmen
+
+© THP GmbH 2010
+
+v4 Seite 17
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+9
+9.2
+
+Zusammenfassung Instandsetzungsbedarf
+Zusammenfassung der Gewerke
+
+Gewerke
+
+sofort
+[EUR]
+
+kurzfristig
+[EUR]
+
+mittelfristig
+[EUR]
+
+langfristig
+[EUR]
+
+Summe
+[EUR]
+
+Außenanlagen
+
+0
+
+0
+
+0
+
+0
+
+0
+
+Dach
+
+0
+
+0
+
+0
+
+0
+
+0
+
+Fassade und Balkone
+
+0
+
+0
+
+0
+
+0
+
+0
+
+Öffnungen
+
+0
+
+0
+
+37.000
+
+0
+
+37.000
+
+Baukonstruktion
+
+0
+
+0
+
+0
+
+0
+
+0
+
+33.250
+
+0
+
+0
+
+0
+
+33.250
+
+Heizung, Lüftung, Sanitär
+
+0
+
+0
+
+0
+
+95.500
+
+95.500
+
+Elektrische Anlagen
+
+0
+
+0
+
+0
+
+0
+
+0
+
+Förderanlagen
+
+0
+
+0
+
+0
+
+0
+
+0
+
+Umweltkosten
+
+0
+
+0
+
+0
+
+0
+
+0
+
+Ausbau Gemeinschaftsflächen
+
+0
+
+0
+
+0
+
+0
+
+0
+
+Ausbau Mietflächen - Gewerbe
+
+0
+
+0
+
+0
+
+0
+
+0
+
+33.250
+
+0
+
+37.000
+
+95.500
+
+165.750
+
+1,92
+
+0,00
+
+2,14
+
+5,53
+
+9,59
+
+Brandschutz
+
+Summe
+Instandsetzungsbedarf
+[EUR/m²]
+
+Tabelle 3: Zusammenfassung der Gewerke
+
+Hinweis: Alle genannten Kosten sind reine Baukosten nach Kostengruppen 300-500, DIN 276. Kosten für Verwaltung,
+Planung und Bauüberwachung etc. sind hierin nicht enthalten. Die angegebenen Prognosekosten wurden nicht indexiert
+oder diskontiert, Preissteigerungen nicht berücksichtigt. Alle Kostenangaben in diesem Bericht sind netto, exklusive der
+gesetzlichen Mehrwertsteuer von z. Zt. 19% und entsprechend dem Preisniveau von 2010 angegeben.
+
+© THP GmbH 2010
+
+v4 Seite 18
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+10
+
+Potenzielle Maßnahmen und Kosten
+
+10Potenzielle Maßnahmen und Kosten
+
+Contracting:
+THP hat für die Heizungs- und Lüftungsanlagen einen Instandhaltungsbedarf festgestellt. Gemäß der Aussage von
+BEOS sollen die damit verbunden Maßnahmen von einem Contractor übernommen werden. Die Sanierung dieser Anlagen wird von THP mit potenziellen Kosten in Höhe von 270.000 EUR bewertet.
+Trennung Lösch-/Trinkwasser:
+THP hat festgestellt, dass sich im Objekt Löschwasser-Steigleitungen befinden, die nicht, wie von der Trinkwasserverordnung gefordert, vom Trinkwassernetz getrennt sind. Die Instandhaltungsstrategie von BEOS sieht vor, dass die
+Trinkwasserqualität durch eine regelmäßige Beprobung sichergestellt wird und die erforderliche Installation einer
+Trennstation nur im Fall von behördlichen Auflagen, einer Modernisierung im Zuge von Mieterwechseln oder bei
+Nichteinhaltung der geforderten Grenzwerte durchgeführt wird. Die mit dieser potenziell notwendigen Maßnahme verbundenen Kosten werden von THP mit 30.000 EUR bewertet.
+
+© THP GmbH 2010
+
+v4 Seite 19
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+11
+
+Anhang
+
+11Anhang
+
+11.1
+
+Fotodokumentation
+
+Bild 1: Ansicht Hallen 1 und 2
+
+Bild 2: Halle 3
+
+Bild 3: Zufahrt
+
+Bild 4: Seitenansicht Halle 2
+
+Bild 5: Rückseite Halle 2
+
+Bild 6: Dachfläche Halle 1
+
+© THP GmbH 2010
+
+v4 Seite 20
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+11
+
+Anhang
+
+Bild 7: Dachfläche Halle 2 mit Lüftung und Kältemaschine
+
+Bild 8: Dachfläche Halle 3 mit Abluft
+
+Bild 9: Produktionsfläche Halle 1
+
+Bild 10: Lagerfläche Halle 1
+
+Bild 11: Kantine
+
+Bild 12: Flur Bürofläche Halle 1
+
+© THP GmbH 2010
+
+v4 Seite 21
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+11
+
+Anhang
+
+Bild 13: Sanitärraum Halle 1
+
+Bild 14: Treppenhaus Halle 2
+
+Bild 15: Produktionsfläche Halle 3
+
+Bild 16: Heizungsanlage
+
+Bild 17: Lüfterzentrale Halle 1
+
+Bild 18: Trafo
+
+© THP GmbH 2010
+
+v4 Seite 22
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+11
+
+Anhang
+
+Bild 19: Sprinklerzentrale
+
+Bild 20: Wandhydrant
+
+Bild 21: Asphaltfläche mit Fehlstellen
+
+Bild 22: Verzogene Fenster Halle 3
+
+Bild 23: Rohrdurchführungen ohne Brandschutzmanschetten
+
+Bild 24: Flur OG Halle 2 ohne fh-Qualität
+
+© THP GmbH 2010
+
+v4 Seite 23
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+11
+11.2
+
+Anhang
+Nutzungsarten - Flächen und Einheiten
+
+Nutzungsarten
+
+Fläche
+[m²]
+
+Anteil der Fläche
+[%]
+
+Einheiten
+
+Anteil der Einheiten
+[%]
+
+Produktionsfläche
+
+6.296,00
+
+36
+
+-
+
+-
+
+Labor
+
+5.447,00
+
+32
+
+-
+
+-
+
+Lager
+
+2.430,00
+
+14
+
+-
+
+-
+
+Büro
+
+2.311,41
+
+13
+
+-
+
+-
+
+800,00
+
+5
+
+-
+
+-
+
+-
+
+-
+
+120
+
+100
+
+17.284,41
+
+100
+
+120
+
+100
+
+Gastronomie
+Stellplätze
+Summe
+
+Tabelle 4: Nutzungsarten
+
+Die Flächenangaben wurden aus den am 30.03.2010 von BEOS übergebenen Mieterlisten nachrichtlich übernommen.
+Die Angaben zu Stellplätzen wurden von BEOS ermittelt (Zählung vor Ort, Auswertung Mietverträge, Auswertung von
+Plänen etc.) und THP zur Verfügung gestellt.
+
+© THP GmbH 2010
+
+v4 Seite 24
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+11
+11.3
+
+Anhang
+Verwendete Unterlagen
+Die folgenden Unterlagen wurden für die Erstellung dieses Berichtes verwendet (Auszug aus dem Datenraum-Index).
+Die für die Umwelt-Einschätzung verwendeten Unterlagen und Informationen sind im Kapitel 6 "Umweltaspekte" aufgeführt.
+- 4.2.1.1.1 Flurkarte (unbeglaubigt), Flottenstr. 54-56, undatiert
+- 4.2.1.1.2 Flurkarte (unbeglaubigter Auszug Liegenschaftskataster), Flottenstr. 54-56, 16.07.08
+- 4.2.1.2.1 Auszug aus dem Liegenschaftskataster, Flottenstrasse, 19.04.2010
+- 4.2.1.2.3 Flurkarte (unbeglaubigter Auszug), Flottenstr., 20.04.10
+- 4.2.3.1.1 Auskunft Baulastenverzeichnis, Flottenstr. 54-56, 09.07.08
+- 4.2.4.2.1 Datenraumvermerk (Siehe Dokumente 2.5.5 Grundstücksarchiv), 27.04.09
+- 4.2.4.3.1 Datenraumvermerk (Siehe Dokumente 2.5.5 Grundstücksarchiv), 27.04.09
+- 4.2.4.5.1 Datenraumvermerk (Siehe Dokumente 2.5.5 Grundstücksarchiv), 27.04.09
+- 4.2.4.8.1 Datenraumvermerk (Siehe Dokumente 2.5.5 Grundstücksarchiv), 27.04.09
+- 4.2.4.9.1 Datenraumvermerk (keine Unterlagen bekannt), 05.03.10
+- 4.2.4.10.1 Datenraumvermerk (Siehe Dokumente 2.5.5 Grundstücksarchiv), 27.04.09
+- 4.2.4.11.1 Datenraumvermerk (Siehe Dokumente 2.5.5 Grundstücksarchiv), 27.04.09
+- 4.2.5.1.1 FPC, Grundriss, undatiert
+- 4.2.5.1.3 Halle 1, Grundriss EG, undatiert
+- 4.2.5.1.4 Halle 2, Grundriss EG, undatiert
+- 4.2.5.1.5 Halle 2, Grundriss 1.OG, undatiert
+- 4.2.5.1.6 Übersichtsplan, Flottenstr. 54-56, undatiert
+- 4.2.5.1.7 Halle 1, Grundriss 1.OG, undatiert
+- 4.2.5.2.1 Flächenübersicht, Flottenstrasse, 21.01.2010
+- 4.2.5.2.2 Flächenübersicht Pläne Flottenstraße, undatiert
+- 4.2.5.3.1 Liste Baujahre und Modernisierungsmaßnahmen, Flottenstraße 54-56, Stichtag 23.02.10
+- 4.2.5.3.2 Datenraumvermerk (Siehe Dokumente 2.5.5 Grundstücksarchiv), 27.04.09
+- 4.2.5.5.1 Dokumentation Bauarchiv, Flottenstr. 54-56, undatiert
+- 4.2.7.1.1 Auskunft Bodenbelastungskataster, Flottenstr. 54-56, 10.07.08
+- 4.2.7.2.3 Altlastenuntersuchung, Landplus GmbH, Flottenstr. 56-57, 16.05.07
+- 4.2.7.2.4 Monitoringkonzeptvorschlag, Landplus GmbH, Flottenstr. 54-56, 56-57, 06.06.07
+- 4.2.7.2.8 Grundwasseruntersuchung, Landplus GmbH, Flottenstr. 54-56, 20.11.06
+- 4.2.7.2.11 Monitoring 2009, 22.05.09
+- 4.2.10 Mietverträge der Top25-Mieter
+- 4.2.12.1.1 BEOS Property Presentation, Flottenstrasse, 10.02.2010
+
+© THP GmbH 2010
+
+v4 Seite 25
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+12
+
+Definitionen und Hinweise
+
+12Definitionen und Hinweise
+
+Allgemeines
+
+Bei den Ansätzen zur Ermittlung der Instandhaltungskosten in
+diesem Bericht wurde, sofern nicht gesondert vermerkt, von
+üblichen Regelungen in gewerblichen „Dach- und Fach“-Mietverträgen ausgegangen. Eine detaillierte Analyse der vorhandenen Mietverträge hinsichtlich besonderer Vereinbarungen
+zur Übernahme von Instandsetzungskosten erfolgte durch THP
+nicht.
+Von signifikanten Sofortmaßnahmen abgesehen, wurden Maßnahmen mit einem jeweiligen Kostenbedarf von weniger
+25.000 EUR nicht berücksichtigt. Die angegebenen Kosten berücksichtigen nur die Maßnahmen, die bei der Begehung oder
+vorhersehbar als technisch notwendig ermittelt wurden. Nicht
+berücksichtigt sind die Kosten der laufenden ungeplanten Instandhaltung, Kosten für Umbau-, Erweiterungs- und Modernisierungsmaßnahmen sowie Kosten bei Mieterwechsel.
+Alle genannten Kosten sind, soweit nicht anderweitig vermerkt, reine Baukosten nach Kostengruppen 300-500, DIN
+276. Kosten für Verwaltung, Planung und Bauüberwachung
+etc. sind hierin nicht enthalten. Die angegebenen Prognosekosten wurden nicht indexiert oder diskontiert, Preissteigerungen
+nicht berücksichtigt. Alle Kostenangaben in diesem Bericht
+sind netto, exklusive der gesetzlichen Mehrwertsteuer von z.
+Zt. 19% und entsprechend dem Preisniveau von 2010 angegeben.
+
+Ausstattungsstandard
+
+Der Ausstattungsstandard (einfach, mittel, gehoben) für die
+verschiedenen Nutzungsarten wurde von den Inspektoren auf
+der Grundlage der Kategorisierung der Gebäudestandards in
+der vom Bundesministerium für Verkehr, Bau- und Wohnungswesen herausgegebenen Schriftsache „Normalherstellungskosten 2000. NHK 2000“ gemäß der Wertermittlungsrichtlinien
+des Bundes und dem Runderlass des Bundesministeriums für
+Verkehr, Bau- und Wohnungswesen vom 01.12.2001, BS12630504-30/1 ermittelt.
+
+Nutzerspezifische Ausstattung
+
+Der Instandsetzungsbedarf von nutzerspezifischen Ausstattungen wurde nicht berücksicht und Mietereinbauten wurden nicht
+erfasst.
+
+Wert erhöhende Maßnahmen
+
+Kosten für explizit Wert erhöhende Maßnahmen wurden von
+THP nicht berücksichtigt. Maßnahmen, die entsprechend einem
+technischen Erfordernis angesetzt werden (z. B. Dachsanierungen, Fenstersanierungen), können jedoch implizit auch zu einer
+Wertsteigerung führen.
+
+© THP GmbH 2010
+
+v4 Seite 26
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+12
+
+Definitionen und Hinweise
+Zeitabhängige Verteilung der Maßnahmen
+Sofort
+
+Jahr 0 (Sofortmaßnahmen zur Verkehrssicherung, zum Brandsowie Gesundheitsschutz)
+
+Kurzfristig
+
+Jahr 1
+
+Mittelfristig
+
+Jahre 2-5
+
+Langfristig
+
+Jahre 6-10
+
+Kennzeichnung im Bericht
+Kennzeichnung eines Sachverhalts mit erhöhtem Risikopotenzial
+geringes Risiko
+mittleres Risiko
+hohes Risiko
+
+Definition von Mängeln
+Wesentlicher Mangel
+
+Mangel, der Gefahr für Leib und Leben darstellt oder dessen
+Beseitigungskosten die Wesentlichkeitsgrenze von
+25.000 EUR überschreiten.
+
+Unwesentlicher Mangel
+
+Mangel, dessen Beseitigungskosten die Wesentlichkeitsgrenze
+von 25.000 EUR nicht überschreiten.
+
+© THP GmbH 2010
+
+v4 Seite 27
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+13
+
+Haftungsbeschränkung
+
+13Haftungsbeschränkung
+
+Dieser Bericht wurde von THP für die alleinige Verwendung durch die IntReal International Real Estate Kapitalanlagegesellschaft mbH auf Grundlage des Auftrages vom 19.03.2010 erstellt.
+Durch THP wurden nicht alle Bedingungen und Umstände analysiert, die tatsächlich oder möglicherweise Einfluss auf
+den Zustand und Wert des Objektes haben. THP betont, dass der Leistungsumfang auf bestimmte Fragestellungen beschränkt war und unabhängige Ermittlungen nur auf Grund von zeitlich begrenzten Begehungen bei teilweise eingeschränkter Zugänglichkeit erfolgten. Es kann nicht ausgeschlossen werden, dass in nicht zugänglichen oder nicht begangenen Gebäudeteilen weitere hier nicht erwähnte Mängel vorhanden sind.
+Der Leistungsumfang wurde mit dem Auftraggeber abgestimmt und entspricht den von diesem formulierten Anforderungen. Die Ermittlungen wurden auf der Grundlage von Informationen durchgeführt, die durch den Auftraggeber oder
+Dritte übergeben wurden sowie auf Basis einer Besichtigung der Liegenschaft/des Gebäudes vor Ort. Umweltthemen
+wurden auftragsgemäß aussschließlich auf der Grundlage von Dokumentenstudien (Desktop), ohne eine Begehung der
+Objekte überprüft. Die Untersuchung ist auf Mängel beschränkt, die bezogen auf einen bestimmten Sachverhalt einen
+Wert von 25.000 EUR überschreiten. Der Betrachtungs- und Untersuchungszeitraum ist auf 10 Jahre, gerechnet ab dem
+Tag der Beauftragung, begrenzt. Das Objekt wurde augenscheinlich untersucht, d.h. es wurde eine zerstörungsfreie
+Sichtprüfung durchgeführt:
+•
+•
+•
+•
+•
+•
+
+ohne Benutzung von Hilfsmitteln (z. B. Leitern, Gerüsten, Strahlern, Messgeräten, persönlicher Schutzausrüstung etc.),
+ohne Entnahme und Untersuchung von Materialproben,
+ohne Öffnung von Verkleidungen und Revisionsöffnungen,
+ohne Funktionsprüfung,
+ohne rechnerische Kontrolle von Sachverhalten (z.B. Tragfähigkeit, Wärmebedarf, Kältebedarf, Leitungsdimensionierung),
+ohne Untersuchung auf den Befall durch pflanzliche oder tierische Schädlinge.
+
+Die Angabe der Kosten für technisch notwendige Instandsetzungsmaßnahmen erfolgt ohne die übliche planerische Aufbereitung der Sachverhalte auf Grundlage überschlägig geschätzter bzw. statistisch ermittelter Massen und unter Zugrundelegung üblicher Marktpreise. Objektspezifische Besonderheiten wie beschränkte Zugänglichkeit, Sicherheitsanforderungen oder Stillstandskosten wurden bei der Kostenschätzung nicht berücksichtigt. Die Kostenangabe erfolgt vorbehaltlich weiterer erforderlicher Untersuchungen und Planungen.
+Der Empfänger dieses Berichtes kann nicht davon ausgehen, dass durch THP andere als die in diesem Bericht explizit
+erwähnten Untersuchungen und Ermittlungen angestellt wurden. Der Auftraggeber ist gehalten, diesen Bericht hinsichtlich der richtigen und vollständigen Übernahme der von ihm übergebenen Sachinformationen und seiner Kenntnis des
+Objektes zu prüfen. Durch THP wird keine Gewähr für das Vorhandensein oder Fehlen von Eigenschaften des Objektes
+übernommen, die zum Zeitpunkt der Bewertung nicht offensichtlich und zugänglich waren oder für die keine Informationen übergeben wurden, die von THP geprüft werden konnten.
+THP schließt jede Gewährleistung gegenüber Dritten aus, insbesondere wenn juristische oder natürliche Personen, denen dieser Bericht zur Verfügung gestellt wird und die ihre Entscheidungen nicht auf Grundlage eigener Untersuchungen und Analysen treffen, sondern diesen Bericht oder die darin enthaltenen Aussagen und Bewertungen zu ihrer Entscheidungsgrundlage machen sollten.
+Sofern in diesem Bericht nicht ausdrücklich darauf hingewiesen wird, ist davon auszugehen, dass sich die Beurteilung
+des Objektes auf die gegenwärtige Nutzung im Rahmen der derzeit geltenden Vorschriften und Gesetze bezieht. Die ge-
+
+© THP GmbH 2010
+
+v4 Seite 28
+
+Projekt Start - Objektbericht
+03 - Flottenstraße 54-55, 13407 Berlin
+
+13
+
+Haftungsbeschränkung
+troffene Beurteilung zieht zukünftige Gesetzes- und Nutzungsänderungen nicht in Betracht. THP ist nicht verpflichtet,
+den Auftraggeber auf mögliche Veränderungen des Zustandes des Objektes oder auf Änderungen anwendbarer Gesetze
+und Vorschriften hinzuweisen, die nach dem Zeitpunkt der Begehung bzw. dem Erstellungsdatum dieses Berichtes auftreten und übernimmt keine Gewährleistung für die Folgen solcher Änderungen.
+Die in diesem Bericht enthaltenen Schlussfolgerungen beruhen auf den erhaltenen Informationen und der Annahme,
+dass alle angeforderten relevanten Informationen vollständig und richtig übergeben wurden. Erhaltene Informationen
+wurden, wenn nicht anders angegeben, nicht unabhängig überprüft. Sofern in diesem Bericht Bewertungen von Fakten
+enthalten sind, stellen diese eine subjektive Interpretation durch THP dar.
+Preisänderungen oder Wechselkursentwicklungen oder Änderungen der Bedingungen, welche zu Preisschwankungen in
+der Zukunft führen können, sind in diesem Bericht nicht berücksichtigt. Die angegebenen Kosten entsprechen dem
+Preisniveau zum Berichtszeitpunkt und sind weder indexiert noch diskontiert.
+Es wird über das Leistungsbild hinaus keine ausdrückliche oder implizite Gewährleistung bezüglich der in diesem Bericht enthaltenen fachlichen Empfehlungen oder weiteren von THP erbrachten Leistungen gegenüber dem Auftraggeber
+übernommen. Ansprüche Dritter werden vollständig ausgeschlossen.
+Nur die abschließende und unterzeichnete deutschsprachige Druckversion des Berichtes ist als verbindlich anzusehen.
+Berlin, 30.06.2010
+THProjektmanagement GmbH
+
+Erstellung Objektbericht
+Dipl.-Ing. U. Broniecki
+12.04.2010
+
+Kontrolle Objektbericht
+Dipl.-Ing. M. Textor
+14.04.2010
+
+© THP GmbH 2010
+
+Projektleitung
+M.Sc. S. Glatzer
+
+v4 Seite 29
+
+

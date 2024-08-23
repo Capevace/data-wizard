@@ -1,0 +1,100 @@
+<?php
+
+namespace App\Providers\Filament;
+
+use App\Filament\Pages\GeneratePage;
+use App\Filament\Pages\LlmSettings;
+use App\Filament\Resources\ExtractionBucketResource;
+use App\Filament\Resources\ExtractionRunResource;
+use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationGroup;
+use Filament\Pages;
+use Filament\Panel;
+use Filament\PanelProvider;
+use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Assets\Js;
+use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentAsset;
+use Filament\Widgets;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+class AppPanelProvider extends PanelProvider
+{
+    public function register(): void
+    {
+        parent::register();
+
+        FilamentAsset::register([
+            Js::make('magic-extract', resource_path('js/dist/magic-extract.js')),
+            AlpineComponent::make('GeneratorComponent', resource_path('js/dist/components/generator.js')),
+        ]);
+    }
+
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->spa()
+            ->default()
+            ->id('app')
+            ->path('app')
+            ->topNavigation()
+            ->navigation(fn (NavigationBuilder $builder) => $builder
+                ->items([
+                    ...Pages\Dashboard::getNavigationItems(),
+                    ...ExtractionBucketResource::getNavigationItems(),
+                    ...ExtractionRunResource::getNavigationItems()
+                ])
+                ->group(
+                    NavigationGroup::make(__('Settings'))
+                        ->icon('heroicon-o-cog')
+                        ->items([
+                           ...LlmSettings::getNavigationItems()
+                        ])
+                )
+            )
+            ->topbar()
+            ->login()
+            ->brandName('Magic Import')
+            ->viteTheme('resources/css/filament/app/theme.css')
+            ->font('Avenir Next')
+            ->colors([
+            'primary' => Color::Indigo,
+                'gray' => Color::Slate
+            ])
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->pages([
+                Pages\Dashboard::class,
+                GeneratePage::class
+            ])
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
+            ->widgets([
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
+            ])
+            ->middleware([
+                EncryptCookies::class,
+                AddQueuedCookiesToResponse::class,
+                StartSession::class,
+                AuthenticateSession::class,
+                ShareErrorsFromSession::class,
+                VerifyCsrfToken::class,
+                SubstituteBindings::class,
+                DisableBladeIconComponents::class,
+                DispatchServingFilamentEvent::class,
+            ])
+            ->authMiddleware([
+                Authenticate::class,
+            ]);
+    }
+}

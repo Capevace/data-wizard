@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.immo/Space",
+  "title": "Space",
+  "description": "A physical space of a rentable unit",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The type of the rental space",
+      "enum": ["office", "retail", "storage", "other"]
+    },
+
+    "area": {
+      "type": "number",
+      "description": "The area of the rental space in square meters",
+        "minimum": 0
+    },
+
+    "floor": {
+      "type": "number",
+      "description": "The floor number of the rental space",
+      "minimum": 0
+    },
+
+    "rent_per_m2": {
+      "type": "number",
+      "description": "The price of the rental space per square meter in euros (Nettokaltmiete)",
+      "minimum": 0
+    },
+
+    "extra_costs_per_m2": {
+      "type": "number",
+      "description": "The extra costs of the rental space per square meter in euros (Betriebskosten)",
+      "minimum": 0
+    },
+
+    "notes": {
+      "type": "string",
+      "description": "A note about the rental space"
+    }
+  }
+}

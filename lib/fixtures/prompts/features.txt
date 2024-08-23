@@ -1,0 +1,115 @@
+access-control: Zugangskontrolle
+acoustic-ceiling: Akustikdecke
+address: Adresse
+air-conditioning: Klimatisierung
+balcony: Balkon
+bees: Bienenvölker
+bike-slots: Fahrradstellplätze
+block-heating: Blockheizkraftwerk
+cctv: Video-Überwachung
+cantina: Kantine
+carpet-flooring: Teppichboden
+carsharing: Carsharing
+central-fire-alarm-system: BMA-Zentrale
+central-fire-alarm-system-fire-department: BMA-Zentrale + Feuerwehr
+central-heating: Zentralheizung
+ceramic-facade: Keramikfassade
+cleaning-service: Reinigungsdienst
+close-to-public-transport: ÖPNV direkt vor der Tür
+completely-renovated: Kernsaniert
+cooled-halls: Gekühlte Hallen
+cooling: Kühlung
+custom: Benutzerdefiniert
+delivery-for-24h: 24h Andienung
+distance-airport: Distanz Flughafen
+distance-main-station: Distanz Hauptbahnhof
+distance-port: Distanz Hafen
+district-heating: Fernwärme
+double-floor: Doppelbodentrassen
+dressing-room: Umkleideraum
+electric-heating: Elektroheizung
+electric-vehicle-charging-station: E-Ladestation
+electronic-lock: Elektronische Schließanlage
+elevators: Personenaufzüge
+fiberglass-connection: Glasfaseranschluss
+floor-heating: Fußbodenheizung
+floored-windows: Bodentiefe Fenster
+floors: Etagen
+gas-heating: Gasheizung
+gastronomy-on-site: Gastronomie auf dem Gelände
+geo-thermal: Geothermie
+green-courtyard: Grüner Innenhof
+green-lease-contracts: Green Lease Mietverträge
+greened-facade: Begrünte Fassade
+greened-roof: Begrünte Dachfläche
+ground-level-access: Ebenerdige Andienung
+guarded: Pförtner
+handicap-accessible: Barrierearm
+handicap-fully-accessible: Barrierefrei
+hardwood-flooring: Parkettboden
+heat-pump: Wärmepumpe
+heated-halls: Beheizte Hallen
+heavy-duty-crane: Schwerlastkran
+heavy-duty-elevator: Lastenaufzüge
+high-ceilings: Hohe Decken
+high-voltage-outlet: Starkstromanschluss
+hydraulic-lift: Hydraulische Hebebühne
+individually-expandable: Individuell ausbaubar
+infrared-heating: Infrarot Heizung
+kindergarden: Kita auf der Liegenschaft
+kitchen: Küche
+lkw-slots: LKW-Stellplätze
+laboratory-s1: S1 Labor
+laboratory-s2: S2 Labor
+led-lighting: LED-Beleuchtung
+lighting-with-motion-detection: Beleuchtung mit Bewegungsmelder
+marketing-website: Webseite
+max-floor-load: Hohe Bodentraglast
+maximum-surface-desealing: Maximale Flächenentsieglung
+meeting-rooms: Meetingräume
+modernized: Modernisiert
+monument-protection: Denkmalschutz
+nearby-sports: Sportangebot in der Nähe
+needs-renovation: Renovierung nötig
+nesting-box: Nistkästen
+new-construction: Neubau
+number-of-rooms: Anzahl der Zimmer
+number-of-workplaces: Arbeitsplätze
+open-rooms: offene Raumstruktur
+outdoor-sunshade: Sonnenschutz
+outdoor-sunshade-electric: Elektrischer Sonnenschutz
+pkw-slots: PKW-Stellplätze
+parking-garage: Parkhaus/Tiefgarage
+places-for-socializing: Orte für sozialen Austausch
+plot-area: Grundstücksfläche
+ramp-access: Rampen-Andienung
+receptionist: Besetzter Empfang
+recycling: Recycling Konzept
+rentable-area: Gesamtmietfläche
+representative-foyer: Repräsentatives Foyer
+revitalized: Revitalisiert
+rolling-gates: Sektional- & Rolltore
+roof-terrace: Dachterrasse
+server-room: Serverraum
+shower: Duschen
+smart-metering: Smart Metering
+social-tenant: Soziale Mieter
+solar-energy: Photovoltaikanlage
+solar-heating: Solarthermie
+sprinkler-system: Sprinkleranlage
+storage-rack: Hochregallager
+storey-heating: Etagenheizung
+tee-kitchen: Teeküche
+think-tanks: Think Tanks
+urban-gardening: Urban Gardening
+variable-room-division: Variable Raumaufteilung
+ventilation: Lüftung
+washing-clothes: Textilreinigung
+water-retention: Regenrückhaltebecken
+wild-flower-grasses: Wildblumenwiese
+wind-energy: Windenergie
+wired-with-cat7: CAT7-Verkabelung
+wood-hybrid-construction: Holzhybridbauweise
+wooden-façade: Holzfassade
+year-of-construction: Baujahr
+year-of-renovation: Renoviert
