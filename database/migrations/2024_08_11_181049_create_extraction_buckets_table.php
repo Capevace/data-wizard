@@ -10,7 +10,10 @@ return new class extends Migration {
         Schema::create('extraction_buckets', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('description')->nullable();
-            $table->foreignId('created_by_id')->nullable();
+            $table->foreignUuid('created_by_id')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
             $table->string('status');
             $table->timestamp('started_at')->nullable();
             $table->string('extractor_id');

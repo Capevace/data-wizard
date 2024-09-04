@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->timestamps();
 
-            $table->foreignId('extraction_run_id')
+            $table->foreignUuid('extraction_run_id')
                 ->constrained()
                 ->cascadeOnDelete();
 
