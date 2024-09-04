@@ -23,6 +23,8 @@ return [
     'github_url' => 'https://github.com/capevace/magic-extract',
     'image_name' => 'magic-extract/server',
 
+    'admin_email' => env('ADMIN_EMAIL', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
