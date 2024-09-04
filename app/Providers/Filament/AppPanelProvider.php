@@ -65,7 +65,7 @@ class AppPanelProvider extends PanelProvider
             )
             ->topbar()
             ->login()
-            ->brandName('Magic Import')
+            ->brandName('Magic Extract')
             ->viteTheme('resources/css/filament/app/theme.css')
             ->font('Avenir Next')
             ->colors([
