@@ -2,14 +2,14 @@
 
 namespace Capevace\MagicImport\Artifacts\Content;
 
-use Illuminate\Support\Facades\Log;
-
 readonly class ImageContent
 {
     public function __construct(
-        public string $filename,
+        public string $path,
         public string $mimetype,
-        public ?int $page = null,
+        public ?int   $page = null,
+        public ?int   $width = null,
+        public ?int   $height = null,
     )
     {
     }
@@ -17,7 +17,7 @@ readonly class ImageContent
     public function toArray(): array
     {
         return [
-            'filename' => $this->filename,
+            'path' => $this->path,
             'mimetype' => $this->mimetype,
             'page' => $this->page,
         ];
@@ -25,9 +25,8 @@ readonly class ImageContent
 
     public static function from(array $data): static
     {
-        Log::debug('ImageContent::from', [$data]);
         return new static(
-            filename: $data['filename'],
+            path: $data['path'],
             mimetype: $data['mimetype'],
             page: $data['page'] ?? null,
         );

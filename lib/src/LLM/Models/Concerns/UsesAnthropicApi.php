@@ -53,10 +53,7 @@ trait UsesAnthropicApi
             ],
         ]);
 
-        $systemMessages = $serializedMessages->filter(fn(Message $message) => $message->role === Role::System);
         $otherMessages = $serializedMessages->filter(fn(Message $message) => $message->role !== Role::System);
-
-        $system = $systemMessages->reduce(fn (string $acc, TextMessage $message) => $message->content . "\n\n", '');
 
         $options = $this->getOptions();
         $data = [
@@ -71,12 +68,12 @@ trait UsesAnthropicApi
             'tools' => collect($prompt->functions())
                 ->map(fn (InvokableFunction $function) => [
                     'name' => $function->name(),
-                    'description' => '',
+                    'description' => method_exists($function, 'description') ? $function->description() : '',
                     'input_schema' => $function->schema(),
                 ]),
         ];
 
-        if ($prompt instanceof ExtractorPrompt && ($fn = $prompt->forceFunction())) {
+        if (method_exists($prompt, 'forceFunction') && ($fn = $prompt->forceFunction())) {
             $data['tool_choice'] = ['type' => 'tool', 'name' => $fn->name()];
         }
 
@@ -89,23 +86,21 @@ trait UsesAnthropicApi
             $json = $e->getResponse()->getBody();
             $data = json_decode($json, true);
 
-            trap([$json, $data]);
-
             if (Arr::has($data, 'error')) {
                 $type = Arr::get($data, 'error.type');
 
                 if ($type === 'invalid_request_error' && Str::startsWith(Arr::get($data, 'error.message'), 'max_tokens')) {
-                    throw new TooManyTokensForModelRequested(Arr::get($data, 'error.message'), previous: $e);
+                    throw new TooManyTokensForModelRequested('Too many tokens: ' . Arr::get($data, 'error.message'), previous: $e);
                 }
 
                 if ($message = Arr::get($data, 'error.message')) {
-                    throw new InvalidRequest($message, previous: $e);
+                    throw new InvalidRequest("API error", $message, previous: $e);
                 }
             }
 
-            throw new InvalidRequest($e->getMessage(), previous: $e);
+            throw new InvalidRequest("API error", $e->getMessage(), previous: $e);
         } catch (GuzzleException $e) {
-            throw new InvalidRequest($e->getMessage(), previous: $e);
+            throw new InvalidRequest("HTTP error", $e->getMessage(), previous: $e);
         }
     }
 
@@ -120,10 +115,12 @@ trait UsesAnthropicApi
             $onMessageProgress,
             $onMessage,
             onTokenStats: fn (TokenStats $stats) =>
-                $onTokenStats($cost
-                    ? $stats->withCost($cost)
+                $onTokenStats
+                    ? $onTokenStats($cost
+                        ? $stats->withCost($cost)
+                        : $stats
+                    )
                     : $stats
-                )
         );
 
         return $decoder->process();

@@ -16,11 +16,11 @@ use Illuminate\Support\Str;
 /**
  * @template T of ElElEmOptions
  */
-abstract readonly class ElElEm implements LLM
+abstract class ElElEm implements LLM
 {
     public function __construct(
-        public Organization $organization,
-        public string $model,
+        public readonly Organization $organization,
+        public readonly string $model,
 
         /** @var T $options */
         public ElElEmOptions $options,
@@ -30,10 +30,9 @@ abstract readonly class ElElEm implements LLM
 
     public function withOptions(array $data): static
     {
-        return new static(
-            organization: $this->organization,
-            options: $this->options->withOptions($data),
-        );
+        $this->options = $this->options->withOptions($data);
+
+        return $this;
     }
 
     public function getOrganization(): Organization
@@ -84,7 +83,8 @@ abstract readonly class ElElEm implements LLM
                 default => throw new \InvalidArgumentException("Invalid model type: {$value}"),
             },
             'groq' => match ($model) {
-                'llama-3-70b'=> new GroqLlama3(model: $model),
+
+                'llama-3-70b'=> new GroqLlama3(model: 'llama-3-70b-8192'),
                 'mixtral-8x7b' => new GroqMixtral8X7B(model: $model),
                 default => throw new \InvalidArgumentException("Invalid model type: {$value}"),
             },

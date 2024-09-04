@@ -11,8 +11,8 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->timestamps();
 
-            $table->foreignUuid('extraction_actor_id')
-                ->constrained()
+            $table->foreignUuid('actor_id')
+                ->constrained('actors')
                 ->cascadeOnDelete();
 
             $table->string('role');
@@ -20,9 +20,9 @@ return new class extends Migration {
             $table->string('text')->nullable();
             $table->json('json')->nullable();
 
-            $table->foreignUuid('file_id')
+            $table->foreignUuid('media_id')
                 ->nullable()
-                ->constrained()
+                ->constrained('media')
                 ->cascadeOnDelete();
         });
     }

@@ -10,6 +10,14 @@ class ListExtractionRuns extends ListRecords
 {
     protected static string $resource = ExtractionRunResource::class;
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            ExtractionRunResource\Widgets\CostWidget::make(),
+            ExtractionRunResource\Widgets\TotalCostWidget::make(),
+        ];
+    }
+
     protected function getHeaderActions(): array
     {
         return [

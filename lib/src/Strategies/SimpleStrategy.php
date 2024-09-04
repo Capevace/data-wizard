@@ -7,6 +7,7 @@ use Capevace\MagicImport\Artifacts\Artifact;
 use Capevace\MagicImport\Config\Extractor;
 use Capevace\MagicImport\LLM\LLM;
 use Capevace\MagicImport\Loop\InferenceResult;
+use Capevace\MagicImport\Loop\Response\JsonResponse;
 use Capevace\MagicImport\Prompt\ExtractorPrompt;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\TokenStats;
@@ -18,7 +19,7 @@ class SimpleStrategy
     public function __construct(
         protected Extractor $extractor,
 
-        /** @var ?Closure(InferenceResult): void */
+        /** @var ?Closure(array): void */
         protected Closure $onDataProgress,
 
         /** @var ?Closure(TokenStats): void */
@@ -53,7 +54,9 @@ class SimpleStrategy
         $messages = [];
 
         $onMessageProgress = function (Message $message) use (&$messages) {
-            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
+            if ($data = $message->toArray()['data'] ?? null) {
+                ($this->onDataProgress)($data);
+            }
 
             if ($this->onMessageProgress) {
                 ($this->onMessageProgress)($message);
@@ -63,20 +66,25 @@ class SimpleStrategy
         $onMessage = function (Message $message) use (&$messages) {
             $messages[] = $message;
 
-            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
+            if ($data = $message->toArray()['data'] ?? null) {
+                ($this->onDataProgress)($data);
+            }
 
             if ($this->onMessage) {
                 ($this->onMessage)($message);
             }
         };
 
-        $message = $this->extractor->llm->stream(
+        $responses = $this->extractor->llm->stream(
             prompt: $prompt,
             onMessageProgress: $onMessageProgress,
             onMessage: $onMessage,
             onTokenStats: $this->onTokenStats
         );
 
-        return new InferenceResult(value: $message, messages: $messages);
+        /** @var ?JsonResponse $jsonResponse */
+        $jsonResponse = collect($responses)->first(fn ($response) => $responses instanceof JsonResponse);
+
+        return new InferenceResult(value: $jsonResponse?->data, messages: $messages);
     }
 }

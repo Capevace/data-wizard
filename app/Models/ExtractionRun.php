@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Akaunting\Money\Money;
 use App\Models\Concerns\JsonSchemaCast;
 use App\Models\Concerns\TokenStatsCast;
 use App\Models\Concerns\UsesUuid;
@@ -10,6 +11,7 @@ use Capevace\MagicImport\Prompt\TokenStats;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Swaggest\JsonSchema\Schema;
 use Swaggest\JsonSchema\SchemaContract;
 
@@ -21,6 +23,9 @@ use Swaggest\JsonSchema\SchemaContract;
  * @property ?string $partial_result_json
  * @property ?array $error
  * @property ?TokenStats $token_stats
+ * @property string $strategy
+ * @property ?string $saved_extractor_id
+ * @property-read ?SavedExtractor $saved_extractor
  */
 class ExtractionRun extends Model
 {
@@ -29,12 +34,14 @@ class ExtractionRun extends Model
 
     protected $fillable = [
         'target_schema',
+        'strategy',
         'status',
         'error',
         'started_by_id',
         'result_json',
         'partial_result_json',
         'token_stats',
+        'saved_extractor_id'
     ];
 
     protected $casts = [
@@ -68,5 +75,24 @@ class ExtractionRun extends Model
         return Schema::import(
             json_decode(json_encode($this->target_schema))
         );
+    }
+
+    public function saved_extractor(): BelongsTo
+    {
+        return $this->belongsTo(SavedExtractor::class, 'saved_extractor_id');
+    }
+
+    public function calculateTotalCost(): Money
+    {
+        if (!$this->token_stats) {
+            return Money::EUR(0);
+        }
+
+        return $this->token_stats->calculateTotalCost();
+    }
+
+    public function actors(): HasMany
+    {
+        return $this->hasMany(Actor::class, 'extraction_run_id');
     }
 }

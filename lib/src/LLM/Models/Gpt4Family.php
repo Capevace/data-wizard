@@ -6,7 +6,7 @@ use Capevace\MagicImport\Config\Organization;
 use Capevace\MagicImport\LLM\ElElEm;
 use Capevace\MagicImport\LLM\Options\ChatGptOptions;
 
-readonly class Gpt4Family extends ElElEm
+abstract class Gpt4Family extends ElElEm
 {
     public function __construct(
         string $model,

@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\GeneratePage;
 use App\Filament\Pages\LlmSettings;
+use App\Filament\Resources\SavedExtractorResource;
 use App\Filament\Resources\ExtractionBucketResource;
 use App\Filament\Resources\ExtractionRunResource;
 use Filament\Http\Middleware\Authenticate;
@@ -51,13 +52,14 @@ class AppPanelProvider extends PanelProvider
                 ->items([
                     ...Pages\Dashboard::getNavigationItems(),
                     ...ExtractionBucketResource::getNavigationItems(),
-                    ...ExtractionRunResource::getNavigationItems()
+                    ...SavedExtractorResource::getNavigationItems(),
+                    ...ExtractionRunResource::getNavigationItems(),
                 ])
                 ->group(
                     NavigationGroup::make(__('Settings'))
                         ->icon('heroicon-o-cog')
                         ->items([
-                           ...LlmSettings::getNavigationItems()
+                            ...LlmSettings::getNavigationItems(),
                         ])
                 )
             )

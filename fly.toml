@@ -1,21 +1,22 @@
-# fly.toml app configuration file generated for magic-import on 2024-08-13T04:15:00+02:00
+# fly.toml app configuration file generated for magic-extract on 2024-09-04T19:22:54+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'magic-import'
+app = 'magic-extract'
 primary_region = 'cdg'
-console_command = 'php /app/artisan tinker'
+console_command = 'php /var/www/html/artisan tinker'
 
 [build]
   [build.args]
     NODE_VERSION = '18'
-    PHP_VERSION = '8.3'
+    PHP_VERSION = '8.2'
 
 [env]
   APP_ENV = 'production'
   APP_URL = 'https://magic-import.fly.dev'
-  DB_CONNECTION = 'pgsql'
+  DB_CONNECTION = 'sqlite'
+  DB_DATABASE = '/app/storage/database/database.sqlite'
   LOG_CHANNEL = 'stderr'
   LOG_LEVEL = 'info'
   LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
@@ -23,8 +24,13 @@ console_command = 'php /app/artisan tinker'
   SESSION_DRIVER = 'cookie'
   SESSION_SECURE_COOKIE = 'true'
 
+[[mounts]]
+  source = 'app_storage'
+  destination = '/app/storage'
+  snapshot_retention = 14
+
 [http_service]
-  internal_port = 80
+  internal_port = 8080
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
@@ -35,8 +41,3 @@ console_command = 'php /app/artisan tinker'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
-
-[mounts]
-    source = "magic_import_fs"
-    destination = "/app/storage/app"
-    snapshot_retention = 14

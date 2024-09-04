@@ -1,0 +1,136 @@
+<?php
+
+namespace Capevace\MagicImport\Prompt;
+
+use Capevace\MagicImport\Artifacts\Artifact;
+use Capevace\MagicImport\Artifacts\Content\ImageContent;
+use Capevace\MagicImport\Artifacts\Content\TextContent;
+use Capevace\MagicImport\Config\Extractor;
+use Capevace\MagicImport\FeatureType;
+use Capevace\MagicImport\Functions\Extract;
+use Capevace\MagicImport\Functions\ExtractData;
+use Capevace\MagicImport\Functions\InvokableFunction;
+use Capevace\MagicImport\Functions\ModifyData;
+use Capevace\MagicImport\Functions\OutputJsonSchema;
+use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
+use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
+use Swaggest\JsonSchema\JsonSchema;
+
+class GenerateSchemaPrompt implements Prompt
+{
+    public function __construct(
+        protected string $instructions,
+        protected ?string $previouslyGeneratedSchema = null,
+        protected bool $shouldForceFunction = true,
+    )
+    {
+    }
+
+    public function system(): string
+    {
+        return <<<PROMPT
+        <instructions>
+        You are a JSON schema generation assistant.
+        You are given some instructions that you need to generate a JSON schema for.
+        The instructions you are given may be vague or may be highly specific.
+        For example you may be asked to come up with a new custom schema for something yourself, you may be asked to make a schema with some specific properties, or you may be asked to output a well-known, public JSON schema (e.g. Schema.org).
+        If you know there is a fitting JSON schema published already, you should prefer that to making your own. But don't be afraid to modify those to fit your needs by adding or removing properties.
+
+        You can output the JSON minified, by leaving out the whitespace.
+
+        Schema's MUST be contained withing a JSON object.
+        This means, the schema MUST always be an object that then contains the requested contents. A schema may NEVER be anything else at the root level. Not arrays, not strings, not numbers, not booleans, not null. Only objects.
+
+        When asked to "make it an array" or similar (for example to make a single product into a list of products), the schema MUST STILL BE AN OBJECT.
+        Just have one of the properties then be an array of the original schema.
+
+        Only make the properties required if they are actually required. If they are not required, don't make them required. Make as many of them as possible optional, so there is more flexibility.
+        If a value is not required, don't include it in the "required"-array and add null to the property type by using "type": ["<type>", "null"].
+
+        Examples:
+        > { "type": "object", "required": ["name"], "properties": {"name": { "type": "string" } } }
+        > "Turn into an array of products"
+        > { "type": "object", "required": ["products"], "properties": {"products": { "type": "array", "items": { "type": "object", "required": ["name"], "properties": {"name": { "type": "string" } } } } } }
+        </instructions>
+
+        <correct-schema-example>
+        {
+            "type": "object",
+            "required": ["id", "name", "description"],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+            }
+        }
+        </correct-schema-example>
+
+        <invalid-schema-examples>
+        // Invalid because it's an array at the root, not an object
+        {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "The name of the product"
+                    },
+                }
+            }
+        }
+        // Invalid because it's a string, not an object
+        { "type": "string" }
+        </invalid-schema-examples>
+        PROMPT;
+    }
+
+    public function prompt(): string
+    {
+        $schema = $this->previouslyGeneratedSchema
+            ? "<previous-json-schema>{$this->previouslyGeneratedSchema}</previous-json-schema>"
+            : null;
+
+        return <<<TXT
+        <task>Generate a JSON schema for the given instructions.</task>
+
+        <json-instructions>
+        {$this->instructions}
+        </json-instructions>
+
+        {$schema}
+        TXT;
+    }
+
+    public function messages(): array
+    {
+        return [
+            new TextMessage(role: Role::User, content: $this->prompt()),
+        ];
+    }
+
+    public function functions(): array
+    {
+        return array_filter([$this->forceFunction()]);
+    }
+
+    public function forceFunction(): ?InvokableFunction
+    {
+        return $this->shouldForceFunction
+            ? new OutputJsonSchema
+            : null;
+    }
+
+    public function withMessages(array $messages): static
+    {
+        return $this;
+    }
+}

@@ -4,6 +4,7 @@ namespace Capevace\MagicImport\Prompt;
 
 use Capevace\MagicImport\Artifacts\Artifact;
 use Capevace\MagicImport\Artifacts\Content\ImageContent;
+use Capevace\MagicImport\Artifacts\Content\TextContent;
 use Capevace\MagicImport\Config\Extractor;
 use Capevace\MagicImport\FeatureType;
 use Capevace\MagicImport\Functions\Extract;
@@ -11,6 +12,7 @@ use Capevace\MagicImport\Functions\ExtractData;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 
 class ExtractorPrompt implements Prompt
@@ -19,7 +21,11 @@ class ExtractorPrompt implements Prompt
         protected Extractor $extractor,
 
         /** @var Artifact[] $artifacts */
-        protected array $artifacts
+        protected array $artifacts,
+
+        public int $maxPages = 10,
+        public bool $shouldForceFunction = true,
+        public bool $sendImages = true,
     )
     {
     }
@@ -27,26 +33,26 @@ class ExtractorPrompt implements Prompt
     public function system(): string
     {
         $schema = json_encode(
-            $this->extractor->schema->toArray(),
+            $this->extractor->schema,
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT
         );
 
-        $features = collect(FeatureType::cases())
-            ->map(fn(FeatureType $feature) => "{$feature->value}: {$feature->label()}")
-            ->join("\n");
-
-        $schemaNotes = <<<NOTES
-        The schema describes real estate data. An estate can have multiple buildings, which can have multiple rentable units. We're really interested in the rentables in the context of the rest of the estate. But make sure to include every kind of data correctly: if there's info about the estate as a whole, include it there. If it's specific to a building, include it on that level. Is it only relevant for a specific rentable unit? Include it there. Each of the three can have features. A list of available features is provided below. Only include features in your output that you find information about inside the document.
-        The data will be used inside commercial real estate software, so models for CRM etc. are also provided.
-        If there area different space types, make sure to include them as rentables 1 by 1. If there are multiple buildings, include them 1 by 1. If there are multiple estates, include them 1 by 1. You get the point. Always extract the data as the smallest possible unit.
-        For example 300m2 of office and 200m2 of storage in the same building should be two rentables.
-        Make sure to output ALL data you can find, do not just limit it to 1 estate, 1 building, 1 rentable. If you find 10 rentables, output all 10. If you find 5 buildings, output all 5. If you find 3 estates, output all 3.
-
-        <valid-features>
-        <!-- List of available Features (w/ German name): -->
-        {$features}
-        </valid-features>
-        NOTES;
+//        $features = collect(FeatureType::cases())
+//            ->map(fn(FeatureType $feature) => "{$feature->value}: {$feature->label()}")
+//            ->join("\n");
+//
+//        $schemaNotes = <<<NOTES
+//        The schema describes real estate data. An estate can have multiple buildings, which can have multiple rentable units. We're really interested in the rentables in the context of the rest of the estate. But make sure to include every kind of data correctly: if there's info about the estate as a whole, include it there. If it's specific to a building, include it on that level. Is it only relevant for a specific rentable unit? Include it there. Each of the three can have features. A list of available features is provided below. Only include features in your output that you find information about inside the document.
+//        The data will be used inside commercial real estate software, so models for CRM etc. are also provided.
+//        If there area different space types, make sure to include them as rentables 1 by 1. If there are multiple buildings, include them 1 by 1. If there are multiple estates, include them 1 by 1. You get the point. Always extract the data as the smallest possible unit.
+//        For example 300m2 of office and 200m2 of storage in the same building should be two rentables.
+//        Make sure to output ALL data you can find, do not just limit it to 1 estate, 1 building, 1 rentable. If you find 10 rentables, output all 10. If you find 5 buildings, output all 5. If you find 3 estates, output all 3.
+//
+//        <valid-features>
+//        <!-- List of available Features (w/ German name): -->
+//        {$features}
+//        </valid-features>
+//        NOTES;
 
         return (<<<PROMPT
         <instructions>
@@ -63,6 +69,7 @@ class ExtractorPrompt implements Prompt
         The data you are extracting is used to structurally digitize these files and preserve them for the future.
         Do not output any plaintext. Only output the structured JSON data.
         ONLY output this json object. NEVER include any other text in the output. DO NOT format the JSON object in any way. DO NOT add markdown or any other formatting.
+        Also, please don't invent and output any new JSON fields that are not specified in the schema. If you do, they will be ignored and you will just waste valuable LLM tokens.
         Adhere strictly to the schema! This is very important! I don't need any metadata or anything else. Just the data. No \$schema etc.
 
         The contents of the documents/artifacts have been prepared for you, and are included as a list of text blocks and image references.
@@ -70,6 +77,15 @@ class ExtractorPrompt implements Prompt
         The images are also provided to you. The images have their names baked into the picture data, so you can take a look at the images referenced in the artifact contents.
 
         Some images may be included that are not referenced in any artifact. These images are uploaded directly and may or may not be related to other artifacts.
+        </instructions>
+
+        <json-schema>
+        {$schema}
+        </json-schema>
+
+        <json-schema-notes>
+        {$this->extractor->outputInstructions}
+        </json-schema-notes>
 
         <artifact-examples>
             <!-- A PDF with two pages, containing two text blocks and two images -->
@@ -88,34 +104,35 @@ class ExtractorPrompt implements Prompt
                 <image filename="image2.jpg" />
             </artifact>
         </artifact-examples>
-
-        <json-schema>
-        {$schema}
-        </json-schema>
-
-        <json-schema-notes>
-        {$schemaNotes}
-        </json-schema-notes>
-        </instructions>
         PROMPT);
     }
 
     public function prompt(): string
     {
-//                @foreach(\$artifact->getContents() as \$content)
-//            @if(\$content instanceof \Capevace\MagicImport\Artifacts\Content\TextContent)
-//                <text @if(\$content->page) page="{{ \$content->page }}" @endif>{{ \$content->text }}</text>
-//            @elseif(\$content instanceof \Capevace\MagicImport\Artifacts\Content\ImageContent)
-//                <image filename="{{ \$content->filename }}" @if(\$content->page) page="{{ \$content->page }}" @endif />
-//            @endif
-//        @endforeach
         $artifacts = collect($this->artifacts)
-            ->map(fn(Artifact $artifact) => Blade::render(<<<BLADE
-            <artifact name="{{ \$artifact->getMetadata()->name }}" mimetype="{{ \$artifact->getMetadata()->mimetype }}">
-                <text>{{ \$artifact->getText() }}</text>
-            </artifact>
-            BLADE, compact('artifact')))
-            ->implode("\n");
+            ->map(function (Artifact $artifact) {
+                $pages = collect($artifact->getContents())
+                    ->filter(fn (TextContent|ImageContent $content) => $content instanceof TextContent)
+                    ->groupBy(fn (TextContent $content) => $content->page ?? 0)
+                    ->sortBy(fn (Collection $contents, $page) => $page)
+                    ->values()
+                    ->take($this->maxPages)
+                    ->flatMap(fn (Collection $contents) => collect($contents)
+                        ->map(fn (TextContent $content) => "<page num=\"{$content->page}\">\n{$content->text}\n</page>")
+                    )
+                    ->join("\n");
+
+                return Blade::render(
+                    <<<BLADE
+                    <artifact name="{{ \$name }}">
+                        {{ \$pages }}
+                    </artifact>
+                    BLADE,
+                    ['name' => $artifact->getMetadata()->name, 'pages' => $pages]
+                );
+            })
+            ->values()
+            ->join("\n");
 
         return <<<TXT
         <task>Extract the contents of the given artifacts.</task>
@@ -128,34 +145,47 @@ class ExtractorPrompt implements Prompt
 
     public function messages(): array
     {
+        if (!$this->sendImages) {
+            return [
+                new TextMessage(role: Role::User, content: $this->prompt()),
+            ];
+        }
+
+        $imageMessages = collect($this->artifacts)
+            ->flatMap(fn (Artifact $artifact) =>
+                collect($artifact->getContents())
+                    ->filter(fn (TextContent|ImageContent $content) => $content instanceof ImageContent)
+                    ->groupBy(fn (TextContent|ImageContent $content) => $content->page ?? 0)
+                    ->sortBy(fn (Collection $contents, $page) => $page)
+                    ->take($this->maxPages)
+                    ->flatMap(fn (Collection $contents) => collect($contents)
+                        ->map(fn (ImageContent $image) => new MultimodalMessage\Base64Image(
+                            imageBase64: base64_encode(file_get_contents($artifact->getEmbedPath($image->path))),
+                            mime: $image->mimetype,
+                        ))
+                    )
+            );
+
+
         return [
             // Attach images to the prompt
             new MultimodalMessage(role: Role::User, content: [
                 new MultimodalMessage\Text($this->prompt()),
-//                ...collect($this->artifacts)
-//                    ->flatMap(fn (Artifact $artifact) =>
-//                        collect($artifact->getContents())
-//                            ->filter(fn ($content) => $content instanceof ImageContent)
-//                            ->map(fn (ImageContent $image) => new MultimodalMessage\Base64Image(
-//                                imageBase64: base64_encode(file_get_contents($artifact->getEmbedPath($image->filename))),
-//                                mime: $image->mimetype,
-//                            ))
-//                    )
+                ...$imageMessages,
             ]),
         ];
     }
 
     public function functions(): array
     {
-        return [
-//            $this->forceFunction()
-        ];
+        return array_filter([$this->forceFunction()]);
     }
 
     public function forceFunction(): ?InvokableFunction
     {
-        return null;
-        return new Extract(schema: $this->extractor->schema);
+        return $this->shouldForceFunction
+            ? new Extract(schema: $this->extractor->schema)
+            : null;
     }
 
     public function withMessages(array $messages): static

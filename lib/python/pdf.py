@@ -3,6 +3,7 @@ from PIL import Image
 import os
 from pdf2image import convert_from_path
 import shutil
+import json
 
 class Page:
     def __init__(self, number: int, text: str, images: list):
@@ -75,35 +76,45 @@ def save_image(doc, image, path):
     with open(path, "wb") as img_file:
         img_file.write(image_bytes)
 
-def save_pages_as_files(doc, full_text_path, pages_marked_dir, pages_txt_dir):
+def save_pages_as_files(doc, pages_dir, full_text_path = None, contents_path = None, pages_txt_dir = None):
     texts = []
+    contents = []
 
     for (page, pageIndex) in zip(doc, range(len(doc))):
-        text_path = pages_marked_dir + f"/page{pageIndex + 1}.txt"
-        image_path = pages_marked_dir + f"/page{pageIndex + 1}.jpg"
+        image_path = pages_dir + f"/page{pageIndex + 1}.jpg"
 
         text = page.get_text().encode("utf8")
         texts.append(text)
+        contents.append({"page": pageIndex + 1, "type": "text", "text": text.decode("utf8")})
 
-        with open(text_path, "wb") as text_file:
-            text_file.write(text)
+        if pages_txt_dir is not None:
+            text_path = pages_txt_dir + f"/page{pageIndex + 1}.txt"
+            with open(text_path, "wb") as text_file:
+                text_file.write(text)
 
         page = doc.load_page(pageIndex)
         pix = page.get_pixmap()
         pix.save(image_path)
 
+        contents.append({"page": pageIndex + 1, "type": "page-image", "mimetype": "image/jpeg", "path": "pages/page" + str(pageIndex + 1) + ".jpg"})
+
     # join texts with "---- Page X ----" header for each page with number of page replaced
-    full_text = b""
-    pageIndex = 0
+    if full_text_path is not None:
+        full_text = b""
+        pageIndex = 0
 
-    for text in texts:
-        pageIndex += 1
-        full_text += f"---- Page {pageIndex} ----\n".encode("utf8")
-        full_text += text
-        full_text += b"\n\n"
+        for text in texts:
+            pageIndex += 1
+            full_text += f"---- Page {pageIndex} ----\n".encode("utf8")
+            full_text += text
+            full_text += b"\n\n"
 
-    with open(full_text_path, "wb") as text_file:
-        text_file.write(full_text)
+        with open(full_text_path, "wb") as text_file:
+            text_file.write(full_text)
+
+    if contents_path is not None:
+        with open(contents_path, "w") as f:
+            f.write(json.dumps(contents, indent=4))
 
 # def resize_pages():
 #     pages_path = artifact_dir + f"/pages_marked/"

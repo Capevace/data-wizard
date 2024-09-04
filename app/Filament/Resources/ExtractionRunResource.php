@@ -50,21 +50,33 @@ class ExtractionRunResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', direction: 'desc')
             ->columns([
-                TextColumn::make('status'),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->translateLabel()
+                    ->searchable()
+                    ->sortable(),
 
                 TextColumn::make('started_by.name')
+                    ->label('Started By')
+                    ->translateLabel()
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->dateTime('d.m.Y H:i')
-                    ->sinceTooltip()
+                    ->label('Started At')
+                    ->translateLabel()
+                    ->since()
+                    ->dateTimeTooltip()
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('token_stats')
+                    ->label('Cost')
+                    ->translateLabel()
                     ->state(fn (ExtractionRun $record) => $record->token_stats?->calculateTotalCost()?->format())
+                    ->tooltip(fn (ExtractionRun $record) => $record->token_stats?->tokens . " Tokens")
                     ->searchable()
                     ->sortable(),
 

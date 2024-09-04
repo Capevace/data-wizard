@@ -83,7 +83,7 @@ class MagicExtract
         return $this->extractors[$id] = new Extractor(
             id: $id,
             title: Arr::get($extractor, 'title', $id),
-            description: Arr::get($extractor, 'description'),
+            outputInstructions: Arr::get($extractor, 'description'),
             allowedTypes: $types->all(),
             llm: is_string($llm)
                 ? ElElEm::fromString($llm)
@@ -97,7 +97,7 @@ class MagicExtract
         Extractor $extractor,
     )
     {
-        
+
     }
 }
 

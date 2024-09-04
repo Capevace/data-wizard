@@ -7,7 +7,7 @@ use Swaggest\JsonSchema\SchemaContract;
 class Extract implements InvokableFunction
 {
     public function __construct(
-        protected SchemaContract $schema,
+        protected array $schema,
     )
     {
     }
@@ -17,9 +17,14 @@ class Extract implements InvokableFunction
         return 'extract';
     }
 
+    public function description(): ?string
+    {
+        return 'Output the extracted data in the defined schema.';
+    }
+
     public function schema(): array
     {
-        return json_decode(json_encode($this->schema), associative: true);
+        return $this->schema;
     }
 
     public function validate(array $data): array

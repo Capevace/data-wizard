@@ -46,45 +46,45 @@ class Actor extends Model
         $messages = match ($message::class) {
             TextMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::Text,
-                'role' => Role::tryFrom($message->role) ?? Role::Assistant,
+                'role' => $message->role,
                 'text' => $message->content,
             ]),
             JsonMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::Json,
-                'role' => Role::tryFrom($message->role) ?? Role::Assistant,
-                'json' => $message->data,
+                'role' => $message->role,
+                'json' => json_encode($message->data),
             ]),
             MultimodalMessage::class => collect($message->content)
-                ->each(fn(MultimodalMessage\Base64Image|MultimodalMessage\Text $image) => match ($image::class) {
+                ->each(fn(MultimodalMessage\Base64Image|MultimodalMessage\Text $content) => match ($content::class) {
                     MultimodalMessage\Base64Image::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Base64Image,
-                        'role' => Role::tryFrom($message->role) ?? Role::Assistant,
-                        'json' => $image->toArray()
+                        'role' => $message->role,
+                        'json' => $content->toArray()
                     ]),
                     MultimodalMessage\Text::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Text,
-                        'role' => Role::tryFrom($message->role) ?? Role::Assistant,
-                        'json' => $image->toArray()
+                        'role' => $message->role,
+                        'text' => $content->text,
                     ]),
                     default => null,
                 }),
 
             FunctionInvocationMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::FunctionInvocation,
-                'role' => Role::tryFrom($message->role) ?? Role::Assistant,
+                'role' => $message->role,
                 'json' => $message->toArray()
             ]),
 
             FunctionOutputMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::FunctionOutput,
-                'role' => Role::tryFrom($message->role) ?? Role::Assistant,
+                'role' => $message->role,
                 'json' => $message->toArray()
             ]),
 
             default => null,
         };
 
-        $messages = Collection::wrap($messages);
+        $messages = Collection::wrap($messages)->filter();
 
         return $messages;
     }

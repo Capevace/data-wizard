@@ -27,8 +27,8 @@ class GenerateArtifactJob implements ShouldQueue
     public function handle(): void
     {
         // Run python script
-        $bin = __DIR__ . '/../../python/venv/bin/python';
-        $script = __DIR__ . '/../../python/prepare-pdf.py';
+        $pythonDir = __DIR__ . '/../../python';
+        $script = "prepare-pdf.py";
 
         $file = $this->file->getPath();
         $dir = str($file)
@@ -39,7 +39,13 @@ class GenerateArtifactJob implements ShouldQueue
         $this->file->save();
 
         try {
-            $output = shell_exec("$bin $script $dir $file --json");
+            // Change working directory to the artifact directory
+            $currentDir = getcwd();
+            chdir($pythonDir);
+
+            $safeFile = escapeshellarg($file);
+
+            $output = shell_exec("uv run --isolated $script $dir $safeFile -- --json");
             $json = json_decode($output, true);
 
             if (isset($json['error'])) {
@@ -58,6 +64,8 @@ class GenerateArtifactJob implements ShouldQueue
             $this->file->save();
 
             throw new ArtifactGenerationFailed($e->getMessage(), previous: $e);
+        } finally {
+            chdir($currentDir);
         }
     }
 }

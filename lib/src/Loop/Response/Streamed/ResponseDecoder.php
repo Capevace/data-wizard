@@ -37,6 +37,7 @@ class ResponseDecoder implements Decoder
             }
         } else if ($this->response instanceof StreamResponse) {
             foreach ($this->response as $stream) {
+                dump($stream->choices[0]->delta->toArray());
                 $this->processRawMessage($stream->choices[0]->delta->toArray());
             }
         }
@@ -54,10 +55,14 @@ class ResponseDecoder implements Decoder
     {
         $role = Role::tryFrom(Arr::get($message, 'role', ''));
 
+        dump([$this->currentPartial, $role]);
+
         if ($this->currentPartial === null) {
             $this->currentPartial = $this->beginNewMessage($message);
 
-            $this->onMessageProgress?->call($this, $this->currentPartial->toResponse()->toMessage());
+            if ($this->currentPartial !== null) {
+                $this->onMessageProgress?->call($this, $this->currentPartial->toResponse()->toMessage());
+            }
         } else if ($role !== null && $role !== $this->currentPartial->role()) { // Role being set signals the beginning of a new message
             // If it is the beginning of a new message and we have a current message, we 'send off' the current message
             $this->responses[] = $this->currentPartial->toResponse();
@@ -66,7 +71,9 @@ class ResponseDecoder implements Decoder
 
             $this->currentPartial = $this->beginNewMessage($message);
 
-            $this->onMessageProgress?->call($this, $this->currentPartial->toResponse()->toMessage());
+            if ($this->currentPartial !== null) {
+                $this->onMessageProgress?->call($this, $this->currentPartial->toResponse()->toMessage());
+            }
         } else {
             if ($tool = Arr::get($message, 'tool_calls.0.function', null)) {
                 $this->currentPartial = $this->currentPartial->append($tool['arguments']);
@@ -91,11 +98,15 @@ class ResponseDecoder implements Decoder
 //        }
     }
 
-    public function beginNewMessage(array $message): PartialResponse
+    public function beginNewMessage(array $message): ?PartialResponse
     {
-        $role = Role::tryFrom(Arr::get($message, 'role', ''));
+        $role = Role::tryFrom(Arr::get($message, 'role', '')) ?? Role::Assistant;
         $content = Arr::get($message, 'content', '');
         $function = Arr::get($message, 'tool_calls.0.function');
+
+        if ($role && empty($content) && empty($function)) {
+            return null;
+        }
 
         if ($function !== null) {
             return new PartialFunctionCallResponse(

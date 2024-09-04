@@ -18,6 +18,16 @@ readonly class TokenStats implements Arrayable
     {
     }
 
+    public function add(TokenStats $stats): TokenStats
+    {
+        return new TokenStats(
+            tokens: $this->tokens + $stats->tokens,
+            inputTokens: ($this->inputTokens ?? 0) + ($stats->inputTokens ?? 0),
+            outputTokens: ($this->outputTokens ?? 0) + ($stats->outputTokens ?? 0),
+            cost: $this->cost,
+        );
+    }
+
     public function calculateInputCost(): ?Money
     {
         return $this->cost && $this->inputTokens !== null

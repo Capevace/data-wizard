@@ -8,7 +8,7 @@ use Capevace\MagicImport\LLM\Models\Concerns\UsesAnthropicApi;
 use Capevace\MagicImport\LLM\Options\ElElEmOptions;
 use Capevace\MagicImport\Model\ModelCost;
 
-readonly class Claude3Family extends ElElEm
+class Claude3Family extends ElElEm
 {
     use UsesAnthropicApi;
 

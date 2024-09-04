@@ -5,7 +5,7 @@ namespace Capevace\MagicImport\LLM\Models;
 use Capevace\MagicImport\Config\Organization;
 use Capevace\MagicImport\LLM\Options\ElElEmOptions;
 
-readonly class GroqMixtral8X7B extends Mixtral8x7b
+class GroqMixtral8X7B extends Mixtral8x7b
 {
     public function __construct(
         string $model,

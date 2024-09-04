@@ -1,4 +1,5 @@
 node_modules
+python/.venv
 python/venv
 python/__pycache__
 vendor

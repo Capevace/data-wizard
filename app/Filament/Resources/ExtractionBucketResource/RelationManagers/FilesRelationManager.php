@@ -22,6 +22,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Nette\Utils\Html;
@@ -107,6 +108,7 @@ class FilesRelationManager extends RelationManager
                     ||  $record->artifact_status === ArtifactGenerationStatus::InProgress
                 ) ? '500ms' : null,
             )
+            ->defaultSort('name')
             ->recordTitleAttribute('name')
             ->columns([
                 ImageColumnWithLoadingIndicator::make('thumbnail_src')
@@ -190,6 +192,27 @@ class FilesRelationManager extends RelationManager
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('regenerate')
+                        ->label('Regenerate Artifact')
+                        ->translateLabel()
+                        ->icon('heroicon-o-arrow-path-rounded-square')
+                        ->requiresConfirmation()
+                        ->modalSubmitAction(fn (StaticAction $action) => $action
+                            ->label('Regenerate Artifact')
+                            ->translateLabel()
+                            ->icon('heroicon-o-arrow-path-rounded-square')
+                        )
+                        ->action(function (Collection $records) {
+                            foreach ($records as $record) {
+                                /** @var ExtractionBucket $bucket */
+                                $bucket = $this->getOwnerRecord();
+
+                                $record->artifact_status = ArtifactGenerationStatus::Pending;
+                                $record->save();
+
+                                GenerateArtifactJob::dispatch($bucket, $record);
+                            }
+                        }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

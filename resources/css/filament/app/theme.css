@@ -1,4 +1,53 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
 @import "/vendor/tempest/highlight/src/Themes/Css/highlight-light-lite.css";
 
+/*.fi-layout {*/
+/*    background-image: url(https://fly.io/phx/ui/images/app-shapes-e20dd6e0903d3a31595108e6e1052a1e.webp?vsn=d);*/
+/*    background-origin: center center;*/
+/*    background-position: center;*/
+/*    background-size: cover 200%;*/
+/*}*/
+
+.perso-card-container { perspective: 2000px; }
+.perso-card {
+    transition: transform 0.02s;
+    transform-style: preserve-3d;
+}
+.security-pattern {
+    background-image: repeating-linear-gradient(
+        50deg,
+        rgba(0, 0, 0, 0.06) 0px,
+        rgba(0, 0, 0, 0.06) 3px,
+        transparent 3px,
+        transparent 5px
+    );
+}
+.dark .security-pattern {
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1) 0px,
+        rgba(255, 255, 255, 0.1) 3px,
+        transparent 3px,
+        transparent 5px
+    );
+}
+.shine {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    right: 0;
+    bottom: 0;
+    /*background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);*/
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.7) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%);
+    opacity: 0;
+    transition: opacity 0.1s;
+    pointer-events: none;
+    width: 200%;
+    height: 200%;
+}
+
+.dark .shine {
+    background: radial-gradient(circle at 50% 50%, rgba(var(--gray-200),0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%);
+}
+
 @config 'tailwind.config.js';

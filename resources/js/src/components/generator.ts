@@ -13,11 +13,14 @@ interface IGenerator {
     stream(): void;
 }
 
-export function GeneratorComponent({ sourceUrl }: { sourceUrl?: string } = {}) {
+export function GeneratorComponent({ sourceUrl, debugModeEnabled }: { sourceUrl?: string, debugModeEnabled?: boolean } = {}) {
     console.log('Generator', sourceUrl);
+    const initialTab = debugModeEnabled ? 'json' : 'gui';
+
 	return {
-        tab: 'gui',
+        tab: initialTab,
         source: null,
+        debugModeEnabled: debugModeEnabled ?? false,
 
         messages: [],
         streamingMessage: null,
@@ -28,6 +31,14 @@ export function GeneratorComponent({ sourceUrl }: { sourceUrl?: string } = {}) {
 
 		init() {
 			console.log('init');
+
+            this.$wire.$watch('actorTab', (actorTab) => {
+                if (actorTab) {
+                    this.tab = 'chat';
+                } else {
+                    this.tab = initialTab;
+                }
+            });
         },
 
         startStreaming(sourceUrl: string) {

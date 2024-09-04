@@ -5,8 +5,10 @@ namespace App\Livewire\Components;
 use App\Jobs\GenerateDataJob;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 /**
@@ -24,6 +26,10 @@ class Generator extends Component
     #[Locked]
     public ?array $partialResultJson = null;
 
+    #[Reactive]
+    public bool $debugModeEnabled = false;
+
+    public ?string $actorTab = null;
 
     #[Computed]
     public function bucket(): ExtractionBucket
@@ -37,6 +43,18 @@ class Generator extends Component
         return $this->runId
             ? $this->bucket->runs()->findOrFail($this->runId)
             : null;
+    }
+
+    #[Computed]
+    public function actors(): Collection
+    {
+        return $this->run?->actors ?? collect();
+    }
+
+    #[Computed]
+    public function messages(): ?Collection
+    {
+        return $this->run?->actors()->find($this->actorTab)?->messages ?? null;
     }
 
     public function mount()

@@ -4,7 +4,7 @@ namespace Capevace\MagicImport\LLM\Options;
 
 readonly class ElElEmOptions
 {
-    public const DEFAULT_MAX_TOKENS = 2048;
+    public const DEFAULT_MAX_TOKENS = 4096;
 
     public function __construct(
         public int $maxTokens = self::DEFAULT_MAX_TOKENS,

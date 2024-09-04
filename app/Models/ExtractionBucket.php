@@ -99,4 +99,10 @@ class ExtractionBucket extends Model implements HasMedia
             ]
         ];
     }
+
+    public function logUsage(): void
+    {
+        $this->updated_at = now();
+        $this->save();
+    }
 }

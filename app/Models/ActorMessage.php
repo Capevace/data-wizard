@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Actor\ActorMessageType;
+use Capevace\MagicImport\Prompt\Message\MultimodalMessage\Base64Image;
 use Capevace\MagicImport\Prompt\Role;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -18,11 +19,19 @@ class ActorMessage extends Model
         'actor_id',
         'role',
         'text',
-        'file_id',
+        'json',
         'type',
+        'media_id'
+    ];
+
+    protected $attributes = [
+        'role' => Role::Assistant,
+        'json' => null,
+        'text' => null,
     ];
 
     protected $casts = [
+        'json' => 'json',
         'role' => Role::class,
         'type' => ActorMessageType::class,
     ];
@@ -32,8 +41,13 @@ class ActorMessage extends Model
         return $this->belongsTo(Actor::class);
     }
 
-    public function file(): BelongsTo
+    public function media(): BelongsTo
     {
         return $this->belongsTo(File::class);
+    }
+
+    public function base64Image(): ?Base64Image
+    {
+        return Base64Image::fromArray($this->json);
     }
 }

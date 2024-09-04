@@ -34,6 +34,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Swaggest\JsonSchema\Schema;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class JsonStreamController extends Controller
 {
@@ -50,34 +51,22 @@ class JsonStreamController extends Controller
             abort(404, 'Dataset not found or missing expose.txt file');
         }
 
-        $schema = json_decode(json_encode([
-            'type' => 'object',
-            'properties' => [
-                'estates' => [
-                    'type' => 'array',
-                    'items' => [
-                        'type' => 'object',
-                        'properties' => [
-                            'id' => ['type' => 'integer'],
-                            'name' => ['type' => 'string'],
-                            'buildings' => (new ExtractData)->schema()
-                        ]
-                    ]
-                ]
-            ]
-        ]));
+        if (!$run->saved_extractor) {
+            // HTTP status code 40 is "Bad Request"
+            throw new BadRequestHttpException('The run does not or no longer has an extractor, which is required to start an extraction');
+        }
 
         $extractor = new Extractor(
-            id: 'estate',
-            title: 'Estate',
-            description: null,
+            id: $run->saved_extractor->id,
+            title: $run->saved_extractor->label ?? $run->saved_extractor->id,
+            outputInstructions: $run->saved_extractor->output_instructions,
             allowedTypes: [
                 'images',
                 'documents'
             ],
-            llm: ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::SONNET_3_5)),
-            schema: Schema::import($schema),
-            strategy: 'simple',
+            llm: ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::HAIKU)),
+            schema: $run->target_schema,
+            strategy: $run->strategy,
         );
 
         $artifacts = [$file->artifact];

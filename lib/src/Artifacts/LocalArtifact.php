@@ -5,6 +5,8 @@ namespace Capevace\MagicImport\Artifacts;
 use Capevace\MagicImport\Artifacts\Content\ImageContent;
 use Capevace\MagicImport\Artifacts\Content\TextContent;
 use Capevace\MagicImport\Config\ExtractorFileType;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use JsonException;
 use Throwable;
 
@@ -62,7 +64,7 @@ readonly class LocalArtifact implements Artifact
         return collect($data)
             ->map(fn($content) => match ($content['type']) {
                 'text' => TextContent::from($content),
-                'image' => ImageContent::from($content),
+                'image', 'page-image' => ImageContent::from($content),
                 default => null
             })
             ->filter()
@@ -93,42 +95,57 @@ readonly class LocalArtifact implements Artifact
             return $this->getSourcePath();
         }
 
-        return "{$this->path}/embeds/{$filename}";
+        return "{$this->path}/{$filename}";
     }
 
     /**
      * Splits the document. Adds data until either the character limit or embed limit is reached, then starts a new split.
-     * @return array<array<TextContent|ImageContent>>
+     * @return {0: array<array<Artifact>>, 1: int}
      */
-    public function split(int $maxCharacters, int $maxEmbedCount): array
+    public function split(int $maxTokens): array
     {
-        $splits = [];
+        $artifacts = [];
         $contents = [];
 
-        $characters = 0;
-        $embedCount = 0;
+        $tokens = 0;
+        $totalTokens = 0;
 
         foreach ($this->getContents() as $content) {
             if ($content instanceof TextContent) {
-                $characters += strlen($content->text);
+                // TODO: Actually count tokens, because 1 character !== 1 token
+                // TODO: We can also split the text, if the tokens for this text are higher than the maxTokens
+                $tokens += strlen($content->text);
+                $totalTokens += strlen($content->text);
+
+                $contents[] = $content;
             } elseif ($content instanceof ImageContent) {
-                $embedCount++;
+                if ($content->width && $content->height) {
+                    // Based on Anthropic's model: tokens = (width px * height px)/750
+                    // This will not be accurate for other LLMs but is good enough for now
+                    $tokens += ($content->width * $content->height) / 750;
+                    $totalTokens += ($content->width * $content->height) / 750;
+                    // 3:4	951x1268 px
+                } else {
+                    // Based on Anthropic's model: we use the average for a 1000x1000 image
+                    $tokens += 1334;
+                    $totalTokens += 1334;
+                }
+
+                $contents[] = $content;
             }
 
-            if ($characters > $maxCharacters || $embedCount > $maxEmbedCount) {
-                $splits[] = $contents;
+            if ($tokens > $maxTokens) {
+                $artifacts[] = new SplitArtifact(original: $this, contents: $contents, tokens: $tokens);
                 $contents = [];
-                $characters = 0;
-                $embedCount = 0;
-            }
 
-            $contents[] = $content;
+                $tokens = 0;
+            }
         }
 
         if (!empty($contents)) {
-            $splits[] = $contents;
+            $artifacts[] = new SplitArtifact(original: $this, contents: $contents, tokens: $tokens);
         }
 
-        return $splits;
+        return [$artifacts, $totalTokens];
     }
 }
