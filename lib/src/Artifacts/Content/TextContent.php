@@ -8,9 +8,7 @@ readonly class TextContent
         public string $text,
         public array $embeds = [],
         public ?int $page = null,
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {

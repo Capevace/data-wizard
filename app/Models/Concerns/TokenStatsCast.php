@@ -23,7 +23,7 @@ class TokenStatsCast implements CastsAttributes
 
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        if (!$value || !($value instanceof TokenStats)) {
+        if (! $value || ! ($value instanceof TokenStats)) {
             return null;
         }
 

@@ -10,7 +10,5 @@ class Organization
         public string $website,
         public bool $privacyUsedForModelTraining,
         public bool $privacyUsedForAbusePrevention,
-    )
-    {
-    }
+    ) {}
 }

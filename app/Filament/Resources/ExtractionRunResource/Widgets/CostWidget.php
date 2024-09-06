@@ -33,41 +33,39 @@ class CostWidget extends BaseWidget
             'datasets' => [
                 [
                     'label' => 'Tokens per hour',
-                    'data' =>
-                        $hours
-                            ->map(fn (CarbonImmutable $hour) => $runs->get($hour->format('Y-m-d H:i')) ?? 0)
-                            ->all()
+                    'data' => $hours
+                        ->map(fn (CarbonImmutable $hour) => $runs->get($hour->format('Y-m-d H:i')) ?? 0)
+                        ->all(),
                 ],
             ],
 
             'labels' => $hours->map(fn (CarbonImmutable $hour) => $hour->format('Y-m-d H:i')),
         ];
 
-
-
-//        return [
-//             'datasets' => [
-//                [
-//                    'label' => 'Blog posts created',
-//                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
-//                ],
-//            ],
-//            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-//        ];
+        //        return [
+        //             'datasets' => [
+        //                [
+        //                    'label' => 'Blog posts created',
+        //                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+        //                ],
+        //            ],
+        //            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        //        ];
     }
-//    protected function getStats(): array
-//    {
-//        return [
-//            Stat::make(
-//                'Total Money Spent',
-//                ExtractionRun::query()
-//                    // token_stats->tokens
-//                    ->selectRaw('sum(json_extract(token_stats, \'$.tokens\')) as total, sum(json_extract(token_stats, \'$.input_tokens\')) as input, sum(json_extract(token_stats, \'$.output_tokens\')) as output')
-//                    ->first()
-//                    ->total
-//            )
-//        ];
-//    }
+
+    //    protected function getStats(): array
+    //    {
+    //        return [
+    //            Stat::make(
+    //                'Total Money Spent',
+    //                ExtractionRun::query()
+    //                    // token_stats->tokens
+    //                    ->selectRaw('sum(json_extract(token_stats, \'$.tokens\')) as total, sum(json_extract(token_stats, \'$.input_tokens\')) as input, sum(json_extract(token_stats, \'$.output_tokens\')) as output')
+    //                    ->first()
+    //                    ->total
+    //            )
+    //        ];
+    //    }
     protected function getType(): string
     {
         return 'line';

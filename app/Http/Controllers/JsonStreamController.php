@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Actor;
 use App\Models\Actor\ActorTelemetry;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
 use App\Models\File;
 use Capevace\MagicImport\Artifacts\ArtifactGenerationStatus;
-use Capevace\MagicImport\Artifacts\LocalArtifact;
 use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\Functions\ExtractData;
 use Capevace\MagicImport\LLM\ElElEm;
-use Capevace\MagicImport\LLM\Models\BedrockClaude3Family;
 use Capevace\MagicImport\LLM\Models\Claude3Family;
 use Capevace\MagicImport\Loop\InferenceResult;
 use Capevace\MagicImport\Model\Anthropic\Claude3Haiku;
@@ -20,20 +16,14 @@ use Capevace\MagicImport\Model\Exceptions\LLMException;
 use Capevace\MagicImport\Model\Exceptions\RateLimitExceeded;
 use Capevace\MagicImport\Model\Exceptions\UnknownInferenceException;
 use Capevace\MagicImport\Prompt\ClaudeExtractorPrompt;
-use Capevace\MagicImport\Prompt\Message\FunctionInvocationMessage;
-use Capevace\MagicImport\Prompt\Message\FunctionOutputMessage;
-use Capevace\MagicImport\Prompt\Message\JsonMessage;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
 use Capevace\MagicImport\Prompt\OutputFixedJson;
-use Capevace\MagicImport\Prompt\Role;
 use Capevace\MagicImport\Prompt\TokenStats;
 use Capevace\MagicImport\Strategies\SimpleStrategy;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Swaggest\JsonSchema\Schema;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class JsonStreamController extends Controller
@@ -47,11 +37,11 @@ class JsonStreamController extends Controller
         /** @var File $file */
         $file = $bucket->files->first();
 
-        if (!$file?->artifact || $file->artifact_status !== ArtifactGenerationStatus::Complete) {
+        if (! $file?->artifact || $file->artifact_status !== ArtifactGenerationStatus::Complete) {
             abort(404, 'Dataset not found or missing expose.txt file');
         }
 
-        if (!$run->saved_extractor) {
+        if (! $run->saved_extractor) {
             // HTTP status code 40 is "Bad Request"
             throw new BadRequestHttpException('The run does not or no longer has an extractor, which is required to start an extraction');
         }
@@ -62,7 +52,7 @@ class JsonStreamController extends Controller
             outputInstructions: $run->saved_extractor->output_instructions,
             allowedTypes: [
                 'images',
-                'documents'
+                'documents',
             ],
             llm: ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::HAIKU)),
             schema: $run->target_schema,
@@ -84,7 +74,7 @@ class JsonStreamController extends Controller
                             $this->sendServerSentEvent('onTokenStats', $tokenStats->toArray());
                         },
                         onActorTelemetry: function (ActorTelemetry $telemetry) use (&$actor, $run) {
-                            if (!$actor) {
+                            if (! $actor) {
                                 $actor = $run->actors()->create($telemetry->toDatabase());
                             } else {
                                 $actor->update($telemetry->toDatabase());
@@ -125,7 +115,7 @@ class JsonStreamController extends Controller
         $fileCount = count(glob("{$path}/pages_marked/*.jpg"));
         $end = min(20, $fileCount);
         $images = collect(range(1, $end))
-            ->map(fn($i) => MultimodalMessage\Base64Image::fromPath(
+            ->map(fn ($i) => MultimodalMessage\Base64Image::fromPath(
                 base_path("../magic-import/fixtures/{$dataset}/pages_marked/page{$i}.jpg")
             ))
             ->all();
@@ -177,7 +167,7 @@ class JsonStreamController extends Controller
             echo "data: {\"error\": \"{$e->getMessage()}\"}\n\n";
         }
 
-        if(ob_get_level() > 0) {
+        if (ob_get_level() > 0) {
             ob_flush();
         }
 
@@ -193,7 +183,6 @@ class JsonStreamController extends Controller
         }
     }
 }
-
 
 //                                 {
 //                                     "estates": [

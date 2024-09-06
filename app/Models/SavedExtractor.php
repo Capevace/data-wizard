@@ -13,14 +13,13 @@ use Swaggest\JsonSchema\JsonSchema;
  * @property bool $was_automatically_created
  * @property array $json_schema
  * @property ?string $output_instructions
- *
  * @property-read ?\Carbon\CarbonImmutable $last_ran_at
  * @property-read ?JsonSchema $typed_schema
  */
 class SavedExtractor extends Model
 {
-    use UsesUuid;
     use SoftDeletes;
+    use UsesUuid;
 
     protected $fillable = [
         'strategy',

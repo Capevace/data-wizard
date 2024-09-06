@@ -2,9 +2,7 @@
 
 namespace Capevace\MagicImport\Model\Anthropic;
 
-use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Loop\Response\Streamed\ClaudeResponseDecoder;
-use Capevace\MagicImport\Loop\Response\Streamed\Decoder;
 use Capevace\MagicImport\Model\ChatLLM;
 use Capevace\MagicImport\Model\Exceptions\InvalidRequest;
 use Capevace\MagicImport\Model\Exceptions\TooManyTokensForModelRequested;
@@ -21,9 +19,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\Chat\CreateResponse;
-use \OpenAI\Responses\StreamResponse;
 use Psr\Http\Message\StreamInterface;
 
 abstract readonly class Claude3 implements ChatLLM
@@ -34,9 +30,7 @@ abstract readonly class Claude3 implements ChatLLM
         public ?string $stop = null,
         public float $frequencyPenalty = 0.11,
         public float $presencePenalty = 0.03,
-    )
-    {
-    }
+    ) {}
 
     abstract public function name(): string;
 
@@ -45,9 +39,9 @@ abstract readonly class Claude3 implements ChatLLM
         return [
             'model' => $this->name(),
             'max_tokens' => $this->maxTokens,
-//            'stop' => $this->stop,
-//            'frequency_penalty' => $this->frequencyPenalty,
-//            'presence_penalty' => $this->presencePenalty,
+            //            'stop' => $this->stop,
+            //            'frequency_penalty' => $this->frequencyPenalty,
+            //            'presence_penalty' => $this->presencePenalty,
         ];
     }
 
@@ -59,8 +53,8 @@ abstract readonly class Claude3 implements ChatLLM
     {
         // Prepare logical messages to Claude API messages
         $serializedMessages = collect($prompt->messages())
-            ->map(fn(Message $message) => match ($message::class) {
-                FunctionOutputMessage::class => new TextMessage(role: Role::User, content: 'OUTPUT: ' . json_encode($message->output, JSON_THROW_ON_ERROR)),
+            ->map(fn (Message $message) => match ($message::class) {
+                FunctionOutputMessage::class => new TextMessage(role: Role::User, content: 'OUTPUT: '.json_encode($message->output, JSON_THROW_ON_ERROR)),
                 default => $message
             });
 
@@ -76,10 +70,10 @@ abstract readonly class Claude3 implements ChatLLM
             ],
         ]);
 
-        $systemMessages = $serializedMessages->filter(fn(Message $message) => $message->role === Role::System);
-        $otherMessages = $serializedMessages->filter(fn(Message $message) => $message->role !== Role::System);
+        $systemMessages = $serializedMessages->filter(fn (Message $message) => $message->role === Role::System);
+        $otherMessages = $serializedMessages->filter(fn (Message $message) => $message->role !== Role::System);
 
-        $system = $systemMessages->reduce(fn (string $acc, TextMessage $message) => $message->content . "\n\n", '');
+        $system = $systemMessages->reduce(fn (string $acc, TextMessage $message) => $message->content."\n\n", '');
 
         $data = [
             ...$this->parameters(),

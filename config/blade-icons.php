@@ -18,7 +18,7 @@ return [
         'logos' => [
             'path' => 'resources/svg/logos',
             'prefix' => 'logos',
-            'class' => 'fill-current'
+            'class' => 'fill-current',
         ],
 
         // 'default' => [

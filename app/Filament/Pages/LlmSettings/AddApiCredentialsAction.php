@@ -13,6 +13,7 @@ use Filament\Infolists\Components\Actions\Action;
 class AddApiCredentialsAction extends Action
 {
     protected ?ApiKeyProvider $initialProvider = null;
+
     protected array $disabledProviders = [];
 
     public function initialProvider(ApiKeyProvider $provider): self
@@ -23,7 +24,7 @@ class AddApiCredentialsAction extends Action
     }
 
     /**
-     * @param ApiKeyProvider[] $providers
+     * @param  ApiKeyProvider[]  $providers
      */
     public function disabledProviders(array $providers): self
     {
@@ -31,7 +32,6 @@ class AddApiCredentialsAction extends Action
 
         return $this;
     }
-
 
     protected function setUp(): void
     {
@@ -70,7 +70,7 @@ class AddApiCredentialsAction extends Action
                                 ->required()
                                 ->label('API Token')
                                 ->translateLabel()
-                                ->placeholder(__('e.g.') . ' ' . 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+                                ->placeholder(__('e.g.').' '.'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
                                 ->hint(__('Required')),
                             TextInput::make('organization')
                                 ->label('Organization')
@@ -83,7 +83,7 @@ class AddApiCredentialsAction extends Action
                                 ->required()
                                 ->label('API Token')
                                 ->translateLabel()
-                                ->placeholder(__('e.g.') . ' ' . match ($get('provider')) {
+                                ->placeholder(__('e.g.').' '.match ($get('provider')) {
                                     ApiKeyProvider::OpenAI => 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                                     default => 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
                                 })

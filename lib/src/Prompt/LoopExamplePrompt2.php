@@ -3,8 +3,8 @@
 namespace Capevace\MagicImport\Prompt;
 
 use Capevace\MagicImport\Functions\Add;
-use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\Finish;
+use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\Multiply;
 use Capevace\MagicImport\Functions\OutputText;
 use Capevace\MagicImport\Prompt\Message\Message;
@@ -18,9 +18,7 @@ class LoopExamplePrompt2 implements Prompt
          * LLMs like Mistral don't support functions out of the box.
          */
         protected bool $manuallyIncludeFunctions = true
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws JsonException
@@ -37,14 +35,14 @@ class LoopExamplePrompt2 implements Prompt
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR
         );
 
-        return <<<PROMPT
+        return <<<'PROMPT'
         You are a calculator that can add numbers.
         PROMPT;
     }
 
-
     /**
      * @return Message[]
+     *
      * @throws JsonException
      */
     public function messages(): array
@@ -59,7 +57,7 @@ class LoopExamplePrompt2 implements Prompt
         return [
             'type' => 'array',
             'items' => [
-                "anyOf" => [
+                'anyOf' => [
                     [
                         'type' => 'object',
                         'description' => 'Output text.',
@@ -81,7 +79,7 @@ class LoopExamplePrompt2 implements Prompt
                             ],
                         ],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -91,8 +89,8 @@ class LoopExamplePrompt2 implements Prompt
         return [
             new Add,
             new Multiply,
-//            new OutputText,
-//            new Finish
+            //            new OutputText,
+            //            new Finish
         ];
     }
 }

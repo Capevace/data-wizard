@@ -5,10 +5,8 @@ namespace Capevace\MagicImport\Strategies;
 use App\Models\Actor\ActorTelemetry;
 use Capevace\MagicImport\Artifacts\Artifact;
 use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\LLM\LLM;
 use Capevace\MagicImport\Loop\InferenceResult;
 use Capevace\MagicImport\Loop\Response\JsonResponse;
-use Capevace\MagicImport\Prompt\ExtractorPrompt;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
 use Capevace\MagicImport\Prompt\ParallelMergerPrompt;
@@ -17,7 +15,6 @@ use Capevace\MagicImport\Prompt\SequentialExtractorPrompt;
 use Capevace\MagicImport\Prompt\TokenStats;
 use Closure;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ParallelStrategy
@@ -41,12 +38,10 @@ class ParallelStrategy
 
         /** @var ?Closure(ActorTelemetry): void */
         protected ?Closure $onActorTelemetry = null,
-    )
-    {
-    }
+    ) {}
 
     /**
-     * @param Artifact[] $artifacts
+     * @param  Artifact[]  $artifacts
      */
     public function run(array $artifacts): InferenceResult
     {
@@ -126,7 +121,7 @@ class ParallelStrategy
         $messages = [];
 
         $onMessageProgress = function (Message $message) use (&$messages, $threadId) {
-//            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
+            //            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
 
             if ($this->onMessageProgress) {
                 ($this->onMessageProgress)($message, $threadId);
@@ -136,7 +131,7 @@ class ParallelStrategy
         $onMessage = function (Message $message) use (&$messages, $threadId) {
             $messages[] = $message;
 
-//            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
+            //            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
 
             if ($this->onMessage) {
                 ($this->onMessage)($message, $threadId);
@@ -162,7 +157,7 @@ class ParallelStrategy
 
         /** @var JsonResponse|null $response */
         $response = collect($result)
-            ->first(fn($response) => $response instanceof JsonResponse);
+            ->first(fn ($response) => $response instanceof JsonResponse);
 
         return $response?->data ?? $data;
     }
@@ -224,7 +219,7 @@ class ParallelStrategy
 
         /** @var JsonResponse|null $response */
         $response = collect($result)
-            ->first(fn($response) => $response instanceof JsonResponse);
+            ->first(fn ($response) => $response instanceof JsonResponse);
 
         return $response?->data;
     }

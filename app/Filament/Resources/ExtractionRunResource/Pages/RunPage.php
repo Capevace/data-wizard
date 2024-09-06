@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\ExtractionRunResource\Pages;
 
-use App\Filament\Resources\ExtractionBucketResource;
 use App\Filament\Resources\ExtractionBucketResource\Actions\StartExtractionAction;
 use App\Filament\Resources\ExtractionRunResource;
 use App\Filament\Resources\ExtractionRunResource\Actions\SmartModifyJsonAction;
-use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -48,9 +46,9 @@ class RunPage extends ViewRecord
                         ->iconPosition('after')
                         ->color(fn () => $this->debugModeEnabled ? 'success' : 'gray')
                         ->action(function () {
-                            $this->debugModeEnabled = !$this->debugModeEnabled;
+                            $this->debugModeEnabled = ! $this->debugModeEnabled;
                         }),
-                ])
+                ]),
         ];
     }
 }

@@ -8,8 +8,7 @@ readonly class DocumentFileOptions extends FileOptions
         public ?float $maxSizeInMegabytes = 10,
         public ?int $maxNumberOfFiles = null,
         public bool $extractImages = true,
-    )
-    {
+    ) {
         parent::__construct(maxSizeInMegabytes: $maxSizeInMegabytes, maxNumberOfFiles: $maxNumberOfFiles);
     }
 

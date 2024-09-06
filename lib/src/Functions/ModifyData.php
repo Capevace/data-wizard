@@ -2,15 +2,11 @@
 
 namespace Capevace\MagicImport\Functions;
 
-use Swaggest\JsonSchema\SchemaContract;
-
 class ModifyData implements InvokableFunction
 {
     public function __construct(
         protected array $schema,
-    )
-    {
-    }
+    ) {}
 
     public function name(): string
     {

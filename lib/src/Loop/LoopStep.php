@@ -14,7 +14,5 @@ readonly class LoopStep
         public bool $initiatedByUser,
 
         public CarbonImmutable $timestamp,
-    )
-    {
-    }
+    ) {}
 }

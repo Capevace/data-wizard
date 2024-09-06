@@ -7,9 +7,7 @@ readonly class Base64Image
     public function __construct(
         public string $imageBase64,
         public string $mime,
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {
@@ -19,7 +17,7 @@ readonly class Base64Image
                 'type' => 'base64',
                 'media_type' => $this->mime,
                 'data' => $this->imageBase64,
-            ]
+            ],
         ];
     }
 

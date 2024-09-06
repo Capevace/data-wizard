@@ -10,9 +10,7 @@ readonly class FunctionInvocationMessage implements Message
     public function __construct(
         public Role $role,
         public FunctionCall $call
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {
@@ -21,7 +19,7 @@ readonly class FunctionInvocationMessage implements Message
             'function_call' => [
                 'name' => $this->call->name,
                 'arguments' => json_encode($this->call->arguments, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-            ]
+            ],
         ];
     }
 

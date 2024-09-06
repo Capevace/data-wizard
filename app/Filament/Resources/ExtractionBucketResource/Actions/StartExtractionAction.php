@@ -16,6 +16,7 @@ use Filament\Forms\Components\Toggle;
 class StartExtractionAction extends Action
 {
     protected Closure|SavedExtractor|null $extractor = null;
+
     protected Closure|ExtractionBucket|null $bucket = null;
 
     public function extractor(Closure|SavedExtractor|null $extractor): static
@@ -59,20 +60,18 @@ class StartExtractionAction extends Action
                     ->translateLabel()
                     ->searchable()
                     ->searchDebounce(200)
-                    ->options(fn () =>
-                        SavedExtractor::query()
-                            ->latest('updated_at')
-                            ->limit(10)
-                            ->get()
-                            ->pluck('label', 'id')
+                    ->options(fn () => SavedExtractor::query()
+                        ->latest('updated_at')
+                        ->limit(10)
+                        ->get()
+                        ->pluck('label', 'id')
                     )
-                    ->getSearchResultsUsing(fn (?string $search) =>
-                        SavedExtractor::query()
-                            ->when($search, fn ($query) => $query->where('label', 'like', "%{$search}%"))
-                            ->latest('updated_at')
-                            ->limit(10)
-                            ->get()
-                            ->pluck('label', 'id')
+                    ->getSearchResultsUsing(fn (?string $search) => SavedExtractor::query()
+                        ->when($search, fn ($query) => $query->where('label', 'like', "%{$search}%"))
+                        ->latest('updated_at')
+                        ->limit(10)
+                        ->get()
+                        ->pluck('label', 'id')
                     ),
 
                 Select::make('bucket_id')
@@ -82,18 +81,16 @@ class StartExtractionAction extends Action
                     ->translateLabel()
                     ->searchable()
                     ->searchDebounce(200)
-                    ->options(fn () =>
-                        ExtractionBucket::query()
-                            ->limit(10)
-                            ->get()
-                            ->pluck('description', 'id')
+                    ->options(fn () => ExtractionBucket::query()
+                        ->limit(10)
+                        ->get()
+                        ->pluck('description', 'id')
                     )
-                    ->getSearchResultsUsing(fn (?string $search) =>
-                        ExtractionBucket::query()
-                            ->when($search, fn ($query) => $query->where('description', 'like', "%{$search}%"))
-                            ->limit(10)
-                            ->get()
-                            ->pluck('description', 'id')
+                    ->getSearchResultsUsing(fn (?string $search) => ExtractionBucket::query()
+                        ->when($search, fn ($query) => $query->where('description', 'like', "%{$search}%"))
+                        ->limit(10)
+                        ->get()
+                        ->pluck('description', 'id')
                     )
                     ->required(),
 
@@ -120,7 +117,7 @@ class StartExtractionAction extends Action
                             ->translateLabel()
                             ->default(false)
                             ->required(),
-                    ])
+                    ]),
             ]);
     }
 
@@ -151,7 +148,7 @@ class StartExtractionAction extends Action
                     $extractor = SavedExtractor::find($extractorId) ?? $extractor;
                 }
 
-                if (!$extractor) {
+                if (! $extractor) {
                     $this
                         ->failureNotificationTitle(__('No extractor selected'))
                         ->failure();
@@ -163,7 +160,7 @@ class StartExtractionAction extends Action
                     $bucket = ExtractionBucket::find($bucketId) ?? $bucket;
                 }
 
-                if (!$bucket) {
+                if (! $bucket) {
                     $this
                         ->failureNotificationTitle(__('No bucket selected'))
                         ->failure();

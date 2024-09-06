@@ -12,8 +12,7 @@ readonly class RateLimits
         public ?int $used,
         public ?int $requested,
         public ?CarbonImmutable $retryAfter
-    ) {
-    }
+    ) {}
 
     public static function parseRateLimitError(string $errorMessage): RateLimits
     {
@@ -36,6 +35,7 @@ readonly class RateLimits
         if (preg_match($pattern, $errorMessage, $matches)) {
             return $matches[1];
         }
+
         return null;
     }
 
@@ -44,8 +44,9 @@ readonly class RateLimits
         $pattern = '/Limit (\d+)/';
         $matches = [];
         if (preg_match($pattern, $errorMessage, $matches)) {
-            return (int)$matches[1];
+            return (int) $matches[1];
         }
+
         return null;
     }
 
@@ -54,8 +55,9 @@ readonly class RateLimits
         $pattern = '/Used (\d+)/';
         $matches = [];
         if (preg_match($pattern, $errorMessage, $matches)) {
-            return (int)$matches[1];
+            return (int) $matches[1];
         }
+
         return null;
     }
 
@@ -64,8 +66,9 @@ readonly class RateLimits
         $pattern = '/Requested ~(\d+)/';
         $matches = [];
         if (preg_match($pattern, $errorMessage, $matches)) {
-            return (int)$matches[1];
+            return (int) $matches[1];
         }
+
         return null;
     }
 
@@ -74,7 +77,9 @@ readonly class RateLimits
         $pattern = '/Please try again in (\d+\.\d+)s/';
         $matches = [];
         if (preg_match($pattern, $errorMessage, $matches)) {
-            return (float)$matches[1];
-        }    return null;
+            return (float) $matches[1];
+        }
+
+return null;
     }
 }

@@ -12,20 +12,20 @@ class Import
 {
     public function run()
     {
-//        $extractor = DataExtractor::new('')
-//            ->resource($estate)
-//            ->resource($building)
-//            ->resource($rentable)
-//            ->resources([]);
-//
-//        $extractor->addFile('expose.pdf');
-//        $extractor->addFile('report.pdf');
-//
-//        $resources = $extractor->extract();
-//
-//        // or
-//
-//        $job = $extractor->queue();
+        //        $extractor = DataExtractor::new('')
+        //            ->resource($estate)
+        //            ->resource($building)
+        //            ->resource($rentable)
+        //            ->resources([]);
+        //
+        //        $extractor->addFile('expose.pdf');
+        //        $extractor->addFile('report.pdf');
+        //
+        //        $resources = $extractor->extract();
+        //
+        //        // or
+        //
+        //        $job = $extractor->queue();
         // $job->id to track the job
 
         $model = new GPT4(maxTokens: 10000);
@@ -45,14 +45,14 @@ class Import
             onEnd: fn (...$args) => dump('onEnd', ...$args),
         );
 
-//        $text = $extractor->fileToText('expose.pdf');
+        //        $text = $extractor->fileToText('expose.pdf');
         $text = file_get_contents(base_path('../magic-import/fixtures/elsenstrasse/expose.txt'));
 
         $loop->start([
             new TextMessage(
                 role: Role::User,
                 content: "Extrahiere Daten aus folgendem Text:\n\n{$text}"
-            )
+            ),
         ]);
     }
 }

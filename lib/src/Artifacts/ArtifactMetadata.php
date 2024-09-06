@@ -8,9 +8,7 @@ class ArtifactMetadata
         public string $name,
         public string $mimetype,
         public string $extension,
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {

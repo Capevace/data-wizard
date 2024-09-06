@@ -2,10 +2,7 @@
 
 namespace Capevace\MagicImport\Prompt;
 
-use Capevace\MagicImport\Functions\Add;
 use Capevace\MagicImport\Functions\ExtractData;
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Functions\SaveResources;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
 use JsonException;
@@ -43,9 +40,9 @@ class FunctionBasedExtractorPrompt implements Prompt
         PROMPT;
     }
 
-
     /**
      * @return Message[]
+     *
      * @throws JsonException
      */
     public function messages(): array
@@ -65,7 +62,7 @@ class FunctionBasedExtractorPrompt implements Prompt
     public function functions(): array
     {
         return [
-            new ExtractData()
+            new ExtractData,
         ];
     }
 }

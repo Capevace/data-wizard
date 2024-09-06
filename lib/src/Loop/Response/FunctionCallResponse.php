@@ -13,9 +13,7 @@ readonly class FunctionCallResponse implements LLMResponse
          * @var FunctionCall
          */
         public FunctionCall $functionCall
-    )
-    {
-    }
+    ) {}
 
     public function toMessage(): Message
     {

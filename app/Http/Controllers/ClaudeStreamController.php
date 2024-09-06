@@ -48,11 +48,11 @@ class ClaudeStreamController extends Controller
                 $messages = collect();
                 $message = null;
 
-                while (!$body->eof()) {
+                while (! $body->eof()) {
                     $output = $body->read(1024);
 
                     if ($unfinished !== null) {
-                        $output = $unfinished . $output;
+                        $output = $unfinished.$output;
                         $unfinished = null;
                     }
 
@@ -61,7 +61,7 @@ class ClaudeStreamController extends Controller
 
                     $lastEvent = $newEvents->pop();
 
-                    if (!Str::endsWith($lastEvent, "\n\n")) {
+                    if (! Str::endsWith($lastEvent, "\n\n")) {
                         $unfinished = $lastEvent;
                     } else {
                         $newEvents->push($lastEvent);

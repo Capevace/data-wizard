@@ -50,7 +50,7 @@ class MagicExtract
 
         /** @var Collection<ExtractorFileType> $types */
         $types = collect(Arr::get($extractor, 'files.allowedTypes', []))
-            ->map(fn(string|array $type) => is_string($type)
+            ->map(fn (string|array $type) => is_string($type)
                 ? ExtractorFileType::fromString($type)
                 : ExtractorFileType::fromArray($type)
             )
@@ -62,7 +62,7 @@ class MagicExtract
 
         $llm = Arr::get($extractor, 'model');
 
-        if (!$llm) {
+        if (! $llm) {
             throw new \InvalidArgumentException("Extractor {$id} is missing a model");
         }
 
@@ -95,30 +95,5 @@ class MagicExtract
 
     public function extract(
         Extractor $extractor,
-    )
-    {
-
-    }
+    ) {}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

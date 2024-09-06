@@ -2,10 +2,8 @@
 
 namespace App\Livewire\Components;
 
-use App\Jobs\GenerateDataJob;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
-use App\Models\SavedExtractor;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
@@ -67,12 +65,12 @@ class Generator extends Component
     {
         $this->refreshJson();
 
-//        $sourceUrl = route('api.bucket.runs.generate', [
-//            'bucket' => $this->bucketId,
-//            'run' => $this->runId,
-//        ]);
-//
-//        $this->js("\$dispatch('start-streaming', { sourceUrl: '$sourceUrl' })");
+        //        $sourceUrl = route('api.bucket.runs.generate', [
+        //            'bucket' => $this->bucketId,
+        //            'run' => $this->runId,
+        //        ]);
+        //
+        //        $this->js("\$dispatch('start-streaming', { sourceUrl: '$sourceUrl' })");
     }
 
     public function refreshJson()

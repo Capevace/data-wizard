@@ -6,9 +6,7 @@ readonly class Text
 {
     public function __construct(
         public string $text
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {

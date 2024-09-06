@@ -9,7 +9,6 @@ use Capevace\MagicImport\Prompt\Message\JsonMessage;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
-use Capevace\MagicImport\Prompt\Role;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -39,6 +38,7 @@ class Actor extends Model
 
     /**
      * @return Collection<ActorMessage>
+     *
      * @throws \JsonException
      */
     public function add(Message $message): Collection
@@ -55,11 +55,11 @@ class Actor extends Model
                 'json' => json_encode($message->data),
             ]),
             MultimodalMessage::class => collect($message->content)
-                ->each(fn(MultimodalMessage\Base64Image|MultimodalMessage\Text $content) => match ($content::class) {
+                ->each(fn (MultimodalMessage\Base64Image|MultimodalMessage\Text $content) => match ($content::class) {
                     MultimodalMessage\Base64Image::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Base64Image,
                         'role' => $message->role,
-                        'json' => $content->toArray()
+                        'json' => $content->toArray(),
                     ]),
                     MultimodalMessage\Text::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Text,
@@ -72,13 +72,13 @@ class Actor extends Model
             FunctionInvocationMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::FunctionInvocation,
                 'role' => $message->role,
-                'json' => $message->toArray()
+                'json' => $message->toArray(),
             ]),
 
             FunctionOutputMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::FunctionOutput,
                 'role' => $message->role,
-                'json' => $message->toArray()
+                'json' => $message->toArray(),
             ]),
 
             default => null,

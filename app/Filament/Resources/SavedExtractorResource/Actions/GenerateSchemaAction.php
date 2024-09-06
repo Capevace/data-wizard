@@ -5,23 +5,13 @@ namespace App\Filament\Resources\SavedExtractorResource\Actions;
 use App\Filament\Forms\JsonEditor;
 use Capevace\MagicImport\LLM\ElElEm;
 use Capevace\MagicImport\LLM\Models\Claude3Family;
-use Capevace\MagicImport\Loop\InferenceResult;
 use Capevace\MagicImport\Loop\Response\JsonResponse;
-use Capevace\MagicImport\Prompt\ExtractorPrompt;
 use Capevace\MagicImport\Prompt\GenerateSchemaPrompt;
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\SmartModifyPrompt;
-use Capevace\MagicImport\Prompt\TokenStats;
-use Closure;
-use Dotswan\FilamentCodeEditor\Fields\CodeEditor;
-use Filament\Actions\Action;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
-use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class GenerateSchemaAction extends Actions\Action
@@ -88,8 +78,8 @@ class GenerateSchemaAction extends Actions\Action
 
                                 // Update/re-render the JsonEditor component
                                 $livewire->dispatch('changed-json-state', statePath: 'edit_schema', json: $schema);
-                            })
-                    ])
+                            }),
+                    ]),
 
             ])
             ->action(function (Set $set, array $data, Component $livewire) {
@@ -107,10 +97,10 @@ class GenerateSchemaAction extends Actions\Action
 
         $responses = $llm->stream(prompt: $prompt);
 
-        $response = collect($responses)->first(fn($message) => $message instanceof JsonResponse);
+        $response = collect($responses)->first(fn ($message) => $message instanceof JsonResponse);
 
         if ($response === null) {
-            report(new \Exception('Could not generate schema: ' . json_encode($responses)));
+            report(new \Exception('Could not generate schema: '.json_encode($responses)));
 
             Notification::make()
                 ->danger()

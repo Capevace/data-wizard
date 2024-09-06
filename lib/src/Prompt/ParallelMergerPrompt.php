@@ -2,18 +2,10 @@
 
 namespace Capevace\MagicImport\Prompt;
 
-use Capevace\MagicImport\Artifacts\Artifact;
-use Capevace\MagicImport\Artifacts\Content\ImageContent;
-use Capevace\MagicImport\Artifacts\Content\TextContent;
 use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\FeatureType;
 use Capevace\MagicImport\Functions\Extract;
-use Capevace\MagicImport\Functions\ExtractData;
 use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Blade;
 
 class ParallelMergerPrompt implements Prompt
 {
@@ -22,9 +14,7 @@ class ParallelMergerPrompt implements Prompt
         protected array $datas,
 
         public bool $shouldForceFunction = true,
-    )
-    {
-    }
+    ) {}
 
     public function system(): string
     {
@@ -33,7 +23,7 @@ class ParallelMergerPrompt implements Prompt
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT
         );
 
-        return (<<<PROMPT
+        return <<<PROMPT
         <instructions>
         You are a structured data merger.
         You are given a list of JSON objects that you need to merge into one JSON object.
@@ -58,7 +48,7 @@ class ParallelMergerPrompt implements Prompt
         <json-schema-notes>
         {$this->extractor->outputInstructions}
         </json-schema-notes>
-        PROMPT);
+        PROMPT;
     }
 
     public function prompt(): string

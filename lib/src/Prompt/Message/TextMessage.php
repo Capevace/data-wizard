@@ -9,9 +9,7 @@ readonly class TextMessage implements Message
     public function __construct(
         public Role $role,
         public string $content
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {

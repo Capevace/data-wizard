@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Clusters\Extraction;
 use App\Filament\Resources\ExtractionRunResource\Pages;
 use App\Models\ExtractionRun;
 use App\Models\ExtractionRun\RunStatus;
@@ -40,10 +39,10 @@ class ExtractionRunResource extends Resource
                     ->relationship('started_by', 'name')
                     ->searchable(),
 
-//                PrettyJson::make('partial_result_json'),
+                //                PrettyJson::make('partial_result_json'),
                 PrettyJson::make('result_json')
-                    ->columnSpanFull()
-//                    ->extraInputAttributes(['class' => 'font-mono !text-xs', 'style' => 'font-size: 0.6rem']),
+                    ->columnSpanFull(),
+                //                    ->extraInputAttributes(['class' => 'font-mono !text-xs', 'style' => 'font-size: 0.6rem']),
             ]);
     }
 
@@ -76,15 +75,15 @@ class ExtractionRunResource extends Resource
                     ->label('Cost')
                     ->translateLabel()
                     ->state(fn (ExtractionRun $record) => $record->token_stats?->calculateTotalCost()?->format())
-                    ->tooltip(fn (ExtractionRun $record) => $record->token_stats?->tokens . " Tokens")
+                    ->tooltip(fn (ExtractionRun $record) => $record->token_stats?->tokens.' Tokens')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('json')
-                    ->state(fn (ExtractionRun $record) => count(Arr::get(collect($record->result_json)->first(), 'data.estates') ?? []))
-//
-//                TextColumn::make('partial_result_json')
-//                    ->formatStateUsing(fn(?array $state) => json_encode($state, JSON_PRETTY_PRINT)),
+                    ->state(fn (ExtractionRun $record) => count(Arr::get(collect($record->result_json)->first(), 'data.estates') ?? [])),
+                //
+                //                TextColumn::make('partial_result_json')
+                //                    ->formatStateUsing(fn(?array $state) => json_encode($state, JSON_PRETTY_PRINT)),
             ])
             ->filters([
                 //
@@ -107,7 +106,7 @@ class ExtractionRunResource extends Resource
             'index' => Pages\ListExtractionRuns::route('/'),
             'create' => Pages\CreateExtractionRun::route('/create'),
             'view' => ExtractionRunResource\Pages\RunPage::route('/{record}/run'),
-//            'view' => ExtractionBucketResource\Pages\RunPage::route('/{record}'),
+            //            'view' => ExtractionBucketResource\Pages\RunPage::route('/{record}'),
         ];
     }
 

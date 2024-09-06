@@ -2,7 +2,4 @@
 
 namespace Capevace\MagicImport\Artifacts;
 
-class ArtifactGenerationFailed extends \Exception
-{
-
-}
+class ArtifactGenerationFailed extends \Exception {}

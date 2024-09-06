@@ -2,7 +2,6 @@
 
 namespace App\Filament\Pages;
 
-use App\Filament\Infolists\ProviderList;
 use App\Filament\Pages\LlmSettings\AddApiCredentialsAction;
 use App\Filament\Pages\LlmSettings\ApiConnectionDTO;
 use App\Filament\Pages\LlmSettings\DeleteApiCredentialsAction;
@@ -36,7 +35,7 @@ class LlmSettings extends Page
 
     public static function getNavigationItems(): array
     {
-        if (!config('app.allow_custom_user_keys')) {
+        if (! config('app.allow_custom_user_keys')) {
             return [];
         }
 
@@ -54,13 +53,13 @@ class LlmSettings extends Page
                 $provider => ApiConnectionDTO::withKeys(
                     provider: ApiKeyProvider::from($provider),
                     apiKeys: $apiKeys
-                )
+                ),
             ]);
     }
 
     public function mount(): void
     {
-        if (!config('app.allow_custom_user_keys')) {
+        if (! config('app.allow_custom_user_keys')) {
             abort(404);
         }
 
@@ -74,7 +73,7 @@ class LlmSettings extends Page
                     $provider->getLabel() => $apiKeys
                         ->mapWithKeys(fn (ApiKey $apiKey) => [
                             $apiKey->type->value => $apiKey->secret,
-                        ])
+                        ]),
                 ])
                 ->all()
         );
@@ -91,68 +90,66 @@ class LlmSettings extends Page
                     ->extraAttributes(['class' => '[&_.fi-fo-component-ctn]:gap-0'])
                     ->schema([
                         ...collect(ApiKeyProvider::cases())
-                            ->map(fn (ApiKeyProvider $provider) =>
-                                Section::make($provider->getLabel())
-                                    ->description($provider->getDescription())
-                                    ->statePath($provider->value)
-                                    ->icon($provider->getIcon())
-                                    ->iconSize('w-10 h-10')
-                                    ->iconColor(fn (?ApiConnectionDTO $state) => $state?->active ? 'success' : 'danger')
-                                    ->headerActions(array_filter([
-                                        fn (?ApiConnectionDTO $state) => $state?->active
-                                            ? DeleteApiCredentialsAction::make()
-                                                ->apiConnection($state)
-                                                ->after(function () {
-                                                    unset($this->apiKeys);
-                                                })
-                                            : AddApiCredentialsAction::make()
-                                                ->color('gray')
-                                                ->size('sm')
-                                                ->initialProvider($provider)
-                                                ->disabledProviders($this->apiKeys->pluck('provider')->all()),
-                                    ]))
-                                    ->extraAttributes([
-                                        'class' => 'mb-5',
-                                        'x-show' => '!search || \'' . Str::lower($provider->getLabel()) . '\'.includes(search.toLowerCase())',
-                                        'x-bind:class' => "{ 'hidden': !(!search || '" . Str::lower($provider->getLabel()) . "'.includes(search.toLowerCase())) }",
-                                    ])
-                                    ->schema(fn () => match ($provider) {
-                                        ApiKeyProvider::OpenAI => [
-                                            TextEntry::make('fields.token')
-                                                ->label('API Token')
-                                                ->translateLabel()
-                                                ->placeholder(__('Not configured'))
-                                                ->fontFamily('mono')
-                                                ->size('xs')
-                                                ->color('gray'),
-                                            TextEntry::make('fields.organization')
-                                                ->label('Organization')
-                                                ->translateLabel()
-                                                ->placeholder('No organization specified')
-                                                ->fontFamily('mono')
-                                                ->size('xs')
-                                                ->color('gray'),
-                                        ],
-                                        default => [
-                                            TextEntry::make('fields.token')
-                                                ->label('API Token')
-                                                ->translateLabel()
-                                                ->placeholder(__('Not configured'))
-                                                ->fontFamily('mono')
-                                                ->size('xs')
-                                                ->color('gray'),
-                                        ],
-                                    }),
+                            ->map(fn (ApiKeyProvider $provider) => Section::make($provider->getLabel())
+                                ->description($provider->getDescription())
+                                ->statePath($provider->value)
+                                ->icon($provider->getIcon())
+                                ->iconSize('w-10 h-10')
+                                ->iconColor(fn (?ApiConnectionDTO $state) => $state?->active ? 'success' : 'danger')
+                                ->headerActions(array_filter([
+                                    fn (?ApiConnectionDTO $state) => $state?->active
+                                        ? DeleteApiCredentialsAction::make()
+                                            ->apiConnection($state)
+                                            ->after(function () {
+                                                unset($this->apiKeys);
+                                            })
+                                        : AddApiCredentialsAction::make()
+                                            ->color('gray')
+                                            ->size('sm')
+                                            ->initialProvider($provider)
+                                            ->disabledProviders($this->apiKeys->pluck('provider')->all()),
+                                ]))
+                                ->extraAttributes([
+                                    'class' => 'mb-5',
+                                    'x-show' => '!search || \''.Str::lower($provider->getLabel()).'\'.includes(search.toLowerCase())',
+                                    'x-bind:class' => "{ 'hidden': !(!search || '".Str::lower($provider->getLabel())."'.includes(search.toLowerCase())) }",
+                                ])
+                                ->schema(fn () => match ($provider) {
+                                    ApiKeyProvider::OpenAI => [
+                                        TextEntry::make('fields.token')
+                                            ->label('API Token')
+                                            ->translateLabel()
+                                            ->placeholder(__('Not configured'))
+                                            ->fontFamily('mono')
+                                            ->size('xs')
+                                            ->color('gray'),
+                                        TextEntry::make('fields.organization')
+                                            ->label('Organization')
+                                            ->translateLabel()
+                                            ->placeholder('No organization specified')
+                                            ->fontFamily('mono')
+                                            ->size('xs')
+                                            ->color('gray'),
+                                    ],
+                                    default => [
+                                        TextEntry::make('fields.token')
+                                            ->label('API Token')
+                                            ->translateLabel()
+                                            ->placeholder(__('Not configured'))
+                                            ->fontFamily('mono')
+                                            ->size('xs')
+                                            ->color('gray'),
+                                    ],
+                                }),
                             )
-                            ->all()
-                    ])
+                            ->all(),
+                    ]),
             ]);
     }
 
     public function save(): void
     {
         $state = $this->form->getState();
-
 
     }
 }

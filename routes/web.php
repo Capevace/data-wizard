@@ -29,7 +29,7 @@ Route::middleware(['auth'])
         Route::get('/api/dataset/{dataset}/images/{image}', function (string $dataset, string $image) {
             $path = base_path("../magic-import/fixtures/{$dataset}/images/{$image}");
 
-            if (!file_exists($path)) {
+            if (! file_exists($path)) {
                 abort(404);
             }
 

@@ -2,31 +2,26 @@
 
 namespace Capevace\MagicImport\Prompt;
 
-use Capevace\MagicImport\Functions\Add;
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Functions\SaveResources;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
 use JsonException;
 
 class OutputFixedJson implements Prompt
 {
-    public function __construct(protected array|string $json)
-    {
-    }
+    public function __construct(protected array|string $json) {}
 
     public function system(): string
     {
-        return (<<<PROMPT
+        return <<<'PROMPT'
         Reply with a specific JSON object that you will be given. Output only this JSON object. Do not include any other text in the output. Do not format the JSON object in any way. Do not add markdown or any other formatting.
         
         Minified mode: Enabled, output minified JSON.
-        PROMPT);
+        PROMPT;
     }
-
 
     /**
      * @return Message[]
+     *
      * @throws JsonException
      */
     public function messages(): array
@@ -37,7 +32,7 @@ class OutputFixedJson implements Prompt
 
         return [
             new TextMessage(role: Role::System, content: $this->system()),
-            new TextMessage(role: Role::User, content: "Output exactly the following JSON object: \n\n{$json}")
+            new TextMessage(role: Role::User, content: "Output exactly the following JSON object: \n\n{$json}"),
         ];
     }
 

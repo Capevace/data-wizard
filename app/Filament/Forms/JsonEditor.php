@@ -7,9 +7,7 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
-use Illuminate\Support\Str;
 use Swaggest\JsonSchema\JsonSchema;
-use Swaggest\JsonSchema\Schema;
 
 class JsonEditor extends CodeEditor
 {
@@ -33,7 +31,7 @@ class JsonEditor extends CodeEditor
                     ->action(function (Get $get, Set $set) {
                         $json = $this->getState();
 
-                        if (!$json) {
+                        if (! $json) {
                             return;
                         }
 
@@ -65,15 +63,15 @@ class JsonEditor extends CodeEditor
                             ->success()
                             ->title(__('JSON Schema is valid'))
                             ->send();
-                    })
+                    }),
             ])
             ->dehydrateStateUsing(fn (?string $state) => $state ? json_decode($state, true) : null)
-            ->formatStateUsing(fn (array|string|null $state) => $state && !is_string($state)
+            ->formatStateUsing(fn (array|string|null $state) => $state && ! is_string($state)
                 // Replace 4 spaces with 2 spaces for more compact editing
                 ? JsonEditor::formatJson($state)
                 : null
             )
-            ->default(<<<JSON
+            ->default(<<<'JSON'
             {
               "type": "array",
               "items": {
@@ -99,7 +97,7 @@ class JsonEditor extends CodeEditor
     {
         return preg_replace_callback(
             pattern: '/^(?: {4})+/m',
-            callback: fn($m) => str_repeat(' ', 2 * (strlen($m[0]) / 4)),
+            callback: fn ($m) => str_repeat(' ', 2 * (strlen($m[0]) / 4)),
             subject: json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR)
         );
     }

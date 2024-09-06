@@ -5,7 +5,6 @@ namespace Capevace\MagicImport\Artifacts;
 use Capevace\MagicImport\Artifacts\Content\ImageContent;
 use Capevace\MagicImport\Artifacts\Content\TextContent;
 use Capevace\MagicImport\Config\ExtractorFileType;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use JsonException;
 use Throwable;
@@ -24,9 +23,7 @@ readonly class LocalArtifact implements Artifact
     public function __construct(
         protected ArtifactMetadata $metadata,
         protected string $path,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws JsonException
@@ -62,19 +59,19 @@ readonly class LocalArtifact implements Artifact
         $data = json_decode($json, associative: true, flags: JSON_THROW_ON_ERROR);
 
         return collect($data)
-            ->map(fn($content) => match ($content['type']) {
+            ->map(fn ($content) => match ($content['type']) {
                 'text' => TextContent::from($content),
                 'image', 'page-image' => ImageContent::from($content),
                 default => null
             })
             ->filter()
             ->all();
-//
-//        return [
-//            new TextContent(text: 'Raw text / OCR text', page: 1),
-//            new ImageContent(filename: 'embeds/thumbnail.jpg', page: 1),
-//            new TextContent(text: 'Raw text / OCR text', page: 2),
-//        ];
+        //
+        //        return [
+        //            new TextContent(text: 'Raw text / OCR text', page: 1),
+        //            new ImageContent(filename: 'embeds/thumbnail.jpg', page: 1),
+        //            new TextContent(text: 'Raw text / OCR text', page: 2),
+        //        ];
     }
 
     public function getText(): ?string
@@ -100,6 +97,7 @@ readonly class LocalArtifact implements Artifact
 
     /**
      * Splits the document. Adds data until either the character limit or embed limit is reached, then starts a new split.
+     *
      * @return {0: array<array<Artifact>>, 1: int}
      */
     public function split(int $maxTokens): array
@@ -142,7 +140,7 @@ readonly class LocalArtifact implements Artifact
             }
         }
 
-        if (!empty($contents)) {
+        if (! empty($contents)) {
             $artifacts[] = new SplitArtifact(original: $this, contents: $contents, tokens: $tokens);
         }
 

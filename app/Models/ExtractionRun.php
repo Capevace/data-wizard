@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Akaunting\Money\Money;
-use App\Models\Concerns\JsonSchemaCast;
 use App\Models\Concerns\TokenStatsCast;
 use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionRun\RunStatus;
@@ -29,8 +28,8 @@ use Swaggest\JsonSchema\SchemaContract;
  */
 class ExtractionRun extends Model
 {
-    use UsesUuid;
     use HasFactory;
+    use UsesUuid;
 
     protected $fillable = [
         'target_schema',
@@ -41,7 +40,7 @@ class ExtractionRun extends Model
         'result_json',
         'partial_result_json',
         'token_stats',
-        'saved_extractor_id'
+        'saved_extractor_id',
     ];
 
     protected $casts = [
@@ -84,7 +83,7 @@ class ExtractionRun extends Model
 
     public function calculateTotalCost(): Money
     {
-        if (!$this->token_stats) {
+        if (! $this->token_stats) {
             return Money::EUR(0);
         }
 

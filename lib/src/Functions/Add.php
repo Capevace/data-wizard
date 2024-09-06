@@ -21,18 +21,18 @@ class Add implements InvokableFunction
                 'properties' => [
                     'a' => [
                         'type' => 'number',
-                        'description' => 'The first number to add'
+                        'description' => 'The first number to add',
                     ],
                     'b' => [
                         'type' => 'number',
-                        'description' => 'The second number to add'
+                        'description' => 'The second number to add',
                     ],
                 ],
                 'required' => ['a', 'b'],
             ],
             'returns' => [
                 'type' => 'number',
-                'description' => 'Sum of the two numbers'
+                'description' => 'Sum of the two numbers',
             ],
         ];
     }
@@ -41,7 +41,7 @@ class Add implements InvokableFunction
     {
         $validator = validator($data, [
             'a' => 'required|numeric',
-            'b' => 'required|numeric'
+            'b' => 'required|numeric',
         ]);
 
         $validator->validate();

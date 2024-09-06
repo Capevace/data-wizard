@@ -9,9 +9,7 @@ use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
 class AutoExtractArtifactsListener
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(MediaHasBeenAddedEvent $event): void
     {

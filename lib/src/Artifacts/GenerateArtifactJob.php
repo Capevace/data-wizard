@@ -17,9 +17,7 @@ class GenerateArtifactJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(protected ExtractionBucket $bucket, protected File $file)
-    {
-    }
+    public function __construct(protected ExtractionBucket $bucket, protected File $file) {}
 
     /**
      * @throws ArtifactGenerationFailed
@@ -27,8 +25,8 @@ class GenerateArtifactJob implements ShouldQueue
     public function handle(): void
     {
         // Run python script
-        $pythonDir = __DIR__ . '/../../python';
-        $script = "prepare-pdf.py";
+        $pythonDir = __DIR__.'/../../python';
+        $script = 'prepare-pdf.py';
 
         $file = $this->file->getPath();
         $dir = str($file)

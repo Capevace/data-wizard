@@ -5,19 +5,17 @@ namespace Capevace\MagicImport\Model\Groq;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Loop\Response\Streamed\ResponseDecoder;
 use Capevace\MagicImport\Model\ChatLLM;
-use Capevace\MagicImport\Model\Exceptions\UnknownInferenceException;
 use Capevace\MagicImport\Model\Exceptions\RateLimitExceeded;
+use Capevace\MagicImport\Model\Exceptions\UnknownInferenceException;
 use Capevace\MagicImport\Model\ModelCost;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
 use Capevace\MagicImport\Prompt\Prompt;
-use Capevace\MagicImport\Prompt\Role;
 use Closure;
 use OpenAI\Exceptions\ErrorException;
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Responses\StreamResponse;
-use function Livewire\invade;
 
 readonly class Mistral8x7b implements ChatLLM
 {
@@ -27,9 +25,7 @@ readonly class Mistral8x7b implements ChatLLM
         public ?string $stop = '[end]',
         public float $frequencyPenalty = 0.11,
         public float $presencePenalty = 0.03,
-    )
-    {
-    }
+    ) {}
 
     public function name(): string
     {
@@ -42,9 +38,9 @@ readonly class Mistral8x7b implements ChatLLM
             'model' => $this->name(),
             'max_tokens' => $this->maxTokens,
             'stop' => $this->stop,
-//            'frequency_penalty' => $this->frequencyPenalty,
-//            'presence_penalty' => $this->presencePenalty,
-//            'response_format' => ['type' => 'json_object']
+            //            'frequency_penalty' => $this->frequencyPenalty,
+            //            'presence_penalty' => $this->presencePenalty,
+            //            'response_format' => ['type' => 'json_object']
         ];
     }
 
@@ -79,7 +75,7 @@ readonly class Mistral8x7b implements ChatLLM
                         })
                         ->map(fn (Message $message) => $message->toArray())
                         ->toArray(),
-    //                'functions' => array_map(fn(InvokableFunction $function) => $function->schema(), $functions),
+                    //                'functions' => array_map(fn(InvokableFunction $function) => $function->schema(), $functions),
                 ]);
         } catch (ErrorException $e) {
             if ($e->getErrorCode() === 'rate_limit_exceeded') {
@@ -103,8 +99,8 @@ readonly class Mistral8x7b implements ChatLLM
             ->chat()
             ->create([
                 ...$this->parameters(),
-                'messages' => array_map(fn(Message $message) => $message->toArray(), $messages),
-//                'functions' => array_map(fn(InvokableFunction $function) => $function->schema(), $functions),
+                'messages' => array_map(fn (Message $message) => $message->toArray(), $messages),
+                //                'functions' => array_map(fn(InvokableFunction $function) => $function->schema(), $functions),
             ]);
     }
 
@@ -127,10 +123,7 @@ readonly class Mistral8x7b implements ChatLLM
         return $decoder->process();
     }
 
-    public function send(Prompt $prompt): array
-    {
-
-    }
+    public function send(Prompt $prompt): array {}
 
     public function cost(): ?ModelCost
     {

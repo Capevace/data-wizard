@@ -6,7 +6,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum ArtifactGenerationStatus: string implements HasLabel, HasIcon, HasColor
+enum ArtifactGenerationStatus: string implements HasColor, HasIcon, HasLabel
 {
     case Pending = 'pending';
     case InProgress = 'in_progress';

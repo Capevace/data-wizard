@@ -3,12 +3,10 @@
 namespace App\Filament\Resources\ExtractionBucketResource\RelationManagers;
 
 use App\Filament\Forms\ImageColumnWithLoadingIndicator;
-use App\Filament\Resources\ExtractionBucketResource;
 use App\Models\ExtractionBucket;
 use App\Models\File;
 use Capevace\MagicImport\Artifacts\ArtifactGenerationStatus;
 use Capevace\MagicImport\Artifacts\GenerateArtifactJob;
-use Capevace\MagicImport\Artifacts\LocalArtifact;
 use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -20,12 +18,9 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Nette\Utils\Html;
 
 class FilesRelationManager extends RelationManager
 {
@@ -46,7 +41,7 @@ class FilesRelationManager extends RelationManager
                     ->filter(fn (\SplFileInfo $file) => in_array(Str::lower($file->getExtension()), ['jpg', 'jpeg', 'png', 'webp', 'avif']))
                     ->sortBy(fn (\SplFileInfo $file) => $file->getBasename())
                     ->map(fn (\SplFileInfo $file) => ImageEntry::make($file)
-                        ->state(url("storage/{$publicRelativePath}/" . Str::afterLast($file, '/')))
+                        ->state(url("storage/{$publicRelativePath}/".Str::afterLast($file, '/')))
                         ->label($file->getBasename())
                         ->height('auto')
                         ->extraImgAttributes([
@@ -73,7 +68,7 @@ class FilesRelationManager extends RelationManager
                         ->columns(4)
                         ->compact()
                         ->collapsed()
-                        ->schema($images)
+                        ->schema($images),
                 ]);
             });
     }
@@ -82,9 +77,9 @@ class FilesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-//                Forms\Components\TextInput::make('name')
-//                    ->required()
-//                    ->maxLength(255),
+                //                Forms\Components\TextInput::make('name')
+                //                    ->required()
+                //                    ->maxLength(255),
 
                 Forms\Components\FileUpload::make('files')
                     ->label('Files')
@@ -94,7 +89,7 @@ class FilesRelationManager extends RelationManager
                     ->translateLabel()
                     ->multiple()
                     ->imageEditor()
-                    ->maxSize(1024 * 1024 * 20)
+                    ->maxSize(1024 * 1024 * 20),
             ]);
     }
 
@@ -103,9 +98,8 @@ class FilesRelationManager extends RelationManager
         return $table
             ->poll(fn () => $table
                 ->getRecords()
-                ->contains(fn (File $record) =>
-                    $record->artifact_status === ArtifactGenerationStatus::Pending
-                    ||  $record->artifact_status === ArtifactGenerationStatus::InProgress
+                ->contains(fn (File $record) => $record->artifact_status === ArtifactGenerationStatus::Pending
+                    || $record->artifact_status === ArtifactGenerationStatus::InProgress
                 ) ? '500ms' : null,
             )
             ->defaultSort('name')
@@ -129,7 +123,7 @@ class FilesRelationManager extends RelationManager
                     ->extraAttributes(fn (File $record) => [
                         'class' => $record->artifact_status === ArtifactGenerationStatus::InProgress ? 'animate-spin' : '',
                         'style' => 'animation-duration: 3s',
-                        'wire:poll'
+                        'wire:poll',
                     ]),
             ])
             ->filters([
@@ -159,7 +153,7 @@ class FilesRelationManager extends RelationManager
                                 ->addMedia($path)
                                 ->toMediaCollection('files');
                         }
-                    })
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make('view')

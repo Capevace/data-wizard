@@ -2,10 +2,7 @@
 
 namespace Capevace\MagicImport;
 
-
 use Capevace\MagicImport\Loop\Loop;
-use Capevace\MagicImport\Loop\Response\Streamed\PartialTextResponse;
-use Capevace\MagicImport\Loop\Response\Streamed\ResponseDecoder;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Closure;
 use Illuminate\Support\Arr;
@@ -13,131 +10,126 @@ use OpenAI\Responses\StreamResponse;
 
 class AI
 {
-	public function stream(StreamResponse $stream, Loop $loop)
-	{
+    public function stream(StreamResponse $stream, Loop $loop) {}
 
-	}
+    protected function evaluateAction(string|Closure $action, array $arguments = []): FunctionOutput
+    {
+        if (is_string($action) && (! in_array(CanBeCalledByAI::class, class_implements($action)) || ! method_exists($action, 'run'))) {
+            throw new InvalidFunctionDefinition('Action must implement CanBeCalledByAI and have a run method');
+        }
 
-	protected function evaluateAction(string|Closure $action, array $arguments = []): FunctionOutput
-	{
-		if (is_string($action) && (!in_array(CanBeCalledByAI::class, class_implements($action)) || !method_exists($action, 'run'))) {
-			throw new InvalidFunctionDefinition('Action must implement CanBeCalledByAI and have a run method');
-		}
+        if ($action instanceof Closure) {
+            $contextReflection = new ReflectionMethod($action, '__invoke');
+        } else {
+            $contextReflection = new ReflectionMethod($action, 'run');
+        }
 
-		if ($action instanceof Closure) {
-			$contextReflection = new ReflectionMethod($action, '__invoke');
-		} else {
-			$contextReflection = new ReflectionMethod($action, 'run');
-		}
+        $argsToSend = [];
 
+        foreach ($contextReflection->getParameters() as $parameter) {
+            $parameterName = $parameter->getName();
 
-		$argsToSend = [];
+            if (! $parameter->isOptional() && ! array_key_exists($parameterName, $arguments)) {
+                // Is not optional but arg is missing
+                throw new Exception("{$parameterName} is not optional but arg is missing");
+            }
 
-		foreach ($contextReflection->getParameters() as $parameter) {
-			$parameterName = $parameter->getName();
+            $arg = Arr::get($arguments, $parameterName);
 
-			if (!$parameter->isOptional() && !array_key_exists($parameterName, $arguments)) {
-				// Is not optional but arg is missing
-				throw new Exception("{$parameterName} is not optional but arg is missing");
-			}
+            $argsToSend[$parameterName] = $arg;
+        }
 
-			$arg = Arr::get($arguments, $parameterName);
+        if ($action instanceof Closure) {
+            return $action(...$argsToSend);
+        } else {
+            /**
+             * @var CanBeCalledByAI $instance
+             */
+            $instance = app($action);
 
-			$argsToSend[$parameterName] = $arg;
-		}
+            $validator = validator($argsToSend, $instance->rules());
 
-		if ($action instanceof Closure) {
-			return $action(...$argsToSend);
-		} else {
-			/**
-			 * @var CanBeCalledByAI $instance
-			 */
-			$instance = app($action);
+            if ($validator->fails()) {
+                throw new InvalidAIArguments($validator->errors()->first());
+            }
 
-			$validator = validator($argsToSend, $instance->rules());
+            return $instance->run(...$argsToSend);
+        }
+    }
 
-			if ($validator->fails()) {
-				throw new InvalidAIArguments($validator->errors()->first());
-			}
+    public static function prepareMessageForUI(Message $message, int $index): UIMessage
+    {
+        return match (get_class($message)) {
+            TextMessage::class => new UITextMessage(
+                index: $index,
+                role: $message->role,
+                content: Markdown::parse(
+                    $message->role === Message\Role::User
+                        ? $message->content = str($message->content)
+                            ->stripTags()
+                        : $message->content
+                )->toHtml(),
+            ),
+            FunctionCallMessage::class => new UIFunctionCall(
+                index: $index,
+                role: $message->role,
+                name: static::getPublicNameForFunction($message),
+                arguments: []
+            ),
+            FunctionOutputMessage::class => new UIFunctionResult(
+                index: $index,
+                role: $message->role,
+                entities: collect($message->outputs)
+                    ->map(fn (FunctionOutput $output) => match ($output->type) {
+                        FunctionOutput\Type::Estate => static::getCardForEstate($output),
+                        default => null
+                    })
+                    ->filter()
+                    ->values()
+                    ->all()
+            ),
+            ErrorMessage::class => new UIErrorMessage(
+                index: $index,
+                error: $message->error
+            ),
+            default => (function () use ($message, $index) {
+                report(new Exception('Unknown message type: '.get_class($message)));
 
+                return new UITextMessage(
+                    index: $index,
+                    role: $message->role,
+                    content: 'Es ist ein Fehler aufgetreten. Bitte versuche es erneut.'
+                );
+            })(),
+        };
+    }
 
-			return $instance->run(...$argsToSend);
-		}
-	}
+    public static function getCardForEstate(FunctionOutput\EstateOutput $output): ?UIFunctionResult\EntityCard
+    {
+        $estate = Estate::find($output->estate['id']);
 
-	public static function prepareMessageForUI(Message $message, int $index): UIMessage
-	{
-		return match (get_class($message)) {
-			TextMessage::class => new UITextMessage(
-				index: $index,
-				role: $message->role,
-				content: Markdown::parse(
-					$message->role === Message\Role::User
-						? $message->content = str($message->content)
-							->stripTags()
-						: $message->content
-				)->toHtml(),
-			),
-			FunctionCallMessage::class => new UIFunctionCall(
-				index: $index,
-				role: $message->role,
-				name: static::getPublicNameForFunction($message),
-				arguments: []
-			),
-			FunctionOutputMessage::class => new UIFunctionResult(
-				index: $index,
-				role: $message->role,
-				entities: collect($message->outputs)
-					->map(fn (FunctionOutput $output) => match ($output->type) {
-						FunctionOutput\Type::Estate => static::getCardForEstate($output),
-						default => null
-					})
-					->filter()
-					->values()
-					->all()
-			),
-			ErrorMessage::class => new UIErrorMessage(
-				index: $index,
-				error: $message->error
-			),
-			default => (function () use ($message, $index) {
-				report(new Exception("Unknown message type: " . get_class($message)));
+        if (! $estate) {
+            report(new Exception("Estate not found for UIFunctionResult\EntityCard: ".$output->estate['id']));
 
-				return new UITextMessage(
-					index: $index,
-					role: $message->role,
-					content: 'Es ist ein Fehler aufgetreten. Bitte versuche es erneut.'
-				);
-			})(),
-		};
-	}
+            return null;
+        }
 
-	public static function getCardForEstate(FunctionOutput\EstateOutput $output): ?UIFunctionResult\EntityCard
-	{
-		$estate = Estate::find($output->estate['id']);
+        return new UIFunctionResult\EstateCard(
+            id: $estate->id,
+            type: 'Objekt',
+            name: $estate->name,
+            url: EstateSettingsPage::getUrl(['record' => $estate->id]),
+            icon: 'bi-building',
+            thumbnail: $estate->thumbnail_src !== null
+                ? new Image($estate->thumbnail_src)
+                : null,
+        );
+    }
 
-		if (!$estate) {
-			report(new Exception("Estate not found for UIFunctionResult\EntityCard: " . $output->estate['id']));
-
-			return null;
-		}
-
-		return new UIFunctionResult\EstateCard(
-			id: $estate->id,
-			type: 'Objekt',
-			name: $estate->name,
-			url: EstateSettingsPage::getUrl(['record' => $estate->id]),
-			icon: 'bi-building',
-			thumbnail: $estate->thumbnail_src !== null
-				? new Image($estate->thumbnail_src)
-				: null,
-		);
-	}
-
-	public static function getPublicNameForFunction(FunctionCallMessage $message)
-	{
-		return match ($message->name) {
-			'findEstateByName' => 'Suche Objekt nach Namen: ' . ($message->arguments['name'] ?? null)
-		};
-	}
+    public static function getPublicNameForFunction(FunctionCallMessage $message)
+    {
+        return match ($message->name) {
+            'findEstateByName' => 'Suche Objekt nach Namen: '.($message->arguments['name'] ?? null)
+        };
+    }
 }

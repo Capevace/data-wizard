@@ -10,7 +10,7 @@ class ExtractorFileType
     public const IMAGES = [
         'image/jpeg',
         'image/png',
-        'image/gif'
+        'image/gif',
     ];
 
     public const DOCUMENTS = [
@@ -26,9 +26,7 @@ class ExtractorFileType
     public function __construct(
         public array $mimetypes,
         public ?FileOptions $options = null,
-    )
-    {
-    }
+    ) {}
 
     public function withOptions(array $options): static
     {
@@ -75,7 +73,7 @@ class ExtractorFileType
         $isImage = in_array($mimetype, self::IMAGES);
         $isDocument = in_array($mimetype, self::DOCUMENTS);
 
-        if (!$isImage && !$isDocument) {
+        if (! $isImage && ! $isDocument) {
             return null;
         }
 

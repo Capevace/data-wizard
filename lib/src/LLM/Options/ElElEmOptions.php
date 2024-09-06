@@ -8,9 +8,7 @@ readonly class ElElEmOptions
 
     public function __construct(
         public int $maxTokens = self::DEFAULT_MAX_TOKENS,
-    )
-    {
-    }
+    ) {}
 
     public function withOptions(array $data): static
     {

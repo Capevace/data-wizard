@@ -19,8 +19,8 @@ class Finish implements InvokableFunction
             'arguments' => [
                 'text' => [
                     'type' => 'string',
-                    'description' => 'Final message to output'
-                ]
+                    'description' => 'Final message to output',
+                ],
             ],
             'required' => ['text'],
         ];

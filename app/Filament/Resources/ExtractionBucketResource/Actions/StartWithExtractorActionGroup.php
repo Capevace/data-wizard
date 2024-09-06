@@ -31,16 +31,15 @@ class StartWithExtractorActionGroup extends ActionGroup
                         ->whereNotNull('label')
                         ->limit(4)
                         ->get()
-                        ->map(fn (SavedExtractor $savedExtractor) =>
-                            StartExtractionAction::make('start' . $savedExtractor->id)
-                                ->label($savedExtractor->label)
-                                ->extractor($savedExtractor)
-                                ->bucket(fn (?ExtractionBucket $record) => $record)
+                        ->map(fn (SavedExtractor $savedExtractor) => StartExtractionAction::make('start'.$savedExtractor->id)
+                            ->label($savedExtractor->label)
+                            ->extractor($savedExtractor)
+                            ->bucket(fn (?ExtractionBucket $record) => $record)
                         )
                 ),
                 StartExtractionAction::make('startExtraction')
                     ->hasExtractorForm()
-                    ->bucket(fn (?ExtractionBucket $record) => $record)
+                    ->bucket(fn (?ExtractionBucket $record) => $record),
             ]);
     }
 }

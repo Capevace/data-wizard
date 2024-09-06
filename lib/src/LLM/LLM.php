@@ -11,11 +11,16 @@ use Closure;
 interface LLM
 {
     public function withOptions(array $data): static;
+
     public function getOrganization(): Organization;
+
     public function getOptions(): ElElEmOptions;
+
     public function getModelName(): string;
+
     public function getModelCost(): ?ModelCost;
 
     public function stream(Prompt $prompt, ?Closure $onMessageProgress = null, ?Closure $onMessage = null): array;
+
     public function send(Prompt $prompt): array;
 }

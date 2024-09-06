@@ -2,13 +2,12 @@
 
 namespace App\Models\ExtractionRun;
 
-use Carbon\CarbonImmutable;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Carbon;
 
-enum RunStatus: string implements HasLabel, HasColor, HasIcon
+enum RunStatus: string implements HasColor, HasIcon, HasLabel
 {
     case Pending = 'pending';
     case Running = 'running';

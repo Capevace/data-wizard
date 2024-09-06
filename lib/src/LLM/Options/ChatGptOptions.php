@@ -8,8 +8,7 @@ readonly class ChatGptOptions extends ElElEmOptions
         public int $maxTokens = ElElEmOptions::DEFAULT_MAX_TOKENS,
         public float $temperature = 0,
         public float $topP = 1,
-    )
-    {
+    ) {
         parent::__construct(maxTokens: $maxTokens);
     }
 

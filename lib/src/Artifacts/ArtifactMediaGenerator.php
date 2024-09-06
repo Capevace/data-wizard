@@ -4,10 +4,8 @@ namespace Capevace\MagicImport\Artifacts;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\Conversions\Conversion;
 use Spatie\MediaLibrary\Conversions\ImageGenerators\ImageGenerator;
-
 
 //class ArtifactMediaGenerator extends ImageGenerator
 //{

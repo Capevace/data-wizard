@@ -11,9 +11,7 @@ readonly class FunctionOutputMessage implements Message
         public Role $role,
         public FunctionCall $call,
         public mixed $output
-    )
-    {
-    }
+    ) {}
 
     public static function fromArray(array $data): static
     {

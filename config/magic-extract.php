@@ -7,7 +7,7 @@ return [
         ],
         'openai' => [
             'token' => env('OPENAI_API_KEY'),
-            'organization_id' => env('OPENAI_ORGANIZATION_ID')
+            'organization_id' => env('OPENAI_ORGANIZATION_ID'),
         ],
         'groq' => [
             'token' => env('GROQ_API_KEY'),
@@ -24,19 +24,19 @@ return [
                 'maxNumberOfFiles' => null, // Unlimited
                 'allowedTypes' => [
                     // Using MIME types
-					"application/pdf",
-					"image/jpeg",
-					"image/png",
-					"image/gif",
+                    'application/pdf',
+                    'image/jpeg',
+                    'image/png',
+                    'image/gif',
 
-					// Using presets
-					"documents",
-					"images",
+                    // Using presets
+                    'documents',
+                    'images',
 
                     // Using specific type/preset options
                     ['type' => 'application/pdf', 'extractImages' => false], // Don't extract images from PDFs
                     ['type' => 'images', 'maxSize' => 20], // Allow images up to 20 MB
-                ]
+                ],
             ],
 
             'llm' => [
@@ -44,7 +44,7 @@ return [
                 'options' => [
                     'temperature' => 0.5,
                     'maxTokens' => 100,
-                    'topP' => 0.9
+                    'topP' => 0.9,
                 ],
             ],
 
@@ -61,8 +61,8 @@ return [
                                 'email' => ['type' => 'string', 'format' => 'email'],
                                 'phone' => ['type' => 'string'],
                             ],
-                            'required' => ['name']
-                        ]
+                            'required' => ['name'],
+                        ],
                     ],
                     'companies' => [
                         'type' => 'array',
@@ -73,11 +73,11 @@ return [
                                 'website' => ['type' => 'string', 'format' => 'uri'],
                                 'phone' => ['type' => 'string', 'format' => 'phone'],
                             ],
-                            'required' => ['name']
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ]
+                            'required' => ['name'],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];

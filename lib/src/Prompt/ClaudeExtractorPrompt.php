@@ -15,9 +15,7 @@ class ClaudeExtractorPrompt implements Prompt
 
         /** @var MultimodalMessage\Base64Image[] $images */
         public array $images
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws JsonException
@@ -30,10 +28,10 @@ class ClaudeExtractorPrompt implements Prompt
         );
 
         $features = collect(FeatureType::cases())
-            ->map(fn(FeatureType $feature) => "{$feature->value}: {$feature->label()}")
+            ->map(fn (FeatureType $feature) => "{$feature->value}: {$feature->label()}")
             ->join("\n");
 
-        return (<<<PROMPT
+        return <<<PROMPT
         <instructions>
         You are a data extractor that uses a given JSON schema to extract data from a document. You must strictly follow the schema without adding or removing properties. If unsure about a property, use null. Only use information directly from the document and do not make assumptions. Never summarize information, but rewrite to make it more concise. No information should be lost.
 
@@ -65,12 +63,12 @@ class ClaudeExtractorPrompt implements Prompt
         {$features}
         </valid-features>
         </instructions>
-        PROMPT);
+        PROMPT;
     }
-
 
     /**
      * @return Message[]
+     *
      * @throws JsonException
      */
     public function messages(): array
@@ -93,7 +91,7 @@ class ClaudeExtractorPrompt implements Prompt
                     PROMPT),
                 ]
             ),
-//            new TextMessage(role: Role::Assistant, content: '{')
+            //            new TextMessage(role: Role::Assistant, content: '{')
         ];
     }
 
@@ -101,7 +99,7 @@ class ClaudeExtractorPrompt implements Prompt
     {
         return require base_path('../magic-import/schema/schema.php');
 
-//        return json_decode($json, associative: true, flags: JSON_THROW_ON_ERROR);
+        //        return json_decode($json, associative: true, flags: JSON_THROW_ON_ERROR);
     }
 
     public function functions(): array

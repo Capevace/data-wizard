@@ -21,7 +21,7 @@ class ActorMessage extends Model
         'text',
         'json',
         'type',
-        'media_id'
+        'media_id',
     ];
 
     protected $attributes = [

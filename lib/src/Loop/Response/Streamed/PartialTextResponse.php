@@ -11,9 +11,7 @@ class PartialTextResponse implements PartialResponse
     public function __construct(
         public readonly Role $role,
         public string $content
-    )
-    {
-    }
+    ) {}
 
     public function append(string $content): static
     {

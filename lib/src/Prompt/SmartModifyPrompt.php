@@ -2,20 +2,9 @@
 
 namespace Capevace\MagicImport\Prompt;
 
-use Capevace\MagicImport\Artifacts\Artifact;
-use Capevace\MagicImport\Artifacts\Content\ImageContent;
-use Capevace\MagicImport\Artifacts\Content\TextContent;
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\FeatureType;
-use Capevace\MagicImport\Functions\Extract;
-use Capevace\MagicImport\Functions\ExtractData;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\ModifyData;
-use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Blade;
-use Swaggest\JsonSchema\JsonSchema;
 
 class SmartModifyPrompt implements Prompt
 {
@@ -24,13 +13,11 @@ class SmartModifyPrompt implements Prompt
         protected array $schema,
         protected string $modificationInstructions,
         protected bool $shouldForceFunction = true,
-    )
-    {
-    }
+    ) {}
 
     public function system(): string
     {
-        return <<<PROMPT
+        return <<<'PROMPT'
         <instructions>
         You are a JSON modification assistant.
         You are given a JSON object that you need to modify according to modification instructions.

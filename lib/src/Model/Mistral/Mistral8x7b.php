@@ -5,7 +5,6 @@ namespace Capevace\MagicImport\Model\Mistral;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Model\ChatLLM;
 use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Prompt;
 use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\StreamResponse;
 
@@ -17,9 +16,7 @@ readonly class Mistral8x7b implements ChatLLM
         public ?string $stop = null,
         public float $frequencyPenalty = 0.11,
         public float $presencePenalty = 0.03,
-    )
-    {
-    }
+    ) {}
 
     public function name(): string
     {
@@ -42,8 +39,8 @@ readonly class Mistral8x7b implements ChatLLM
         return OpenAI::chat()
             ->createStreamed([
                 ...$this->parameters(),
-                'messages' => array_map(fn(Message $message) => $message->toArray(), $messages),
-                'functions' => array_map(fn(InvokableFunction $function) => $function->schema(), $functions),
+                'messages' => array_map(fn (Message $message) => $message->toArray(), $messages),
+                'functions' => array_map(fn (InvokableFunction $function) => $function->schema(), $functions),
             ]);
     }
 }

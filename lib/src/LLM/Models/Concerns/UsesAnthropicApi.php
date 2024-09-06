@@ -6,7 +6,6 @@ use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Loop\Response\Streamed\ClaudeResponseDecoder;
 use Capevace\MagicImport\Model\Exceptions\InvalidRequest;
 use Capevace\MagicImport\Model\Exceptions\TooManyTokensForModelRequested;
-use Capevace\MagicImport\Prompt\ExtractorPrompt;
 use Capevace\MagicImport\Prompt\Message\FunctionOutputMessage;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
@@ -38,8 +37,8 @@ trait UsesAnthropicApi
     {
         // Prepare logical messages to Claude API messages
         $serializedMessages = collect($prompt->messages())
-            ->map(fn(Message $message) => match ($message::class) {
-                FunctionOutputMessage::class => new TextMessage(role: Role::User, content: 'OUTPUT: ' . json_encode($message->output, JSON_THROW_ON_ERROR)),
+            ->map(fn (Message $message) => match ($message::class) {
+                FunctionOutputMessage::class => new TextMessage(role: Role::User, content: 'OUTPUT: '.json_encode($message->output, JSON_THROW_ON_ERROR)),
                 default => $message
             });
 
@@ -53,7 +52,7 @@ trait UsesAnthropicApi
             ],
         ]);
 
-        $otherMessages = $serializedMessages->filter(fn(Message $message) => $message->role !== Role::System);
+        $otherMessages = $serializedMessages->filter(fn (Message $message) => $message->role !== Role::System);
 
         $options = $this->getOptions();
         $data = [
@@ -90,17 +89,17 @@ trait UsesAnthropicApi
                 $type = Arr::get($data, 'error.type');
 
                 if ($type === 'invalid_request_error' && Str::startsWith(Arr::get($data, 'error.message'), 'max_tokens')) {
-                    throw new TooManyTokensForModelRequested('Too many tokens: ' . Arr::get($data, 'error.message'), previous: $e);
+                    throw new TooManyTokensForModelRequested('Too many tokens: '.Arr::get($data, 'error.message'), previous: $e);
                 }
 
                 if ($message = Arr::get($data, 'error.message')) {
-                    throw new InvalidRequest("API error", $message, previous: $e);
+                    throw new InvalidRequest('API error', $message, previous: $e);
                 }
             }
 
-            throw new InvalidRequest("API error", $e->getMessage(), previous: $e);
+            throw new InvalidRequest('API error', $e->getMessage(), previous: $e);
         } catch (GuzzleException $e) {
-            throw new InvalidRequest("HTTP error", $e->getMessage(), previous: $e);
+            throw new InvalidRequest('HTTP error', $e->getMessage(), previous: $e);
         }
     }
 
@@ -114,8 +113,7 @@ trait UsesAnthropicApi
             $stream,
             $onMessageProgress,
             $onMessage,
-            onTokenStats: fn (TokenStats $stats) =>
-                $onTokenStats
+            onTokenStats: fn (TokenStats $stats) => $onTokenStats
                     ? $onTokenStats($cost
                         ? $stats->withCost($cost)
                         : $stats

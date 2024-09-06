@@ -5,27 +5,23 @@ namespace App\Filament\Resources\ExtractionRunResource\Actions;
 use App\Filament\Forms\JsonEditor;
 use Capevace\MagicImport\LLM\ElElEm;
 use Capevace\MagicImport\LLM\Models\Claude3Family;
-use Capevace\MagicImport\Loop\InferenceResult;
 use Capevace\MagicImport\Loop\Response\JsonResponse;
-use Capevace\MagicImport\Prompt\ExtractorPrompt;
-use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\SmartModifyPrompt;
-use Capevace\MagicImport\Prompt\TokenStats;
 use Closure;
-use Dotswan\FilamentCodeEditor\Fields\CodeEditor;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Livewire\Component;
 
 class SmartModifyJsonAction extends Action
 {
     protected Closure|array $jsonSchema = [];
+
     protected Closure|array $dataToModify = [];
+
     protected Closure|string $modificationInstructions = '';
 
     public function jsonSchema(Closure|array $jsonSchema): static
@@ -76,8 +72,8 @@ class SmartModifyJsonAction extends Action
 
                                 // Update/re-render the JsonEditor component
                                 $livewire->dispatch('changed-json-state', statePath: 'json', json: $modifiedJson);
-                            })
-                    ])
+                            }),
+                    ]),
 
             ])
             ->action(fn () => null);
@@ -95,10 +91,10 @@ class SmartModifyJsonAction extends Action
 
         $responses = $llm->stream(prompt: $prompt);
 
-        $response = collect($responses)->first(fn($message) => $message instanceof JsonResponse);
+        $response = collect($responses)->first(fn ($message) => $message instanceof JsonResponse);
 
         if ($response === null) {
-            report(new \Exception('Could not extract data: ' . json_encode($responses)));
+            report(new \Exception('Could not extract data: '.json_encode($responses)));
 
             Notification::make()
                 ->danger()

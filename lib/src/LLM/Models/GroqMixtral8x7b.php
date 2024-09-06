@@ -10,8 +10,7 @@ class GroqMixtral8X7B extends Mixtral8x7b
     public function __construct(
         string $model,
         public ElElEmOptions $options = new ElElEmOptions,
-    )
-    {
+    ) {
         parent::__construct(
             organization: new Organization(
                 id: 'groq',

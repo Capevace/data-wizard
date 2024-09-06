@@ -27,18 +27,18 @@ class SaveResources implements InvokableFunction
                             'properties' => [
                                 'name' => [
                                     'type' => 'string',
-                                    'description' => 'The name of the model'
+                                    'description' => 'The name of the model',
                                 ],
                                 'data' => [
                                     'type' => 'object',
-                                    'description' => 'The data to save'
+                                    'description' => 'The data to save',
                                 ],
                             ],
                             'required' => ['name', 'data'],
                         ],
                     ],
                 ],
-            ]
+            ],
         ];
     }
 

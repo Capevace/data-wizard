@@ -28,10 +28,10 @@ trait UsesGroqApi
         return [
             'model' => $this->getModelName(),
             'max_tokens' => $this->options->maxTokens,
-//            'stop' => $this
-//            'frequency_penalty' => $this->frequencyPenalty,
-//            'presence_penalty' => $this->presencePenalty,
-//            'response_format' => ['type' => 'json_object']
+            //            'stop' => $this
+            //            'frequency_penalty' => $this->frequencyPenalty,
+            //            'presence_penalty' => $this->presencePenalty,
+            //            'response_format' => ['type' => 'json_object']
         ];
     }
 
@@ -54,7 +54,7 @@ trait UsesGroqApi
                             'type' => 'function',
                             'function' => [
                                 'name' => $fn->name(),
-                            ]
+                            ],
                         ]
                         : null,
                     'tools' => collect($prompt->functions())
@@ -66,7 +66,7 @@ trait UsesGroqApi
                                     ? $function->description()
                                     : null,
                                 'parameters' => $function->schema(),
-                            ]
+                            ],
                         ]),
                     'messages' => collect($prompt->messages())
                         ->prepend(new TextMessage(role: Role::System, content: $prompt->system()))
@@ -86,7 +86,7 @@ trait UsesGroqApi
                         })
                         ->map(fn (Message $message) => $message->toArray())
                         ->toArray(),
-    //                'functions' => array_map(fn(InvokableFunction $function) => $function->schema(), $functions),
+                    //                'functions' => array_map(fn(InvokableFunction $function) => $function->schema(), $functions),
                 ]);
         } catch (ErrorException $e) {
             if ($e->getErrorCode() === 'rate_limit_exceeded') {
@@ -124,8 +124,6 @@ trait UsesGroqApi
     {
         return ModelCost::free();
     }
-
-
 
     public function send(Prompt $prompt): array
     {

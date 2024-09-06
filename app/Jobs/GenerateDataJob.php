@@ -4,22 +4,14 @@ namespace App\Jobs;
 
 use App\Models\Actor;
 use App\Models\Actor\ActorTelemetry;
-use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
 use App\Models\ExtractionRun\RunStatus;
 use App\Models\File;
 use App\Models\User;
 use Capevace\MagicImport\Artifacts\ArtifactGenerationStatus;
 use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\Functions\ExtractData;
 use Capevace\MagicImport\LLM\ElElEm;
 use Capevace\MagicImport\LLM\Models\Claude3Family;
-use Capevace\MagicImport\LLM\Models\GroqLlama3;
-use Capevace\MagicImport\LLM\Options\ElElEmOptions;
-use Capevace\MagicImport\Loop\InferenceResult;
-use Capevace\MagicImport\Loop\Response\JsonResponse;
-use Capevace\MagicImport\Loop\Response\Streamed\PartialJsonResponse;
-use Capevace\MagicImport\Model\Exceptions\InvalidRequest;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\TokenStats;
 use Capevace\MagicImport\Strategies\ParallelStrategy;
@@ -31,22 +23,19 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
-use Swaggest\JsonSchema\Schema;
 
 class GenerateDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(protected ExtractionRun $run, protected ?User $startedBy)
-    {
-    }
+    public function __construct(protected ExtractionRun $run, protected ?User $startedBy) {}
 
     public function handle(): void
     {
         /** @var Collection<File> $files */
         $artifacts = $this->run->bucket->files
-            ->filter(fn(File $file) => $file->artifact && $file->artifact_status === ArtifactGenerationStatus::Complete)
-            ->sortBy(fn(File $file) => $file->artifact->getMetadata()->name)
+            ->filter(fn (File $file) => $file->artifact && $file->artifact_status === ArtifactGenerationStatus::Complete)
+            ->sortBy(fn (File $file) => $file->artifact->getMetadata()->name)
             ->values()
             ->pluck('artifact');
 
@@ -56,15 +45,15 @@ class GenerateDataJob implements ShouldQueue
             outputInstructions: $this->run->saved_extractor->output_instructions,
             allowedTypes: [
                 'images',
-                'documents'
+                'documents',
             ],
             llm: ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::SONNET_3_5)),
-//            llm: new GroqLlama3(
-//                model: 'llama-3.1-70b-versatile',
-//                options: new ElElEmOptions(
-//                    maxTokens: 2048
-//                )
-//            ),
+            //            llm: new GroqLlama3(
+            //                model: 'llama-3.1-70b-versatile',
+            //                options: new ElElEmOptions(
+            //                    maxTokens: 2048
+            //                )
+            //            ),
             schema: $this->run->target_schema,
             strategy: $this->run->strategy,
         );
@@ -89,7 +78,7 @@ class GenerateDataJob implements ShouldQueue
                     /** @var ?Actor $actor */
                     $actor = $this->run->actors()->find($telemetry->id);
 
-                    if (!$actor) {
+                    if (! $actor) {
                         $actor = $this->run->actors()->make();
                         $actor->id = $telemetry->id;
                     }
@@ -105,7 +94,7 @@ class GenerateDataJob implements ShouldQueue
                     /** @var ?Actor $actor */
                     $actor = $this->run->actors()->find($actorId);
 
-                    if (!$actor) {
+                    if (! $actor) {
                         throw new \InvalidArgumentException("Actor {$actorId} not found");
                     }
 

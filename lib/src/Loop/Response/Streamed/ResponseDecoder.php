@@ -7,7 +7,6 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use OpenAI\Responses\Chat\CreateResponse;
-use OpenAI\Responses\Chat\CreateStreamedResponse;
 use OpenAI\Responses\StreamResponse;
 
 class ResponseDecoder implements Decoder
@@ -24,10 +23,7 @@ class ResponseDecoder implements Decoder
         protected ?\Closure $onMessage = null,
         protected ?\Closure $onTokenStats = null,
         protected bool $json = true,
-    )
-    {
-
-    }
+    ) {}
 
     public function process(): array
     {
@@ -35,7 +31,7 @@ class ResponseDecoder implements Decoder
             foreach ($this->response->choices as $choice) {
                 $this->processRawMessage($choice->message->toArray());
             }
-        } else if ($this->response instanceof StreamResponse) {
+        } elseif ($this->response instanceof StreamResponse) {
             foreach ($this->response as $stream) {
                 dump($stream->choices[0]->delta->toArray());
                 $this->processRawMessage($stream->choices[0]->delta->toArray());
@@ -63,7 +59,7 @@ class ResponseDecoder implements Decoder
             if ($this->currentPartial !== null) {
                 $this->onMessageProgress?->call($this, $this->currentPartial->toResponse()->toMessage());
             }
-        } else if ($role !== null && $role !== $this->currentPartial->role()) { // Role being set signals the beginning of a new message
+        } elseif ($role !== null && $role !== $this->currentPartial->role()) { // Role being set signals the beginning of a new message
             // If it is the beginning of a new message and we have a current message, we 'send off' the current message
             $this->responses[] = $this->currentPartial->toResponse();
 
@@ -77,25 +73,25 @@ class ResponseDecoder implements Decoder
         } else {
             if ($tool = Arr::get($message, 'tool_calls.0.function', null)) {
                 $this->currentPartial = $this->currentPartial->append($tool['arguments']);
-            } else if ($text = $message['content'] ?? $message['text'] ?? null) {
+            } elseif ($text = $message['content'] ?? $message['text'] ?? null) {
                 $this->currentPartial = $this->currentPartial->append($text);
             }
 
             $this->onMessageProgress?->call($this, $this->currentPartial->toResponse()->toMessage());
         }
 
-//        if ($this->currentPartial instanceof PartialTextResponse)  {
-//            $manualFunctionPartial = $this->tryManualFunctionResponse($this->currentPartial->content());
-//
-//            if ($manualFunctionPartial) {
-//                $this->responses = [
-//                    ...$this->responses,
-//                    ...array_map(fn(PartialResponse $response) => $response->toResponse(), $manualFunctionPartial)
-//                ];
-//
-//                $this->currentPartial = null;
-//            }
-//        }
+        //        if ($this->currentPartial instanceof PartialTextResponse)  {
+        //            $manualFunctionPartial = $this->tryManualFunctionResponse($this->currentPartial->content());
+        //
+        //            if ($manualFunctionPartial) {
+        //                $this->responses = [
+        //                    ...$this->responses,
+        //                    ...array_map(fn(PartialResponse $response) => $response->toResponse(), $manualFunctionPartial)
+        //                ];
+        //
+        //                $this->currentPartial = null;
+        //            }
+        //        }
     }
 
     public function beginNewMessage(array $message): ?PartialResponse
@@ -127,11 +123,6 @@ class ResponseDecoder implements Decoder
             );
     }
 
-
-
-
-
-
     public function tryManualFunctionResponse(string $content): array
     {
         try {
@@ -145,19 +136,20 @@ class ResponseDecoder implements Decoder
 
             if ($validator->fails()) {
                 dd($validator->errors());
+
                 return [];
             }
 
             $responses = collect($responses)
                 ->map(function (mixed $response) {
-                    if (!is_array($response)) {
+                    if (! is_array($response)) {
                         return null;
                     }
 
                     if (Arr::get($response, 'tool_calls')) {
                         $arguments = Arr::get($response, 'arguments', '');
 
-                        if (!is_string($arguments)) {
+                        if (! is_string($arguments)) {
                             $arguments = json_encode($arguments) ?? '';
                         }
 
@@ -166,7 +158,7 @@ class ResponseDecoder implements Decoder
                             name: $response['tool_calls'],
                             arguments: $arguments
                         );
-                    } else if ($text = $response['text']) {
+                    } elseif ($text = $response['text']) {
                         return new PartialTextResponse(
                             role: Role::Assistant,
                             content: $text
@@ -178,7 +170,7 @@ class ResponseDecoder implements Decoder
                 ->filter()
                 ->all();
 
-            if (!empty($responses)) {
+            if (! empty($responses)) {
                 return $responses;
             }
         } catch (Exception $e) {
@@ -186,14 +178,13 @@ class ResponseDecoder implements Decoder
 
         }
 
-
         $content = Str::before($content, "\n");
 
         if ($response = json_decode($content, true)) {
             if (is_array($response) && Arr::get($response, 'tool_calls')) {
                 $arguments = Arr::get($response, 'arguments', '');
 
-                if (!is_string($arguments)) {
+                if (! is_string($arguments)) {
                     $arguments = json_encode($arguments) ?? '';
                 }
 
@@ -207,5 +198,4 @@ class ResponseDecoder implements Decoder
 
         return [];
     }
-
 }

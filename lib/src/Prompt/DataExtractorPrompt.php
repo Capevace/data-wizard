@@ -2,7 +2,6 @@
 
 namespace Capevace\MagicImport\Prompt;
 
-use Capevace\MagicImport\Functions\Add;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\SaveResources;
 use Capevace\MagicImport\Prompt\Message\Message;
@@ -44,7 +43,7 @@ class DataExtractorPrompt implements Prompt
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT
         );
 
-        return (<<<PROMPT
+        return <<<PROMPT
         You are a data extractor that uses a given JSON schema to extract data from a document. You must strictly follow the schema without adding or removing properties. If unsure about a property, use null. Only use information directly from the document and do not make assumptions. Never summarize information, but rewrite to make it more concise. No information should be lost.
         Do not output any plaintext. Only output the structured JSON data.
         
@@ -61,12 +60,12 @@ class DataExtractorPrompt implements Prompt
         Your job is to look at the document provided and extract the data according to the schema. If you can't find a piece of information, use null. If you find information that doesn't fit the schema, ignore it. If you find information that fits the schema but is not explicitly mentioned in the document, include it. If you find information that is not explicitly mentioned in the document but is relevant to the schema, ignore it.
         
         Again, DO NOT output JSON schema, output JSON data in the shape of the schema. I don't need any metadata or anything else. Just the data. No \$schema etc.
-        PROMPT);
+        PROMPT;
     }
-
 
     /**
      * @return Message[]
+     *
      * @throws JsonException
      */
     public function messages(): array
@@ -86,7 +85,7 @@ class DataExtractorPrompt implements Prompt
     public function functions(): array
     {
         return [
-            new SaveResources()
+            new SaveResources,
         ];
     }
 }

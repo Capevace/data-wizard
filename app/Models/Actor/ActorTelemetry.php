@@ -8,9 +8,7 @@ readonly class ActorTelemetry
         public string $id,
         public string $model,
         public ?string $system_prompt,
-    )
-    {
-    }
+    ) {}
 
     public function toDatabase(): array
     {

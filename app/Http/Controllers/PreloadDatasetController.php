@@ -6,9 +6,9 @@ class PreloadDatasetController extends Controller
 {
     public function __invoke(string $dataset)
     {
-        $path = base_path('../magic-import/fixtures/' . $dataset . '/expose.json');
+        $path = base_path('../magic-import/fixtures/'.$dataset.'/expose.json');
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             abort(404, 'Dataset not found');
         }
 

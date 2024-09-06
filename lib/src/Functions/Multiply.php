@@ -21,18 +21,18 @@ class Multiply implements InvokableFunction
                 'properties' => [
                     'a' => [
                         'type' => 'number',
-                        'description' => 'The first number to multiply'
+                        'description' => 'The first number to multiply',
                     ],
                     'b' => [
                         'type' => 'number',
-                        'description' => 'The second number to multiply'
+                        'description' => 'The second number to multiply',
                     ],
                 ],
                 'required' => ['a', 'b'],
             ],
             'returns' => [
                 'type' => 'number',
-                'description' => 'The result of multiplying the two numbers'
+                'description' => 'The result of multiplying the two numbers',
             ],
         ];
     }
@@ -41,7 +41,7 @@ class Multiply implements InvokableFunction
     {
         $validator = validator($data, [
             'a' => 'required|numeric',
-            'b' => 'required|numeric'
+            'b' => 'required|numeric',
         ]);
 
         $validator->validate();

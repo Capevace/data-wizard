@@ -24,8 +24,8 @@ class ExtractData implements InvokableFunction
                 // - ...
                 'enum' => collect(FeatureType::cases())
                     ->map(fn (FeatureType $featureType) => $featureType->value)
-                    ->all()
-            ]
+                    ->all(),
+            ],
         ];
     }
 
@@ -38,15 +38,15 @@ class ExtractData implements InvokableFunction
             'properties' => [
                 'id' => [
                     'type' => 'string',
-                    'description' => 'The unique identifier for this rentable unit, if you think this rentable unit is already in your memory. Otherwise, leave it empty.'
+                    'description' => 'The unique identifier for this rentable unit, if you think this rentable unit is already in your memory. Otherwise, leave it empty.',
                 ],
                 'name' => [
                     'type' => 'string',
-                    'description' => 'A name / identifier of the rental space'
+                    'description' => 'A name / identifier of the rental space',
                 ],
                 'description' => [
                     'type' => 'string',
-                    'description' => 'A detailed real estate description of the rental space'
+                    'description' => 'A detailed real estate description of the rental space',
                 ],
                 'type' => [
                     'type' => 'string',
@@ -56,41 +56,41 @@ class ExtractData implements InvokableFunction
                         'retail',
                         'storage',
                         'living',
-                        'other'
-                    ]
+                        'other',
+                    ],
                 ],
                 'area' => [
                     'type' => 'number',
-                    'description' => 'The area of the space'
+                    'description' => 'The area of the space',
                 ],
                 'floor' => [
                     'type' => 'number',
-                    'description' => 'The floor (0 = EG, -1 = 1. UG, 1 = 1. OG, ...)'
+                    'description' => 'The floor (0 = EG, -1 = 1. UG, 1 = 1. OG, ...)',
                 ],
                 'rent_per_m2' => [
                     'type' => 'number',
-                    'description' => 'The rent per square meter of the space'
+                    'description' => 'The rent per square meter of the space',
                 ],
                 'rent_total' => [
                     'type' => 'number',
-                    'description' => 'The total rent of the space'
+                    'description' => 'The total rent of the space',
                 ],
                 'images' => [
                     'type' => 'array',
                     'items' => [
                         'type' => 'string',
                     ],
-                    'description' => 'The image urls of the rental space'
+                    'description' => 'The image urls of the rental space',
                 ],
                 'floorplans' => [
                     'type' => 'array',
                     'items' => [
                         'type' => 'string',
                     ],
-                    'description' => 'The floorplan urls of the rental space'
+                    'description' => 'The floorplan urls of the rental space',
                 ],
                 'features' => $this->featuresSchema(),
-            ]
+            ],
         ];
     }
 
@@ -103,15 +103,15 @@ class ExtractData implements InvokableFunction
             'properties' => [
                 'name' => ['type' => 'string', 'description' => 'A descriptive marketing name of the property'],
                 'address' => ['type' => 'string', 'description' => 'Textual address of the estate'],
-//                'images' => [
-//                    'type' => 'array',
-//                    'items' => [
-//                        'type' => 'string',
-//                    ],
-//                    'description' => 'The image urls of the rental space'
-//                ],
-                'buildings' => $this->buildingSchema()
-            ]
+                //                'images' => [
+                //                    'type' => 'array',
+                //                    'items' => [
+                //                        'type' => 'string',
+                //                    ],
+                //                    'description' => 'The image urls of the rental space'
+                //                ],
+                'buildings' => $this->buildingSchema(),
+            ],
         ];
     }
 
@@ -127,20 +127,20 @@ class ExtractData implements InvokableFunction
                 'properties' => [
                     'name' => ['type' => 'string', 'description' => 'Identifying name of the building (e.g. Hall 1, Building A...)'],
                     'address' => ['type' => 'string', 'description' => 'Address of the building'],
-    //                            'images' => [
-    //                                'type' => 'array',
-    //                                'items' => [
-    //                                    'type' => 'string',
-    //                                ],
-    //                                'description' => 'The image urls of the rental space'
-    //                            ],
+                    //                            'images' => [
+                    //                                'type' => 'array',
+                    //                                'items' => [
+                    //                                    'type' => 'string',
+                    //                                ],
+                    //                                'description' => 'The image urls of the rental space'
+                    //                            ],
                     'spaces' => [
                         'type' => 'array',
                         'items' => $this->rentableSchema(),
-                        'description' => 'List of rentable spaces'
+                        'description' => 'List of rentable spaces',
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -154,82 +154,82 @@ class ExtractData implements InvokableFunction
                 'type' => 'object',
                 'properties' => [
                     'buildings' => $this->buildingsSchema(),
-//                    'rentable_units' => [
-//                        'type' => 'array',
-//                        'description' => 'The rentable units to extract',
-//                        'items' => $this->rentableSchema()
-//                    ],
-//                    'buildings' => [
-//                        'type' => 'array',
-//                        'description' => 'The rentable units to extract',
-//                        'items' => [
-//                            'name' => [
-//                                'type' => 'string',
-//                                'description' => 'A name / identifier of the rental space'
-//                            ],
-//                            'description' => [
-//                                'type' => 'string',
-//                                'description' => 'A detailed real estate description of the rental space'
-//                            ],
-//                            'address' => [
-//                                'type' => 'string',
-//                            ]
-//                        ]
-//                    ]
-//                    "id": {
-//                      "type": "string",
-//                      "description": "The identifier of the rentable"
-//                    },
-//                    "name": {
-//                      "type": "string",
-//                      "description": "The name / identifier of the rental space"
-//                    },
-//                    "description": {
-//                      "type": "string",
-//                      "description": "A description of the rental space"
-//                    },
-//                    "spaces": {
-//                      "type": "array",
-//                      "items": {
-//                        "$ref": "https://schema.immo/Space"
-//                      },
-//                      "description": "The spaces in the rental space"
-//                    },
-//                    "images": {
-//                      "type": "array",
-//                      "items": {
-//                        "$ref": "https://schema.immo/Image"
-//                      },
-//                      "description": "The images of the rental space"
-//                    },
-//                    "floorplans": {
-//                      "type": "array",
-//                      "items": {
-//                        "$ref": "https://schema.immo/Floorplan"
-//                      },
-//                      "description": "The floorplans of the rental space"
-//                    },
-//                    "features": {
-//                      "$ref": "https://schema.immo/FeatureList",
-//                      "description": "The features of the rental space"
-//                    },
-//                    "building": {
-//                      "$ref": "https://schema.immo/Building",
-//                      "description": "The building where the rental space is located"
-//                    },
-//                    "estate": {
-//                      "$ref": "https://schema.immo/Estate",
-//                      "description": "The estate where the building/rental space is located"
-//                    },
+                    //                    'rentable_units' => [
+                    //                        'type' => 'array',
+                    //                        'description' => 'The rentable units to extract',
+                    //                        'items' => $this->rentableSchema()
+                    //                    ],
+                    //                    'buildings' => [
+                    //                        'type' => 'array',
+                    //                        'description' => 'The rentable units to extract',
+                    //                        'items' => [
+                    //                            'name' => [
+                    //                                'type' => 'string',
+                    //                                'description' => 'A name / identifier of the rental space'
+                    //                            ],
+                    //                            'description' => [
+                    //                                'type' => 'string',
+                    //                                'description' => 'A detailed real estate description of the rental space'
+                    //                            ],
+                    //                            'address' => [
+                    //                                'type' => 'string',
+                    //                            ]
+                    //                        ]
+                    //                    ]
+                    //                    "id": {
+                    //                      "type": "string",
+                    //                      "description": "The identifier of the rentable"
+                    //                    },
+                    //                    "name": {
+                    //                      "type": "string",
+                    //                      "description": "The name / identifier of the rental space"
+                    //                    },
+                    //                    "description": {
+                    //                      "type": "string",
+                    //                      "description": "A description of the rental space"
+                    //                    },
+                    //                    "spaces": {
+                    //                      "type": "array",
+                    //                      "items": {
+                    //                        "$ref": "https://schema.immo/Space"
+                    //                      },
+                    //                      "description": "The spaces in the rental space"
+                    //                    },
+                    //                    "images": {
+                    //                      "type": "array",
+                    //                      "items": {
+                    //                        "$ref": "https://schema.immo/Image"
+                    //                      },
+                    //                      "description": "The images of the rental space"
+                    //                    },
+                    //                    "floorplans": {
+                    //                      "type": "array",
+                    //                      "items": {
+                    //                        "$ref": "https://schema.immo/Floorplan"
+                    //                      },
+                    //                      "description": "The floorplans of the rental space"
+                    //                    },
+                    //                    "features": {
+                    //                      "$ref": "https://schema.immo/FeatureList",
+                    //                      "description": "The features of the rental space"
+                    //                    },
+                    //                    "building": {
+                    //                      "$ref": "https://schema.immo/Building",
+                    //                      "description": "The building where the rental space is located"
+                    //                    },
+                    //                    "estate": {
+                    //                      "$ref": "https://schema.immo/Estate",
+                    //                      "description": "The estate where the building/rental space is located"
+                    //                    },
 
-//                    'building' => [
-//                        '$ref' => 'https://schema.immo/Building',
-//                        'description' => 'The building where the rental space is located'
-//                    ],
-//                    'estate' => [
-//                        '$ref' => 'https://schema.immo/Estate',
-//                        'description' => 'The estate where the building/rental space is located'
-//                    ]
+                    //                    'building' => [
+                    //                        '$ref' => 'https://schema.immo/Building',
+                    //                        'description' => 'The building where the rental space is located'
+                    //                    ],
+                    //                    'estate' => [
+                    //                        '$ref' => 'https://schema.immo/Estate',
+                    //                        'description' => 'The estate where the building/rental space is located'
+                    //                    ]
                 ],
             ],
         ];
@@ -237,14 +237,14 @@ class ExtractData implements InvokableFunction
 
     public function validate(array $data): array
     {
-//        $validator = validator($data, [
-//            'a' => 'required|numeric',
-//            'b' => 'required|numeric'
-//        ]);
-//
-//        $validator->validate();
-//
-//        return $validator->validated();
+        //        $validator = validator($data, [
+        //            'a' => 'required|numeric',
+        //            'b' => 'required|numeric'
+        //        ]);
+        //
+        //        $validator->validate();
+        //
+        //        return $validator->validated();
         return $data;
     }
 
@@ -255,12 +255,11 @@ class ExtractData implements InvokableFunction
 
     public function callback(): \Closure
     {
-//        return function (int|float $a, int|float $b): int|float {
-//            return $a + $b;
-//        };
+        //        return function (int|float $a, int|float $b): int|float {
+        //            return $a + $b;
+        //        };
     }
 }
-
 
 //"id" => [
 //                        'description' => 'The unique identifier for this estate',

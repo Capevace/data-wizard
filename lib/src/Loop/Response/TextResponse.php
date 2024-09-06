@@ -10,9 +10,7 @@ readonly class TextResponse implements LLMResponse
 {
     public function __construct(
         public string $content
-    )
-    {
-    }
+    ) {}
 
     public function toMessage(): Message
     {

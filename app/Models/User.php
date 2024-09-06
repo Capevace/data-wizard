@@ -14,8 +14,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use UsesUuid;
     use HasApiTokens, HasFactory, Notifiable;
+    use UsesUuid;
 
     /**
      * The attributes that are mass assignable.

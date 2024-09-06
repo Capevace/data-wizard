@@ -13,9 +13,7 @@ readonly class ApiConnectionDTO
         public ApiKeyProvider $provider,
         public bool $active = false,
         public array $fields = [],
-    )
-    {
-    }
+    ) {}
 
     public static function withKeys(ApiKeyProvider $provider, Collection $apiKeys): self
     {

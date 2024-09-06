@@ -4,13 +4,8 @@ namespace Capevace\MagicImport\Loop\Response\Streamed;
 
 use Capevace\MagicImport\Prompt\Role;
 use Capevace\MagicImport\Prompt\TokenStats;
-use Exception;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use OpenAI\Responses\Chat\CreateResponse;
-use OpenAI\Responses\Chat\CreateStreamedResponse;
-use OpenAI\Responses\StreamResponse;
 use Psr\Http\Message\StreamInterface;
 
 class ClaudeResponseDecoder implements Decoder
@@ -24,6 +19,7 @@ class ClaudeResponseDecoder implements Decoder
     protected ?PartialResponse $currentPartial = null;
 
     public ?int $inputTokens = null;
+
     public ?int $outputTokens = null;
 
     public function __construct(
@@ -33,10 +29,7 @@ class ClaudeResponseDecoder implements Decoder
         protected ?\Closure $onTokenStats = null,
         protected ?\Closure $onEnd = null,
         protected bool $json = true,
-    )
-    {
-
-    }
+    ) {}
 
     public function process(): array
     {
@@ -47,11 +40,11 @@ class ClaudeResponseDecoder implements Decoder
         /** @var PartialResponse|null $message */
         $message = null;
 
-        while (!$this->response->eof()) {
+        while (! $this->response->eof()) {
             $output = $this->response->read(self::CHUNK_SIZE);
 
             if ($unfinished !== null) {
-                $output = $unfinished . $output;
+                $output = $unfinished.$output;
                 $unfinished = null;
             }
 
@@ -60,7 +53,7 @@ class ClaudeResponseDecoder implements Decoder
 
             $lastEvent = $newEvents->pop();
 
-            if (!Str::endsWith($lastEvent, "\n\n")) {
+            if (! Str::endsWith($lastEvent, "\n\n")) {
                 $unfinished = $lastEvent;
             } else {
                 $newEvents->push($lastEvent);
@@ -95,7 +88,6 @@ class ClaudeResponseDecoder implements Decoder
                     $message = $this->json
                         ? new PartialJsonResponse(Role::Assistant, '')
                         : new PartialTextResponse(Role::Assistant, '');
-
 
                     $this->inputTokens = intval(Arr::get($data, 'message.usage.input_tokens') ?? 0);
                     $this->outputTokens = intval(Arr::get($data, 'message.usage.output_tokens') ?? 0);

@@ -4,11 +4,6 @@ namespace Capevace\MagicImport\Artifacts;
 
 use Capevace\MagicImport\Artifacts\Content\ImageContent;
 use Capevace\MagicImport\Artifacts\Content\TextContent;
-use Capevace\MagicImport\Config\ExtractorFileType;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
-use JsonException;
-use Throwable;
 
 /**
  * Artifact directory:
@@ -26,9 +21,7 @@ readonly class SplitArtifact implements Artifact
         /** @var array<TextContent|ImageContent> */
         public array $contents,
         public int $tokens
-    )
-    {
-    }
+    ) {}
 
     public function getMetadata(): ArtifactMetadata
     {
@@ -62,6 +55,7 @@ readonly class SplitArtifact implements Artifact
 
     /**
      * Splits the document. Adds data until either the character limit or embed limit is reached, then starts a new split.
+     *
      * @return array<array<Artifact>>
      */
     public function split(int $maxTokens): array

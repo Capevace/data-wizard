@@ -8,7 +8,6 @@ use Capevace\MagicImport\Artifacts\Content\TextContent;
 use Capevace\MagicImport\Config\Extractor;
 use Capevace\MagicImport\FeatureType;
 use Capevace\MagicImport\Functions\Extract;
-use Capevace\MagicImport\Functions\ExtractData;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
@@ -26,9 +25,7 @@ class SequentialExtractorPrompt implements Prompt
 
         public bool $shouldForceFunction = true,
         public bool $sendImages = true,
-    )
-    {
-    }
+    ) {}
 
     public function system(): string
     {
@@ -37,24 +34,24 @@ class SequentialExtractorPrompt implements Prompt
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT
         );
 
-//        $features = collect(FeatureType::cases())
-//            ->map(fn(FeatureType $feature) => "{$feature->value}: {$feature->label()}")
-//            ->join("\n");
-//
-//        $schemaNotes = <<<NOTES
-//        The schema describes real estate data. An estate can have multiple buildings, which can have multiple rentable units. We're really interested in the rentables in the context of the rest of the estate. But make sure to include every kind of data correctly: if there's info about the estate as a whole, include it there. If it's specific to a building, include it on that level. Is it only relevant for a specific rentable unit? Include it there. Each of the three can have features. A list of available features is provided below. Only include features in your output that you find information about inside the document.
-//        The data will be used inside commercial real estate software, so models for CRM etc. are also provided.
-//        If there area different space types, make sure to include them as rentables 1 by 1. If there are multiple buildings, include them 1 by 1. If there are multiple estates, include them 1 by 1. You get the point. Always extract the data as the smallest possible unit.
-//        For example 300m2 of office and 200m2 of storage in the same building should be two rentables.
-//        Make sure to output ALL data you can find, do not just limit it to 1 estate, 1 building, 1 rentable. If you find 10 rentables, output all 10. If you find 5 buildings, output all 5. If you find 3 estates, output all 3.
-//
-//        <valid-features>
-//        <!-- List of available Features (w/ German name): -->
-//        {$features}
-//        </valid-features>
-//        NOTES;
+        //        $features = collect(FeatureType::cases())
+        //            ->map(fn(FeatureType $feature) => "{$feature->value}: {$feature->label()}")
+        //            ->join("\n");
+        //
+        //        $schemaNotes = <<<NOTES
+        //        The schema describes real estate data. An estate can have multiple buildings, which can have multiple rentable units. We're really interested in the rentables in the context of the rest of the estate. But make sure to include every kind of data correctly: if there's info about the estate as a whole, include it there. If it's specific to a building, include it on that level. Is it only relevant for a specific rentable unit? Include it there. Each of the three can have features. A list of available features is provided below. Only include features in your output that you find information about inside the document.
+        //        The data will be used inside commercial real estate software, so models for CRM etc. are also provided.
+        //        If there area different space types, make sure to include them as rentables 1 by 1. If there are multiple buildings, include them 1 by 1. If there are multiple estates, include them 1 by 1. You get the point. Always extract the data as the smallest possible unit.
+        //        For example 300m2 of office and 200m2 of storage in the same building should be two rentables.
+        //        Make sure to output ALL data you can find, do not just limit it to 1 estate, 1 building, 1 rentable. If you find 10 rentables, output all 10. If you find 5 buildings, output all 5. If you find 3 estates, output all 3.
+        //
+        //        <valid-features>
+        //        <!-- List of available Features (w/ German name): -->
+        //        {$features}
+        //        </valid-features>
+        //        NOTES;
 
-        return (<<<PROMPT
+        return <<<PROMPT
         <instructions>
         You are a structured data extractor.
         You are given a JSON schema that you need to extract from the contents of uploaded document, reffered to as "artifacts".
@@ -92,7 +89,7 @@ class SequentialExtractorPrompt implements Prompt
         <json-schema-notes>
         {$this->extractor->outputInstructions}
         </json-schema-notes>
-        PROMPT);
+        PROMPT;
     }
 
     public function prompt(): string
@@ -110,9 +107,9 @@ class SequentialExtractorPrompt implements Prompt
                     ->join("\n\n");
 
                 return Blade::render(
-                    <<<BLADE
-                    <artifact name="{{ \$name }}">
-                    {!! \$pages !!}
+                    <<<'BLADE'
+                    <artifact name="{{ $name }}">
+                    {!! $pages !!}
                     </artifact>
                     BLADE,
                     ['name' => $artifact->getMetadata()->name, 'pages' => $pages]
@@ -144,26 +141,24 @@ class SequentialExtractorPrompt implements Prompt
 
     public function messages(): array
     {
-        if (!$this->sendImages) {
+        if (! $this->sendImages) {
             return [
                 new TextMessage(role: Role::User, content: $this->prompt()),
             ];
         }
 
         $imageMessages = collect($this->artifacts)
-            ->flatMap(fn (Artifact $artifact) =>
-                collect($artifact->getContents())
-                    ->filter(fn (TextContent|ImageContent $content) => $content instanceof ImageContent)
-                    ->groupBy(fn (TextContent|ImageContent $content) => $content->page ?? 0)
-                    ->sortBy(fn (Collection $contents, $page) => $page)
-                    ->flatMap(fn (Collection $contents) => collect($contents)
-                        ->map(fn (ImageContent $image) => new MultimodalMessage\Base64Image(
-                            imageBase64: base64_encode(file_get_contents($artifact->getEmbedPath($image->path))),
-                            mime: $image->mimetype,
-                        ))
-                    )
+            ->flatMap(fn (Artifact $artifact) => collect($artifact->getContents())
+                ->filter(fn (TextContent|ImageContent $content) => $content instanceof ImageContent)
+                ->groupBy(fn (TextContent|ImageContent $content) => $content->page ?? 0)
+                ->sortBy(fn (Collection $contents, $page) => $page)
+                ->flatMap(fn (Collection $contents) => collect($contents)
+                    ->map(fn (ImageContent $image) => new MultimodalMessage\Base64Image(
+                        imageBase64: base64_encode(file_get_contents($artifact->getEmbedPath($image->path))),
+                        mime: $image->mimetype,
+                    ))
+                )
             );
-
 
         return [
             // Attach images to the prompt

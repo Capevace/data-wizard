@@ -33,7 +33,6 @@ class ExtractionBucketResource extends Resource
 
     protected static ?string $navigationIcon = 'bi-bucket';
 
-
     public static function getModelLabel(): string
     {
         return __('Bucket');

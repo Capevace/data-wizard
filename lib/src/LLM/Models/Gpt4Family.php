@@ -11,8 +11,7 @@ abstract class Gpt4Family extends ElElEm
     public function __construct(
         string $model,
         ChatGptOptions $options = new ChatGptOptions,
-    )
-    {
+    ) {
         parent::__construct(
             organization: new Organization(
                 id: 'openai',

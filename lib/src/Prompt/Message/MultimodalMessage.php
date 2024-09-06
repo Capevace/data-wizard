@@ -12,15 +12,13 @@ readonly class MultimodalMessage implements Message
         public Role $role,
         /** @var array<Base64Image|Text> */
         public array $content
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {
         return [
             'role' => $this->role->value,
-            'content' => array_map(fn(Base64Image|Text $item) => $item->toArray(), $this->content),
+            'content' => array_map(fn (Base64Image|Text $item) => $item->toArray(), $this->content),
         ];
     }
 
@@ -29,7 +27,7 @@ readonly class MultimodalMessage implements Message
         return new self(
             role: Role::tryFrom($data['role']) ?? Role::Assistant,
             content: collect($data['content'])
-                ->map(fn(array $item) => match ($item['type']) {
+                ->map(fn (array $item) => match ($item['type']) {
                     'text' => Text::fromArray($item),
                     'image' => Base64Image::fromArray($item),
                     default => null,

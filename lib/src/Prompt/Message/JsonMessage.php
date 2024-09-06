@@ -9,9 +9,7 @@ readonly class JsonMessage implements Message
     public function __construct(
         public Role $role,
         public array $data
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {

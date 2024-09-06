@@ -2,20 +2,7 @@
 
 namespace Capevace\MagicImport\Model\Anthropic;
 
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Loop\Response\Streamed\ClaudeResponseDecoder;
-use Capevace\MagicImport\Model\ChatLLM;
 use Capevace\MagicImport\Model\ModelCost;
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
-use Capevace\MagicImport\Prompt\Prompt;
-use Capevace\MagicImport\Prompt\Role;
-use Closure;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Psr7\Request;
-use OpenAI\Laravel\Facades\OpenAI;
-use \OpenAI\Responses\StreamResponse;
 
 readonly class Claude3Haiku extends Claude3
 {

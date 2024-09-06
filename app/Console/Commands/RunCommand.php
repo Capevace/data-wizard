@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use HelgeSverre\Extractor\Facades\Text;
 use Illuminate\Console\Command;
-use OpenAI\Laravel\Facades\OpenAI;
 
 class RunCommand extends Command
 {
@@ -14,8 +13,8 @@ class RunCommand extends Command
 
     public function handle(): void
     {
-        $sample = Text::text(file_get_contents("fixtures/elsenstrasse/expose.txt"));
-        $schema = file_get_contents("../magic-import/schema-alt.json");
+        $sample = Text::text(file_get_contents('fixtures/elsenstrasse/expose.txt'));
+        $schema = file_get_contents('../magic-import/schema-alt.json');
 
         $prompt = <<<TXT
         You need to carry out data extraction from the provided document and transform it into a structured JSON format.

@@ -2,21 +2,9 @@
 
 namespace Capevace\MagicImport\Prompt;
 
-use Capevace\MagicImport\Artifacts\Artifact;
-use Capevace\MagicImport\Artifacts\Content\ImageContent;
-use Capevace\MagicImport\Artifacts\Content\TextContent;
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\FeatureType;
-use Capevace\MagicImport\Functions\Extract;
-use Capevace\MagicImport\Functions\ExtractData;
 use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Functions\ModifyData;
 use Capevace\MagicImport\Functions\OutputJsonSchema;
-use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Blade;
-use Swaggest\JsonSchema\JsonSchema;
 
 class GenerateSchemaPrompt implements Prompt
 {
@@ -24,13 +12,11 @@ class GenerateSchemaPrompt implements Prompt
         protected string $instructions,
         protected ?string $previouslyGeneratedSchema = null,
         protected bool $shouldForceFunction = true,
-    )
-    {
-    }
+    ) {}
 
     public function system(): string
     {
-        return <<<PROMPT
+        return <<<'PROMPT'
         <instructions>
         You are a JSON schema generation assistant.
         You are given some instructions that you need to generate a JSON schema for.

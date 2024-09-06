@@ -19,8 +19,8 @@ class OutputText implements InvokableFunction
             'arguments' => [
                 'text' => [
                     'type' => 'string',
-                    'description' => 'Text to output'
-                ]
+                    'description' => 'Text to output',
+                ],
             ],
             'required' => ['text'],
         ];

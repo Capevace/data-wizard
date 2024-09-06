@@ -2,26 +2,16 @@
 
 namespace Capevace\MagicImport\LLM\Models\Concerns;
 
-use Aws\Bedrock\BedrockClient;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Loop\Response\Streamed\ClaudeResponseDecoder;
 use Capevace\MagicImport\Model\Exceptions\InvalidRequest;
 use Capevace\MagicImport\Model\Exceptions\TooManyTokensForModelRequested;
 use Capevace\MagicImport\Prompt\ExtractorPrompt;
-use Capevace\MagicImport\Prompt\Message\FunctionOutputMessage;
 use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
 use Capevace\MagicImport\Prompt\Prompt;
-use Capevace\MagicImport\Prompt\Role;
 use Capevace\MagicImport\Prompt\TokenStats;
 use Closure;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use OpenAI\Responses\Chat\CreateResponse;
 use Psr\Http\Message\StreamInterface;
 
@@ -57,7 +47,7 @@ trait UsesAwsBedrockApi
                             'name' => $function->name(),
                             'description' => '',
                             'input_schema' => $function->schema(),
-                        ]
+                        ],
                     ]),
             ],
         ];
@@ -66,7 +56,7 @@ trait UsesAwsBedrockApi
             $config['toolChoice'] = [
                 'tool' => [
                     'name' => $fn->name(),
-                ]
+                ],
             ];
         }
 
@@ -88,11 +78,10 @@ trait UsesAwsBedrockApi
             $stream,
             $onMessageProgress,
             $onMessage,
-            onTokenStats: fn (TokenStats $stats) =>
-                $onTokenStats($cost
+            onTokenStats: fn (TokenStats $stats) => $onTokenStats($cost
                     ? $stats->withCost($cost)
                     : $stats
-                )
+            )
         );
 
         return $decoder->process();

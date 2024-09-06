@@ -7,9 +7,6 @@ use Capevace\MagicImport\Prompt\Message\Message;
 
 interface Prompt
 {
-    /**
-     * @return ?string
-     */
     public function system(): ?string;
 
     /**
@@ -23,7 +20,7 @@ interface Prompt
     public function functions(): array;
 
     /**
-     * @param Message[] $messages
+     * @param  Message[]  $messages
      */
     public function withMessages(array $messages): static;
 }

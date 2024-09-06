@@ -7,12 +7,10 @@ readonly class ImageContent
     public function __construct(
         public string $path,
         public string $mimetype,
-        public ?int   $page = null,
-        public ?int   $width = null,
-        public ?int   $height = null,
-    )
-    {
-    }
+        public ?int $page = null,
+        public ?int $width = null,
+        public ?int $height = null,
+    ) {}
 
     public function toArray(): array
     {

@@ -56,7 +56,7 @@ class ApiKey extends Model
         parent::boot();
 
         static::saving(function (self $model) {
-            if (!in_array($model->type, $model->provider->getValidTypes())) {
+            if (! in_array($model->type, $model->provider->getValidTypes())) {
                 throw new \InvalidArgumentException("Invalid type {$model->type} for provider {$model->provider}");
             }
         });

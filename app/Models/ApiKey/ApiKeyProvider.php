@@ -5,7 +5,7 @@ namespace App\Models\ApiKey;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum ApiKeyProvider: string implements HasLabel, HasIcon
+enum ApiKeyProvider: string implements HasIcon, HasLabel
 {
     case Anthropic = 'anthropic';
     case AwsBedrock = 'aws-bedrock';

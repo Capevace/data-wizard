@@ -14,9 +14,7 @@ readonly class TokenStats implements Arrayable
         public ?int $outputTokens = null,
 
         public ?ModelCost $cost = null,
-    )
-    {
-    }
+    ) {}
 
     public function add(TokenStats $stats): TokenStats
     {
@@ -61,7 +59,7 @@ readonly class TokenStats implements Arrayable
 
     public static function withInputAndOutput(?int $inputTokens, ?int $outputTokens, ?ModelCost $cost = null): TokenStats
     {
-        return new TokenStats(tokens: $inputTokens + $outputTokens, inputTokens: $inputTokens, outputTokens:  $outputTokens, cost: $cost);
+        return new TokenStats(tokens: $inputTokens + $outputTokens, inputTokens: $inputTokens, outputTokens: $outputTokens, cost: $cost);
     }
 
     public function withCost(ModelCost $cost): self

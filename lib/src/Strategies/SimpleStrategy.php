@@ -5,14 +5,12 @@ namespace Capevace\MagicImport\Strategies;
 use App\Models\Actor\ActorTelemetry;
 use Capevace\MagicImport\Artifacts\Artifact;
 use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\LLM\LLM;
 use Capevace\MagicImport\Loop\InferenceResult;
 use Capevace\MagicImport\Loop\Response\JsonResponse;
 use Capevace\MagicImport\Prompt\ExtractorPrompt;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\TokenStats;
 use Closure;
-use Illuminate\Support\Facades\Log;
 
 class SimpleStrategy
 {
@@ -33,12 +31,10 @@ class SimpleStrategy
 
         /** @var ?Closure(ActorTelemetry): void */
         protected ?Closure $onActorTelemetry = null,
-    )
-    {
-    }
+    ) {}
 
     /**
-     * @param Artifact[] $artifacts
+     * @param  Artifact[]  $artifacts
      */
     public function run(array $artifacts): InferenceResult
     {

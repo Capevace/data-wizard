@@ -12,7 +12,6 @@ use Capevace\MagicImport\LLM\Options\ElElEmOptions;
 use Capevace\MagicImport\Model\ModelCost;
 use Illuminate\Support\Str;
 
-
 /**
  * @template T of ElElEmOptions
  */
@@ -24,9 +23,7 @@ abstract class ElElEm implements LLM
 
         /** @var T $options */
         public ElElEmOptions $options,
-    )
-    {
-    }
+    ) {}
 
     public function withOptions(array $data): static
     {
@@ -84,7 +81,7 @@ abstract class ElElEm implements LLM
             },
             'groq' => match ($model) {
 
-                'llama-3-70b'=> new GroqLlama3(model: 'llama-3-70b-8192'),
+                'llama-3-70b' => new GroqLlama3(model: 'llama-3-70b-8192'),
                 'mixtral-8x7b' => new GroqMixtral8X7B(model: $model),
                 default => throw new \InvalidArgumentException("Invalid model type: {$value}"),
             },

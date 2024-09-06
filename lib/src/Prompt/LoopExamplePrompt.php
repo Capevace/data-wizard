@@ -3,8 +3,8 @@
 namespace Capevace\MagicImport\Prompt;
 
 use Capevace\MagicImport\Functions\Add;
-use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\Finish;
+use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\OutputText;
 use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\Message\TextMessage;
@@ -17,9 +17,7 @@ class LoopExamplePrompt implements Prompt
          * LLMs like Mistral don't support functions out of the box.
          */
         protected bool $manuallyIncludeFunctions = true
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws JsonException
@@ -52,9 +50,9 @@ class LoopExamplePrompt implements Prompt
         PROMPT;
     }
 
-
     /**
      * @return Message[]
+     *
      * @throws JsonException
      */
     public function messages(): array
@@ -69,7 +67,7 @@ class LoopExamplePrompt implements Prompt
         return [
             'type' => 'array',
             'items' => [
-                "anyOf" => [
+                'anyOf' => [
                     [
                         'type' => 'object',
                         'description' => 'Output text.',
@@ -91,7 +89,7 @@ class LoopExamplePrompt implements Prompt
                             ],
                         ],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -101,7 +99,7 @@ class LoopExamplePrompt implements Prompt
         return [
             new Add,
             new OutputText,
-//            new Finish
+            //            new Finish
         ];
     }
 }

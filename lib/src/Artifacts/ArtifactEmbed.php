@@ -9,9 +9,7 @@ readonly class ArtifactEmbed
         public string $name,
         public string $mimetype,
         public ?int $page = null,
-    )
-    {
-    }
+    ) {}
 
     public function toArray(): array
     {

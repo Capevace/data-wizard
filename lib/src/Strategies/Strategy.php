@@ -2,7 +2,4 @@
 
 namespace Capevace\MagicImport\Strategies;
 
-interface Strategy
-{
-
-}
+interface Strategy {}

@@ -13,9 +13,7 @@ class PartialFunctionCallResponse implements PartialResponse
         public readonly Role $role,
         public readonly string $name,
         public string $arguments = ''
-    )
-    {
-    }
+    ) {}
 
     public function append(string $content): static
     {
@@ -29,10 +27,10 @@ class PartialFunctionCallResponse implements PartialResponse
         return new FunctionCallResponse(
             new FunctionCall(
                 $this->name,
-                 [
-                     'arguments' => json_decode($this->arguments, true),
-                     'arguments_raw' => $this->arguments,
-                 ]
+                [
+                    'arguments' => json_decode($this->arguments, true),
+                    'arguments_raw' => $this->arguments,
+                ]
             )
         );
     }

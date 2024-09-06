@@ -42,11 +42,11 @@ class EditBucketForm
 
             Hidden::make('extractor_id')
                 ->default('default'),
-//                TextInput::make('extractor_id')
-//                    ->label('Extractor ID')
-//                    ->translateLabel()
-//                    ->default('default')
-//                    ->required(),
+            //                TextInput::make('extractor_id')
+            //                    ->label('Extractor ID')
+            //                    ->translateLabel()
+            //                    ->default('default')
+            //                    ->required(),
 
             SpatieMediaLibraryFileUpload::make('files')
                 ->columnSpanFull()
@@ -54,7 +54,7 @@ class EditBucketForm
                 ->visibleOn('create')
                 ->label('Files')
                 ->translateLabel()
-                ->multiple()
+                ->multiple(),
         ];
     }
 }

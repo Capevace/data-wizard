@@ -13,15 +13,17 @@ class Claude3Family extends ElElEm
     use UsesAnthropicApi;
 
     public const HAIKU = 'claude-3-haiku-20240307';
+
     public const SONNET = 'claude-3-sonnet-20240229';
+
     public const OPUS = 'claude-3-opus-20240229';
+
     public const SONNET_3_5 = 'claude-3-5-sonnet-20240620';
 
     public function __construct(
         string $model,
         ElElEmOptions $options = new ElElEmOptions,
-    )
-    {
+    ) {
         parent::__construct(
             organization: new Organization(
                 id: 'anthropic',

@@ -75,13 +75,13 @@ class SavedExtractorResource extends Resource
                     ->label('JSON Schema')
                     ->translateLabel()
                     ->hintActions([
-                        GenerateSchemaAction::make('generateSchema')
+                        GenerateSchemaAction::make('generateSchema'),
                     ]),
 
                 Textarea::make('output_instructions')
                     ->label('LLM Output Instructions')
                     ->translateLabel()
-                    ->placeholder(__("example-output-instructions"))
+                    ->placeholder(__('example-output-instructions'))
                     ->autosize()
                     ->extraAttributes(['class' => 'h-full', 'style' => 'min-height: 26rem'])
                     ->helperText(__('It is recommended to keep the output instructions short and concise to save LLM tokens. You can write prompts in other languages, but English is recommended.')),
@@ -115,7 +115,7 @@ class SavedExtractorResource extends Resource
                         DeleteAction::make(),
                         RestoreAction::make(),
                         ForceDeleteAction::make(),
-                    ])
+                    ]),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

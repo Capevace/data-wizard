@@ -2,13 +2,9 @@
 
 namespace Capevace\MagicImport\Functions;
 
-use Swaggest\JsonSchema\SchemaContract;
-
 class OutputJsonSchema implements InvokableFunction
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function name(): string
     {
@@ -34,7 +30,7 @@ class OutputJsonSchema implements InvokableFunction
                             'description' => 'The type of the schema',
                             'enum' => [
                                 'object',
-                            ]
+                            ],
                         ],
                         'required' => [
                             'type' => 'array',
@@ -43,7 +39,7 @@ class OutputJsonSchema implements InvokableFunction
                         'properties' => [
                             'type' => 'object',
                             'description' => 'The properties of the schema',
-                        ]
+                        ],
                     ],
                     'required' => ['type', 'properties', 'required'],
                 ],

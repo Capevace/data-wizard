@@ -5,8 +5,7 @@ namespace Capevace\MagicImport\Loop\Response\Streamed;
 use Capevace\MagicImport\Loop\Response\JsonResponse;
 use Capevace\MagicImport\Loop\Response\LLMResponse;
 use Capevace\MagicImport\Prompt\Role;
-use \GregHunt\PartialJson\JsonParser;
-use Illuminate\Support\Facades\Log;
+use GregHunt\PartialJson\JsonParser;
 use Illuminate\Support\Str;
 
 class StringParser
@@ -20,16 +19,16 @@ class StringParser
 
         for ($i = 0; $i < strlen($s); $i++) {
             if ($s[$i] === '"' && ($i === 0 || $s[$i - 1] !== '\\')) {
-                $inString = !$inString;
+                $inString = ! $inString;
                 $stringStart = $inString ? $i : -1;
-            } elseif (!$inString && $s[$i] === '{') {
+            } elseif (! $inString && $s[$i] === '{') {
                 array_push($tail, '}');
-            } elseif (!$inString && $s[$i] === '[') {
+            } elseif (! $inString && $s[$i] === '[') {
                 array_push($tail, ']');
-            } elseif (!$inString && $s[$i] === '}') {
+            } elseif (! $inString && $s[$i] === '}') {
                 unset($tail[array_search('}', $tail, true)]);
                 $tail = array_values($tail);
-            } elseif (!$inString && $s[$i] === ']') {
+            } elseif (! $inString && $s[$i] === ']') {
                 unset($tail[array_search(']', $tail, true)]);
                 $tail = array_values($tail);
             }
@@ -45,7 +44,8 @@ class StringParser
         }
 
         $tail = array_reverse($tail);
-        return json_decode($s . implode('', $tail), true);
+
+        return json_decode($s.implode('', $tail), true);
     }
 
     private function getNonWhitespaceCharacterOfStringAt(string $s, int $i): array
@@ -80,17 +80,16 @@ class PartialJsonResponse implements PartialResponse
         public readonly Role $role,
         public string $content,
         public array $data = [],
-    )
-    {
-        $this->parser = new JsonParser();
+    ) {
+        $this->parser = new JsonParser;
     }
 
     public function append(string $content, string $prefix = '{'): static
     {
         $this->content .= $content;
 
-        $potentialJsonWithStart = '{' . Str::after($this->content, $prefix);
-//        $potentialJsonWithEnd = Str::beforeLast('{' . $potentialJsonWithStart, '}') . '}';
+        $potentialJsonWithStart = '{'.Str::after($this->content, $prefix);
+        //        $potentialJsonWithEnd = Str::beforeLast('{' . $potentialJsonWithStart, '}') . '}';
 
         try {
             if ($newData = $this->parser->parse($potentialJsonWithStart)) {

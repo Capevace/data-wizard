@@ -10,12 +10,9 @@ readonly class ModelCost implements Arrayable
     public function __construct(
         public float $inputCentsPer1K,
         public float $outputCentsPer1K,
-    )
-    {
-    }
+    ) {}
 
     /**
-     * @param int $tokens
      * @return float The cost in cents for the given number of tokens
      */
     public function inputCostInCents(int $tokens): float
@@ -24,7 +21,6 @@ readonly class ModelCost implements Arrayable
     }
 
     /**
-     * @param int $tokens
      * @return float The cost in cents for the given number of tokens
      */
     public function outputCostInCents(int $tokens): float
