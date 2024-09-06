@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\ExtractionBucketResource\RelationManagers;
 
+use App\Filament\Resources\ExtractionRunResource;
+use App\Models\ExtractionRun;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -28,9 +30,7 @@ class RunsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('created_At')
-            ->columns([
-                Tables\Columns\TextColumn::make('created_At'),
-            ])
+            ->columns(ExtractionRunResource::table($table)->getColumns())
             ->filters([
                 //
             ])
@@ -38,7 +38,8 @@ class RunsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->url(fn (ExtractionRun $record) => ExtractionRunResource::getUrl('view', ['record' => $record->id])),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

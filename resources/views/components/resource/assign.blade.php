@@ -12,9 +12,11 @@
 
 <?php
 $key = 'partialResultJson' . ($statePath ? "['{$statePath}']" : '');
+//$altKey =
 ?>
 
 
+<pre>{{ $name }} {{ $statePath }}</pre>
 @if ($cloak)
 <template x-if="$wire.{{ $key }}">
 @endif
@@ -23,7 +25,7 @@ $key = 'partialResultJson' . ($statePath ? "['{$statePath}']" : '');
     {{ $attributes
         ->class('')
     }}
-    x-data="{ '{{ $name }}': @entangle($key) }"
+    x-data="{ '{{ $name }}': '{{ $statePath }}' }"
 >
     {{ $slot }}
 </{{ $tag }}>

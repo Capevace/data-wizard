@@ -5,6 +5,7 @@ namespace App\Livewire\Components;
 use App\Jobs\GenerateDataJob;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
+use App\Models\SavedExtractor;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
@@ -23,7 +24,6 @@ class Generator extends Component
     #[Locked]
     public ?string $runId = null;
 
-    #[Locked]
     public ?array $partialResultJson = null;
 
     #[Reactive]
@@ -43,6 +43,12 @@ class Generator extends Component
         return $this->runId
             ? $this->bucket->runs()->findOrFail($this->runId)
             : null;
+    }
+
+    #[Computed]
+    public function schema(): ?array
+    {
+        return $this->run?->saved_extractor?->json_schema ?? $this->run?->target_schema;
     }
 
     #[Computed]

@@ -26,6 +26,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AppPanelProvider extends PanelProvider
@@ -65,11 +66,11 @@ class AppPanelProvider extends PanelProvider
             )
             ->topbar()
             ->login()
-            ->brandName('Magic Extract')
+            ->brandName(new HtmlString("Magic Extract&nbsp;&nbsp;&nbsp;🪄"))
             ->viteTheme('resources/css/filament/app/theme.css')
             ->font('Avenir Next')
             ->colors([
-            'primary' => Color::Indigo,
+                'primary' => Color::Indigo,
                 'gray' => Color::Slate
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

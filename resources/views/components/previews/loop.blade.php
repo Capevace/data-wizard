@@ -6,6 +6,6 @@
     'name',
 ])
 
-<template x-for="({{ $name }}, {{ $name }}_index) in $wire.partialResultJson?.{{ $statePath }}" :key="{{ $name }}_index">
+<template x-for="({{ $name }}, {{ $name }}_index) in {{ $statePath }}" :key="{{ $name }}_index">
     {{ $slot }}
 </template>

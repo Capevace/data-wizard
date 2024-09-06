@@ -47,17 +47,19 @@
 
         <template x-if="tab === 'gui'">
             <div class="flex flex-col gap-4">
+                <x-resource.debug x-model="products" />
+                <x-resource.json-schema :schema="$this->schema" />
+
 {{--                <template x-for="(estate, estateIndex) in $wire.partialResultJson?.data?.estates" :key="estateIndex">--}}
 {{--                    <x-previews.estate/>--}}
 {{--                </template>--}}
 
 {{--                <div class="grid grid-cols-1 gap-6 md:grid-cols-3">--}}
 {{--                    <x-previews.products />--}}
-{{--                    --}}
 {{--                </div>--}}
-                <x-resource.assign name="perso">
-                    <x-previews.perso />
-                </x-resource.assign>
+{{--                <x-resource.assign name="perso">--}}
+{{--                    <x-previews.perso />--}}
+{{--                </x-resource.assign>--}}
             </div>
         </template>
 
