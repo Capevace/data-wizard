@@ -9,6 +9,7 @@ use App\Models\File;
 use Capevace\MagicImport\Artifacts\ArtifactGenerationStatus;
 use Capevace\MagicImport\Config\Extractor;
 use Capevace\MagicImport\LLM\ElElEm;
+use Capevace\MagicImport\LLM\Message\Message;
 use Capevace\MagicImport\LLM\Models\Claude3Family;
 use Capevace\MagicImport\Loop\InferenceResult;
 use Capevace\MagicImport\Model\Anthropic\Claude3Haiku;
@@ -16,8 +17,6 @@ use Capevace\MagicImport\Model\Exceptions\LLMException;
 use Capevace\MagicImport\Model\Exceptions\RateLimitExceeded;
 use Capevace\MagicImport\Model\Exceptions\UnknownInferenceException;
 use Capevace\MagicImport\Prompt\ClaudeExtractorPrompt;
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
 use Capevace\MagicImport\Prompt\OutputFixedJson;
 use Capevace\MagicImport\Prompt\TokenStats;
 use Capevace\MagicImport\Strategies\SimpleStrategy;
@@ -115,7 +114,7 @@ class JsonStreamController extends Controller
         $fileCount = count(glob("{$path}/pages_marked/*.jpg"));
         $end = min(20, $fileCount);
         $images = collect(range(1, $end))
-            ->map(fn ($i) => MultimodalMessage\Base64Image::fromPath(
+            ->map(fn ($i) => \Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image::fromPath(
                 base_path("../magic-import/fixtures/{$dataset}/pages_marked/page{$i}.jpg")
             ))
             ->all();

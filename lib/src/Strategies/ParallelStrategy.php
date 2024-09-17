@@ -5,10 +5,10 @@ namespace Capevace\MagicImport\Strategies;
 use App\Models\Actor\ActorTelemetry;
 use Capevace\MagicImport\Artifacts\Artifact;
 use Capevace\MagicImport\Config\Extractor;
+use Capevace\MagicImport\LLM\Message\DataMessage;
+use Capevace\MagicImport\LLM\Message\Message;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 use Capevace\MagicImport\Loop\InferenceResult;
-use Capevace\MagicImport\Loop\Response\JsonResponse;
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
 use Capevace\MagicImport\Prompt\ParallelMergerPrompt;
 use Capevace\MagicImport\Prompt\Role;
 use Capevace\MagicImport\Prompt\SequentialExtractorPrompt;
@@ -140,7 +140,7 @@ class ParallelStrategy
 
         $lastTokenStats = null;
 
-        $result = $this->extractor->llm->stream(
+        $messages = $this->extractor->llm->stream(
             prompt: $prompt,
             onMessageProgress: $onMessageProgress,
             onMessage: $onMessage,
@@ -155,11 +155,12 @@ class ParallelStrategy
 
         $this->totalTokenStats = $this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats;
 
-        /** @var JsonResponse|null $response */
-        $response = collect($result)
-            ->first(fn ($response) => $response instanceof JsonResponse);
+        /** @var DataMessage|null $message */
+        $message = collect($messages)
+            ->filter(fn (Message $message) => $message instanceof DataMessage)
+            ->first();
 
-        return $response?->data ?? $data;
+        return $message?->data() ?? $data;
     }
 
     protected function merge(array $datas): ?array
@@ -186,7 +187,7 @@ class ParallelStrategy
         $lastTokenStats = null;
         $strategy = $this;
 
-        $result = $this->extractor->llm->stream(
+        $messages = $this->extractor->llm->stream(
             prompt: $prompt,
             onMessageProgress: function (Message $message) use (&$messages, $threadId, $strategy) {
                 if ($strategy->onDataProgress && $data = $message->toArray()['data'] ?? null) {
@@ -217,10 +218,11 @@ class ParallelStrategy
 
         $this->totalTokenStats = $this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats;
 
-        /** @var JsonResponse|null $response */
-        $response = collect($result)
-            ->first(fn ($response) => $response instanceof JsonResponse);
+        /** @var DataMessage|null $message */
+        $message = collect($messages)
+            ->filter(fn (Message $message) => $message instanceof DataMessage)
+            ->first();
 
-        return $response?->data;
+        return $message?->data() ?? $data;
     }
 }

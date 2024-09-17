@@ -3,8 +3,11 @@
 namespace Capevace\MagicImport\Config;
 
 use Capevace\MagicImport\LLM\LLM;
+use Capevace\MagicImport\LLM\ModelLaunchInterface;
+use Capevace\MagicImport\Prompt\Prompt;
+use Closure;
 
-readonly class Extractor
+readonly class Extractor implements ModelLaunchInterface
 {
     public function __construct(
         public string $id,
@@ -16,4 +19,14 @@ readonly class Extractor
         public array $schema,
         public string $strategy,
     ) {}
+
+    public function stream(Prompt $prompt, ?Closure $onMessageProgress = null, ?Closure $onMessage = null): array
+    {
+        return $this->llm->stream($prompt, $onMessageProgress, $onMessage);
+    }
+
+    public function send(Prompt $prompt): array
+    {
+        return $this->llm->send($prompt);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace Capevace\MagicImport\Loop;
 
-use Capevace\MagicImport\Prompt\Message\Message;
+use Capevace\MagicImport\LLM\Message\Message;
 use Carbon\CarbonImmutable;
 
 readonly class LoopStep

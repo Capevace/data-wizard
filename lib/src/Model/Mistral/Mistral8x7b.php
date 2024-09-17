@@ -3,8 +3,8 @@
 namespace Capevace\MagicImport\Model\Mistral;
 
 use Capevace\MagicImport\Functions\InvokableFunction;
+use Capevace\MagicImport\LLM\Message\Message;
 use Capevace\MagicImport\Model\ChatLLM;
-use Capevace\MagicImport\Prompt\Message\Message;
 use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\StreamResponse;
 

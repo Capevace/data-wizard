@@ -5,10 +5,8 @@ namespace Capevace\MagicImport\LLM;
 use Capevace\MagicImport\Config\Organization;
 use Capevace\MagicImport\LLM\Options\ElElEmOptions;
 use Capevace\MagicImport\Model\ModelCost;
-use Capevace\MagicImport\Prompt\Prompt;
-use Closure;
 
-interface LLM
+interface LLM extends ModelLaunchInterface
 {
     public function withOptions(array $data): static;
 
@@ -19,8 +17,4 @@ interface LLM
     public function getModelName(): string;
 
     public function getModelCost(): ?ModelCost;
-
-    public function stream(Prompt $prompt, ?Closure $onMessageProgress = null, ?Closure $onMessage = null): array;
-
-    public function send(Prompt $prompt): array;
 }

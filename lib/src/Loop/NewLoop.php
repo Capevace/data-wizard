@@ -6,11 +6,10 @@ use Capevace\MagicImport\Functions\ExtractData;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\OutputText;
 use Capevace\MagicImport\LLM\LLM;
-use Capevace\MagicImport\Loop\Response\FunctionCallResponse;
-use Capevace\MagicImport\Loop\Response\LLMResponse;
-use Capevace\MagicImport\Prompt\Message\FunctionOutputMessage;
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Capevace\MagicImport\LLM\Message\FunctionInvocationMessage;
+use Capevace\MagicImport\LLM\Message\FunctionOutputMessage;
+use Capevace\MagicImport\LLM\Message\Message;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 use Capevace\MagicImport\Prompt\Prompt;
 use Capevace\MagicImport\Prompt\Role;
 use Carbon\CarbonImmutable;
@@ -20,8 +19,8 @@ use JsonException;
 
 class NewLoop
 {
-    /** @var LLMResponse[] */
-    public array $responses = [];
+    /** @var Message[] */
+    public array $messages = [];
 
     /** @var LoopStep[] */
     public array $steps = [];
@@ -62,7 +61,7 @@ class NewLoop
         $this->callLLM();
     }
 
-    public function push(LLMResponse $response)
+    public function push(Message $response)
     {
         $this->responses[] = $response;
 
@@ -70,40 +69,37 @@ class NewLoop
     }
 
     /**
-     * @param  LLMResponse[]  $responses
+     * @param  Message[]  $messages
      *
      * @throws Exception
      */
-    public function processMessages(array $responses): LoopStep
+    public function processMessages(array $messages): LoopStep
     {
-        /** @var Message[] $messages */
-        $messages = array_map(fn (LLMResponse $response) => $response->toMessage(), $responses);
-
-        foreach ($responses as $response) {
-            if ($response instanceof FunctionCallResponse) {
+        foreach ($messages as $message) {
+            if ($message instanceof FunctionInvocationMessage) {
                 /** @var InvokableFunction|null $function */
                 $function = collect($this->prompt->functions())
-                    ->first(fn (InvokableFunction $function) => $function->name() === $response->functionCall->name);
+                    ->first(fn (InvokableFunction $function) => $function->name() === $message->call->name);
 
-                if ($response->functionCall->name === (new ExtractData)->name()) {
-                    $this->onEnd?->call($this, $response);
+                if ($message->call->name === (new ExtractData)->name()) {
+                    $this->onEnd?->call($this, $message);
 
                     break;
                 }
 
                 try {
                     if ($function === null) {
-                        throw new Exception("Function {$response->functionCall->name} not found");
+                        throw new Exception("Function {$message->call->name} not found");
                     }
 
-                    $this->onFunctionCalled?->call($this, $response);
+                    $this->onFunctionCalled?->call($this, $message);
 
-                    $parameters = $function->validate($response->functionCall->arguments);
+                    $parameters = $function->validate($message->call->arguments);
                     $output = $function->execute($parameters);
                 } catch (Exception $e) {
                     $output = $e->getMessage();
 
-                    $this->onFunctionError?->call($this, $response, $e);
+                    $this->onFunctionError?->call($this, $message, $e);
 
                     if (app()->hasDebugModeEnabled()) {
                         $messages[] = new TextMessage(role: Role::Assistant, content: 'DEBUG Error: '.$e->getMessage());
@@ -111,7 +107,7 @@ class NewLoop
                 }
 
                 // Add function output to messages
-                $messages[] = new FunctionOutputMessage(role: Role::Assistant, call: $response->functionCall, output: $output);
+                $messages[] = new FunctionOutputMessage(role: Role::Assistant, call: $message->call, output: $output);
             }
         }
 
@@ -150,7 +146,8 @@ class NewLoop
      */
     public function callLLM(): void
     {
-        $prompt = $this->prompt->withMessages($this->serializedMessages());
+        //        $prompt = $this->prompt->withMessages($this->serializedMessages());
+        $prompt = $this->prompt;
 
         if ($this->stream) {
             $messages = $this->model->stream(

@@ -5,7 +5,7 @@ namespace Capevace\MagicImport\Prompt;
 use Capevace\MagicImport\Config\Extractor;
 use Capevace\MagicImport\Functions\Extract;
 use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 
 class ParallelMergerPrompt implements Prompt
 {
@@ -54,6 +54,7 @@ class ParallelMergerPrompt implements Prompt
     public function prompt(): string
     {
         $jsonObjects = collect($this->datas)
+            ->filter()
             ->map(fn (array $data) => json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE))
             ->map(fn (string $json) => "<json-object>{$json}</json-object>")
             ->join("\n");
@@ -84,10 +85,5 @@ class ParallelMergerPrompt implements Prompt
         return $this->shouldForceFunction
             ? new Extract(schema: $this->extractor->schema)
             : null;
-    }
-
-    public function withMessages(array $messages): static
-    {
-        return $this;
     }
 }

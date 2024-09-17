@@ -6,11 +6,10 @@ use Capevace\MagicImport\Artifacts\Artifact;
 use Capevace\MagicImport\Artifacts\Content\ImageContent;
 use Capevace\MagicImport\Artifacts\Content\TextContent;
 use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\FeatureType;
 use Capevace\MagicImport\Functions\Extract;
 use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Capevace\MagicImport\LLM\Message\MultimodalMessage;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 
@@ -153,7 +152,7 @@ class SequentialExtractorPrompt implements Prompt
                 ->groupBy(fn (TextContent|ImageContent $content) => $content->page ?? 0)
                 ->sortBy(fn (Collection $contents, $page) => $page)
                 ->flatMap(fn (Collection $contents) => collect($contents)
-                    ->map(fn (ImageContent $image) => new MultimodalMessage\Base64Image(
+                    ->map(fn (ImageContent $image) => new \Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image(
                         imageBase64: base64_encode(file_get_contents($artifact->getEmbedPath($image->path))),
                         mime: $image->mimetype,
                     ))
@@ -163,7 +162,7 @@ class SequentialExtractorPrompt implements Prompt
         return [
             // Attach images to the prompt
             new MultimodalMessage(role: Role::User, content: [
-                new MultimodalMessage\Text($this->prompt()),
+                new \Capevace\MagicImport\LLM\Message\MultimodalMessage\Text($this->prompt()),
                 ...$imageMessages,
             ]),
         ];
@@ -179,10 +178,5 @@ class SequentialExtractorPrompt implements Prompt
         return $this->shouldForceFunction
             ? new Extract(schema: $this->extractor->schema)
             : null;
-    }
-
-    public function withMessages(array $messages): static
-    {
-        return $this;
     }
 }

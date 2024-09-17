@@ -3,11 +3,10 @@
 namespace Capevace\MagicImport\Prompt;
 
 use Capevace\MagicImport\Functions\Add;
-use Capevace\MagicImport\Functions\Finish;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\OutputText;
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Capevace\MagicImport\LLM\Message\Message;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 use JsonException;
 
 class LoopExamplePrompt implements Prompt
@@ -38,14 +37,14 @@ class LoopExamplePrompt implements Prompt
         You are a calculator that can add numbers.
         You can use the following functions:
         {$functions}
-        
+
         You can output two things:
         - Output text.
-        - Call functions. 
-        
+        - Call functions.
+
         Output a single line of JSON that matches the following JSON schema:
         {$schema}
-        
+
         If you want to call functions, ONLY output the json object. No additional text or markdown formatting.
         PROMPT;
     }

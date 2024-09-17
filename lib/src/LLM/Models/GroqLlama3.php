@@ -3,7 +3,7 @@
 namespace Capevace\MagicImport\LLM\Models;
 
 use Capevace\MagicImport\Config\Organization;
-use Capevace\MagicImport\LLM\Models\Concerns\UsesGroqApi;
+use Capevace\MagicImport\LLM\Models\Apis\UsesGroqApi;
 use Capevace\MagicImport\LLM\Options\ElElEmOptions;
 
 class GroqLlama3 extends Llama3Family

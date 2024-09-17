@@ -2,8 +2,8 @@
 
 namespace Capevace\MagicImport;
 
+use Capevace\MagicImport\LLM\Message\Message;
 use Capevace\MagicImport\Loop\Loop;
-use Capevace\MagicImport\Prompt\Message\Message;
 use Closure;
 use Illuminate\Support\Arr;
 use OpenAI\Responses\StreamResponse;

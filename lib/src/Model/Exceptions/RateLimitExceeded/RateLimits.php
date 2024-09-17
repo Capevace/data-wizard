@@ -80,6 +80,6 @@ readonly class RateLimits
             return (float) $matches[1];
         }
 
-return null;
+        return null;
     }
 }

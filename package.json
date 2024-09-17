@@ -5,6 +5,7 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@babel/eslint-parser": "^7.25.1",
         "axios": "^1.1.2",
         "esbuild": "^0.23.0",
         "laravel-vite-plugin": "^0.7.2",

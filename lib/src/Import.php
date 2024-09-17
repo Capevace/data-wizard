@@ -2,10 +2,10 @@
 
 namespace Capevace\MagicImport;
 
+use Capevace\MagicImport\LLM\Message\TextMessage;
 use Capevace\MagicImport\Loop\Loop;
 use Capevace\MagicImport\Model\Open\GPT4;
 use Capevace\MagicImport\Prompt\DataExtractorPrompt;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
 use Capevace\MagicImport\Prompt\Role;
 
 class Import

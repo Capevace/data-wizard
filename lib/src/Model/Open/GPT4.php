@@ -3,9 +3,9 @@
 namespace Capevace\MagicImport\Model\Open;
 
 use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Loop\Response\Streamed\ResponseDecoder;
+use Capevace\MagicImport\LLM\Message\Message;
+use Capevace\MagicImport\LLM\Models\Decoders\ResponseDecoder;
 use Capevace\MagicImport\Model\ChatLLM;
-use Capevace\MagicImport\Prompt\Message\Message;
 use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\StreamResponse;
 

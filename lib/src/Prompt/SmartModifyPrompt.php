@@ -4,7 +4,7 @@ namespace Capevace\MagicImport\Prompt;
 
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\ModifyData;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 
 class SmartModifyPrompt implements Prompt
 {
@@ -71,10 +71,5 @@ class SmartModifyPrompt implements Prompt
         return $this->shouldForceFunction
             ? new ModifyData(schema: $this->schema)
             : null;
-    }
-
-    public function withMessages(array $messages): static
-    {
-        return $this;
     }
 }

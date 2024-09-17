@@ -2,8 +2,8 @@
 
 namespace Capevace\MagicImport\Prompt;
 
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Capevace\MagicImport\LLM\Message\Message;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 use JsonException;
 
 class OutputFixedJson implements Prompt
@@ -14,7 +14,7 @@ class OutputFixedJson implements Prompt
     {
         return <<<'PROMPT'
         Reply with a specific JSON object that you will be given. Output only this JSON object. Do not include any other text in the output. Do not format the JSON object in any way. Do not add markdown or any other formatting.
-        
+
         Minified mode: Enabled, output minified JSON.
         PROMPT;
     }

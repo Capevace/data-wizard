@@ -2,15 +2,14 @@
 
 namespace Capevace\MagicImport\Model\Groq;
 
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Loop\Response\Streamed\ResponseDecoder;
+use Capevace\MagicImport\LLM\Message\Message;
+use Capevace\MagicImport\LLM\Message\MultimodalMessage;
+use Capevace\MagicImport\LLM\Message\TextMessage;
+use Capevace\MagicImport\LLM\Models\Decoders\ResponseDecoder;
 use Capevace\MagicImport\Model\ChatLLM;
 use Capevace\MagicImport\Model\Exceptions\RateLimitExceeded;
 use Capevace\MagicImport\Model\Exceptions\UnknownInferenceException;
 use Capevace\MagicImport\Model\ModelCost;
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\MultimodalMessage;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
 use Capevace\MagicImport\Prompt\Prompt;
 use Closure;
 use OpenAI\Exceptions\ErrorException;
@@ -64,8 +63,8 @@ readonly class Mistral8x7b implements ChatLLM
                             MultimodalMessage::class => new TextMessage(
                                 role: $message->role,
                                 content: collect($message->content)
-                                    ->map(fn (MultimodalMessage\Text|MultimodalMessage\Base64Image $content) => match ($content::class) {
-                                        MultimodalMessage\Text::class => $content->text,
+                                    ->map(fn (\Capevace\MagicImport\LLM\Message\MultimodalMessage\Text|\Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image $content) => match ($content::class) {
+                                        \Capevace\MagicImport\LLM\Message\MultimodalMessage\Text::class => $content->text,
                                         default => null
                                     })
                                     ->filter()

@@ -5,12 +5,11 @@ namespace Capevace\MagicImport\Loop;
 use Capevace\MagicImport\Functions\ExtractData;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\OutputText;
-use Capevace\MagicImport\Loop\Response\FunctionCallResponse;
-use Capevace\MagicImport\Loop\Response\LLMResponse;
+use Capevace\MagicImport\LLM\Message\FunctionInvocationMessage;
+use Capevace\MagicImport\LLM\Message\FunctionOutputMessage;
+use Capevace\MagicImport\LLM\Message\Message;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 use Capevace\MagicImport\Model\LLM;
-use Capevace\MagicImport\Prompt\Message\FunctionOutputMessage;
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
 use Capevace\MagicImport\Prompt\Prompt;
 use Capevace\MagicImport\Prompt\Role;
 use Carbon\CarbonImmutable;
@@ -20,8 +19,8 @@ use JsonException;
 
 class Loop
 {
-    /** @var LLMResponse[] */
-    public array $responses = [];
+    /** @var Message[] */
+    public array $messages = [];
 
     /** @var LoopStep[] */
     public array $steps = [];
@@ -62,7 +61,7 @@ class Loop
         $this->callLLM();
     }
 
-    public function push(LLMResponse $response)
+    public function push(Message $response)
     {
         $this->responses[] = $response;
 
@@ -70,38 +69,35 @@ class Loop
     }
 
     /**
-     * @param  LLMResponse[]  $responses
+     * @param  Message[]  $messages
      *
      * @throws Exception
      */
-    public function performStep(array $responses): LoopStep
+    public function performStep(array $messages): LoopStep
     {
-        /** @var Message[] $messages */
-        $messages = array_map(fn (LLMResponse $response) => $response->toMessage(), $responses);
-
-        foreach ($responses as $response) {
-            if ($response instanceof FunctionCallResponse) {
+        foreach ($messages as $message) {
+            if ($message instanceof FunctionInvocationMessage) {
                 $function = collect($this->prompt->functions())
-                    ->first(fn (InvokableFunction $function) => $function->name() === $response->functionCall->name);
+                    ->first(fn (InvokableFunction $function) => $function->name() === $message->call->name);
 
-                if ($response->functionCall->name === (new ExtractData)->name()) {
-                    $this->onEnd?->call($this, $response);
+                if ($message->call->name === (new ExtractData)->name()) {
+                    $this->onEnd?->call($this, $message);
 
                     break;
                 }
 
                 try {
                     if ($function === null) {
-                        throw new Exception("Function {$response->functionCall->name} not found");
+                        throw new Exception("Function {$message->call->name} not found");
                     }
 
-                    $this->onFunctionCalled?->call($this, $response);
+                    $this->onFunctionCalled?->call($this, $message);
 
-                    $output = $this->invokeFunction($function, $response->functionCall->arguments);
+                    $output = $this->invokeFunction($function, $message->call->arguments);
                 } catch (Exception $e) {
                     $output = $e->getMessage();
 
-                    $this->onFunctionError?->call($this, $response, $e);
+                    $this->onFunctionError?->call($this, $message, $e);
 
                     if (app()->hasDebugModeEnabled()) {
                         $messages[] = new TextMessage(role: Role::Assistant, content: 'DEBUG Error: '.$e->getMessage());
@@ -109,7 +105,7 @@ class Loop
                 }
 
                 // Add function output to messages
-                $messages[] = new FunctionOutputMessage(role: Role::Assistant, call: $response->functionCall, output: $output);
+                $messages[] = new FunctionOutputMessage(role: Role::Assistant, call: $message->call, output: $output);
             }
         }
 
@@ -183,8 +179,8 @@ class Loop
             );
         }
 
-        $responses = $decoder->process();
-        $this->steps[] = $this->performStep($responses);
+        $messages = $decoder->process();
+        $this->steps[] = $this->performStep($messages);
 
         if ($this->shouldCallLLM()) {
             $this->callLLM();

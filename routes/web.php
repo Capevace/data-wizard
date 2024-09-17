@@ -19,7 +19,6 @@ Route::middleware(['auth'])
             return view('welcome');
         });
 
-        Route::get('/stream', \App\Http\Controllers\StreamController::class);
         Route::get('/claude', \App\Http\Controllers\ClaudeStreamController::class);
         Route::get('/api/bucket/{bucket}/runs/{run}/generate', \App\Http\Controllers\JsonStreamController::class)
             ->name('api.bucket.runs.generate');

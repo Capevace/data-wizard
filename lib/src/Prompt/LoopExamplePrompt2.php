@@ -3,12 +3,10 @@
 namespace Capevace\MagicImport\Prompt;
 
 use Capevace\MagicImport\Functions\Add;
-use Capevace\MagicImport\Functions\Finish;
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\Multiply;
-use Capevace\MagicImport\Functions\OutputText;
-use Capevace\MagicImport\Prompt\Message\Message;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Capevace\MagicImport\LLM\Message\Message;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 use JsonException;
 
 class LoopExamplePrompt2 implements Prompt

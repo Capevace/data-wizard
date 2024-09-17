@@ -4,7 +4,7 @@ namespace Capevace\MagicImport\Prompt;
 
 use Capevace\MagicImport\Functions\InvokableFunction;
 use Capevace\MagicImport\Functions\OutputJsonSchema;
-use Capevace\MagicImport\Prompt\Message\TextMessage;
+use Capevace\MagicImport\LLM\Message\TextMessage;
 
 class GenerateSchemaPrompt implements Prompt
 {
@@ -113,10 +113,5 @@ class GenerateSchemaPrompt implements Prompt
         return $this->shouldForceFunction
             ? new OutputJsonSchema
             : null;
-    }
-
-    public function withMessages(array $messages): static
-    {
-        return $this;
     }
 }

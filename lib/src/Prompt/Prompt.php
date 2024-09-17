@@ -3,7 +3,7 @@
 namespace Capevace\MagicImport\Prompt;
 
 use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Prompt\Message\Message;
+use Capevace\MagicImport\LLM\Message\Message;
 
 interface Prompt
 {
@@ -18,9 +18,4 @@ interface Prompt
      * @return InvokableFunction[]
      */
     public function functions(): array;
-
-    /**
-     * @param  Message[]  $messages
-     */
-    public function withMessages(array $messages): static;
 }

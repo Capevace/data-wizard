@@ -4,7 +4,7 @@ namespace Capevace\MagicImport\LLM\Models;
 
 use Capevace\MagicImport\Config\Organization;
 use Capevace\MagicImport\LLM\ElElEm;
-use Capevace\MagicImport\LLM\Models\Concerns\UsesAwsBedrockApi;
+use Capevace\MagicImport\LLM\Models\Apis\UsesAwsBedrockApi;
 use Capevace\MagicImport\LLM\Options\ElElEmOptions;
 use Capevace\MagicImport\Model\ModelCost;
 

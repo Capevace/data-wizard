@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Actor\ActorMessageType;
-use Capevace\MagicImport\Prompt\Message\MultimodalMessage\Base64Image;
+use Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image;
 use Capevace\MagicImport\Prompt\Role;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;

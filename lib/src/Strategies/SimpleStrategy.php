@@ -5,10 +5,10 @@ namespace Capevace\MagicImport\Strategies;
 use App\Models\Actor\ActorTelemetry;
 use Capevace\MagicImport\Artifacts\Artifact;
 use Capevace\MagicImport\Config\Extractor;
+use Capevace\MagicImport\LLM\Message\Message;
 use Capevace\MagicImport\Loop\InferenceResult;
 use Capevace\MagicImport\Loop\Response\JsonResponse;
 use Capevace\MagicImport\Prompt\ExtractorPrompt;
-use Capevace\MagicImport\Prompt\Message\Message;
 use Capevace\MagicImport\Prompt\TokenStats;
 use Closure;
 
