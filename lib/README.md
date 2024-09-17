@@ -1,4 +1,10 @@
-# `Magic` Class
+# `@magic-llm/sdk`
+
+A PHP SDK to do magical things with LLMs using just 5 lines of code.
+Enables developer-friendly extraction of structured and validated JSON data from files such as PDFs, Word documents, and images.
+
+
+## `Magic` Class
 
 ## Chat
 
@@ -111,6 +117,8 @@ $data = Magic::extract()
 ### Copyright and License
 
 This project is made by [Lukas Mateffy](https://mateffy.me) and is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://choosealicense.com/licenses/agpl-3.0/).
+
+For commercial licensing, please drop me an email at [hey@mateffy.me](mailto:hey@mateffy.me).
 
 ### Contributing
 
