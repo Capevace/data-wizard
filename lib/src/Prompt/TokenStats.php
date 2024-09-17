@@ -3,7 +3,7 @@
 namespace Capevace\MagicImport\Prompt;
 
 use Akaunting\Money\Money;
-use Capevace\MagicImport\Model\ModelCost;
+use Capevace\MagicImport\LLM\ModelCost;
 use Illuminate\Contracts\Support\Arrayable;
 
 readonly class TokenStats implements Arrayable

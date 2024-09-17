@@ -9,7 +9,6 @@ use Capevace\MagicImport\LLM\Models\Gpt4Family;
 use Capevace\MagicImport\LLM\Models\GroqLlama3;
 use Capevace\MagicImport\LLM\Models\GroqMixtral8X7B;
 use Capevace\MagicImport\LLM\Options\ElElEmOptions;
-use Capevace\MagicImport\Model\ModelCost;
 use Illuminate\Support\Str;
 
 /**

@@ -3,13 +3,13 @@
 namespace Capevace\MagicImport\LLM\Models\Apis;
 
 use Capevace\MagicImport\Functions\InvokableFunction;
+use Capevace\MagicImport\LLM\Exceptions\RateLimitExceeded;
+use Capevace\MagicImport\LLM\Exceptions\UnknownInferenceException;
 use Capevace\MagicImport\LLM\Message\Message;
 use Capevace\MagicImport\LLM\Message\MultimodalMessage;
 use Capevace\MagicImport\LLM\Message\TextMessage;
+use Capevace\MagicImport\LLM\ModelCost;
 use Capevace\MagicImport\LLM\Models\Decoders\ResponseDecoder;
-use Capevace\MagicImport\Model\Exceptions\RateLimitExceeded;
-use Capevace\MagicImport\Model\Exceptions\UnknownInferenceException;
-use Capevace\MagicImport\Model\ModelCost;
 use Capevace\MagicImport\Prompt\Prompt;
 use Capevace\MagicImport\Prompt\Role;
 use Closure;
@@ -93,7 +93,7 @@ trait UsesGroqApi
                 throw new RateLimitExceeded(
                     message: $e->getMessage(),
                     previous: $e,
-                    rateLimits: RateLimitExceeded\RateLimits::parseRateLimitError($e->getMessage()),
+                    rateLimits: \Capevace\MagicImport\LLM\Exceptions\RateLimitExceeded\RateLimits::parseRateLimitError($e->getMessage()),
                 );
             }
 

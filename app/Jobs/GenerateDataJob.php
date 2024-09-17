@@ -13,6 +13,7 @@ use Capevace\MagicImport\Config\Extractor;
 use Capevace\MagicImport\LLM\ElElEm;
 use Capevace\MagicImport\LLM\Message\Message;
 use Capevace\MagicImport\LLM\Models\Claude3Family;
+use Capevace\MagicImport\Magic;
 use Capevace\MagicImport\Prompt\TokenStats;
 use Capevace\MagicImport\Strategies\ParallelStrategy;
 use Capevace\MagicImport\Strategies\SequentialStrategy;
@@ -24,7 +25,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 
-class GenerateDataJob implements ShouldQueue
+class  GenerateDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -38,6 +39,14 @@ class GenerateDataJob implements ShouldQueue
             ->sortBy(fn (File $file) => $file->artifact->getMetadata()->name)
             ->values()
             ->pluck('artifact');
+
+        $extractor = Magic::extract()
+            ->model(ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::SONNET_3_5)))
+            ->system($this->run->saved_extractor->output_instructions)
+            ->schema($this->run->target_schema)
+            ->strategy($this->run->strategy)
+            ->artifacts($artifacts)
+            ->stream();
 
         $extractor = new Extractor(
             id: $this->run->saved_extractor->id,

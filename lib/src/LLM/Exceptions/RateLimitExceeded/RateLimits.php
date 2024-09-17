@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Model\Exceptions\RateLimitExceeded;
+namespace Capevace\MagicImport\LLM\Exceptions\RateLimitExceeded;
 
 use Carbon\CarbonImmutable;
 

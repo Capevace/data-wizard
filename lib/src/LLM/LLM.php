@@ -4,7 +4,6 @@ namespace Capevace\MagicImport\LLM;
 
 use Capevace\MagicImport\Config\Organization;
 use Capevace\MagicImport\LLM\Options\ElElEmOptions;
-use Capevace\MagicImport\Model\ModelCost;
 
 interface LLM extends ModelLaunchInterface
 {

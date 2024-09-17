@@ -3,12 +3,12 @@
 namespace Capevace\MagicImport\LLM\Models\Apis;
 
 use Capevace\MagicImport\Functions\InvokableFunction;
+use Capevace\MagicImport\LLM\Exceptions\InvalidRequest;
+use Capevace\MagicImport\LLM\Exceptions\TooManyTokensForModelRequested;
 use Capevace\MagicImport\LLM\Message\FunctionOutputMessage;
 use Capevace\MagicImport\LLM\Message\Message;
 use Capevace\MagicImport\LLM\Message\TextMessage;
 use Capevace\MagicImport\LLM\Models\Decoders\ClaudeResponseDecoder;
-use Capevace\MagicImport\Model\Exceptions\InvalidRequest;
-use Capevace\MagicImport\Model\Exceptions\TooManyTokensForModelRequested;
 use Capevace\MagicImport\Prompt\Prompt;
 use Capevace\MagicImport\Prompt\Role;
 use Capevace\MagicImport\Prompt\TokenStats;

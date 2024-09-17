@@ -4,10 +4,10 @@ namespace Capevace\MagicImport\LLM\Models\Apis;
 
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Capevace\MagicImport\Functions\InvokableFunction;
+use Capevace\MagicImport\LLM\Exceptions\InvalidRequest;
+use Capevace\MagicImport\LLM\Exceptions\TooManyTokensForModelRequested;
 use Capevace\MagicImport\LLM\Message\Message;
 use Capevace\MagicImport\LLM\Models\Decoders\ClaudeResponseDecoder;
-use Capevace\MagicImport\Model\Exceptions\InvalidRequest;
-use Capevace\MagicImport\Model\Exceptions\TooManyTokensForModelRequested;
 use Capevace\MagicImport\Prompt\ExtractorPrompt;
 use Capevace\MagicImport\Prompt\Prompt;
 use Capevace\MagicImport\Prompt\TokenStats;

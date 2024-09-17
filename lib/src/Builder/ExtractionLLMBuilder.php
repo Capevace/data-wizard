@@ -5,6 +5,7 @@ namespace Capevace\MagicImport\Builder;
 use Capevace\MagicImport\Builder\Concerns\HasArtifacts;
 use Capevace\MagicImport\Builder\Concerns\HasModel;
 use Capevace\MagicImport\Builder\Concerns\HasSchema;
+use Capevace\MagicImport\Builder\Concerns\HasStrategy;
 use Capevace\MagicImport\Builder\Concerns\HasSystemPrompt;
 use Capevace\MagicImport\Builder\Concerns\HasTools;
 use Capevace\MagicImport\Builder\Concerns\LaunchesBuilderLLM;
@@ -20,6 +21,7 @@ class ExtractionLLMBuilder implements LLMBuilder
     use HasArtifacts;
     use HasModel;
     use HasSchema;
+    use HasStrategy;
     use HasSystemPrompt;
     use HasTools;
     use LaunchesBuilderLLM;

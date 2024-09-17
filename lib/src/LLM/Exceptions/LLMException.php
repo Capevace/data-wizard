@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Model\Exceptions;
+namespace Capevace\MagicImport\LLM\Exceptions;
 
 interface LLMException
 {
