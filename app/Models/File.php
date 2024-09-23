@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
-use Capevace\MagicImport\Artifacts\ArtifactGenerationStatus;
-use Capevace\MagicImport\Artifacts\LocalArtifact;
+use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
+use Mateffy\Magic\Artifacts\LocalArtifact;
 
 /**
  * @property ArtifactGenerationStatus $artifact_status

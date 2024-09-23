@@ -1,12 +1,12 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models;
+namespace Mateffy\Magic\LLM\Models;
 
-use Capevace\MagicImport\Config\Organization;
-use Capevace\MagicImport\LLM\ElElEm;
-use Capevace\MagicImport\LLM\ModelCost;
-use Capevace\MagicImport\LLM\Models\Apis\UsesAwsBedrockApi;
-use Capevace\MagicImport\LLM\Options\ElElEmOptions;
+use Mateffy\Magic\Config\Organization;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\ModelCost;
+use Mateffy\Magic\LLM\Models\Apis\UsesAwsBedrockApi;
+use Mateffy\Magic\LLM\Options\ElElEmOptions;
 
 class BedrockClaude3Family extends ElElEm
 {

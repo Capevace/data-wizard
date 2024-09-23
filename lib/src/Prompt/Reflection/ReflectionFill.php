@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt\Reflection;
+namespace Mateffy\Magic\Prompt\Reflection;
 
 use ReflectionClass;
 use ReflectionNamedType;

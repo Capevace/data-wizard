@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt\Reflection\Examples;
+namespace Mateffy\Magic\Prompt\Reflection\Examples;
 
-use Capevace\MagicImport\Prompt\Reflection\Description;
-use Capevace\MagicImport\Prompt\Reflection\Min;
+use Mateffy\Magic\Prompt\Reflection\Description;
+use Mateffy\Magic\Prompt\Reflection\Min;
 
 #[Description('A product from a catalog or magazine page')]
 class Product

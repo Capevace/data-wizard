@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\Config;
+namespace Mateffy\Magic\Config;
 
-use Capevace\MagicImport\Config\Options\DocumentFileOptions;
-use Capevace\MagicImport\Config\Options\FileOptions;
+use Mateffy\Magic\Config\Options\DocumentFileOptions;
+use Mateffy\Magic\Config\Options\FileOptions;
 
 class ExtractorFileType
 {

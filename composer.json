@@ -47,7 +47,7 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Capevace\\MagicImport\\": "lib/src/"
+            "Mateffy\\Magic\\": "lib/src/"
         }
     },
     "autoload-dev": {

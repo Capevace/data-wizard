@@ -83,8 +83,8 @@
                     <div
                         @class([
                             'flex items-center',
-                            'justify-start' => $message->role === \Capevace\MagicImport\Prompt\Role::Assistant,
-                            'justify-end' => $message->role !== \Capevace\MagicImport\Prompt\Role::Assistant,
+                            'justify-start' => $message->role === \Mateffy\Magic\Prompt\Role::Assistant,
+                            'justify-end' => $message->role !== \Mateffy\Magic\Prompt\Role::Assistant,
                         ])
                     >
                         <div class="max-w-xl text-xs bg-white dark:bg-gray-800 dark:text-gray-200 border dark:border-gray-700 rounded-lg p-4 shadow-md">

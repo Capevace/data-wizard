@@ -1,10 +1,10 @@
 <?php
 
-namespace Capevace\MagicImport\Artifacts;
+namespace Mateffy\Magic\Artifacts;
 
-use Capevace\MagicImport\Artifacts\Content\ImageContent;
-use Capevace\MagicImport\Artifacts\Content\TextContent;
-use Capevace\MagicImport\Config\ExtractorFileType;
+use Mateffy\Magic\Artifacts\Content\ImageContent;
+use Mateffy\Magic\Artifacts\Content\TextContent;
+use Mateffy\Magic\Config\ExtractorFileType;
 use Illuminate\Support\Facades\File;
 use JsonException;
 use Throwable;

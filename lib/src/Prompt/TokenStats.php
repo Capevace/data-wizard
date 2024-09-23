@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
 use Akaunting\Money\Money;
-use Capevace\MagicImport\LLM\ModelCost;
+use Mateffy\Magic\LLM\ModelCost;
 use Illuminate\Contracts\Support\Arrayable;
 
 readonly class TokenStats implements Arrayable

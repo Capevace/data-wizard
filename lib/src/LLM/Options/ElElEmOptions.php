@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Options;
+namespace Mateffy\Magic\LLM\Options;
 
 readonly class ElElEmOptions
 {

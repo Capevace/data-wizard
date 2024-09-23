@@ -1,18 +1,18 @@
 <?php
 
-namespace Capevace\MagicImport\Strategies;
+namespace Mateffy\Magic\Strategies;
 
 use App\Models\Actor\ActorTelemetry;
-use Capevace\MagicImport\Artifacts\Artifact;
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\LLM\Message\DataMessage;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Message\TextMessage;
-use Capevace\MagicImport\Loop\InferenceResult;
-use Capevace\MagicImport\Prompt\ParallelMergerPrompt;
-use Capevace\MagicImport\Prompt\Role;
-use Capevace\MagicImport\Prompt\SequentialExtractorPrompt;
-use Capevace\MagicImport\Prompt\TokenStats;
+use Mateffy\Magic\Artifacts\Artifact;
+use Mateffy\Magic\Config\Extractor;
+use Mateffy\Magic\LLM\Message\DataMessage;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\TextMessage;
+use Mateffy\Magic\Loop\InferenceResult;
+use Mateffy\Magic\Prompt\ParallelMergerPrompt;
+use Mateffy\Magic\Prompt\Role;
+use Mateffy\Magic\Prompt\SequentialExtractorPrompt;
+use Mateffy\Magic\Prompt\TokenStats;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;

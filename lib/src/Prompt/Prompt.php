@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\LLM\Message\Message;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\LLM\Message\Message;
 
 interface Prompt
 {

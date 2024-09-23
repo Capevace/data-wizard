@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Artifacts;
+namespace Mateffy\Magic\Artifacts;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;

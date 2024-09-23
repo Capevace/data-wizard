@@ -1,12 +1,12 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models;
+namespace Mateffy\Magic\LLM\Models;
 
-use Capevace\MagicImport\Config\Organization;
-use Capevace\MagicImport\LLM\ElElEm;
-use Capevace\MagicImport\LLM\ModelCost;
-use Capevace\MagicImport\LLM\Models\Apis\UsesAnthropicApi;
-use Capevace\MagicImport\LLM\Options\ElElEmOptions;
+use Mateffy\Magic\Config\Organization;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\ModelCost;
+use Mateffy\Magic\LLM\Models\Apis\UsesAnthropicApi;
+use Mateffy\Magic\LLM\Options\ElElEmOptions;
 
 class Claude3Family extends ElElEm
 {

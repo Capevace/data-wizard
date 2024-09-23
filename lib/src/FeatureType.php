@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport;
+namespace Mateffy\Magic;
 
 enum FeatureType: string
 {

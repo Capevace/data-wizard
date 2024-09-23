@@ -1,12 +1,12 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models\Decoders;
+namespace Mateffy\Magic\LLM\Models\Decoders;
 
-use Capevace\MagicImport\LLM\Message\JsonMessage;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Message\PartialMessage;
-use Capevace\MagicImport\LLM\Message\TextMessage;
-use Capevace\MagicImport\Prompt\TokenStats;
+use Mateffy\Magic\LLM\Message\JsonMessage;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\PartialMessage;
+use Mateffy\Magic\LLM\Message\TextMessage;
+use Mateffy\Magic\Prompt\TokenStats;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;

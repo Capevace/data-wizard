@@ -1,8 +1,8 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Message;
+namespace Mateffy\Magic\LLM\Message;
 
-use Capevace\MagicImport\Prompt\Role;
+use Mateffy\Magic\Prompt\Role;
 
 class TextMessage implements Message, PartialMessage
 {

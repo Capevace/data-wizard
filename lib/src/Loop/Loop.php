@@ -1,17 +1,17 @@
 <?php
 
-namespace Capevace\MagicImport\Loop;
+namespace Mateffy\Magic\Loop;
 
-use Capevace\MagicImport\Functions\ExtractData;
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Functions\OutputText;
-use Capevace\MagicImport\LLM\Message\FunctionInvocationMessage;
-use Capevace\MagicImport\LLM\Message\FunctionOutputMessage;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Message\TextMessage;
-use Capevace\MagicImport\Model\LLM;
-use Capevace\MagicImport\Prompt\Prompt;
-use Capevace\MagicImport\Prompt\Role;
+use Mateffy\Magic\Functions\ExtractData;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\Functions\OutputText;
+use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
+use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\TextMessage;
+use Mateffy\Magic\Model\LLM;
+use Mateffy\Magic\Prompt\Prompt;
+use Mateffy\Magic\Prompt\Role;
 use Carbon\CarbonImmutable;
 use Closure;
 use Exception;

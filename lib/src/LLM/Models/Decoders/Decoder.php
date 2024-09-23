@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models\Decoders;
+namespace Mateffy\Magic\LLM\Models\Decoders;
 
 interface Decoder
 {

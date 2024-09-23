@@ -1,10 +1,10 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Functions\OutputJsonSchema;
-use Capevace\MagicImport\LLM\Message\TextMessage;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\Functions\OutputJsonSchema;
+use Mateffy\Magic\LLM\Message\TextMessage;
 
 class GenerateSchemaPrompt implements Prompt
 {

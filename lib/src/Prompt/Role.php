@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
 enum Role: string
 {

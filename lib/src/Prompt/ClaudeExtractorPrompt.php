@@ -1,11 +1,11 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
-use Capevace\MagicImport\FeatureType;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Message\MultimodalMessage;
-use Capevace\MagicImport\LLM\Message\TextMessage;
+use Mateffy\Magic\FeatureType;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\MultimodalMessage;
+use Mateffy\Magic\LLM\Message\TextMessage;
 use JsonException;
 
 class ClaudeExtractorPrompt implements Prompt
@@ -13,7 +13,7 @@ class ClaudeExtractorPrompt implements Prompt
     public function __construct(
         public string $text,
 
-        /** @var \Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image[] $images */
+        /** @var \Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image[] $images */
         public array $images
     ) {}
 
@@ -79,7 +79,7 @@ class ClaudeExtractorPrompt implements Prompt
                 role: Role::User,
                 content: [
                     ...$this->images,
-                    new \Capevace\MagicImport\LLM\Message\MultimodalMessage\Text(<<<PROMPT
+                    new \Mateffy\Magic\LLM\Message\MultimodalMessage\Text(<<<PROMPT
                     <settings>
                     Language: Deutsch
                     Beschreibungs-Stil: Professionell und freundlich

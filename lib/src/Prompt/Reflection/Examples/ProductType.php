@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt\Reflection\Examples;
+namespace Mateffy\Magic\Prompt\Reflection\Examples;
 
 enum ProductType: string
 {

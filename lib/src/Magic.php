@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport;
+namespace Mateffy\Magic;
 
-use Capevace\MagicImport\Builder\ChatPreconfiguredModelBuilder;
-use Capevace\MagicImport\Builder\ExtractionLLMBuilder;
+use Mateffy\Magic\Builder\ChatPreconfiguredModelBuilder;
+use Mateffy\Magic\Builder\ExtractionLLMBuilder;
 
 class Magic
 {

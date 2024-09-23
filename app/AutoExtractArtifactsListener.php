@@ -4,7 +4,7 @@ namespace App;
 
 use App\Models\ExtractionBucket;
 use App\Models\File;
-use Capevace\MagicImport\Artifacts\GenerateArtifactJob;
+use Mateffy\Magic\Artifacts\GenerateArtifactJob;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
 class AutoExtractArtifactsListener

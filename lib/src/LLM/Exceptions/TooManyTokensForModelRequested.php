@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Exceptions;
+namespace Mateffy\Magic\LLM\Exceptions;
 
 use Throwable;
 

@@ -1,7 +1,7 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models;
+namespace Mateffy\Magic\LLM\Models;
 
-use Capevace\MagicImport\LLM\ElElEm;
+use Mateffy\Magic\LLM\ElElEm;
 
 abstract class Llama3Family extends ElElEm {}

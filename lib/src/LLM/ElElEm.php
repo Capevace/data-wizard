@@ -1,14 +1,14 @@
 <?php
 
-namespace Capevace\MagicImport\LLM;
+namespace Mateffy\Magic\LLM;
 
-use Capevace\MagicImport\Config\Organization;
-use Capevace\MagicImport\LLM\Models\BedrockClaude3Family;
-use Capevace\MagicImport\LLM\Models\Claude3Family;
-use Capevace\MagicImport\LLM\Models\Gpt4Family;
-use Capevace\MagicImport\LLM\Models\GroqLlama3;
-use Capevace\MagicImport\LLM\Models\GroqMixtral8X7B;
-use Capevace\MagicImport\LLM\Options\ElElEmOptions;
+use Mateffy\Magic\Config\Organization;
+use Mateffy\Magic\LLM\Models\BedrockClaude3Family;
+use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\LLM\Models\Gpt4Family;
+use Mateffy\Magic\LLM\Models\GroqLlama3;
+use Mateffy\Magic\LLM\Models\GroqMixtral8X7B;
+use Mateffy\Magic\LLM\Options\ElElEmOptions;
 use Illuminate\Support\Str;
 
 /**

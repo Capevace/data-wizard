@@ -1,10 +1,10 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models;
+namespace Mateffy\Magic\LLM\Models;
 
-use Capevace\MagicImport\Config\Organization;
-use Capevace\MagicImport\LLM\Models\Apis\UsesGroqApi;
-use Capevace\MagicImport\LLM\Options\ElElEmOptions;
+use Mateffy\Magic\Config\Organization;
+use Mateffy\Magic\LLM\Models\Apis\UsesGroqApi;
+use Mateffy\Magic\LLM\Options\ElElEmOptions;
 
 class GroqLlama3 extends Llama3Family
 {

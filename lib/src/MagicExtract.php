@@ -1,10 +1,10 @@
 <?php
 
-namespace Capevace\MagicImport;
+namespace Mateffy\Magic;
 
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\Config\ExtractorFileType;
-use Capevace\MagicImport\LLM\ElElEm;
+use Mateffy\Magic\Config\Extractor;
+use Mateffy\Magic\Config\ExtractorFileType;
+use Mateffy\Magic\LLM\ElElEm;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Swaggest\JsonSchema\JsonSchema;

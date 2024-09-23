@@ -1,8 +1,8 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Exceptions;
+namespace Mateffy\Magic\LLM\Exceptions;
 
-use Capevace\MagicImport\LLM\Exceptions\RateLimitExceeded\RateLimits;
+use Mateffy\Magic\LLM\Exceptions\RateLimitExceeded\RateLimits;
 use Throwable;
 
 class RateLimitExceeded extends \Exception implements LLMException

@@ -1,8 +1,8 @@
 <?php
 
-namespace Capevace\MagicImport\LLM;
+namespace Mateffy\Magic\LLM;
 
-use Capevace\MagicImport\Prompt\Prompt;
+use Mateffy\Magic\Prompt\Prompt;
 use Closure;
 
 interface ModelLaunchInterface

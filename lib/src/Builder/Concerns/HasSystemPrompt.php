@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Builder\Concerns;
+namespace Mateffy\Magic\Builder\Concerns;
 
 trait HasSystemPrompt
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models\Decoders;
+namespace Mateffy\Magic\LLM\Models\Decoders;
 
-use Capevace\MagicImport\LLM\Message\FunctionCall;
-use Capevace\MagicImport\LLM\Message\FunctionInvocationMessage;
-use Capevace\MagicImport\LLM\Message\JsonMessage;
-use Capevace\MagicImport\LLM\Message\PartialMessage;
-use Capevace\MagicImport\LLM\Message\TextMessage;
-use Capevace\MagicImport\Prompt\Role;
+use Mateffy\Magic\LLM\Message\FunctionCall;
+use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
+use Mateffy\Magic\LLM\Message\JsonMessage;
+use Mateffy\Magic\LLM\Message\PartialMessage;
+use Mateffy\Magic\LLM\Message\TextMessage;
+use Mateffy\Magic\Prompt\Role;
 use Illuminate\Support\Arr;
 use OpenAI\Responses\Chat\CreateResponse;
 use OpenAI\Responses\StreamResponse;

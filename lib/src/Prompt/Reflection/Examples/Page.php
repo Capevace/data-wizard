@@ -1,11 +1,11 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt\Reflection\Examples;
+namespace Mateffy\Magic\Prompt\Reflection\Examples;
 
-use Capevace\MagicImport\Prompt\Reflection\ArrayOf;
-use Capevace\MagicImport\Prompt\Reflection\Description;
-use Capevace\MagicImport\Prompt\Reflection\Max;
-use Capevace\MagicImport\Prompt\Reflection\Min;
+use Mateffy\Magic\Prompt\Reflection\ArrayOf;
+use Mateffy\Magic\Prompt\Reflection\Description;
+use Mateffy\Magic\Prompt\Reflection\Max;
+use Mateffy\Magic\Prompt\Reflection\Min;
 
 #[Description('A page of a product catalog or brochure')]
 class Page

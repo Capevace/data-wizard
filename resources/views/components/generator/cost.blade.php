@@ -1,5 +1,5 @@
 @props([
-    /** @var \Capevace\MagicImport\Prompt\TokenStats $stats */
+    /** @var \Mateffy\Magic\Prompt\TokenStats $stats */
     'stats',
 ])
 

@@ -6,7 +6,7 @@ use Akaunting\Money\Money;
 use App\Models\Concerns\TokenStatsCast;
 use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionRun\RunStatus;
-use Capevace\MagicImport\Prompt\TokenStats;
+use Mateffy\Magic\Prompt\TokenStats;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

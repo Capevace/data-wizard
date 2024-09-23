@@ -1,5 +1,5 @@
 <?php
 
-namespace Capevace\MagicImport\Artifacts;
+namespace Mateffy\Magic\Artifacts;
 
 class ArtifactGenerationFailed extends \Exception {}

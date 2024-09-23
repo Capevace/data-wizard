@@ -1,15 +1,15 @@
 <?php
 
-namespace Capevace\MagicImport\Strategies;
+namespace Mateffy\Magic\Strategies;
 
 use App\Models\Actor\ActorTelemetry;
-use Capevace\MagicImport\Artifacts\Artifact;
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\Loop\InferenceResult;
-use Capevace\MagicImport\Loop\Response\JsonResponse;
-use Capevace\MagicImport\Prompt\SequentialExtractorPrompt;
-use Capevace\MagicImport\Prompt\TokenStats;
+use Mateffy\Magic\Artifacts\Artifact;
+use Mateffy\Magic\Config\Extractor;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\Loop\InferenceResult;
+use Mateffy\Magic\Loop\Response\JsonResponse;
+use Mateffy\Magic\Prompt\SequentialExtractorPrompt;
+use Mateffy\Magic\Prompt\TokenStats;
 use Closure;
 use Illuminate\Support\Collection;
 

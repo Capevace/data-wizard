@@ -1,8 +1,8 @@
 <?php
 
-namespace Capevace\MagicImport\Loop;
+namespace Mateffy\Magic\Loop;
 
-use Capevace\MagicImport\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\Message;
 use Carbon\CarbonImmutable;
 
 readonly class LoopStep

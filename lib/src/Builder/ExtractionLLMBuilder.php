@@ -1,22 +1,22 @@
 <?php
 
-namespace Capevace\MagicImport\Builder;
+namespace Mateffy\Magic\Builder;
 
-use Capevace\MagicImport\Builder\Concerns\HasArtifacts;
-use Capevace\MagicImport\Builder\Concerns\HasModel;
-use Capevace\MagicImport\Builder\Concerns\HasSchema;
-use Capevace\MagicImport\Builder\Concerns\HasStrategy;
-use Capevace\MagicImport\Builder\Concerns\HasSystemPrompt;
-use Capevace\MagicImport\Builder\Concerns\HasTools;
-use Capevace\MagicImport\Builder\Concerns\LaunchesBuilderLLM;
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\Config\ExtractorFileType;
-use Capevace\MagicImport\Prompt\ExtractorPrompt;
-use Capevace\MagicImport\Prompt\Prompt;
 use Closure;
 use Illuminate\Support\Str;
+use Mateffy\Magic\Builder\Concerns\HasArtifacts;
+use Mateffy\Magic\Builder\Concerns\HasModel;
+use Mateffy\Magic\Builder\Concerns\HasSchema;
+use Mateffy\Magic\Builder\Concerns\HasStrategy;
+use Mateffy\Magic\Builder\Concerns\HasSystemPrompt;
+use Mateffy\Magic\Builder\Concerns\HasTools;
+use Mateffy\Magic\Builder\Concerns\LaunchesBuilderLLM;
+use Mateffy\Magic\Config\Extractor;
+use Mateffy\Magic\Config\ExtractorFileType;
+use Mateffy\Magic\LLM\PreconfiguredModelLaunchInterface;
+use Mateffy\Magic\Strategies\Strategy;
 
-class ExtractionLLMBuilder implements LLMBuilder
+class ExtractionLLMBuilder implements PreconfiguredModelLaunchInterface
 {
     use HasArtifacts;
     use HasModel;
@@ -26,31 +26,37 @@ class ExtractionLLMBuilder implements LLMBuilder
     use HasTools;
     use LaunchesBuilderLLM;
 
-    public function build(): Prompt
+    public function stream(
+        ?Closure $onMessageProgress = null,
+        ?Closure $onMessage = null,
+        ?Closure $onTokenStats = null,
+        ?Closure $onActorTelemetry = null,
+        ?Closure $onDataProgress = null,
+    ): array
     {
-        $extractor = new Extractor(
-            id: Str::uuid(),
-            title: 'Title',
-            outputInstructions: 'Output instructions',
-            allowedTypes: [ExtractorFileType::IMAGES, ExtractorFileType::DOCUMENTS],
-            llm: $this->model,
-            schema: $this->schema,
-            strategy: 'simple'
+        $strategyClass = $this->getStrategyClass();
+
+        /** @var Strategy $strategy */
+        $strategy = new $strategyClass(
+            extractor: new Extractor(
+                id: Str::uuid(),
+                title: 'Title',
+                outputInstructions: 'Output instructions',
+                allowedTypes: [ExtractorFileType::IMAGES, ExtractorFileType::DOCUMENTS],
+                llm: $this->model,
+                schema: $this->schema,
+                strategy: 'simple'
+            ),
+            onMessageProgress: $onMessageProgress,
+            onMessage: $onMessage,
+            onTokenStats: $onTokenStats,
+            onActorTelemetry: $onActorTelemetry,
+            onDataProgress: $onDataProgress,
         );
 
-        $prompt = new ExtractorPrompt(
-            extractor: $extractor,
-            artifacts: [],
-        );
+        $result = $strategy->run($this->artifacts);
 
-        return $prompt;
-    }
-
-    public function stream(?Closure $onMessageProgress = null, ?Closure $onMessage = null): array
-    {
-        $prompt = $this->build();
-
-        return $this->model->stream($prompt, $onMessageProgress, $onMessage);
+        return $result->value;
     }
 
     public function send(): array

@@ -1,10 +1,10 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Functions\ModifyData;
-use Capevace\MagicImport\LLM\Message\TextMessage;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\Functions\ModifyData;
+use Mateffy\Magic\LLM\Message\TextMessage;
 
 class SmartModifyPrompt implements Prompt
 {

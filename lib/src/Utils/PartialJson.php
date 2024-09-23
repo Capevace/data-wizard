@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Utils;
+namespace Mateffy\Magic\Utils;
 
 use GregHunt\PartialJson\JsonParser;
 

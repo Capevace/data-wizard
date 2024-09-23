@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Loop;
+namespace Mateffy\Magic\Loop;
 
 readonly class InferenceResult
 {

@@ -2,7 +2,7 @@
 
 namespace App\Models\Concerns;
 
-use Capevace\MagicImport\Prompt\TokenStats;
+use Mateffy\Magic\Prompt\TokenStats;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 

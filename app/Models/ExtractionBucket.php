@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionBucket\BucketStatus;
-use Capevace\MagicImport\Functions\ExtractData;
+use Mateffy\Magic\Functions\ExtractData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

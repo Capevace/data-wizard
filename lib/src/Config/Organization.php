@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Config;
+namespace Mateffy\Magic\Config;
 
 class Organization
 {

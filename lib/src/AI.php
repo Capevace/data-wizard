@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport;
+namespace Mateffy\Magic;
 
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\Loop\Loop;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\Loop\Loop;
 use Closure;
 use Illuminate\Support\Arr;
 use OpenAI\Responses\StreamResponse;

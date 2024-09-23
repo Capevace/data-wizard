@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\LLM;
+namespace Mateffy\Magic\LLM;
 
-use Capevace\MagicImport\Config\Organization;
-use Capevace\MagicImport\LLM\Options\ElElEmOptions;
+use Mateffy\Magic\Config\Organization;
+use Mateffy\Magic\LLM\Options\ElElEmOptions;
 
 interface LLM extends ModelLaunchInterface
 {

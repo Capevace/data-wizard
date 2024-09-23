@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\Builder\Concerns;
+namespace Mateffy\Magic\Builder\Concerns;
 
-use Capevace\MagicImport\Artifacts\Artifact;
-use Capevace\MagicImport\Artifacts\LocalArtifact;
+use Mateffy\Magic\Artifacts\Artifact;
+use Mateffy\Magic\Artifacts\LocalArtifact;
 
 trait HasArtifacts
 {

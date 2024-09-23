@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\Builder\Concerns;
+namespace Mateffy\Magic\Builder\Concerns;
 
-use Capevace\MagicImport\LLM\ElElEm;
-use Capevace\MagicImport\LLM\LLM;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\LLM;
 
 trait HasModel
 {

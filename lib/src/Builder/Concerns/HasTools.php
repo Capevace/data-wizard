@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\Builder\Concerns;
+namespace Mateffy\Magic\Builder\Concerns;
 
-use Capevace\MagicImport\LLM\Message\FunctionCall;
-use Capevace\MagicImport\Prompt\Reflection\ReflectionSchema;
+use Mateffy\Magic\LLM\Message\FunctionCall;
+use Mateffy\Magic\Prompt\Reflection\ReflectionSchema;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;

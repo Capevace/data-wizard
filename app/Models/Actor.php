@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
-use Capevace\MagicImport\LLM\Message\FunctionInvocationMessage;
-use Capevace\MagicImport\LLM\Message\FunctionOutputMessage;
-use Capevace\MagicImport\LLM\Message\JsonMessage;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Message\MultimodalMessage;
-use Capevace\MagicImport\LLM\Message\TextMessage;
+use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
+use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
+use Mateffy\Magic\LLM\Message\JsonMessage;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\MultimodalMessage;
+use Mateffy\Magic\LLM\Message\TextMessage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -55,13 +55,13 @@ class Actor extends Model
                 'json' => json_encode($message->data),
             ]),
             MultimodalMessage::class => collect($message->content)
-                ->each(fn (\Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image|\Capevace\MagicImport\LLM\Message\MultimodalMessage\Text $content) => match ($content::class) {
-                    \Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image::class => $this->messages()->create([
+                ->each(fn (\Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image|\Mateffy\Magic\LLM\Message\MultimodalMessage\Text $content) => match ($content::class) {
+                    \Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Base64Image,
                         'role' => $message->role,
                         'json' => $content->toArray(),
                     ]),
-                    \Capevace\MagicImport\LLM\Message\MultimodalMessage\Text::class => $this->messages()->create([
+                    \Mateffy\Magic\LLM\Message\MultimodalMessage\Text::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Text,
                         'role' => $message->role,
                         'text' => $content->text,

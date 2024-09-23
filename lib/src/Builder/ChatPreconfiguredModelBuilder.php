@@ -1,18 +1,19 @@
 <?php
 
-namespace Capevace\MagicImport\Builder;
+namespace Mateffy\Magic\Builder;
 
-use Capevace\MagicImport\Builder\Concerns\HasArtifacts;
-use Capevace\MagicImport\Builder\Concerns\HasMessages;
-use Capevace\MagicImport\Builder\Concerns\HasModel;
-use Capevace\MagicImport\Builder\Concerns\HasSchema;
-use Capevace\MagicImport\Builder\Concerns\HasSystemPrompt;
-use Capevace\MagicImport\Builder\Concerns\HasTools;
-use Capevace\MagicImport\Builder\Concerns\LaunchesBuilderLLM;
-use Capevace\MagicImport\Prompt\Prompt;
 use Closure;
+use Mateffy\Magic\Builder\Concerns\HasArtifacts;
+use Mateffy\Magic\Builder\Concerns\HasMessages;
+use Mateffy\Magic\Builder\Concerns\HasModel;
+use Mateffy\Magic\Builder\Concerns\HasSchema;
+use Mateffy\Magic\Builder\Concerns\HasSystemPrompt;
+use Mateffy\Magic\Builder\Concerns\HasTools;
+use Mateffy\Magic\Builder\Concerns\LaunchesBuilderLLM;
+use Mateffy\Magic\LLM\PreconfiguredModelLaunchInterface;
+use Mateffy\Magic\Prompt\Prompt;
 
-class ChatPreconfiguredModelBuilder implements LLMBuilder
+class ChatPreconfiguredModelBuilder implements PreconfiguredModelLaunchInterface
 {
     use HasArtifacts;
     use HasMessages;

@@ -8,16 +8,16 @@ use App\Models\ExtractionRun;
 use App\Models\ExtractionRun\RunStatus;
 use App\Models\File;
 use App\Models\User;
-use Capevace\MagicImport\Artifacts\ArtifactGenerationStatus;
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\LLM\ElElEm;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Models\Claude3Family;
-use Capevace\MagicImport\Magic;
-use Capevace\MagicImport\Prompt\TokenStats;
-use Capevace\MagicImport\Strategies\ParallelStrategy;
-use Capevace\MagicImport\Strategies\SequentialStrategy;
-use Capevace\MagicImport\Strategies\SimpleStrategy;
+use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
+use Mateffy\Magic\Config\Extractor;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\Magic;
+use Mateffy\Magic\Prompt\TokenStats;
+use Mateffy\Magic\Strategies\ParallelStrategy;
+use Mateffy\Magic\Strategies\SequentialStrategy;
+use Mateffy\Magic\Strategies\SimpleStrategy;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -40,33 +40,6 @@ class  GenerateDataJob implements ShouldQueue
             ->values()
             ->pluck('artifact');
 
-        $extractor = Magic::extract()
-            ->model(ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::SONNET_3_5)))
-            ->system($this->run->saved_extractor->output_instructions)
-            ->schema($this->run->target_schema)
-            ->strategy($this->run->strategy)
-            ->artifacts($artifacts)
-            ->stream();
-
-        $extractor = new Extractor(
-            id: $this->run->saved_extractor->id,
-            title: $this->run->saved_extractor->label ?? $this->run->saved_extractor->id,
-            outputInstructions: $this->run->saved_extractor->output_instructions,
-            allowedTypes: [
-                'images',
-                'documents',
-            ],
-            llm: ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::SONNET_3_5)),
-            //            llm: new GroqLlama3(
-            //                model: 'llama-3.1-70b-versatile',
-            //                options: new ElElEmOptions(
-            //                    maxTokens: 2048
-            //                )
-            //            ),
-            schema: $this->run->target_schema,
-            strategy: $this->run->strategy,
-        );
-
         try {
             $this->run->bucket?->logUsage();
             $this->run->saved_extractor?->logUsage();
@@ -74,50 +47,46 @@ class  GenerateDataJob implements ShouldQueue
             $this->run->status = RunStatus::Running;
             $this->run->save();
 
-            $strategyClass = match ($this->run->strategy) {
-                'simple' => SimpleStrategy::class,
-                'sequential' => SequentialStrategy::class,
-                'parallel' => ParallelStrategy::class,
-                default => throw new \InvalidArgumentException("Unknown strategy type: {$this->run->strategy}"),
-            };
+            $data = Magic::extract()
+                ->model(ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::SONNET_3_5)))
+                ->system($this->run->saved_extractor->output_instructions)
+                ->schema($this->run->target_schema)
+                ->strategy($this->run->strategy)
+                ->artifacts($artifacts->all())
+                ->stream(
+                    onActorTelemetry: function (ActorTelemetry $telemetry) {
+                        /** @var ?Actor $actor */
+                        $actor = $this->run->actors()->find($telemetry->id);
 
-            $strategy = new $strategyClass(
-                extractor: $extractor,
-                onActorTelemetry: function (ActorTelemetry $telemetry) {
-                    /** @var ?Actor $actor */
-                    $actor = $this->run->actors()->find($telemetry->id);
+                        if (! $actor) {
+                            $actor = $this->run->actors()->make();
+                            $actor->id = $telemetry->id;
+                        }
 
-                    if (! $actor) {
-                        $actor = $this->run->actors()->make();
-                        $actor->id = $telemetry->id;
+                        $actor->fill($telemetry->toDatabase());
+                        $actor->save();
+                    },
+                    onDataProgress: function (array $data) {
+                        $this->run->partial_result_json = $data;
+                        $this->run->save();
+                    },
+                    onMessage: function (Message $message, string $actorId) {
+                        /** @var ?Actor $actor */
+                        $actor = $this->run->actors()->find($actorId);
+
+                        if (! $actor) {
+                            throw new \InvalidArgumentException("Actor {$actorId} not found");
+                        }
+
+                        $actor->add($message);
+                    },
+                    onTokenStats: function (TokenStats $tokenStats) {
+                        $this->run->token_stats = $tokenStats;
+                        $this->run->save();
                     }
+                );
 
-                    $actor->fill($telemetry->toDatabase());
-                    $actor->save();
-                },
-                onDataProgress: function (array $data) {
-                    $this->run->partial_result_json = $data;
-                    $this->run->save();
-                },
-                onMessage: function (Message $message, string $actorId) {
-                    /** @var ?Actor $actor */
-                    $actor = $this->run->actors()->find($actorId);
-
-                    if (! $actor) {
-                        throw new \InvalidArgumentException("Actor {$actorId} not found");
-                    }
-
-                    $actor->add($message);
-                },
-                onTokenStats: function (TokenStats $tokenStats) {
-                    $this->run->token_stats = $tokenStats;
-                    $this->run->save();
-                }
-            );
-
-            $result = $strategy->run(artifacts: $artifacts->all());
-
-            $this->run->result_json = $result->value ?? $this->run->result_json;
+            $this->run->result_json = $data ?? $this->run->result_json;
             $this->run->status = RunStatus::Completed;
             $this->run->save();
         } catch (\Exception $e) {

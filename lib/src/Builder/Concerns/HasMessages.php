@@ -1,8 +1,8 @@
 <?php
 
-namespace Capevace\MagicImport\Builder\Concerns;
+namespace Mateffy\Magic\Builder\Concerns;
 
-use Capevace\MagicImport\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\Message;
 
 trait HasMessages
 {

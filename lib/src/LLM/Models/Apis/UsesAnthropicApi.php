@@ -1,17 +1,17 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models\Apis;
+namespace Mateffy\Magic\LLM\Models\Apis;
 
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\LLM\Exceptions\InvalidRequest;
-use Capevace\MagicImport\LLM\Exceptions\TooManyTokensForModelRequested;
-use Capevace\MagicImport\LLM\Message\FunctionOutputMessage;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Message\TextMessage;
-use Capevace\MagicImport\LLM\Models\Decoders\ClaudeResponseDecoder;
-use Capevace\MagicImport\Prompt\Prompt;
-use Capevace\MagicImport\Prompt\Role;
-use Capevace\MagicImport\Prompt\TokenStats;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\LLM\Exceptions\InvalidRequest;
+use Mateffy\Magic\LLM\Exceptions\TooManyTokensForModelRequested;
+use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\TextMessage;
+use Mateffy\Magic\LLM\Models\Decoders\ClaudeResponseDecoder;
+use Mateffy\Magic\Prompt\Prompt;
+use Mateffy\Magic\Prompt\Role;
+use Mateffy\Magic\Prompt\TokenStats;
 use Closure;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;

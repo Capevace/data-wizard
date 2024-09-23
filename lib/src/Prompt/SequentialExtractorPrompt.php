@@ -1,15 +1,15 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
-use Capevace\MagicImport\Artifacts\Artifact;
-use Capevace\MagicImport\Artifacts\Content\ImageContent;
-use Capevace\MagicImport\Artifacts\Content\TextContent;
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\Functions\Extract;
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\LLM\Message\MultimodalMessage;
-use Capevace\MagicImport\LLM\Message\TextMessage;
+use Mateffy\Magic\Artifacts\Artifact;
+use Mateffy\Magic\Artifacts\Content\ImageContent;
+use Mateffy\Magic\Artifacts\Content\TextContent;
+use Mateffy\Magic\Config\Extractor;
+use Mateffy\Magic\Functions\Extract;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\LLM\Message\MultimodalMessage;
+use Mateffy\Magic\LLM\Message\TextMessage;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 
@@ -152,7 +152,7 @@ class SequentialExtractorPrompt implements Prompt
                 ->groupBy(fn (TextContent|ImageContent $content) => $content->page ?? 0)
                 ->sortBy(fn (Collection $contents, $page) => $page)
                 ->flatMap(fn (Collection $contents) => collect($contents)
-                    ->map(fn (ImageContent $image) => new \Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image(
+                    ->map(fn (ImageContent $image) => new \Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image(
                         imageBase64: base64_encode(file_get_contents($artifact->getEmbedPath($image->path))),
                         mime: $image->mimetype,
                     ))
@@ -162,7 +162,7 @@ class SequentialExtractorPrompt implements Prompt
         return [
             // Attach images to the prompt
             new MultimodalMessage(role: Role::User, content: [
-                new \Capevace\MagicImport\LLM\Message\MultimodalMessage\Text($this->prompt()),
+                new \Mateffy\Magic\LLM\Message\MultimodalMessage\Text($this->prompt()),
                 ...$imageMessages,
             ]),
         ];

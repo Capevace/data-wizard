@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\Artifacts;
+namespace Mateffy\Magic\Artifacts;
 
-use Capevace\MagicImport\Artifacts\Content\ImageContent;
-use Capevace\MagicImport\Artifacts\Content\TextContent;
+use Mateffy\Magic\Artifacts\Content\ImageContent;
+use Mateffy\Magic\Artifacts\Content\TextContent;
 
 interface Artifact
 {

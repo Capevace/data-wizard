@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models;
+namespace Mateffy\Magic\LLM\Models;
 
-use Capevace\MagicImport\Config\Organization;
-use Capevace\MagicImport\LLM\Options\ElElEmOptions;
+use Mateffy\Magic\Config\Organization;
+use Mateffy\Magic\LLM\Options\ElElEmOptions;
 
 class GroqMixtral8X7B extends Mixtral8x7b
 {

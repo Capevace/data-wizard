@@ -1,11 +1,11 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Functions\SaveResources;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Message\TextMessage;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\Functions\SaveResources;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\TextMessage;
 use JsonException;
 
 class DataExtractorPrompt implements Prompt

@@ -3,10 +3,10 @@
 namespace App\Filament\Resources\ExtractionRunResource\Actions;
 
 use App\Filament\Forms\JsonEditor;
-use Capevace\MagicImport\LLM\ElElEm;
-use Capevace\MagicImport\LLM\Models\Claude3Family;
-use Capevace\MagicImport\Loop\Response\JsonResponse;
-use Capevace\MagicImport\Prompt\SmartModifyPrompt;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\Loop\Response\JsonResponse;
+use Mateffy\Magic\Prompt\SmartModifyPrompt;
 use Closure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Actions;

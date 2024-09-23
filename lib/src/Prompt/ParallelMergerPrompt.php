@@ -1,11 +1,11 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\Functions\Extract;
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\LLM\Message\TextMessage;
+use Mateffy\Magic\Config\Extractor;
+use Mateffy\Magic\Functions\Extract;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\LLM\Message\TextMessage;
 
 class ParallelMergerPrompt implements Prompt
 {

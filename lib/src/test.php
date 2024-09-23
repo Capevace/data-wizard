@@ -1,9 +1,9 @@
 <?php
 
-$data = \Capevace\MagicImport\Magic::extract()
+$data = \Mateffy\Magic\Magic::extract()
     ->model('anthropic/claude-3.5-sonnet');
 
-$data = \Capevace\MagicImport\Magic::extract()
+$data = \Mateffy\Magic\Magic::extract()
     ->model('anthropic/claude-3.5-sonnet')
     ->system(<<<'PROMPT'
     You need to carry out data extraction from the provided document and transform it into a structured JSON format.
@@ -25,7 +25,7 @@ $data = \Capevace\MagicImport\Magic::extract()
     ])
     ->stream(onDataProgress: fn () => null);
 
-$messages = \Capevace\MagicImport\Magic::chat()
+$messages = \Mateffy\Magic\Magic::chat()
     ->model('anthropic/claude-3.5-sonnet')
     ->system(<<<'PROMPT'
     You need to carry out data extraction from the provided document and transform it into a structured JSON format.

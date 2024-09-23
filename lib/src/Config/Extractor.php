@@ -1,10 +1,10 @@
 <?php
 
-namespace Capevace\MagicImport\Config;
+namespace Mateffy\Magic\Config;
 
-use Capevace\MagicImport\LLM\LLM;
-use Capevace\MagicImport\LLM\ModelLaunchInterface;
-use Capevace\MagicImport\Prompt\Prompt;
+use Mateffy\Magic\LLM\LLM;
+use Mateffy\Magic\LLM\ModelLaunchInterface;
+use Mateffy\Magic\Prompt\Prompt;
 use Closure;
 
 readonly class Extractor implements ModelLaunchInterface

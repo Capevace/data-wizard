@@ -1,10 +1,10 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models;
+namespace Mateffy\Magic\LLM\Models;
 
-use Capevace\MagicImport\Config\Organization;
-use Capevace\MagicImport\LLM\ElElEm;
-use Capevace\MagicImport\LLM\Options\ChatGptOptions;
+use Mateffy\Magic\Config\Organization;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\Options\ChatGptOptions;
 
 abstract class Gpt4Family extends ElElEm
 {

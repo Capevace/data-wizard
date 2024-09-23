@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Message\MultimodalMessage;
+namespace Mateffy\Magic\LLM\Message\MultimodalMessage;
 
 readonly class Base64Image
 {

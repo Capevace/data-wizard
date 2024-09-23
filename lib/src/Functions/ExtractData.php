@@ -1,8 +1,8 @@
 <?php
 
-namespace Capevace\MagicImport\Functions;
+namespace Mateffy\Magic\Functions;
 
-use Capevace\MagicImport\FeatureType;
+use Mateffy\Magic\FeatureType;
 
 class ExtractData implements InvokableFunction
 {

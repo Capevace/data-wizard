@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Message;
+namespace Mateffy\Magic\LLM\Message;
 
 readonly class FunctionCall
 {

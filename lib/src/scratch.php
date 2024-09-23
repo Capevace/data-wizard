@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport;
+namespace Mateffy\Magic;
 
 class MagicImport
 {

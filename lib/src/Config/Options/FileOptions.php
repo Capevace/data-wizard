@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Config\Options;
+namespace Mateffy\Magic\Config\Options;
 
 readonly class FileOptions
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Capevace\MagicImport\Prompt;
+namespace Mateffy\Magic\Prompt;
 
-use Capevace\MagicImport\Functions\Add;
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\Functions\OutputText;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Message\TextMessage;
+use Mateffy\Magic\Functions\Add;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\Functions\OutputText;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\TextMessage;
 use JsonException;
 
 class LoopExamplePrompt implements Prompt

@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Artifacts\Content;
+namespace Mateffy\Magic\Artifacts\Content;
 
 interface Content
 {

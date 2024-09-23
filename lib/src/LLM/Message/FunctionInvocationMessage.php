@@ -1,9 +1,9 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Message;
+namespace Mateffy\Magic\LLM\Message;
 
-use Capevace\MagicImport\Prompt\Role;
-use Capevace\MagicImport\Utils\PartialJson;
+use Mateffy\Magic\Prompt\Role;
+use Mateffy\Magic\Utils\PartialJson;
 
 class FunctionInvocationMessage implements DataMessage, PartialMessage
 {

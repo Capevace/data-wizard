@@ -1,17 +1,17 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Models\Apis;
+namespace Mateffy\Magic\LLM\Models\Apis;
 
-use Capevace\MagicImport\Functions\InvokableFunction;
-use Capevace\MagicImport\LLM\Exceptions\RateLimitExceeded;
-use Capevace\MagicImport\LLM\Exceptions\UnknownInferenceException;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Message\MultimodalMessage;
-use Capevace\MagicImport\LLM\Message\TextMessage;
-use Capevace\MagicImport\LLM\ModelCost;
-use Capevace\MagicImport\LLM\Models\Decoders\ResponseDecoder;
-use Capevace\MagicImport\Prompt\Prompt;
-use Capevace\MagicImport\Prompt\Role;
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\LLM\Exceptions\RateLimitExceeded;
+use Mateffy\Magic\LLM\Exceptions\UnknownInferenceException;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\MultimodalMessage;
+use Mateffy\Magic\LLM\Message\TextMessage;
+use Mateffy\Magic\LLM\ModelCost;
+use Mateffy\Magic\LLM\Models\Decoders\ResponseDecoder;
+use Mateffy\Magic\Prompt\Prompt;
+use Mateffy\Magic\Prompt\Role;
 use Closure;
 use ErrorException;
 use OpenAI\Responses\StreamResponse;
@@ -75,8 +75,8 @@ trait UsesGroqApi
                             MultimodalMessage::class => new TextMessage(
                                 role: $message->role,
                                 content: collect($message->content)
-                                    ->map(fn (\Capevace\MagicImport\LLM\Message\MultimodalMessage\Text|\Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image $content) => match ($content::class) {
-                                        \Capevace\MagicImport\LLM\Message\MultimodalMessage\Text::class => $content->text,
+                                    ->map(fn (\Mateffy\Magic\LLM\Message\MultimodalMessage\Text|\Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image $content) => match ($content::class) {
+                                        \Mateffy\Magic\LLM\Message\MultimodalMessage\Text::class => $content->text,
                                         default => null
                                     })
                                     ->filter()
@@ -93,7 +93,7 @@ trait UsesGroqApi
                 throw new RateLimitExceeded(
                     message: $e->getMessage(),
                     previous: $e,
-                    rateLimits: \Capevace\MagicImport\LLM\Exceptions\RateLimitExceeded\RateLimits::parseRateLimitError($e->getMessage()),
+                    rateLimits: \Mateffy\Magic\LLM\Exceptions\RateLimitExceeded\RateLimits::parseRateLimitError($e->getMessage()),
                 );
             }
 

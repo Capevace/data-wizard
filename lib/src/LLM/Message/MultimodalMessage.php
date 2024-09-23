@@ -1,10 +1,10 @@
 <?php
 
-namespace Capevace\MagicImport\LLM\Message;
+namespace Mateffy\Magic\LLM\Message;
 
-use Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image;
-use Capevace\MagicImport\LLM\Message\MultimodalMessage\Text;
-use Capevace\MagicImport\Prompt\Role;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\Text;
+use Mateffy\Magic\Prompt\Role;
 
 class MultimodalMessage implements Message
 {

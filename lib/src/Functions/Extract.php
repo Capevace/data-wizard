@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\Functions;
+namespace Mateffy\Magic\Functions;
 
 class Extract implements InvokableFunction
 {

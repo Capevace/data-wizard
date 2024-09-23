@@ -6,20 +6,20 @@ use App\Models\Actor\ActorTelemetry;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
 use App\Models\File;
-use Capevace\MagicImport\Artifacts\ArtifactGenerationStatus;
-use Capevace\MagicImport\Config\Extractor;
-use Capevace\MagicImport\LLM\ElElEm;
-use Capevace\MagicImport\LLM\Exceptions\LLMException;
-use Capevace\MagicImport\LLM\Exceptions\RateLimitExceeded;
-use Capevace\MagicImport\LLM\Exceptions\UnknownInferenceException;
-use Capevace\MagicImport\LLM\Message\Message;
-use Capevace\MagicImport\LLM\Models\Claude3Family;
-use Capevace\MagicImport\Loop\InferenceResult;
-use Capevace\MagicImport\Model\Anthropic\Claude3Haiku;
-use Capevace\MagicImport\Prompt\ClaudeExtractorPrompt;
-use Capevace\MagicImport\Prompt\OutputFixedJson;
-use Capevace\MagicImport\Prompt\TokenStats;
-use Capevace\MagicImport\Strategies\SimpleStrategy;
+use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
+use Mateffy\Magic\Config\Extractor;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\Exceptions\LLMException;
+use Mateffy\Magic\LLM\Exceptions\RateLimitExceeded;
+use Mateffy\Magic\LLM\Exceptions\UnknownInferenceException;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\Loop\InferenceResult;
+use Mateffy\Magic\Model\Anthropic\Claude3Haiku;
+use Mateffy\Magic\Prompt\ClaudeExtractorPrompt;
+use Mateffy\Magic\Prompt\OutputFixedJson;
+use Mateffy\Magic\Prompt\TokenStats;
+use Mateffy\Magic\Strategies\SimpleStrategy;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -114,7 +114,7 @@ class JsonStreamController extends Controller
         $fileCount = count(glob("{$path}/pages_marked/*.jpg"));
         $end = min(20, $fileCount);
         $images = collect(range(1, $end))
-            ->map(fn ($i) => \Capevace\MagicImport\LLM\Message\MultimodalMessage\Base64Image::fromPath(
+            ->map(fn ($i) => \Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image::fromPath(
                 base_path("../magic-import/fixtures/{$dataset}/pages_marked/page{$i}.jpg")
             ))
             ->all();

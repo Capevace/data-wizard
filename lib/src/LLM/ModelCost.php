@@ -1,6 +1,6 @@
 <?php
 
-namespace Capevace\MagicImport\LLM;
+namespace Mateffy\Magic\LLM;
 
 use Akaunting\Money\Money;
 use Illuminate\Contracts\Support\Arrayable;
