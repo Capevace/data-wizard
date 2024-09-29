@@ -109,10 +109,10 @@ class ExtractorFileFormat implements ModelFileFormat
             'allow_download' => ['nullable', 'boolean'],
             'enable_webhook' => ['nullable', 'boolean'],
             'webhook' => ['nullable', 'array'],
-            'webhook.url' => ['required', 'string', 'url'],
+            'webhook.url' => ['required_if:webhook', 'string', 'url'],
             'webhook.secret' => ['nullable', 'string'],
             'redirect' => ['nullable', 'array'],
-            'redirect.url' => ['required', 'string', 'url'],
+            'redirect.url' => ['required_if:redirect', 'string', 'url'],
             'labels' => ['required', 'array'],
             'labels.*' => ['nullable', 'string'],
         ]);
