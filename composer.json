@@ -28,7 +28,8 @@
         "spatie/laravel-webhook-server": "^3.8",
         "spatie/pdf-to-image": "^3.0",
         "swaggest/json-schema": "^0.12.42",
-        "tempest/highlight": "^2.8"
+        "tempest/highlight": "^2.8",
+        "ext-zip": "*"
     },
     "require-dev": {
         "buggregator/trap": "^1.10",

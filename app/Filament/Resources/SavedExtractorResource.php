@@ -4,21 +4,18 @@ namespace App\Filament\Resources;
 
 use App\Filament\Forms\JsonEditor;
 use App\Filament\Resources\CustomExtractorResource\Pages;
+use App\Filament\Resources\SavedExtractorResource\Actions\BulkExportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateSchemaAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\StepLabelsForm;
 use App\Models\SavedExtractor;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\ToggleButtons;
-use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
@@ -206,6 +203,7 @@ class SavedExtractorResource extends Resource
             ])
             ->bulkActions([
                 BulkActionGroup::make([
+                    BulkExportExtractorAction::make(),
                     DeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                     ForceDeleteBulkAction::make(),
@@ -218,7 +216,7 @@ class SavedExtractorResource extends Resource
         return [
             'index' => Pages\ListSavedExtractors::route('/'),
             'create' => Pages\CreateSavedExtractor::route('/create'),
-            'edit' => Pages\EditSavedExtractor::route('/{record}/edit'),
+            'edit' => SavedExtractorResource\Pages\EditSavedExtractor::route('/{record}/edit'),
         ];
     }
 

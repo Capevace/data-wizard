@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\SavedExtractorResource\Actions;
 
-use App\Filament\Resources\CustomExtractorResource\Pages\EditSavedExtractor;
+use App\Filament\Resources\SavedExtractorResource\Pages\EditSavedExtractor;
 use Filament\Actions\Action;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;

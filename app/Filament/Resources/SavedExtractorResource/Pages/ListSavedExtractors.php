@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CustomExtractorResource\Pages;
 
 use App\Filament\Resources\SavedExtractorResource;
+use App\Filament\Resources\SavedExtractorResource\Actions\ImportExtractorAction;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
@@ -13,7 +14,9 @@ class ListSavedExtractors extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->icon('heroicon-o-plus'),
+            ImportExtractorAction::make()
         ];
     }
 }

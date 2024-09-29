@@ -95,6 +95,13 @@ class SavedExtractor extends Model
         'json_schema' => 'json',
     ];
 
+    protected $attributes = [
+        'strategy' => 'parallel',
+        'was_automatically_created' => false,
+        'allow_download' => true,
+        'enable_webhook' => false,
+    ];
+
 //    protected $appends = ['json_schema_string'];
 
     public function runs(): \Illuminate\Database\Eloquent\Relations\HasMany

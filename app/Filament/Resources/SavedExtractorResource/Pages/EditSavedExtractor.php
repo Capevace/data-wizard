@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Filament\Resources\CustomExtractorResource\Pages;
+namespace App\Filament\Resources\SavedExtractorResource\Pages;
 
 use App\Filament\Resources\SavedExtractorResource;
+use App\Filament\Resources\SavedExtractorResource\Actions\ExportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateStepLabelsAction;
+use App\Filament\Resources\SavedExtractorResource\Actions\ImportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\StartWithBucketActionGroup;
 use Filament\Actions\ActionGroup;
@@ -37,7 +39,9 @@ class EditSavedExtractor extends EditRecord
             StartWithBucketActionGroup::make(),
             ActionGroup::make([
                 GenerateStepLabelsAction::make(),
-                OpenEmbeddedExtractorAction::make()
+                OpenEmbeddedExtractorAction::make(),
+                ExportExtractorAction::make(),
+                ImportExtractorAction::make(),
             ])
         ];
     }
