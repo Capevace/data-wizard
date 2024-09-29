@@ -1,5 +1,11 @@
+@props([
+    'src' => null,
+    'getState' => fn () => null,
+    'getExtraAttributes' => fn () => [],
+    'isInline' => fn () => false,
+])
 @php
-    $url = $getState();
+    $url = $src ?? $getState();
 @endphp
 
 <div

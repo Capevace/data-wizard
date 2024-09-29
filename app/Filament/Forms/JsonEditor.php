@@ -2,14 +2,14 @@
 
 namespace App\Filament\Forms;
 
-use Dotswan\FilamentCodeEditor\Fields\CodeEditor;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Swaggest\JsonSchema\JsonSchema;
 
-class JsonEditor extends CodeEditor
+class JsonEditor extends TextInput
 {
     protected string $view = 'filament.fields.code-editor';
 
@@ -19,9 +19,8 @@ class JsonEditor extends CodeEditor
 
         $this
             ->json()
-            ->live()
-            ->darkModeTheme('nord')
-            ->lightModeTheme('basic-light')
+//            ->darkModeTheme('nord')
+//            ->lightModeTheme('basic-light')
             ->hintActions([
                 Action::make('validate')
                     ->icon('heroicon-o-check-badge')

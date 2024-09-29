@@ -19,6 +19,8 @@ use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Js;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentAsset;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -26,6 +28,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
@@ -36,8 +39,9 @@ class AppPanelProvider extends PanelProvider
         parent::register();
 
         FilamentAsset::register([
-            Js::make('magic-extract', resource_path('js/dist/magic-extract.js')),
+//            Js::make('magic-extract', resource_path('js/dist/magic-extract.js')),
             AlpineComponent::make('GeneratorComponent', resource_path('js/dist/components/generator.js')),
+//            AlpineComponent::make('JsonEditorComponent', resource_path('js/dist/components/json-editor.js')),
         ]);
     }
 
@@ -68,7 +72,8 @@ class AppPanelProvider extends PanelProvider
             ->login()
             ->brandName(new HtmlString('Magic Extract&nbsp;&nbsp;&nbsp;🪄'))
             ->viteTheme('resources/css/filament/app/theme.css')
-            ->font('Avenir Next')
+            ->font('Armata')
+            ->font('Asap')
             ->colors([
                 'primary' => Color::Indigo,
                 'gray' => Color::Slate,
@@ -98,6 +103,12 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->bootUsing(function () {
+                FilamentView::registerRenderHook(
+                    PanelsRenderHook::SCRIPTS_BEFORE,
+                    fn () => Blade::render("@vite(['resources/js/src/magic-extract.ts'])")
+                );
+            });
     }
 }

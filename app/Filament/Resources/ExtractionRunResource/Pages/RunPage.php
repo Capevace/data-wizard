@@ -5,6 +5,8 @@ namespace App\Filament\Resources\ExtractionRunResource\Pages;
 use App\Filament\Resources\ExtractionBucketResource\Actions\StartExtractionAction;
 use App\Filament\Resources\ExtractionRunResource;
 use App\Filament\Resources\ExtractionRunResource\Actions\SmartModifyJsonAction;
+use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;
+use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedRunAction;
 use App\Models\ExtractionRun;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
@@ -48,6 +50,9 @@ class RunPage extends ViewRecord
                         ->action(function () {
                             $this->debugModeEnabled = ! $this->debugModeEnabled;
                         }),
+
+                    OpenEmbeddedRunAction::make()
+                        ->record($this->getRecord())
                 ]),
         ];
     }

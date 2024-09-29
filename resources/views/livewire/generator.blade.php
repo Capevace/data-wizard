@@ -47,7 +47,7 @@
 
         <template x-if="tab === 'gui'">
             <div class="flex flex-col gap-4">
-                <x-resource.debug x-model="products" />
+                <x-resource.debug />
                 <x-resource.json-schema :schema="$this->schema" />
 
 {{--                <template x-for="(estate, estateIndex) in $wire.partialResultJson?.data?.estates" :key="estateIndex">--}}
@@ -67,7 +67,7 @@
             <pre
                 x-data="{
                     get json() {
-                        return window.prettyPrint(this.$wire.partialResultJson);
+                        return window.prettyPrint(this.$wire.resultData);
                     }
                 }"
                 class="text-xs prettyjson"
@@ -160,6 +160,14 @@
             compact
             class="col-span-1"
         >
+            <x-slot:header-actions>
+                <x-filament::icon-button
+                    icon="heroicon-o-pencil-square"
+                    color="gray"
+                    tag="a"
+                    :href="\App\Filament\Resources\SavedExtractorResource::getUrl('edit', ['record' => $this->run->saved_extractor?->id])"
+                />
+            </x-slot:header-actions>
             <div class="prose prose-sm">
                 <p class="whitespace-pre-wrap">{{ $this->run->saved_extractor?->output_instructions }}</p>
             </div>

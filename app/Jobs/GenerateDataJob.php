@@ -8,22 +8,18 @@ use App\Models\ExtractionRun;
 use App\Models\ExtractionRun\RunStatus;
 use App\Models\File;
 use App\Models\User;
-use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
-use Mateffy\Magic\Config\Extractor;
-use Mateffy\Magic\LLM\ElElEm;
-use Mateffy\Magic\LLM\Message\Message;
-use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\Magic;
-use Mateffy\Magic\Prompt\TokenStats;
-use Mateffy\Magic\Strategies\ParallelStrategy;
-use Mateffy\Magic\Strategies\SequentialStrategy;
-use Mateffy\Magic\Strategies\SimpleStrategy;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\Magic;
+use Mateffy\Magic\Prompt\TokenStats;
 
 class  GenerateDataJob implements ShouldQueue
 {

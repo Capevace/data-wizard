@@ -3,7 +3,10 @@
 namespace App\Filament\Resources\CustomExtractorResource\Pages;
 
 use App\Filament\Resources\SavedExtractorResource;
+use App\Filament\Resources\SavedExtractorResource\Actions\GenerateStepLabelsAction;
+use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\StartWithBucketActionGroup;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
@@ -13,6 +16,17 @@ class EditSavedExtractor extends EditRecord
 {
     protected static string $resource = SavedExtractorResource::class;
 
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        return $data;
+    }
+
+    public function updatedData()
+    {
+        $this->save();
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -21,6 +35,10 @@ class EditSavedExtractor extends EditRecord
             RestoreAction::make(),
 
             StartWithBucketActionGroup::make(),
+            ActionGroup::make([
+                GenerateStepLabelsAction::make(),
+                OpenEmbeddedExtractorAction::make()
+            ])
         ];
     }
 }

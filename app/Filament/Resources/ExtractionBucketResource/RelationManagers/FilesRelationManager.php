@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ExtractionBucketResource\RelationManagers;
 
+use App\Filament\Forms\BucketFileUpload;
 use App\Filament\Forms\ImageColumnWithLoadingIndicator;
 use App\Models\ExtractionBucket;
 use App\Models\File;
@@ -77,19 +78,7 @@ class FilesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                //                Forms\Components\TextInput::make('name')
-                //                    ->required()
-                //                    ->maxLength(255),
-
-                Forms\Components\FileUpload::make('files')
-                    ->label('Files')
-                    ->disk('local')
-                    ->preserveFilenames()
-                    ->directory('uploads')
-                    ->translateLabel()
-                    ->multiple()
-                    ->imageEditor()
-                    ->maxSize(1024 * 1024 * 20),
+                BucketFileUpload::make('files')
             ]);
     }
 
@@ -161,12 +150,14 @@ class FilesRelationManager extends RelationManager
                     ->slideOver(),
                 Tables\Actions\Action::make('regenerateArtifact')
                     ->iconButton()
-                    ->label('Regenerate Artifact')
+                    ->label('Reanalyze file')
                     ->translateLabel()
                     ->icon('heroicon-o-arrow-path-rounded-square')
+                    ->color('gray')
                     ->requiresConfirmation()
+                    ->tooltip(__('Reanalyze file'))
                     ->modalSubmitAction(fn (StaticAction $action) => $action
-                        ->label('Regenerate Artifact')
+                        ->label('Reanalyze file')
                         ->translateLabel()
                         ->icon('heroicon-o-arrow-path-rounded-square')
                     )
@@ -179,6 +170,14 @@ class FilesRelationManager extends RelationManager
 
                         GenerateArtifactJob::dispatch($bucket, $record);
                     }),
+                Tables\Actions\Action::make('download')
+                    ->icon('heroicon-o-cloud-arrow-down')
+                    ->tooltip(__('Download file'))
+                    ->iconButton()
+                    ->color('gray')
+                    ->action(function (File $record) {
+                        return response()->download($record->getPath());
+                    }),
                 Tables\Actions\DeleteAction::make()
                     ->icon('heroicon-o-trash')
                     ->tooltip(__('Delete file'))
@@ -187,12 +186,12 @@ class FilesRelationManager extends RelationManager
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\BulkAction::make('regenerate')
-                        ->label('Regenerate Artifact')
+                        ->label('Reanalyze file')
                         ->translateLabel()
                         ->icon('heroicon-o-arrow-path-rounded-square')
                         ->requiresConfirmation()
                         ->modalSubmitAction(fn (StaticAction $action) => $action
-                            ->label('Regenerate Artifact')
+                            ->label('Reanalyze file')
                             ->translateLabel()
                             ->icon('heroicon-o-arrow-path-rounded-square')
                         )

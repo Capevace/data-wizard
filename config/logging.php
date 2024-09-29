@@ -57,10 +57,17 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'http' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/http.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => env('LOG_LEVEL', 'warning'),
         ],
 
         'daily' => [

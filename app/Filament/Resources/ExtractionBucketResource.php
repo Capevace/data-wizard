@@ -53,24 +53,29 @@ class ExtractionBucketResource extends Resource
             ->columns([
                 TextColumn::make('description')
                     ->translateLabel()
-                    ->grow(true),
+                    ->grow(true)
+                    ->sortable(),
 
                 TextColumn::make('created_by.name')
                     ->label('Created By')
-                    ->translateLabel(),
+                    ->translateLabel()
+                    ->sortable(),
 
                 TextColumn::make('status')
                     ->translateLabel()
-                    ->badge(),
+                    ->badge()
+                    ->sortable(),
 
                 TextColumn::make('started_at')
                     ->label('Started At')
                     ->translateLabel()
-                    ->date(),
+                    ->date()
+                    ->sortable(),
 
                 TextColumn::make('extractor_id')
                     ->label('Extractor ID')
-                    ->translateLabel(),
+                    ->translateLabel()
+                    ->sortable(),
             ])
             ->filters([
                 TrashedFilter::make(),

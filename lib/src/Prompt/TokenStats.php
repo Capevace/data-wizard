@@ -36,7 +36,7 @@ readonly class TokenStats implements Arrayable
     public function calculateOutputCost(): ?Money
     {
         return $this->cost && $this->outputTokens !== null
-            ? Money::EUR($this->cost->outputCostInCents($this->tokens))
+            ? Money::EUR($this->cost->outputCostInCents($this->outputTokens))
             : null;
     }
 

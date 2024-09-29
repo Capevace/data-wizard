@@ -48,6 +48,7 @@ compile({
     entryPoints: [
         './resources/js/src/magic-extract.ts',
         './resources/js/src/components/generator.ts',
+        // './resources/js/src/components/json-editor.ts',
     ],
     outdir: './resources/js/dist',
 })

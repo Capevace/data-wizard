@@ -59,6 +59,41 @@ class GenerateSchemaPrompt implements Prompt
         }
         </correct-schema-example>
 
+        <correct-schema-example>
+        {
+            "type": "object",
+            "required": ["id", "name", "description"],
+            "properties": {
+                "contacts: {
+                    "type": "array",
+                    "magic_ui": {
+                        "component": "table",
+                        "label": "Kontakte",
+                    },
+                    "items": {
+                        "type": "object",
+                        "required": ["name"],
+                        "properties": {
+                            "name": {
+                                "magic_ui": {
+                                    "component": "text",
+                                    "label": "Name",
+                                },
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "phone": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+            }
+        }
+        </correct-schema-example>
+
         <invalid-schema-examples>
         // Invalid because it's an array at the root, not an object
         {

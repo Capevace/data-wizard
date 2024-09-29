@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SavedExtractorResource\Actions;
 
 use App\Filament\Forms\JsonEditor;
 use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\Message\JsonMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\Loop\Response\JsonResponse;
 use Mateffy\Magic\Prompt\GenerateSchemaPrompt;
@@ -97,7 +98,7 @@ class GenerateSchemaAction extends Actions\Action
 
         $responses = $llm->stream(prompt: $prompt);
 
-        $response = collect($responses)->first(fn ($message) => $message instanceof JsonResponse);
+        $response = collect($responses)->first(fn ($message) => $message instanceof JsonMessage);
 
         if ($response === null) {
             report(new \Exception('Could not generate schema: '.json_encode($responses)));

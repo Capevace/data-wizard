@@ -17,6 +17,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Novadaemon\FilamentPrettyJson\PrettyJson;
 
 class ExtractionRunResource extends Resource
@@ -51,6 +52,16 @@ class ExtractionRunResource extends Resource
         return $table
             ->defaultSort('created_at', direction: 'desc')
             ->columns([
+                TextColumn::make('saved_extractor.label')
+                    ->label('Extractor')
+                    ->translateLabel()
+                    ->url(fn (ExtractionRun $record) => $record->saved_extractor_id
+                        ? SavedExtractorResource::getUrl('edit', ['record' => $record->saved_extractor_id])
+                        : null
+                    )
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('status')
                     ->label('Status')
                     ->translateLabel()
@@ -72,15 +83,16 @@ class ExtractionRunResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('token_stats')
-                    ->label('Cost')
+                    ->label('Tokens')
                     ->translateLabel()
-                    ->state(fn (ExtractionRun $record) => $record->token_stats?->calculateTotalCost()?->format())
-                    ->tooltip(fn (ExtractionRun $record) => $record->token_stats?->tokens.' Tokens')
+                    ->state(fn (ExtractionRun $record) => $record->token_stats?->tokens)
+                    ->description(fn (ExtractionRun $record) => $record->token_stats?->calculateTotalCost()?->format())
+                    ->tooltip(fn (ExtractionRun $record) => $record->token_stats?->cost?->formatAveragePer1M())
                     ->searchable()
-                    ->sortable(),
+                    ->sortable(query: fn (Builder $query, string $direction) => $query->orderBy('token_stats->tokens', $direction)),
 
                 TextColumn::make('json')
-                    ->state(fn (ExtractionRun $record) => count(Arr::get(collect($record->result_json)->first(), 'data.estates') ?? [])),
+                    ->state(fn (ExtractionRun $record) => count(Arr::get(collect($record->result_json)->first(), 'data.estates') ?? []))
                 //
                 //                TextColumn::make('partial_result_json')
                 //                    ->formatStateUsing(fn(?array $state) => json_encode($state, JSON_PRETTY_PRINT)),

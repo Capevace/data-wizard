@@ -41,15 +41,51 @@ class Claude3Family extends ElElEm
     {
         return match ($this->model) {
             Claude3Family::HAIKU => new ModelCost(
-                inputCentsPer1K: 0.025,
-                outputCentsPer1K: 0.125
+                inputCentsPer1K: ModelCost::pricePerMillionToCentsPerThousands(0.25),
+                outputCentsPer1K: ModelCost::pricePerMillionToCentsPerThousands(1.25)
             ),
             Claude3Family::SONNET,
             Claude3Family::SONNET_3_5, => new ModelCost(
-                inputCentsPer1K: 0.3,
-                outputCentsPer1K: 1.5
+                inputCentsPer1K: ModelCost::pricePerMillionToCentsPerThousands(3),
+                outputCentsPer1K: ModelCost::pricePerMillionToCentsPerThousands(15)
+            ),
+            Claude3Family::OPUS => new ModelCost(
+                inputCentsPer1K: ModelCost::pricePerMillionToCentsPerThousands(15),
+                outputCentsPer1K: ModelCost::pricePerMillionToCentsPerThousands(75)
             ),
             default => null,
         };
+    }
+
+    public static function haiku(): Claude3Family
+    {
+        return new Claude3Family(
+            model: Claude3Family::HAIKU,
+            options: new ElElEmOptions
+        );
+    }
+
+    public static function sonnet(): Claude3Family
+    {
+        return new Claude3Family(
+            model: Claude3Family::SONNET,
+            options: new ElElEmOptions
+        );
+    }
+
+    public static function sonnet_3_5(): Claude3Family
+    {
+        return new Claude3Family(
+            model: Claude3Family::SONNET_3_5,
+            options: new ElElEmOptions
+        );
+    }
+
+    public static function opus(): Claude3Family
+    {
+        return new Claude3Family(
+            model: Claude3Family::OPUS,
+            options: new ElElEmOptions
+        );
     }
 }

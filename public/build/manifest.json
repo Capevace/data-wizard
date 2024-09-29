@@ -5,8 +5,13 @@
     "src": "resources/css/app.css"
   },
   "resources/css/filament/app/theme.css": {
-    "file": "assets/theme-b58dfd1c.css",
+    "file": "assets/theme-7ba6e63b.css",
     "isEntry": true,
     "src": "resources/css/filament/app/theme.css"
+  },
+  "resources/js/src/magic-extract.ts": {
+    "file": "assets/magic-extract-7174ee1f.js",
+    "isEntry": true,
+    "src": "resources/js/src/magic-extract.ts"
   }
 }

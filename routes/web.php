@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\SavedExtractor;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,4 +36,13 @@ Route::middleware(['auth'])
 
             return response()->file($path);
         });
+
+        Route::get('/iframe-test', function () {
+            // Layout: app
+            return view('livewire.iframe-test');
+        })
+            ->name('iframe-test');
     });
+
+Route::get('/embed/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
+    ->name('embedded-extractor');

@@ -7,6 +7,7 @@
     "e.g. Importing paper invoices from 2022-01-01 to 2022-12-31": "z.B. Importieren von Papierrechnungen von 01.01.2022 bis 31.12.2022",
     "Describe what you want to extract": "Beschreibe, was du extrahieren möchtest",
     "Upload your files": "Lade deine Dateien hoch",
+    "Reanalyze file": "Datei erneut analysieren",
 
     "Pending": "Vorbereitung",
     "Running": "Läuft",
@@ -63,5 +64,27 @@
     "Choose extractor": "Extraktor auswählen",
     "Simple": "Einfach",
     "Sequential": "Sequenziell",
-    "Parallel": "Parallel"
+    "Parallel": "Parallel",
+    "Generate UI texts": "Generiere UI-Texte",
+    "Download data": "Daten herunterladen",
+    "Download file": "Datei herunterladen",
+
+    "default_introduction_view_heading": "Willkommen bei Magic Extract 🪄",
+    "default_introduction_view_description": "<p>Magic extract is a tool that allows you to extract structured data from PDFs, images, and other files.</p><p>The tool is configured to output data in a specific structure, that may then be used by other applications.</p><p>To get started, click continue and upload your files.</p>",
+    "default_introduction_view_next_button_label": "Weiter",
+    "default_bucket_view_heading": "Lade deine Dateien hoch",
+    "default_bucket_view_description": "<p>Lade die Dateien hoch, die du extrahieren möchtest. Du kannst Bilder und PDFs hochladen.</p><p>Wenn du eine Datei hochlädst, wird sie in einem Ordner angelegt. Wenn du mehrere Dateien hochlädst, werden sie in einem Ordner mit dem Namen der Datei angelegt.</p><p>Wenn du mehrere Dateien hochlädst, werden sie in einem Ordner mit dem Namen der Datei angelegt.</p>",
+    "default_bucket_view_back_button_label": "Warte, wie geht das nochmal?",
+    "default_bucket_view_begin_button_label": "Ich bin bereit, loszulegen!",
+    "default_bucket_view_continue_button_label": "Weiter",
+    "default_extraction_view_heading": "Extrahieren",
+    "default_extraction_view_description": "<p>Extrahiere Daten aus deinen Dateien.</p><p>Wenn du mehrere Dateien hochlädst, werden sie in einem Ordner mit dem Namen der Datei angelegt.</p>",
+    "default_extraction_view_back_button_label": "Zurück",
+    "default_extraction_view_continue_button_label": "Daten korrekt, weiter!",
+    "default_extraction_view_restart_button_label": "Neu starten",
+    "default_results_view_heading": "Ergebnisse",
+    "default_results_view_description": "<p>Sehe dir deine extrahierten Daten an.</p><p>Wenn du mehrere Dateien hochlädst, werden sie in einem Ordner mit dem Namen der Datei angelegt.</p>",
+    "default_results_view_back_button_label": "Zurück",
+    "default_results_view_submit_button_label": "Daten absenden"
+
 }

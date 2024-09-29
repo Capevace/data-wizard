@@ -5,12 +5,22 @@ namespace App\Filament\Resources;
 use App\Filament\Forms\JsonEditor;
 use App\Filament\Resources\CustomExtractorResource\Pages;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateSchemaAction;
+use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;
+use App\Filament\Resources\SavedExtractorResource\StepLabelsForm;
 use App\Models\SavedExtractor;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
+use Filament\Forms\Components\View;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -49,6 +59,7 @@ class SavedExtractorResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->live(onBlur: true)
             ->schema([
                 Hidden::make('was_automatically_created')
                     ->default(false),
@@ -71,6 +82,7 @@ class SavedExtractorResource extends Resource
                     ->required(),
 
                 JsonEditor::make('json_schema')
+                    ->id('data.json_schema_string')
                     ->required()
                     ->label('JSON Schema')
                     ->translateLabel()
@@ -85,6 +97,80 @@ class SavedExtractorResource extends Resource
                     ->autosize()
                     ->extraAttributes(['class' => 'h-full', 'style' => 'min-height: 26rem'])
                     ->helperText(__('It is recommended to keep the output instructions short and concise to save LLM tokens. You can write prompts in other languages, but English is recommended.')),
+
+
+                Tabs::make('UI')
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        Tabs\Tab::make('Introduction')
+                            ->badge(1)
+                            ->schema(StepLabelsForm::schema(
+                                prefix: 'introduction',
+                                buttons: [
+                                    TextInput::make("introduction_view_next_button_label")
+                                        ->label("Next Button Label")
+                                        ->translateLabel()
+                                        ->placeholder(__("default_introduction_view_next_button_label"))
+                                ]
+                            )),
+
+                        Tabs\Tab::make('Bucket')
+                            ->badge(2)
+                            ->schema(StepLabelsForm::schema(prefix: 'bucket')),
+
+                        Tabs\Tab::make('Generation')
+                            ->badge(3)
+                            ->schema(StepLabelsForm::schema(prefix: 'extraction')),
+
+                        Tabs\Tab::make('Results')
+                            ->badge(4)
+                            ->schema(StepLabelsForm::schema(prefix: 'results', buttons: [
+                                Toggle::make("allow_download")
+                                    ->label("Allow downloading as JSON, CSV, or Excel")
+                                    ->translateLabel()
+                                    ->onIcon('heroicon-o-check')
+                                    ->onColor('success')
+                                    ->offIcon('heroicon-o-x-mark')
+                                    ->offColor('danger')
+                                    ->default(true),
+
+                                TextInput::make("redirect_url")
+                                    ->label("Redirect URL")
+                                    ->translateLabel()
+                                    ->placeholder(__("e.g. https://example.com/redirect")),
+                            ])),
+
+                        Tabs\Tab::make('Webhook')
+                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->iconPosition('after')
+                            ->schema([
+                                Toggle::make("enable_webhook")
+                                    ->live()
+                                    ->label("Enable Webhook")
+                                    ->translateLabel()
+                                    ->onIcon('heroicon-o-bell')
+                                    ->onColor('success')
+                                    ->offIcon('heroicon-o-bell-slash')
+                                    ->offColor('danger'),
+
+                                Group::make([
+                                    TextInput::make("webhook_url")
+                                        ->required(fn (Get $get) => $get('enable_webhook'))
+                                        ->hidden(fn (Get $get) => ! $get('enable_webhook'))
+                                        ->label("Webhook URL")
+                                        ->translateLabel()
+                                        ->placeholder(__("e.g. https://example.com/webhook")),
+
+                                    TextInput::make("webhook_secret")
+                                        ->hidden(fn (Get $get) => ! $get('enable_webhook'))
+                                        ->label("Webhook Bearer Token")
+                                        ->translateLabel()
+                                        ->helperText(__('A POST request with the Authorization header set to "Bearer <token>" will be sent.'))
+                                        ->placeholder(__("e.g. https://example.com/webhook")),
+                                ])
+                            ]),
+                ]),
             ]);
     }
 
@@ -109,6 +195,7 @@ class SavedExtractorResource extends Resource
             ->actions([
                 ActionGroup::make([])
                     ->actions([
+                        OpenEmbeddedExtractorAction::make(),
                         EditAction::make(),
                         ReplicateAction::make()
                             ->requiresConfirmation(),

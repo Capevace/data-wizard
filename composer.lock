@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1896d6f7e6dff2c9435d0843bfb08e76",
+    "content-hash": "c31572431a22a739a899f70ae82bcc80",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -1308,77 +1308,6 @@
                 "source": "https://github.com/doctrine/sql-formatter/tree/1.4.1"
             },
             "time": "2024-08-05T20:32:22+00:00"
-        },
-        {
-            "name": "dotswan/filament-code-editor",
-            "version": "v1.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dotswan/filament-code-editor.git",
-                "reference": "79c380436bae6ec27fbb0932e3eb56595bd5c6ed"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dotswan/filament-code-editor/zipball/79c380436bae6ec27fbb0932e3eb56595bd5c6ed",
-                "reference": "79c380436bae6ec27fbb0932e3eb56595bd5c6ed",
-                "shasum": ""
-            },
-            "require": {
-                "filament/filament": "^3.0",
-                "illuminate/contracts": "^10.0 || ^11.0",
-                "php": "^8.1",
-                "spatie/laravel-package-tools": "^1.15.0"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.0",
-                "nunomaduro/collision": "^7.9",
-                "nunomaduro/larastan": "^2.0.1",
-                "orchestra/testbench": "^8.0",
-                "pestphp/pest": "^2.0",
-                "pestphp/pest-plugin-arch": "^2.0",
-                "pestphp/pest-plugin-laravel": "^2.0",
-                "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan-deprecation-rules": "^1.0",
-                "phpstan/phpstan-phpunit": "^1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Dotswan\\FilamentCodeEditor\\FilamentCodeEditorServiceProvider"
-                    ],
-                    "aliases": {
-                        "FilamentCodeEditor": "Dotswan\\FilamentCodeEditor\\Facades\\FilamentCodeEditor"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Dotswan\\FilamentCodeEditor\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Dotswan",
-                    "email": "tech@dotswan.com",
-                    "role": "Developer"
-                }
-            ],
-            "homepage": "https://github.com/dotswan/filament-code-editor",
-            "keywords": [
-                "dotswan",
-                "filament-code-editor",
-                "laravel"
-            ],
-            "support": {
-                "issues": "https://github.com/dotswan/filament-code-editor/issues",
-                "source": "https://github.com/dotswan/filament-code-editor"
-            },
-            "time": "2024-05-21T13:41:25+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -6470,6 +6399,72 @@
             "time": "2024-05-17T09:06:10+00:00"
         },
         {
+            "name": "spatie/laravel-http-logger",
+            "version": "1.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-http-logger.git",
+                "reference": "96c18c32999e2e4142e157a71f51d467da29fa98"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-http-logger/zipball/96c18c32999e2e4142e157a71f51d467da29fa98",
+                "reference": "96c18c32999e2e4142e157a71f51d467da29fa98",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
+                "pestphp/pest": "^1.22|^2.34",
+                "phpunit/phpunit": "^9.0|^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\HttpLogger\\HttpLoggerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\HttpLogger\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent Roose",
+                    "email": "brent@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel package to log HTTP requests",
+            "homepage": "https://github.com/spatie/laravel-http-logger",
+            "keywords": [
+                "laravel-http-logger",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-http-logger/issues",
+                "source": "https://github.com/spatie/laravel-http-logger/tree/1.11.0"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2024-03-02T05:42:55+00:00"
+        },
+        {
             "name": "spatie/laravel-medialibrary",
             "version": "11.8.2",
             "source": {
@@ -6637,6 +6632,80 @@
                 }
             ],
             "time": "2024-03-20T07:29:11+00:00"
+        },
+        {
+            "name": "spatie/laravel-webhook-server",
+            "version": "3.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-webhook-server.git",
+                "reference": "d4cc24141a4d6a148e110df5f36217cc8f40f07e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-webhook-server/zipball/d4cc24141a4d6a148e110df5f36217cc8f40f07e",
+                "reference": "d4cc24141a4d6a148e110df5f36217cc8f40f07e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.3|^7.3",
+                "illuminate/bus": "^8.50|^9.0|^10.0|^11.0",
+                "illuminate/queue": "^8.50|^9.0|^10.0|^11.0",
+                "illuminate/support": "^8.50|^9.0|^10.0|^11.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.11"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4.3",
+                "orchestra/testbench": "^6.19|^7.0|^8.0",
+                "pestphp/pest": "^1.22|^2.0",
+                "pestphp/pest-plugin-laravel": "^1.3|^2.0",
+                "spatie/test-time": "^1.2.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\WebhookServer\\WebhookServerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\WebhookServer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Send webhooks in Laravel apps",
+            "homepage": "https://github.com/spatie/laravel-webhook-server",
+            "keywords": [
+                "laravel-webhook-server",
+                "server",
+                "spatie",
+                "webhook"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/laravel-webhook-server/tree/3.8.1"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2024-02-12T08:18:25+00:00"
         },
         {
             "name": "spatie/pdf-to-image",

@@ -1,32 +1,100 @@
 <!doctype html>
-<html lang="de">
+<html lang="de" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MagicImport</title>
 
-    <script src="//cdn.tailwindcss.com"></script>
+    @php
+        $title = strip_tags(($livewire ?? null)?->getTitle() ?? '');
+        $brandName = strip_tags(filament()->getBrandName());
+    @endphp
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=averia-serif-libre:300,300i,400,400i,700,700i|abel:200,400,600,700" rel="stylesheet" />
+    <title>{{ filled($title) ? "{$title} - " : null }} {!! $brandName !!}</title>
+
+
+    @php
+        \Filament\Support\Facades\FilamentColor::register([
+            'primary' => \Filament\Support\Colors\Color::Neutral,
+            'warning' => \Filament\Support\Colors\Color::Yellow,
+            'success' => \Filament\Support\Colors\Color::Emerald,
+            'gray' => \Filament\Support\Colors\Color::Neutral,
+        ]);
+    @endphp
+
+    {{ filament()->getPanel('app')->getTheme()->getHtml() }}
+    {{ filament()->getPanel('app')->getFontHtml() }}
 
     <style>
-        body {
-            font-family: 'Averia Serif Libre', sans-serif;
-            font-weight: 300 !important;
-        }
-
-        body p {
-            opacity: 0.9;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Averia Serif Libre', sans-serif;
-            font-weight: 500 !important;
+        :root {
+            --font-family: '{!! filament()->getFontFamily() !!}';
+            --sidebar-width: {{ filament()->getSidebarWidth() }};
+            --collapsed-sidebar-width: {{ filament()->getCollapsedSidebarWidth() }};
+            --default-theme-mode: {{ filament()->getDefaultThemeMode()->value }};
         }
     </style>
+
+{{--    <script src="//cdn.tailwindcss.com"></script>--}}
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+
+                }
+            }
+        }
+    </script>
+
+    <script>
+        const theme = localStorage.getItem('theme') ?? @js(filament()->getDefaultThemeMode()->value)
+
+        if (
+            theme === 'dark' ||
+            (theme === 'system' &&
+                window.matchMedia('(prefers-color-scheme: dark)')
+                    .matches)
+        ) {
+            document.documentElement.classList.add('dark')
+        }
+    </script>
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
+    @vite([
+        'resources/css/filament/app/theme.css',
+        'resources/css/app.css',
+    ])
+
+    {!! \Filament\Support\Facades\FilamentAsset::renderStyles() !!}
+
+    @livewireStyles
+    @stack('styles')
+
+    <style>
+        /*body {*/
+        /*    font-family: 'Averia Serif Libre', sans-serif;*/
+        /*    font-weight: 300 !important;*/
+        /*}*/
+
+        /*body p {*/
+        /*    opacity: 0.9;*/
+        /*}*/
+
+        /*h1, h2, h3, h4, h5, h6 {*/
+        /*    font-family: 'Averia Serif Libre', sans-serif;*/
+        /*    font-weight: 500 !important;*/
+        /*}*/
+    </style>
+
+    @if ($favicon = filament()->getFavicon())
+        <link rel="icon" href="{{ $favicon }}" />
+    @endif
 
     <script>
         window.MagicImport = {};
@@ -34,11 +102,15 @@
 
     @stack('components')
 </head>
-<body class="bg-sky-950 text-sky-50 dark flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen dark:bg-gray-950 antialiased">
     {{ $slot }}
     @yield('content')
 
-    <script src="//unpkg.com/alpinejs"></script>
-{{--    @stack('scripts')--}}
+    @livewire('notifications')
+
+    @stack('scripts')
+    @filamentScripts(withCore: true)
+
+    @livewireScripts
 </body>
 </html>

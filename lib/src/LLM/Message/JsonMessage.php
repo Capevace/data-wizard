@@ -46,8 +46,6 @@ class JsonMessage implements DataMessage, PartialMessage
         $this->partial = $this->partial.$chunk;
         $this->data = PartialJson::parse($this->partial) ?? $this->data;
 
-        dump($this->partial, $this->data);
-
         return $this;
     }
 

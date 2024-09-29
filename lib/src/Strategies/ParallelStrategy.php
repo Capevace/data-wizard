@@ -75,7 +75,7 @@ class ParallelStrategy
             $batches->push($batch);
         }
 
-        $datas = null;
+        $datas = [];
         $data = null;
 
         foreach ($batches as $batch) {
@@ -87,8 +87,6 @@ class ParallelStrategy
 
             $datas[] = $data;
         }
-
-        dump($datas);
 
         $data = $this->merge($datas);
 

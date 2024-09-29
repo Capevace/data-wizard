@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Components;
 
+use App\Livewire\Components\Shared\HasPartialJson;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
+use App\Models\SavedExtractor;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
@@ -12,22 +14,32 @@ use Livewire\Component;
 
 /**
  * @property-read ExtractionBucket $bucket
+ * @property-read SavedExtractor $saved_extractor
  * @property-read ?ExtractionRun $run
  */
 class Generator extends Component
 {
+    use HasPartialJson;
+
+    #[Locked]
+    public string $extractorId;
+
     #[Locked]
     public string $bucketId;
 
     #[Locked]
     public ?string $runId = null;
 
-    public ?array $partialResultJson = null;
-
     #[Reactive]
     public bool $debugModeEnabled = false;
 
     public ?string $actorTab = null;
+
+    #[Computed]
+    public function saved_extractor(): SavedExtractor
+    {
+        return SavedExtractor::findOrFail($this->extractorId);
+    }
 
     #[Computed]
     public function bucket(): ExtractionBucket
@@ -46,7 +58,7 @@ class Generator extends Component
     #[Computed]
     public function schema(): ?array
     {
-        return $this->run?->saved_extractor?->json_schema ?? $this->run?->target_schema;
+        return $this->saved_extractor?->json_schema ?? $this->run?->target_schema;
     }
 
     #[Computed]
@@ -71,11 +83,6 @@ class Generator extends Component
         //        ]);
         //
         //        $this->js("\$dispatch('start-streaming', { sourceUrl: '$sourceUrl' })");
-    }
-
-    public function refreshJson()
-    {
-        $this->partialResultJson = json_decode($this->run?->partial_result_json, associative: true);
     }
 
     public function render()

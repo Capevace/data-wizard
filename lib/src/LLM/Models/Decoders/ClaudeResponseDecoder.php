@@ -147,6 +147,7 @@ class ClaudeResponseDecoder implements Decoder
                     $this->outputTokens = intval(Arr::get($data, 'delta.usage.output_tokens') ?? Arr::get($data, 'usage.output_tokens'));
 
                     if ($this->onTokenStats) {
+                        dump([$this->inputTokens, $this->outputTokens]);
                         ($this->onTokenStats)(TokenStats::withInputAndOutput($this->inputTokens, $this->outputTokens));
                     }
 

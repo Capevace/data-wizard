@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Akaunting\Money\Money;
+use App\Livewire\Components\EmbeddedExtractor;
 use App\Models\Concerns\TokenStatsCast;
 use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionRun\RunStatus;
@@ -24,7 +25,10 @@ use Swaggest\JsonSchema\SchemaContract;
  * @property ?TokenStats $token_stats
  * @property string $strategy
  * @property ?string $saved_extractor_id
+ * @property RunStatus $status
  * @property-read ?SavedExtractor $saved_extractor
+ * @property-read ?array $data
+ * @property-read ?array $partial_data
  */
 class ExtractionRun extends Model
 {
@@ -93,5 +97,25 @@ class ExtractionRun extends Model
     public function actors(): HasMany
     {
         return $this->hasMany(Actor::class, 'extraction_run_id');
+    }
+
+    public function getDataAttribute(): ?array
+    {
+        return $this->result_json;
+    }
+
+    public function getPartialDataAttribute(): ?array
+    {
+        return json_decode($this->partial_result_json, associative: true) ?? $this->data;
+    }
+
+    public function getEmbeddedUrl(): string
+    {
+        return route('embedded-extractor', [
+            'extractorId' => $this->saved_extractor_id,
+            'bucketId' => $this->bucket_id,
+            'runId' => $this->id,
+            'signature' => EmbeddedExtractor::generateIdSignature(bucketId: $this->bucket_id, runId: $this->id),
+        ]);
     }
 }

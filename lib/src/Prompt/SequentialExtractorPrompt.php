@@ -22,7 +22,7 @@ class SequentialExtractorPrompt implements Prompt
         protected array $artifacts,
         protected ?array $previousData = null,
 
-        public bool $shouldForceFunction = true,
+        public bool $shouldForceFunction = false,
         public bool $sendImages = true,
     ) {}
 

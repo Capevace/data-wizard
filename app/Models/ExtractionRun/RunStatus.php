@@ -56,4 +56,9 @@ enum RunStatus: string implements HasColor, HasIcon, HasLabel
             self::Failed => $date->longAbsoluteDiffForHumans(),
         };
     }
+
+    public function shouldPoll(): bool
+    {
+        return $this === self::Pending || $this === self::Running;
+    }
 }

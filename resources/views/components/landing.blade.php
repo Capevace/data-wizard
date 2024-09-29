@@ -36,12 +36,14 @@
         </nav>
     </header>
     <div class="md:px-6 lg:px-0">
-        <x-landing.header class="mb-10" />
-        <x-landing.easy-usage class="mb-28" />
+        <x-landing.header class="mb-20" />
         <x-landing.video class="mb-10" />
-
         <x-landing.how-it-works />
-        <x-landing.features />
+        <x-landing.what-is-it class="mb-28" />
+        <x-landing.usages class="mb-28" />
+        <x-landing.easy-usage class="mb-28" />
+
+
 
         <section class="mt-20">
             <div class="max-w-4xl mb-12">

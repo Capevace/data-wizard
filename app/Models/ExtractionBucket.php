@@ -102,4 +102,12 @@ class ExtractionBucket extends Model implements HasMedia
         $this->updated_at = now();
         $this->save();
     }
+
+    public static function createEmbedded(?string $externalId = null): self
+    {
+        return self::create([
+            'description' => "Embedded extraction bucket",
+
+        ]);
+    }
 }

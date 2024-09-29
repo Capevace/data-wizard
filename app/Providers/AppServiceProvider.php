@@ -21,9 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if ($this->app->environment('production')) {
-            \URL::forceScheme('https');
-        }
+        \URL::forceScheme('https');
 
         // Allow admin access to Laravel Pulse Dashboard
         if ($email = config('app.admin_email')) {
@@ -32,5 +30,7 @@ class AppServiceProvider extends ServiceProvider
 
         Route::model('bucket', ExtractionBucket::class);
         Route::model('run', ExtractionRun::class);
+
+        \Livewire::component('embedded-extractor', \App\Livewire\Components\EmbeddedExtractor::class);
     }
 }
