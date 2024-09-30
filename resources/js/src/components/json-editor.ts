@@ -96,7 +96,7 @@ export function JsonEditorComponent({ statePath, state }) {
                 basicSetup,
                 json(),
                 this.compartment.of({
-                    extension: light
+                    extension: window.Alpine.store('theme') === 'dark' ? dark : light
                 }),
                 EditorView.updateListener.of((v) => {
                     if (v.docChanged) {

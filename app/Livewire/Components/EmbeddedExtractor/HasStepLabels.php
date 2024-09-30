@@ -11,10 +11,10 @@ trait HasStepLabels
     public function config(): EmbeddingConfig
     {
         return new EmbeddingConfig(
-            logoUrl: null, //'https://www.katrima.de/SharedDocs/Bilder/DE/Allgemein/Logos/LogoBBK.png?__blob=thumbnail&v=6',
-            allowDownload: $this->saved_extractor->allow_download ?? true,
+            allowDownload: $this->saved_extractor->allow_download ?? true, //'https://www.katrima.de/SharedDocs/Bilder/DE/Allgemein/Logos/LogoBBK.png?__blob=thumbnail&v=6',
             redirectUrl: $this->saved_extractor->redirect_url ?? null,
-            horizontalAlignment: WidgetAlignment::Stretch,
+            logoUrl: null,
+            horizontalAlignment: WidgetAlignment::Center,
             verticalAlignment: WidgetAlignment::Center,
             outerPaddingClasses: '',
             borderRadiusClasses: '',
