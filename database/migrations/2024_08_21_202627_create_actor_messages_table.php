@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->string('role');
             $table->string('type');
-            $table->string('text')->nullable();
+            $table->text('text')->nullable();
             $table->json('json')->nullable();
 
             $table->foreignUuid('media_id')

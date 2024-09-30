@@ -57,11 +57,11 @@ class EditBucketForm
                 ->translateLabel()
                 ->multiple(),
 
-            DataWizardInput::make('data_wizard_input')
-                ->label('Data Wizard Input')
-                ->translateLabel()
-                ->hint('This is a data wizard input')
-                ->required(),
+//            DataWizardInput::make('data_wizard_input')
+//                ->label('Data Wizard Input')
+//                ->translateLabel()
+//                ->hint('This is a data wizard input')
+//                ->required(),
         ];
     }
 }

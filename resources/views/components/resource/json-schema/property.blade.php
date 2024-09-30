@@ -115,40 +115,72 @@
         <x-filament-forms::field-wrapper.label :$required>
             {{ $getMagicUiLabel($schema) ?? \Illuminate\Support\Str::title($label) }}
         </x-filament-forms::field-wrapper.label>
-        <x-filament::input.wrapper>
-            <x-filament::input
-                x-model="{{ $statePath }}"
-                :$disabled
-                :$required
-                :type="match (true) {
-                    $matchesTypes($schema['type'], ['integer', 'number', 'float']) => 'number',
-                    $matchesTypes($schema['type'], ['string']) => 'text',
-                    default => 'text',
-                }"
-                :minlength="match (true) {
-                    $matchesTypes($schema['type'], ['string']) => $schema['minLength'] ?? null,
-                    default => null,
-                }"
-                :maxlength="match ($schema['type']) {
-                    $matchesTypes($schema['type'], ['string']) => $schema['maxLength'] ?? null,
-                    default => null,
-                }"
-                :min="match ($schema['type']) {
-                    $matchesTypes($schema['type'], ['integer', 'number', 'float']) => $schema['minimum'] ?? null,
-                    default => null,
-                }"
-                :max="match ($schema['type']) {
-                    $matchesTypes($schema['type'], ['integer', 'number', 'float']) => $schema['maximum'] ?? null,
-                    default => null,
-                }"
-                :step="match ($schema['type']) {
-                    $matchesTypes($schema['type'], ['integer']) => $schema['multipleOf'] ?? 1,
-                    $matchesTypes($schema['type'], ['number', 'float']) => $schema['multipleOf'] ?? null,
-                    default => null,
-                }"
-                :placeholder="$name"
-            />
-        </x-filament::input.wrapper>
+
+        @if (data_get($schema, 'magic_ui.component') === 'textarea' || data_get($schema, 'magic_ui') === 'textarea')
+            <x-filament::input.wrapper class="fi-fo-textarea overflow-hidden">
+                <textarea
+                    name="{{ $statePath }}"
+                    x-model="{{ $statePath }}"
+                    @if ($disabled)
+                        disabled
+                    @endif
+
+                    @if ($required)
+                        required
+                    @endif
+
+                    @if ($matchesTypes($schema['type'], ['string']) && ($schema['minLength'] ?? null))
+                        minlength="{{ $schema['minLength'] }}"
+                    @endif
+
+                    @if ($matchesTypes($schema['type'], ['string']) && ($schema['maxLength'] ?? null))
+                        maxlength="{{ $schema['maxLength'] }}"
+                    @endif
+
+                    placeholder="{{ $name }}"
+
+                    @class([
+                        'block w-full h-full border-none bg-transparent px-3 py-1.5 text-base text-gray-950 placeholder:text-gray-400 focus:ring-0 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.400)] dark:text-white dark:placeholder:text-gray-500 dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] dark:disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.500)] sm:text-sm sm:leading-6',
+                    ])
+                ></textarea>
+            </x-filament::input.wrapper>
+        @else
+            <x-filament::input.wrapper>
+                <x-filament::input
+                    name="{{ $statePath }}"
+                    x-model="{{ $statePath }}"
+                    :$disabled
+                    :$required
+                    :type="match (true) {
+                        $matchesTypes($schema['type'], ['integer', 'number', 'float']) => 'number',
+                        $matchesTypes($schema['type'], ['string']) => 'text',
+                        default => 'text',
+                    }"
+                    :minlength="match (true) {
+                        $matchesTypes($schema['type'], ['string']) => $schema['minLength'] ?? null,
+                        default => null,
+                    }"
+                    :maxlength="match ($schema['type']) {
+                        $matchesTypes($schema['type'], ['string']) => $schema['maxLength'] ?? null,
+                        default => null,
+                    }"
+                    :min="match ($schema['type']) {
+                        $matchesTypes($schema['type'], ['integer', 'number', 'float']) => $schema['minimum'] ?? null,
+                        default => null,
+                    }"
+                    :max="match ($schema['type']) {
+                        $matchesTypes($schema['type'], ['integer', 'number', 'float']) => $schema['maximum'] ?? null,
+                        default => null,
+                    }"
+                    :step="match ($schema['type']) {
+                        $matchesTypes($schema['type'], ['integer']) => $schema['multipleOf'] ?? 1,
+                        $matchesTypes($schema['type'], ['number', 'float']) => $schema['multipleOf'] ?? null,
+                        default => null,
+                    }"
+                    :placeholder="$name"
+                />
+            </x-filament::input.wrapper>
+        @endif
     @elseif ($matchesTypes($schema['type'], ['boolean']))
         <x-filament-forms::field-wrapper.label :$required>
             <div class="inline-flex items-center gap-2">

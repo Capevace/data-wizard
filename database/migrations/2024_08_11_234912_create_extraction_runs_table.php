@@ -12,7 +12,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('status');
             $table->json('result_json')->nullable();
-            $table->string('partial_result_json')->nullable();
+            $table->text('partial_result_json')->nullable();
             $table->foreignUuid('started_by_id')
                 ->nullable()
                 ->constrained('users')
