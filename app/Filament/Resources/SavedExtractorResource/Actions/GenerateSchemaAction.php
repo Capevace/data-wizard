@@ -84,9 +84,10 @@ class GenerateSchemaAction extends Actions\Action
 
             ])
             ->action(function (Set $set, array $data, Component $livewire) {
-                $set($this->getComponent()->getStatePath(), JsonEditor::formatJson($data['edit_schema']));
+                $set('edit_schema', JsonEditor::formatJson($data['edit_schema']));
 
-                $livewire->dispatch('changed-json-state', statePath: 'json_schema', json: JsonEditor::formatJson($data['edit_schema']));
+                data_set($livewire, 'json_schema', JsonEditor::formatJson($data['edit_schema']));
+//                $livewire->dispatch('changed-json-state', statePath: 'json_schema', json: JsonEditor::formatJson($data['edit_schema']));
             });
     }
 
