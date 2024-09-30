@@ -70,13 +70,29 @@ class AppPanelProvider extends PanelProvider
             )
             ->topbar()
             ->login()
+            ->brandLogo(asset('images/logo.svg'))
+            ->brandLogoHeight('3.7rem')
             ->brandName(new HtmlString('Magic Extract&nbsp;&nbsp;&nbsp;🪄'))
             ->viteTheme('resources/css/filament/app/theme.css')
             ->font('Armata')
             ->font('Asap')
             ->colors([
-                'primary' => Color::Indigo,
-                'gray' => Color::Slate,
+                'primary' => json_decode(<<<JSON
+                {
+                    "50": "#EDF4F7",
+                    "100": "#DFEBF1",
+                    "200": "#C0D7E3",
+                    "300": "#9CC1D3",
+                    "400": "#7DADC5",
+                    "500": "#5D99B6",
+                    "600": "#47819E",
+                    "700": "#366278",
+                    "800": "#233F4D",
+                    "900": "#112027",
+                    "950": "#091115"
+                }
+                JSON, true, 512, JSON_THROW_ON_ERROR),
+                'gray' => Color::Zinc,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
