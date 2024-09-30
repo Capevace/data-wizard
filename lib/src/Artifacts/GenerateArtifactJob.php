@@ -28,6 +28,8 @@ class GenerateArtifactJob implements ShouldQueue
         $pythonDir = __DIR__.'/../../python';
         $script = 'prepare-pdf.py';
 
+        $uvPath = config('magic-extract.uv.path');
+
         $file = $this->file->getPath();
         $dir = str($file)
             ->beforeLast('/')
@@ -43,7 +45,7 @@ class GenerateArtifactJob implements ShouldQueue
 
             $safeFile = escapeshellarg($file);
 
-            $output = shell_exec("uv run --isolated $script $dir $safeFile -- --json");
+            $output = shell_exec("$uvPath run --isolated $script $dir $safeFile -- --json");
             $json = json_decode($output, true);
 
             if (isset($json['error'])) {

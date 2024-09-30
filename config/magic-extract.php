@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'uv' => [
+        'path' => env('MAGIC_EXTRACT_UV_PATH', '/usr/bin/env uv'),
+    ],
+
     'apis' => [
         'anthropic' => [
             'token' => env('ANTHROPIC_API_KEY'),
