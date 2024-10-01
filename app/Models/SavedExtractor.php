@@ -145,4 +145,9 @@ class SavedExtractor extends Model
     {
         return route('embedded-extractor', ['extractorId' => $this->id]);
     }
+
+    public function getFullPageUrl(): string
+    {
+        return route('full-page-extractor', ['extractorId' => $this->id]);
+    }
 }

@@ -144,6 +144,23 @@
                     ])
                 ></textarea>
             </x-filament::input.wrapper>
+        @elseif ($enum = ($schema['enum'] ?? null))
+            <x-filament::input.wrapper>
+                <x-filament::input.select
+                    name="{{ $statePath }}"
+                    x-model="{{ $statePath }}"
+
+                    :disabled="$disabled ? true : false"
+                    :required="$required ? true : false"
+                >
+                    @foreach ($enum as $value)
+                        <option
+                            wire:key="{{ $value }}"
+                            value="{{ $value }}"
+                        >{{ $value }}</option>
+                    @endforeach
+                </x-filament::input.select>
+            </x-filament::input.wrapper>
         @else
             <x-filament::input.wrapper>
                 <x-filament::input

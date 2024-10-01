@@ -17,10 +17,10 @@ class OpenEmbeddedExtractorAction extends Action
         parent::setUp();
 
         $this
-            ->label('Open embedded extractor')
+            ->label('Launch embeded extractor')
             ->translateLabel()
-            ->icon('heroicon-o-eye')
-            ->url(fn (SavedExtractor $record) => $record->getEmbeddedUrl())
+            ->icon('heroicon-o-play')
+            ->url(fn (SavedExtractor $record) => $record->getFullPageUrl())
             ->openUrlInNewTab();
     }
 }

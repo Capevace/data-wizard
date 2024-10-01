@@ -140,7 +140,8 @@
 
                     const iframe = Magic.iframe.create(
 {{--                        'https://magic-import.test/embed/c63eefc4-1041-4cf7-a8bf-2f63784fb95f?bucketId=7167b5d4-813c-494b-a29e-5f8384a9c2f2&runId=e66016ea-417f-4a18-83b8-88eedf91d9ed&signature=d29f4b206660fdae6845ed02b5fa1283232158d8a54cc2d50a76fa079d24cd42&bucket=7167b5d4-813c-494b-a29e-5f8384a9c2f2',--}}
-                        'https://magic.mateffy.me/embed/a8a96ff1-ca3d-471e-bad7-7c6aaf587a52?bucket=50888dfd-6267-46d5-aaa0-ca8cc98c55b7&signature=daefa8b12cd27f44d16c6863aa691e52cfca76582a0b759b95f9ea47b7522db8',
+{{--                        'https://magic.mateffy.me/embed/a8a96ff1-ca3d-471e-bad7-7c6aaf587a52?bucket=50888dfd-6267-46d5-aaa0-ca8cc98c55b7&signature=daefa8b12cd27f44d16c6863aa691e52cfca76582a0b759b95f9ea47b7522db8',--}}
+                            'https://magic.mateffy.me/embed/a4dbbf5a-4d78-444f-8c6e-9b583d8f53ff?bucket=0d20d27f-da14-4fd2-92b2-710bae3c5d6a&signature=79b12b2ab5b2d67eb4febac835b29296d6aead12cf71905232e69cdfb7a83609&step=bucket',
                         { container: this.$refs.iframeContainer, keepBorder: true }
                     );
 
