@@ -46,3 +46,6 @@ Route::middleware(['auth'])
 Route::get('/embed/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
     ->middleware([AllowEmbeddingMiddleware::class])
     ->name('embedded-extractor');
+
+Route::get('/full-page/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
+    ->name('full-page-extractor');

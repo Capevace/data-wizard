@@ -4,9 +4,16 @@ namespace App\Livewire\Components\EmbeddedExtractor;
 
 use App\WidgetAlignment;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Locked;
 
 trait HasStepLabels
 {
+    #[Locked]
+    public WidgetAlignment $horizontalAlignment = WidgetAlignment::Stretch;
+
+    #[Locked]
+    public WidgetAlignment $verticalAlignment = WidgetAlignment::Center;
+
     #[Computed]
     public function config(): EmbeddingConfig
     {
@@ -14,8 +21,8 @@ trait HasStepLabels
             allowDownload: $this->saved_extractor->allow_download ?? true, //'https://www.katrima.de/SharedDocs/Bilder/DE/Allgemein/Logos/LogoBBK.png?__blob=thumbnail&v=6',
             redirectUrl: $this->saved_extractor->redirect_url ?? null,
             logoUrl: null,
-            horizontalAlignment: WidgetAlignment::Center,
-            verticalAlignment: WidgetAlignment::Center,
+            horizontalAlignment: $this->horizontalAlignment,
+            verticalAlignment: $this->verticalAlignment,
             outerPaddingClasses: '',
             borderRadiusClasses: '',
             borderClasses: '',

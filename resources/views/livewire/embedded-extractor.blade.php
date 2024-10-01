@@ -17,69 +17,6 @@ $verticalClasses = match ($this->config->verticalAlignment) {
 };
 ?>
 
-@assets
-@php
-    \Filament\Support\Facades\FilamentColor::register([
-        'primary' => \Filament\Support\Colors\Color::Neutral,
-        'warning' => \Filament\Support\Colors\Color::Yellow,
-        'success' => \Filament\Support\Colors\Color::Emerald,
-        'gray' => \Filament\Support\Colors\Color::Neutral,
-    ]);
-@endphp
-
-{{ filament()->getPanel('app')->getTheme()->getHtml() }}
-{{ filament()->getPanel('app')->getFontHtml() }}
-
-<style>
-    :root {
-        --font-family: '{!! filament()->getFontFamily() !!}';
-        --sidebar-width: {{ filament()->getSidebarWidth() }};
-        --collapsed-sidebar-width: {{ filament()->getCollapsedSidebarWidth() }};
-        --default-theme-mode: {{ filament()->getDefaultThemeMode()->value }};
-    }
-</style>
-
-{{--    <script src="//cdn.tailwindcss.com"></script>--}}
-<script>
-    tailwind.config = {
-        darkMode: 'class',
-        theme: {
-            extend: {
-
-            }
-        }
-    }
-</script>
-
-<script>
-    const theme = localStorage.getItem('theme') ?? @js(filament()->getDefaultThemeMode()->value)
-
-    if (
-        theme === 'dark' ||
-        (theme === 'system' &&
-            window.matchMedia('(prefers-color-scheme: dark)')
-                .matches)
-    ) {
-        document.documentElement.classList.add('dark')
-    }
-</script>
-
-<style>
-    [x-cloak] {
-        display: none !important;
-    }
-</style>
-
-@vite([
-    'resources/css/filament/app/theme.css',
-    'resources/css/app.css',
-])
-
-{!! \Filament\Support\Facades\FilamentAsset::renderStyles() !!}
-
-@endassets
-
-
 <div
     @class([
         $this->config->outerPaddingClasses,

@@ -10,6 +10,7 @@ use App\Livewire\Components\Shared\HasPartialJson;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
 use App\Models\SavedExtractor;
+use App\WidgetAlignment;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
@@ -112,6 +113,14 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
 
     public function mount()
     {
+        if (request()->routeIs('full-page-extractor')) {
+            $this->horizontalAlignment = WidgetAlignment::Center;
+            $this->verticalAlignment = WidgetAlignment::Center;
+        } else if (request()->routeIs('embedded-extractor')) {
+            $this->horizontalAlignment = WidgetAlignment::Stretch;
+            $this->verticalAlignment = WidgetAlignment::Stretch;
+        }
+
         if (! $this->bucket) {
             $this->bucketId = ExtractionBucket::createEmbedded()->id;
             unset($this->bucket);
