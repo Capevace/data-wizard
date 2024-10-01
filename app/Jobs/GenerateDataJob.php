@@ -25,7 +25,7 @@ class  GenerateDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(protected ExtractionRun $run, protected ?User $startedBy) {}
+    public function __construct(protected ExtractionRun $run, protected ?User $startedBy = null) {}
 
     public function handle(): void
     {
@@ -50,6 +50,20 @@ class  GenerateDataJob implements ShouldQueue
                 ->strategy($this->run->strategy)
                 ->artifacts($artifacts->all())
                 ->stream(
+                    onMessage: function (Message $message, string $actorId) {
+                        /** @var ?Actor $actor */
+                        $actor = $this->run->actors()->find($actorId);
+
+                        if (! $actor) {
+                            throw new \InvalidArgumentException("Actor {$actorId} not found");
+                        }
+
+                        $actor->add($message);
+                    },
+                    onTokenStats: function (TokenStats $tokenStats) {
+                        $this->run->token_stats = $tokenStats;
+                        $this->run->save();
+                    },
                     onActorTelemetry: function (ActorTelemetry $telemetry) {
                         /** @var ?Actor $actor */
                         $actor = $this->run->actors()->find($telemetry->id);
@@ -64,20 +78,6 @@ class  GenerateDataJob implements ShouldQueue
                     },
                     onDataProgress: function (array $data) {
                         $this->run->partial_result_json = $data;
-                        $this->run->save();
-                    },
-                    onMessage: function (Message $message, string $actorId) {
-                        /** @var ?Actor $actor */
-                        $actor = $this->run->actors()->find($actorId);
-
-                        if (! $actor) {
-                            throw new \InvalidArgumentException("Actor {$actorId} not found");
-                        }
-
-                        $actor->add($message);
-                    },
-                    onTokenStats: function (TokenStats $tokenStats) {
-                        $this->run->token_stats = $tokenStats;
                         $this->run->save();
                     }
                 );
