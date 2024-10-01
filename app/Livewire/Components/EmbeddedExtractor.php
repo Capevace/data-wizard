@@ -118,7 +118,7 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
             $this->verticalAlignment = WidgetAlignment::Center;
         } else if (request()->routeIs('embedded-extractor')) {
             $this->horizontalAlignment = WidgetAlignment::Stretch;
-            $this->verticalAlignment = WidgetAlignment::Stretch;
+            $this->verticalAlignment = WidgetAlignment::Center;
         }
 
         if (! $this->bucket) {
