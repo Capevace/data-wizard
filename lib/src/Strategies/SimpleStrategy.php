@@ -3,8 +3,10 @@
 namespace Mateffy\Magic\Strategies;
 
 use App\Models\Actor\ActorTelemetry;
+use Illuminate\Support\Str;
 use Mateffy\Magic\Artifacts\Artifact;
 use Mateffy\Magic\Config\Extractor;
+use Mateffy\Magic\LLM\Message\JsonMessage;
 use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\Loop\InferenceResult;
 use Mateffy\Magic\Loop\Response\JsonResponse;
@@ -38,10 +40,12 @@ class SimpleStrategy
      */
     public function run(array $artifacts): InferenceResult
     {
+        $threadId = Str::uuid();
         $prompt = new ExtractorPrompt(extractor: $this->extractor, artifacts: $artifacts);
 
         if ($this->onActorTelemetry) {
             ($this->onActorTelemetry)(new ActorTelemetry(
+                id: $threadId,
                 model: "{$this->extractor->llm->getOrganization()->id}/{$this->extractor->llm->getModelName()}",
                 system_prompt: $prompt->system(),
             ));
@@ -78,8 +82,8 @@ class SimpleStrategy
             onTokenStats: $this->onTokenStats
         );
 
-        /** @var ?JsonResponse $jsonResponse */
-        $jsonResponse = collect($responses)->first(fn ($response) => $responses instanceof JsonResponse);
+        /** @var ?JsonMessage $jsonResponse */
+        $jsonResponse = collect($responses)->first(fn ($response) => $responses instanceof JsonMessage);
 
         return new InferenceResult(value: $jsonResponse?->data, messages: $messages);
     }
