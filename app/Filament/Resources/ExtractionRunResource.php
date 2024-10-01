@@ -28,6 +28,16 @@ class ExtractionRunResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-play';
 
+    public static function getModelLabel(): string
+    {
+        return __('Run');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('Runs');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -90,12 +100,6 @@ class ExtractionRunResource extends Resource
                     ->tooltip(fn (ExtractionRun $record) => $record->token_stats?->cost?->formatAveragePer1M())
                     ->searchable()
                     ->sortable(query: fn (Builder $query, string $direction) => $query->orderBy('token_stats->tokens', $direction)),
-
-                TextColumn::make('json')
-                    ->state(fn (ExtractionRun $record) => count(Arr::get(collect($record->result_json)->first(), 'data.estates') ?? []))
-                //
-                //                TextColumn::make('partial_result_json')
-                //                    ->formatStateUsing(fn(?array $state) => json_encode($state, JSON_PRETTY_PRINT)),
             ])
             ->filters([
                 //

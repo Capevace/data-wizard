@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
+use App\Models\ExtractionBucket\BucketCreationSource;
 use App\Models\ExtractionBucket\BucketStatus;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Mateffy\Magic\Functions\ExtractData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +37,7 @@ class ExtractionBucket extends Model implements HasMedia
     protected $casts = [
         'started_at' => 'timestamp',
         'status' => BucketStatus::class,
+        'created_using' => BucketCreationSource::class,
     ];
 
     public function getAttributes()
@@ -44,6 +47,7 @@ class ExtractionBucket extends Model implements HasMedia
             'started_at' => now()->toImmutable(),
             'extractor_id' => 'default',
             'created_by_id' => auth()->user()?->id,
+            'created_using' => BucketCreationSource::App,
             ...parent::getAttributes(),
         ];
     }
@@ -67,7 +71,7 @@ class ExtractionBucket extends Model implements HasMedia
             ->fit(Fit::Contain, desiredWidth: 400, desiredHeight: 300);
     }
 
-    public function files()
+    public function files(): MorphMany
     {
         return $this->media();
     }

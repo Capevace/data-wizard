@@ -8,9 +8,12 @@ use App\Filament\Resources\ExtractionBucketResource\Pages;
 use App\Filament\Resources\ExtractionBucketResource\RelationManagers\FilesRelationManager;
 use App\Filament\Resources\ExtractionBucketResource\RelationManagers\RunsRelationManager;
 use App\Models\ExtractionBucket;
+use App\Models\ExtractionBucket\BucketCreationSource;
+use App\Models\User;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -20,6 +23,7 @@ use Filament\Tables\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,6 +42,11 @@ class ExtractionBucketResource extends Resource
         return __('Bucket');
     }
 
+    public static function getPluralLabel(): ?string
+    {
+        return __('Buckets');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -54,37 +63,58 @@ class ExtractionBucketResource extends Resource
                 TextColumn::make('description')
                     ->translateLabel()
                     ->grow(true)
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('status')
+                    ->hidden()
+                    ->translateLabel()
+                    ->sortable(),
+
+                TextColumn::make('files_count')
+                    ->label('Number of files')
+                    ->translateLabel()
+                    ->counts('files')
+                    ->formatStateUsing(fn (int $state) => __(":value files", ['value' => $state]))
                     ->sortable(),
 
                 TextColumn::make('created_by.name')
                     ->label('Created By')
                     ->translateLabel()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
 
-                TextColumn::make('status')
-                    ->translateLabel()
-                    ->badge()
-                    ->sortable(),
-
-                TextColumn::make('started_at')
-                    ->label('Started At')
+                TextColumn::make('created_at')
+                    ->label('Created at')
                     ->translateLabel()
                     ->date()
                     ->sortable(),
 
-                TextColumn::make('extractor_id')
-                    ->label('Extractor ID')
+                TextColumn::make('created_using')
+                    ->label('Created using')
                     ->translateLabel()
+                    ->badge()
                     ->sortable(),
             ])
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
             ->filters([
+                SelectFilter::make('created_using')
+                    ->label('Created using')
+                    ->translateLabel()
+                    ->multiple()
+                    ->default([BucketCreationSource::App->value])
+                    ->options(BucketCreationSource::class),
                 TrashedFilter::make(),
             ])
             ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
-                RestoreAction::make(),
-                ForceDeleteAction::make(),
+                ActionGroup::make([
+                    EditAction::make(),
+                    DeleteAction::make(),
+                    RestoreAction::make(),
+                    ForceDeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 BulkActionGroup::make([

@@ -25,7 +25,7 @@ class Generator extends Component
     public string $extractorId;
 
     #[Locked]
-    public string $bucketId;
+    public ?string $bucketId = null;
 
     #[Locked]
     public ?string $runId = null;
@@ -42,16 +42,18 @@ class Generator extends Component
     }
 
     #[Computed]
-    public function bucket(): ExtractionBucket
+    public function bucket(): ?ExtractionBucket
     {
-        return ExtractionBucket::findOrFail($this->bucketId);
+        return $this->bucketId
+            ? ExtractionBucket::findOrFail($this->bucketId)
+            : null;
     }
 
     #[Computed]
     public function run(): ?ExtractionRun
     {
         return $this->runId
-            ? $this->bucket->runs()->findOrFail($this->runId)
+            ? $this->bucket?->runs()->findOrFail($this->runId) ?? ExtractionRun::findOrFail($this->runId)
             : null;
     }
 

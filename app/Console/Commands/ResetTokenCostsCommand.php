@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Filament\Clusters\Extraction;
 use App\Models\ExtractionRun;
 use Illuminate\Console\Command;
 use Mateffy\Magic\LLM\Models\Claude3Family;

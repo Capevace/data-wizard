@@ -7,15 +7,19 @@ use App\Filament\Resources\CustomExtractorResource\Pages;
 use App\Filament\Resources\SavedExtractorResource\Actions\BulkExportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateSchemaAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;
+use App\Filament\Resources\SavedExtractorResource\RelationManagers\RunsRelationManager;
 use App\Filament\Resources\SavedExtractorResource\StepLabelsForm;
 use App\Models\SavedExtractor;
+use App\Models\SavedExtractor\RedirectMode;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
@@ -34,6 +38,7 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class SavedExtractorResource extends Resource
 {
@@ -61,47 +66,123 @@ class SavedExtractorResource extends Resource
                 Hidden::make('was_automatically_created')
                     ->default(false),
 
-                TextInput::make('label')
-                    ->label('Label')
-                    ->translateLabel()
-                    ->placeholder(__('e.g. Extracting products from brochure PDFs')),
-
-                Select::make('strategy')
-                    ->label('LLM Strategy')
-                    ->translateLabel()
-                    ->selectablePlaceholder(false)
-                    ->default('simple')
-                    ->options([
-                        'simple' => __('Simple'),
-                        'sequential' => __('Sequential'),
-                        'parallel' => __('Parallel'),
-                    ])
-                    ->required(),
-
-                JsonEditor::make('json_schema')
-                    ->id('data.json_schema_string')
-                    ->required()
-                    ->label('JSON Schema')
-                    ->translateLabel()
-                    ->hintActions([
-                        GenerateSchemaAction::make('generateSchema'),
-                    ]),
-
-                Textarea::make('output_instructions')
-                    ->label('LLM Output Instructions')
-                    ->translateLabel()
-                    ->placeholder(__('example-output-instructions'))
-                    ->autosize()
-                    ->extraAttributes(['class' => 'h-full', 'style' => 'min-height: 26rem'])
-                    ->helperText(__('It is recommended to keep the output instructions short and concise to save LLM tokens. You can write prompts in other languages, but English is recommended.')),
-
-
                 Tabs::make('UI')
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
+                        Tabs\Tab::make('JSON Schema & Strategy')
+                            ->icon('heroicon-o-code-bracket')
+                            ->iconPosition('after')
+                            ->schema([
+                                TextInput::make('label')
+                                    ->label('Label')
+                                    ->translateLabel()
+                                    ->placeholder(__('e.g. Extracting products from brochure PDFs')),
+
+                                Select::make('strategy')
+                                    ->label('LLM Strategy')
+                                    ->translateLabel()
+                                    ->selectablePlaceholder(false)
+                                    ->default('simple')
+                                    ->options([
+                                        'simple' => __('Simple'),
+                                        'sequential' => __('Sequential'),
+                                        'parallel' => __('Parallel'),
+                                    ])
+                                    ->required(),
+
+                                JsonEditor::make('json_schema')
+                                    ->id('data.json_schema_string')
+                                    ->required()
+                                    ->label('JSON Schema')
+                                    ->translateLabel()
+                                    ->hintActions([
+                                        GenerateSchemaAction::make('generateSchema'),
+                                    ]),
+
+                                Textarea::make('output_instructions')
+                                    ->label('LLM Output Instructions')
+                                    ->translateLabel()
+                                    ->placeholder(__('example-output-instructions'))
+                                    ->autosize()
+                                    ->extraAttributes(['class' => 'h-full', 'style' => 'min-height: 26rem'])
+                                    ->helperText(__('It is recommended to keep the output instructions short and concise to save LLM tokens. You can write prompts in other languages, but English is recommended.')),
+                            ]),
+
+                        Tabs\Tab::make('Sendoff')
+                            ->icon('heroicon-o-paper-airplane')
+                            ->iconPosition('after')
+                            ->schema([
+                                Section::make('Redirect')
+                                    ->description(new HtmlString(__("After finishing the data review, the user can be redirected to another URL, likely your application.<br/><br/>When downloads are disabled the user will already be redirected right after editing and submitting the data.")))
+                                    ->icon('bi-send')
+                                    ->aside()
+                                    ->schema([
+                                        TextInput::make("redirect_url")
+                                            ->label("Redirect URL")
+                                            ->translateLabel()
+                                            ->placeholder(__("e.g. https://example.com/redirect")),
+
+                                        ToggleButtons::make("redirect_mode")
+                                            ->label('Redirect mode')
+                                            ->translateLabel()
+//                                            ->onIcon('bi-window-plus')
+//                                            ->onColor('gray')
+//                                            ->offIcon('bi-send')
+//                                            ->offColor('gray')
+                                            ->options(RedirectMode::class)
+                                            ->grouped(),
+                                    ]),
+
+                                Section::make('Webhook')
+                                    ->description(new HtmlString(__("Webhooks will be sent all along the extraction process and can be used to receive the extracted data, apart from the iFrame API.<br/><br/>A globally configured webhook will be executed anyway.")))
+                                    ->icon('bi-bell')
+                                    ->aside()
+                                    ->schema([
+                                        Toggle::make("enable_webhook")
+                                            ->live()
+                                            ->label("Enable Webhook")
+                                            ->translateLabel()
+                                            ->onIcon('heroicon-o-bell')
+                                            ->onColor('success')
+                                            ->offIcon('heroicon-o-bell-slash')
+                                            ->offColor('danger'),
+
+                                        Group::make([
+                                            TextInput::make("webhook_url")
+                                                ->required(fn (Get $get) => $get('enable_webhook'))
+                                                ->hidden(fn (Get $get) => ! $get('enable_webhook'))
+                                                ->label("Webhook URL")
+                                                ->translateLabel()
+                                                ->placeholder(__("e.g. https://example.com/webhook")),
+
+                                            TextInput::make("webhook_secret")
+                                                ->hidden(fn (Get $get) => ! $get('enable_webhook'))
+                                                ->label("Webhook Bearer Token")
+                                                ->translateLabel()
+                                                ->helperText(__('A POST request with the Authorization header set to "Bearer <token>" will be sent.'))
+                                                ->placeholder(__("e.g. https://example.com/webhook")),
+                                        ]),
+                                    ]),
+
+                                Section::make('Download')
+                                    ->icon('bi-download')
+                                    ->aside()
+                                    ->schema([
+                                        Toggle::make("allow_download")
+                                            ->label("Allow downloading as JSON, CSV, or Excel")
+                                            ->translateLabel()
+                                            ->onIcon('bi-cloud-download')
+                                            ->onColor('success')
+                                            ->offIcon('bi-cloud-slash')
+                                            ->offColor('danger')
+                                            ->default(true),
+                                    ]),
+                            ]),
+
                         Tabs\Tab::make('Introduction')
                             ->badge(1)
+                            ->badgeColor('gray')
                             ->schema(StepLabelsForm::schema(
                                 prefix: 'introduction',
                                 buttons: [
@@ -114,59 +195,20 @@ class SavedExtractorResource extends Resource
 
                         Tabs\Tab::make('Bucket')
                             ->badge(2)
+                            ->badgeColor('gray')
                             ->schema(StepLabelsForm::schema(prefix: 'bucket')),
 
                         Tabs\Tab::make('Generation')
                             ->badge(3)
+                            ->badgeColor('gray')
                             ->schema(StepLabelsForm::schema(prefix: 'extraction')),
 
                         Tabs\Tab::make('Results')
                             ->badge(4)
+                            ->badgeColor('gray')
                             ->schema(StepLabelsForm::schema(prefix: 'results', buttons: [
-                                Toggle::make("allow_download")
-                                    ->label("Allow downloading as JSON, CSV, or Excel")
-                                    ->translateLabel()
-                                    ->onIcon('heroicon-o-check')
-                                    ->onColor('success')
-                                    ->offIcon('heroicon-o-x-mark')
-                                    ->offColor('danger')
-                                    ->default(true),
 
-                                TextInput::make("redirect_url")
-                                    ->label("Redirect URL")
-                                    ->translateLabel()
-                                    ->placeholder(__("e.g. https://example.com/redirect")),
                             ])),
-
-                        Tabs\Tab::make('Webhook')
-                            ->icon('heroicon-o-cloud-arrow-up')
-                            ->iconPosition('after')
-                            ->schema([
-                                Toggle::make("enable_webhook")
-                                    ->live()
-                                    ->label("Enable Webhook")
-                                    ->translateLabel()
-                                    ->onIcon('heroicon-o-bell')
-                                    ->onColor('success')
-                                    ->offIcon('heroicon-o-bell-slash')
-                                    ->offColor('danger'),
-
-                                Group::make([
-                                    TextInput::make("webhook_url")
-                                        ->required(fn (Get $get) => $get('enable_webhook'))
-                                        ->hidden(fn (Get $get) => ! $get('enable_webhook'))
-                                        ->label("Webhook URL")
-                                        ->translateLabel()
-                                        ->placeholder(__("e.g. https://example.com/webhook")),
-
-                                    TextInput::make("webhook_secret")
-                                        ->hidden(fn (Get $get) => ! $get('enable_webhook'))
-                                        ->label("Webhook Bearer Token")
-                                        ->translateLabel()
-                                        ->helperText(__('A POST request with the Authorization header set to "Bearer <token>" will be sent.'))
-                                        ->placeholder(__("e.g. https://example.com/webhook")),
-                                ])
-                            ]),
                 ]),
             ]);
     }
@@ -231,5 +273,12 @@ class SavedExtractorResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return [];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            'runs' => RunsRelationManager::class,
+        ];
     }
 }

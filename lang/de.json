@@ -1,9 +1,20 @@
 {
     "Bucket": "Bucket",
+    "Buckets": "Buckets",
+    "Run": "Ausführung",
+    "Runs": "Ausführungen",
+    "Extractor": "Extrahierer",
+    "Extractors": "Extrahierer",
     "Created By": "Erstellt von",
     "Description": "Beschreibung",
     "Started At": "Gestartet am",
     "Extractor ID": "Extrahierer-ID",
+    "Created using": "Erstellt mit",
+    "Created at": "Erstellt am",
+    "Updated at": "Aktualisiert am",
+    "App": "Anwendung",
+    "Embed": "Einbettung",
+    "API": "API",
     "e.g. Importing paper invoices from 2022-01-01 to 2022-12-31": "z.B. Importieren von Papierrechnungen von 01.01.2022 bis 31.12.2022",
     "Describe what you want to extract": "Beschreibe, was du extrahieren möchtest",
     "Upload your files": "Lade deine Dateien hoch",
@@ -85,6 +96,10 @@
     "default_results_view_heading": "Ergebnisse",
     "default_results_view_description": "<p>Sehe dir deine extrahierten Daten an.</p><p>Wenn du mehrere Dateien hochlädst, werden sie in einem Ordner mit dem Namen der Datei angelegt.</p>",
     "default_results_view_back_button_label": "Zurück",
-    "default_results_view_submit_button_label": "Daten absenden"
+    "default_results_view_submit_button_label": "Daten absenden",
 
+    "Extractor was not run yet": "Extrahierer wurde noch nicht ausgeführt",
+    "Create a new run to start extracting data.": "Beginne eine neue Extraktion mit diesem Extrahierer, um Daten zu erhalten.",
+    ":value files": ":value Dateien",
+    "Number of files": "Anzahl an Dateien"
 }

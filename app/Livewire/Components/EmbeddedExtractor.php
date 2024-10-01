@@ -6,8 +6,6 @@ use App\Jobs\GenerateDataJob;
 use App\Livewire\Components\EmbeddedExtractor\ExtractorSteps;
 use App\Livewire\Components\EmbeddedExtractor\HasStepLabels;
 use App\Livewire\Components\EmbeddedExtractor\HasUploadForm;
-use App\Livewire\Components\EmbeddedExtractor\StepButton;
-use App\Livewire\Components\EmbeddedExtractor\StepLabels;
 use App\Livewire\Components\Shared\HasPartialJson;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
@@ -15,18 +13,19 @@ use App\Models\SavedExtractor;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
-use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Spatie\WebhookServer\WebhookCall;
+use WireElements\WireExtender\Attributes\Embeddable;
 
 /**
  * @property-read SavedExtractor $saved_extractor
  * @property-read ?ExtractionBucket $bucket
  * @property-read ?ExtractionRun $run
  */
+#[Embeddable]
 class EmbeddedExtractor extends Component implements HasForms, HasActions
 {
     use HasUploadForm;

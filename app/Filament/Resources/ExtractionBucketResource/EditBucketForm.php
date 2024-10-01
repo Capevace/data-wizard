@@ -5,7 +5,9 @@ namespace App\Filament\Resources\ExtractionBucketResource;
 use App\Filament\Forms\DataWizardInput;
 use App\Models\ExtractionBucket\BucketStatus;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
@@ -18,50 +20,30 @@ class EditBucketForm
             Textarea::make('description')
                 ->translateLabel()
                 ->placeholder(__('e.g. Importing paper invoices from 2022-01-01 to 2022-12-31'))
-                ->required(),
-
-            Select::make('status')
                 ->required()
-                ->label('Status')
-                ->translateLabel()
-                ->searchable()
-                ->options(BucketStatus::class)
-                ->default(BucketStatus::Pending),
+                ->extraInputAttributes(['style' => 'min-height: 10rem']),
 
-            Select::make('created_by')
-                ->label('Created By')
-                ->translateLabel()
-                ->searchable()
-                ->relationship('created_by', 'name')
-                ->exists('users', 'id')
-                ->uuid()
-                ->default(fn () => auth()->user()->id),
+            Group::make()
+//                ->compact()
+                ->columnSpan(1)
+                ->schema([
+                    Select::make('status')
+                        ->required()
+                        ->label('Status')
+                        ->translateLabel()
+                        ->searchable()
+                        ->options(BucketStatus::class)
+                        ->default(BucketStatus::Pending),
 
-            DatePicker::make('started_at')
-                ->label('Started At')
-                ->translateLabel(),
-
-            Hidden::make('extractor_id')
-                ->default('default'),
-            //                TextInput::make('extractor_id')
-            //                    ->label('Extractor ID')
-            //                    ->translateLabel()
-            //                    ->default('default')
-            //                    ->required(),
-
-            SpatieMediaLibraryFileUpload::make('files')
-                ->columnSpanFull()
-                ->extraInputAttributes(['class' => 'min-h-64 justify-center flex flex-col'])
-                ->visibleOn('create')
-                ->label('Files')
-                ->translateLabel()
-                ->multiple(),
-
-//            DataWizardInput::make('data_wizard_input')
-//                ->label('Data Wizard Input')
-//                ->translateLabel()
-//                ->hint('This is a data wizard input')
-//                ->required(),
+                    Select::make('created_by')
+                        ->label('Created By')
+                        ->translateLabel()
+                        ->searchable()
+                        ->relationship('created_by', 'name')
+                        ->exists('users', 'id')
+                        ->uuid()
+                        ->default(fn () => auth()->user()->id)
+                ])
         ];
     }
 }

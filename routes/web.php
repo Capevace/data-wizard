@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AllowEmbeddingMiddleware;
 use App\Models\SavedExtractor;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -14,13 +15,11 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/', function () {
+    return view('welcome');
+});
 Route::middleware(['auth'])
     ->group(function () {
-        Route::get('/', function () {
-            return view('welcome');
-        });
-
         Route::get('/claude', \App\Http\Controllers\ClaudeStreamController::class);
         Route::get('/api/bucket/{bucket}/runs/{run}/generate', \App\Http\Controllers\JsonStreamController::class)
             ->name('api.bucket.runs.generate');
@@ -45,4 +44,5 @@ Route::middleware(['auth'])
     });
 
 Route::get('/embed/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
+    ->middleware([AllowEmbeddingMiddleware::class])
     ->name('embedded-extractor');

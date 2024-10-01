@@ -32,7 +32,7 @@
                 JSON
             </x-filament::tabs.item>
 
-            @foreach ($this->run->actors as $actor)
+            @foreach ($this->run?->actors ?? [] as $actor)
                 <x-filament::tabs.item
                     alpine-active="$wire.actorTab === '{{ $actor->id }}'"
                     @click="

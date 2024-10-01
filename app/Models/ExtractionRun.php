@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Akaunting\Money\Money;
+use App\Filament\Resources\ExtractionRunResource\Pages\RunPage;
 use App\Livewire\Components\EmbeddedExtractor;
 use App\Models\Concerns\TokenStatsCast;
 use App\Models\Concerns\UsesUuid;
@@ -117,5 +118,10 @@ class ExtractionRun extends Model
             'runId' => $this->id,
             'signature' => EmbeddedExtractor::generateIdSignature(bucketId: $this->bucket_id, runId: $this->id),
         ]);
+    }
+
+    public function getAdminUrl(): string
+    {
+        return RunPage::getUrl(['record' => $this->id], panel: 'admin');
     }
 }

@@ -17,22 +17,37 @@
                 <a href="https://mateffy.me">A project by Lukas Mateffy</a>
             </div>
         </div>
-        <nav class="flex gap-3 items-center justify-end">
+        <nav class="flex gap-5 items-center justify-end">
             <x-filament::link
                 href="{{ config('app.github_url') }}"
                 tag="a"
                 target="_blank"
                 icon="bi-github"
                 icon-position="after"
+                 color="gray"
             >
                 Source Code
             </x-filament::link>
-            <x-filament::link href="{{ config('app.github_url') }}" tag="a" target="_blank" icon="heroicon-o-document-text" icon-position="after">
+            <x-filament::link href="{{ config('app.github_url') }}" tag="a" target="_blank" icon="heroicon-o-document-text" icon-position="after"  color="gray">
                 Documentation
             </x-filament::link>
-            <x-filament::link href="{{ config('app.github_url') }}" tag="a" target="_blank" icon="heroicon-o-academic-cap" icon-position="after">
+            <x-filament::link href="{{ config('app.github_url') }}" tag="a" target="_blank" icon="heroicon-o-academic-cap" icon-position="after"  color="gray">
                 Thesis
             </x-filament::link>
+
+            <div class="w-1"></div>
+
+            @auth
+                <x-filament::link href="{{ \Filament\Pages\Dashboard::getUrl() }}" tag="a" icon="bi-cloud" icon-position="after"  color="gray">
+                    Open app
+                </x-filament::link>
+            @endauth
+
+            @guest
+                <x-filament::link href="{{ route('filament.app.auth.login') }}" tag="a" icon="bi-person-plus" icon-position="after">
+                    Sign in or Register
+                </x-filament::link>
+            @endguest
         </nav>
     </header>
     <div class="md:px-6 lg:px-0">

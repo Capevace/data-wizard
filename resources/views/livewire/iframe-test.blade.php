@@ -6,6 +6,7 @@
     <title>Supermarket Brochure Analysis Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="http://127.0.0.1:8000/vendor/wire-elements/wire-extender.js"></script>
 </head>
 <body class="bg-gray-100 p-8">
     <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8" x-data="{
@@ -139,7 +140,8 @@
                     });
 
                     const iframe = Magic.iframe.create(
-                        'https://magic-import.test/embed/c63eefc4-1041-4cf7-a8bf-2f63784fb95f?bucketId=7167b5d4-813c-494b-a29e-5f8384a9c2f2&runId=e66016ea-417f-4a18-83b8-88eedf91d9ed&signature=d29f4b206660fdae6845ed02b5fa1283232158d8a54cc2d50a76fa079d24cd42&bucket=7167b5d4-813c-494b-a29e-5f8384a9c2f2',
+{{--                        'https://magic-import.test/embed/c63eefc4-1041-4cf7-a8bf-2f63784fb95f?bucketId=7167b5d4-813c-494b-a29e-5f8384a9c2f2&runId=e66016ea-417f-4a18-83b8-88eedf91d9ed&signature=d29f4b206660fdae6845ed02b5fa1283232158d8a54cc2d50a76fa079d24cd42&bucket=7167b5d4-813c-494b-a29e-5f8384a9c2f2',--}}
+                        'https://magic.mateffy.me/embed/a8a96ff1-ca3d-471e-bad7-7c6aaf587a52?bucket=50888dfd-6267-46d5-aaa0-ca8cc98c55b7&signature=daefa8b12cd27f44d16c6863aa691e52cfca76582a0b759b95f9ea47b7522db8',
                         { container: this.$refs.iframeContainer, keepBorder: true }
                     );
 
@@ -156,6 +158,9 @@
             <p class="mb-4">Use the form below to enter detailed product information from the brochure.</p>
             <script src="{{ asset('js/magic-iframe.js') }}"></script>
             <div class="mt-4 " x-ref="iframeContainer" x-show="products.length === 0"></div>
+
+{{--            <script src="https://magic-import.test/livewire/livewire.js?id=cc800bf4"></script>--}}
+{{--            <livewire data-component="embedded-extractor" data-params='{"extractorId": "c63eefc4-1041-4cf7-a8bf-2f63784fb95f" }'></livewire>--}}
 
             <div x-show="products.length > 0" class="prose prose-sm">
                 <p>You have identified <span x-text="products.length"></span> products.</p>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c31572431a22a739a899f70ae82bcc80",
+    "content-hash": "93cfeebb065060405d557a6281ebc598",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -9643,6 +9643,54 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "wire-elements/wire-extender",
+            "version": "v0.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wire-elements/wire-extender.git",
+                "reference": "25ac219e4995b51bfe9b3faf21343ebae20fe6c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wire-elements/wire-extender/zipball/25ac219e4995b51bfe9b3faf21343ebae20fe6c8",
+                "reference": "25ac219e4995b51bfe9b3faf21343ebae20fe6c8",
+                "shasum": ""
+            },
+            "require": {
+                "livewire/livewire": "^v3.4.7",
+                "php": "^8.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "WireElements\\WireExtender\\WireExtenderServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "WireElements\\WireExtender\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Philo Hermans",
+                    "email": "me@philo.dev"
+                }
+            ],
+            "description": "Embed your Livewire components anywhere.",
+            "support": {
+                "issues": "https://github.com/wire-elements/wire-extender/issues",
+                "source": "https://github.com/wire-elements/wire-extender/tree/v0.0.8"
+            },
+            "time": "2024-09-09T12:44:53+00:00"
         }
     ],
     "packages-dev": [
@@ -12609,7 +12657,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "ext-zip": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

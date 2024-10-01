@@ -23,7 +23,7 @@
                 <div x-ref="accelerated"
                      class="bg-gradient-to-r from-gray-500 to-gray-400 bg-clip-text text-transparent"
                      style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
-                    Quickly add powerful
+                    Embed powerful
                 </div>
             </div>
 
@@ -35,14 +35,14 @@
                      class="bg-gradient-to-br from-primary-500 via-primary-400 to-primary-500 bg-clip-text text-transparent"
                      style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
                     <div>JSON extraction</div>
-                    <div class="text-4xl mt-2">from PDFs, docs and images</div>
+                    <div class="text-4xl mt-2 ml-12">from PDFs, docs and images</div>
                 </div>
 
 
                 <div class="absolute -right-0.5 top-0.5 -z-10 select-none text-primary-500/30"
                      style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
                     <div>JSON extraction</div>
-                    <div class="text-4xl  mt-2">from PDFs, docs and images</div>
+                    <div class="text-4xl  mt-2 ml-12">from PDFs, docs and images</div>
                 </div>
             </div>
 
@@ -72,7 +72,7 @@
                     <div x-ref="accelerated"
                          class="bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent"
                          style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
-                        to your application!
+                        in your forms!
                     </div>
                 </div>
 
