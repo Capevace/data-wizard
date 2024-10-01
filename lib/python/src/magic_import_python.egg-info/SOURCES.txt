@@ -1,0 +1,7 @@
+pyproject.toml
+src/magic_import_python/__init__.py
+src/magic_import_python.egg-info/PKG-INFO
+src/magic_import_python.egg-info/SOURCES.txt
+src/magic_import_python.egg-info/dependency_links.txt
+src/magic_import_python.egg-info/requires.txt
+src/magic_import_python.egg-info/top_level.txt

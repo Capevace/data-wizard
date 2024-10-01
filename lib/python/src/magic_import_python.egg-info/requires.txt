@@ -1,0 +1,5 @@
+pillow>=10.4.0
+pdf2image>=1.17.0
+pymupdf>=1.24.9
+pypdf2>=3.0.1
+python-magic>=0.4.27
