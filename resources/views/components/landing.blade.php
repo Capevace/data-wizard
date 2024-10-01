@@ -11,9 +11,15 @@
         <div class="flex gap-3 items-start justify-start">
             <div class="text-6xl">🪄</div>
             <div>
-                <h1 class="text-3xl font-bold leading-10 text-gray-800 ">
-                    Magic Extract
+                <h1 class="text-3xl font-bold leading-10 text-gray-800 sr-only">
+                    Data Wizard
                 </h1>
+                <img
+                    src="{{ asset('images/logo-text.svg') }}"
+                    alt="Data Wizard logo"
+                    class="h-12 -ml-1.5 w-auto"
+                    aria-hidden="true"
+                >
                 <a href="https://mateffy.me">A project by Lukas Mateffy</a>
             </div>
         </div>

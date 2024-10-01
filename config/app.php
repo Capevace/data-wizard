@@ -16,7 +16,7 @@ return [
     */
 
     'dataset' => 'maxdohrn',
-    'name' => env('APP_NAME', 'Magic Extract'),
+    'name' => env('APP_NAME', 'Data Wizard'),
 
     'allow_custom_user_keys' => env('ALLOW_CUSTOM_USER_KEYS', true),
 

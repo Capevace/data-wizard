@@ -150,7 +150,7 @@
 <main {{ $attributes->class('flex-1 h-screen overflow-hidden flex flex-col') }} x-data="Importer">
     <header class="bg-sky-900 h-16 px-5 flex justify-between items-center shadow border-b border-sky-950">
         <div>
-            <h1 class="text-2xl font-semibold" style="font-family: 'Averia Serif Libre', serif;">Magic Extract 🪄✨🧙🏼</h1>
+            <h1 class="text-2xl font-semibold" style="font-family: 'Averia Serif Libre', serif;">Data Wizard 🪄✨🧙🏼</h1>
             <link rel="preconnect" href="https://fonts.bunny.net">
             <link href="https://fonts.bunny.net/css?family=averia-serif-libre:300,300i,400,400i,700,700i|abel:200,400,600,700" rel="stylesheet" />
         </div>

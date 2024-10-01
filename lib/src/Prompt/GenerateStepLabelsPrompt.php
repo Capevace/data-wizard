@@ -38,8 +38,8 @@ class GenerateStepLabelsPrompt implements Prompt
 
         <output-example>
         {
-            "introduction_view_heading": "Willkommen bei Magic Extract 🪄",
-            "introduction_view_description": "<p>MagicExtract ist ein Tool, das es dir ermöglicht, strukturierte Daten aus PDFs, Bildern und anderen Dateien zu extrahieren.</p><p>Das Tool ist konfiguriert, um Daten in einer bestimmten Struktur zu extrahieren, die dann von anderen Anwendungen verwendet werden kann.</p><p>Um loszulegen, klicke auf Weiter und lade deine Dateien hoch.</p>",
+            "introduction_view_heading": "Willkommen bei Data Wizard 🪄",
+            "introduction_view_description": "<p>Data Wizard ist ein Tool, das es dir ermöglicht, strukturierte Daten aus PDFs, Bildern und anderen Dateien zu extrahieren.</p><p>Das Tool ist konfiguriert, um Daten in einer bestimmten Struktur zu extrahieren, die dann von anderen Anwendungen verwendet werden kann.</p><p>Um loszulegen, klicke auf Weiter und lade deine Dateien hoch.</p>",
             "introduction_view_next_button_label": "Weiter",
             "bucket_view_heading": "Lade deine Dateien hoch",
             "bucket_view_description": "<p>Lade die Dateien hoch, die du extrahieren möchtest. Du kannst Bilder und PDFs hochladen.</p><p>Wenn du eine Datei hochlädst, wird sie in einem Ordner angelegt. Wenn du mehrere Dateien hochlädst, werden sie in einem Ordner mit dem Namen der Datei angelegt.</p><p>Wenn du mehrere Dateien hochlädst, werden sie in einem Ordner mit dem Namen der Datei angelegt.</p>",

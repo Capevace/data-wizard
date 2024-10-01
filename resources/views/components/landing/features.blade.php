@@ -1,7 +1,7 @@
 <div class="space-y-32 pt-20 mx-auto w-full max-w-screen-lg px-5">
     <div class="text-center">
         <div class="font-medium text-dolphin">
-            This is MagicExtract!
+            This is Data Wizard!
         </div>
         <div class="pt-2 text-2xl sm:text-3xl">
             <span class="inline-block">Some of the best</span>

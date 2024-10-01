@@ -18,12 +18,116 @@
             {{--            </div>--}}
 
             <div
-                class="relative translate-x-10 text-3xl font-black italics min-[500px]:translate-x-0 ml-10 mb-4"
+                class="animate-fade-up animate-duration-[1.4s] animate-delay-100 relative translate-x-10 text-3xl font-black italics min-[500px]:translate-x-0 ml-10 mb-4"
             >
                 <div x-ref="accelerated"
                      class="bg-gradient-to-r from-gray-500 to-gray-400 bg-clip-text text-transparent"
                      style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
-                    Embed powerful
+                    Embed
+                    <span class="inline-block relative bg-gradient-to-r from-gray-500 to-gray-400 bg-clip-text text-transparent">
+                        <div class="star-container absolute -ml-4 -mt-2 top-0 right-0 flex items-center gap-2">
+                            <style>
+                                @keyframes star-animation {
+                                    0% {
+                                        opacity: 0;
+                                        transform: translate(0px, 0px) rotate(-16deg);
+                                        color: #d1d183;
+                                    }
+                                    20% {
+                                        opacity: 0.2;
+                                        color: #9a9a5a;
+                                    }
+                                    80% {
+                                        opacity: 1;
+                                        color: #f6f6d9;
+                                    }
+                                    100% {
+                                        opacity: 0;
+                                        transform: translate(0px, -15px) rotate(60deg);
+                                        color: #d1d183;
+                                    }
+                                }
+
+                                @keyframes star-animation-intro {
+                                    0% {
+                                        opacity: 0;
+                                    }
+                                    50% {
+                                        opacity: 0;
+                                    }
+                                    100% {
+                                        opacity: 1;
+                                    }
+                                }
+
+                                .star-container {
+                                    animation: star-animation-intro 3s ease-out;
+                                }
+
+                                .star {
+                                    --speed: 2s;
+                                    width: .4rem;
+                                    color: #d1d183;
+                                    animation: star-animation 1s infinite cubic-bezier(0.61, 1, 0.88, 1);
+                                }
+
+                                .star:nth-child(1) {
+                                    animation-delay: 0s;
+                                    animation-duration: calc(var(--speed) + 1s);
+                                    margin-top: 0.8rem;
+                                }
+                                .star:nth-child(2) {
+                                    animation-delay: 0.1s;
+                                    animation-duration: calc(var(--speed) + 1.7s);
+                                    margin-top: 0.5rem;
+                                }
+                                .star:nth-child(3) {
+                                    animation-delay: 1.5s;
+                                    animation-duration: calc(var(--speed) + 1.5s);
+                                    margin-top: 1.4rem;
+                                }
+                                .star:nth-child(4) {
+                                    animation-delay: 0.3s;
+                                    animation-duration: calc(var(--speed) + 1.2s);
+                                    margin-top: 1rem;
+                                }
+                                .star:nth-child(5) {
+                                    animation-delay: 0.4s;
+                                    animation-duration: calc(var(--speed) + 1.1s);
+                                    margin-top: 0.8rem;
+                                }
+                                .star:nth-child(6) {
+                                    animation-delay: 1.5s;
+                                    animation-duration: calc(var(--speed) + 1.8s);
+                                    margin-top: 0.3rem;
+                                }
+
+                                .star:nth-child(7) {
+                                    animation-delay: 2.5s;
+                                    animation-duration: calc(var(--speed) + 2.5s);
+                                    margin-top: 0.2rem;
+                                }
+
+                                .star:nth-child(8) {
+                                    animation-delay: 3.5s;
+                                    animation-duration: calc(var(--speed) + 3.5s);
+                                    margin-top: 0.1rem;
+                                }
+                            </style>
+                            <x-icon
+                                name="heroicon-s-star"
+                                class="w-4 h-4 star"
+                            />
+                            <x-icon name="heroicon-s-star" class="star drop-shadow-sm" />
+                            <x-icon name="heroicon-s-star" class="star drop-shadow-sm" />
+                            <x-icon name="heroicon-s-star" class="star drop-shadow-sm" />
+                            <x-icon name="heroicon-s-star" class="star drop-shadow-sm" />
+                            <x-icon name="heroicon-s-star" class="star drop-shadow-sm" />
+                            <x-icon name="heroicon-s-star" class="star drop-shadow-sm" />
+                        </div>
+
+                        <span class="z-10">magical</span>
+                    </span>
                 </div>
             </div>
 
@@ -32,14 +136,14 @@
                 class="relative translate-x-10 text-7xl font-black italics min-[500px]:translate-x-0  text-left mb-4 mr-20"
             >
                 <div
-                     class="bg-gradient-to-br from-primary-500 via-primary-400 to-primary-500 bg-clip-text text-transparent"
+                     class="animate-fade-left animate-duration-[1.4s]  bg-gradient-to-br from-primary-500 via-primary-400 to-primary-500 bg-clip-text text-transparent"
                      style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
-                    <div>JSON extraction</div>
+                    <div class="">JSON extraction</div>
                     <div class="text-4xl mt-2 ml-12">from PDFs, docs and images</div>
                 </div>
 
 
-                <div class="absolute -right-0.5 top-0.5 -z-10 select-none text-primary-500/30"
+                <div class="animate-fade-left animate-duration-[1.4s]   absolute -right-0.5 top-0.5 -z-10 select-none text-primary-500/30"
                      style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
                     <div>JSON extraction</div>
                     <div class="text-4xl  mt-2 ml-12">from PDFs, docs and images</div>
@@ -67,12 +171,12 @@
                 {{--                    </div>--}}
                 {{--                </div>--}}
                 <div
-                    class="relative translate-x-10 text-3xl font-black italics min-[500px]:translate-x-0 text-right  mb-10 mr-20"
+                    class="animate-fade-down animate-delay-300  relative translate-x-10 text-3xl font-black italics min-[500px]:translate-x-0 text-right  mb-10 mr-20"
                 >
                     <div x-ref="accelerated"
                          class="bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent"
                          style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1; visibility: inherit;">
-                        in your forms!
+                        directly in your forms!
                     </div>
                 </div>
 

@@ -1,7 +1,7 @@
 <div {{ $attributes->class('grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 mx-auto') }}>
     <div class="text-center col-span-1 md:col-span-full">
         <div class="font-medium text-dolphin">
-            Magic Extract has iFrames, HTTP API and PHP SDK
+            Data Wizard has iFrames, HTTP API and PHP SDK
         </div>
         <div class="pt-2 text-2xl sm:text-3xl font-black">
             Usable in four main ways
@@ -29,7 +29,7 @@
                 Embed using iFrames
             </h3>
             <p class="text-base leading-relaxed text-body-color text-gray-600">
-                You can embed a MagicExtractor directly into your website/form using our iFrame SDK. You will receive a callback using JavaScript when the data has been extracted.
+                You can embed a data wizard directly into your website/form using our iFrame SDK. You will receive a callback using JavaScript when the data has been extracted.
             </p>
         </div>
     </div>

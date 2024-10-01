@@ -80,8 +80,8 @@
     "Download data": "Daten herunterladen",
     "Download file": "Datei herunterladen",
 
-    "default_introduction_view_heading": "Willkommen bei Magic Extract 🪄",
-    "default_introduction_view_description": "<p>Magic extract is a tool that allows you to extract structured data from PDFs, images, and other files.</p><p>The tool is configured to output data in a specific structure, that may then be used by other applications.</p><p>To get started, click continue and upload your files.</p>",
+    "default_introduction_view_heading": "Willkommen bei Data Wizard 🪄",
+    "default_introduction_view_description": "<p>Data Wizard is a tool that allows you to extract structured data from PDFs, images, and other files.</p><p>The tool is configured to output data in a specific structure, that may then be used by other applications.</p><p>To get started, click continue and upload your files.</p>",
     "default_introduction_view_next_button_label": "Weiter",
     "default_bucket_view_heading": "Lade deine Dateien hoch",
     "default_bucket_view_description": "<p>Lade die Dateien hoch, die du extrahieren möchtest. Du kannst Bilder und PDFs hochladen.</p><p>Wenn du eine Datei hochlädst, wird sie in einem Ordner angelegt. Wenn du mehrere Dateien hochlädst, werden sie in einem Ordner mit dem Namen der Datei angelegt.</p><p>Wenn du mehrere Dateien hochlädst, werden sie in einem Ordner mit dem Namen der Datei angelegt.</p>",

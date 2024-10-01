@@ -72,10 +72,12 @@ class AppPanelProvider extends PanelProvider
             ->login()
             ->brandLogo(asset('images/logo.svg'))
             ->brandLogoHeight('3.7rem')
-            ->brandName(new HtmlString('Magic Extract&nbsp;&nbsp;&nbsp;🪄'))
+            ->brandName(new HtmlString('Data Wizard 🪄'))
             ->viteTheme('resources/css/filament/app/theme.css')
             ->font('Armata')
             ->font('Asap')
+            ->font('Prompt')
+            ->font('PT Sans')
             ->colors([
                 'primary' => json_decode(<<<JSON
                 {

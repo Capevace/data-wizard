@@ -1,6 +1,6 @@
-# `MagicExtract`
+# `Data Wizard`
 
-A PHP app serving `@magic-llm/sdk` functionality via HTTP.
+A PHP app serving `@llm-magic/sdk` functionality via HTTP.
 Can be used via GUI or REST / Webhook API.
 
 - extract-data.ai
