@@ -2,9 +2,12 @@
 
 namespace Mateffy\Magic\Builder\Concerns;
 
+use Mateffy\Magic\Functions\InvokableFunction;
+use Mateffy\Magic\Functions\MagicFunction;
 use Mateffy\Magic\LLM\Message\FunctionCall;
 use Mateffy\Magic\Prompt\Reflection\ReflectionSchema;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionNamedType;
@@ -17,78 +20,68 @@ trait HasTools
 
     public ?string $toolChoice = null;
 
+    /**
+     * @throws ReflectionException
+     */
     public function tools(...$tools): static
     {
-        $this->tools = array_merge($this->tools, $this->processTools($tools));
+        $this->tools = [
+            ...$this->tools,
+            ...$this->processTools($tools)
+        ];
 
         return $this;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function processTools(array $tools): array
     {
         $processedTools = [];
 
         foreach ($tools as $key => $tool) {
-            if (is_callable($tool)) {
-                $processedTools[] = $this->processFunctionTool($key, $tool);
-            } elseif (is_object($tool)) {
-                $processedTools[] = $this->processObjectTool($tool);
+            if ($tool instanceof InvokableFunction) {
+                if (is_numeric($key)) {
+                    $key = $tool->name();
+                }
+
+                $processedTools[$key] = $tool;
+            } else if (is_callable($tool)) {
+                $processedTools[$key] = $this->processFunctionTool($key, $tool);
             } elseif (is_array($tool)) {
-                $processedTools = array_merge($processedTools, $this->processTools($tool));
+                $processedTools = [
+                    ...$processedTools,
+                    ...$this->processTools($tool)
+                ];
             }
         }
 
         return $processedTools;
     }
 
-    protected function processFunctionTool($key, callable $tool): array
+    /**
+     * @throws ReflectionException
+     */
+    protected function processFunctionTool($key, callable $tool): MagicFunction
     {
         $reflection = new ReflectionFunction($tool);
         $name = is_string($key) ? $key : $reflection->getName();
 
-        return [
-            'name' => $name,
-            'description' => $this->getFunctionDescription($reflection),
-            'parameters' => $this->getFunctionParameters($reflection),
-            'function' => function (array $arguments) use ($tool, $name) {
-                $result = $tool(...$arguments);
+        $schema = $this->getFunctionParameters($reflection);
 
-                return new FunctionCall($name, $arguments);
-            },
-        ];
-    }
+        if ($description = $this->getFunctionDescription($reflection)) {
+            $schema['description'] = $description;
+        }
 
-    protected function processObjectTool(object $tool): array
-    {
-        $reflection = new ReflectionClass($tool);
-        $method = $reflection->getMethod('__invoke');
-        $name = $reflection->getShortName();
-
-        return [
-            'name' => $name,
-            'description' => $this->getClassDescription($reflection),
-            'parameters' => $this->getFunctionParameters($method),
-            'function' => function (array $arguments) use ($tool, $name) {
-                $result = $tool(...$arguments);
-
-                return new FunctionCall($name, $arguments);
-            },
-        ];
+        return new MagicFunction(
+            name: $name,
+            schema: $schema,
+            callback: $tool,
+        );
     }
 
     protected function getFunctionDescription(ReflectionFunction $reflection): ?string
-    {
-        $docComment = $reflection->getDocComment();
-        if ($docComment) {
-            preg_match('/@description\s+(.+)/i', $docComment, $matches);
-
-            return $matches[1] ?? null;
-        }
-
-        return null;
-    }
-
-    protected function getClassDescription(ReflectionClass $reflection): ?string
     {
         $docComment = $reflection->getDocComment();
         if ($docComment) {

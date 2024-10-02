@@ -2,12 +2,12 @@
 
 namespace Mateffy\Magic\LLM;
 
-use Mateffy\Magic\Prompt\Prompt;
 use Closure;
+use Mateffy\Magic\Prompt\Prompt;
 
 interface ModelLaunchInterface
 {
-    public function stream(Prompt $prompt, ?Closure $onMessageProgress = null, ?Closure $onMessage = null): array;
+    public function stream(Prompt $prompt, ?Closure $onMessageProgress = null, ?Closure $onMessage = null, ?Closure $onTokenStats = null): MessageCollection;
 
-    public function send(Prompt $prompt): array;
+    public function send(Prompt $prompt): MessageCollection;
 }

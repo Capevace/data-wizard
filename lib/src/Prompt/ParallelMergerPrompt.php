@@ -86,4 +86,9 @@ class ParallelMergerPrompt implements Prompt
             ? new Extract(schema: $this->extractor->schema)
             : null;
     }
+
+    public function shouldParseJson(): bool
+    {
+        return true;
+    }
 }

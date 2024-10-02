@@ -2,10 +2,13 @@
 
 namespace Mateffy\Magic\LLM\Models\Decoders;
 
+use Mateffy\Magic\LLM\Message\FunctionCall;
+use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
 use Mateffy\Magic\LLM\Message\JsonMessage;
 use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Message\PartialMessage;
 use Mateffy\Magic\LLM\Message\TextMessage;
+use Mateffy\Magic\Prompt\Role;
 use Mateffy\Magic\Prompt\TokenStats;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -114,14 +117,25 @@ class ClaudeResponseDecoder implements Decoder
                     }
                 } elseif ($event === 'content_block_start') {
                     $part = match ($data['content_block']['type']) {
-                        default => $data['content_block']['text'],
+                        default => $data['content_block']['text'] ?? null,
                         'tool_use' => null,
                     };
 
-                    if ($part && $message instanceof PartialMessage) {
+                    if ($data['content_block']['type'] === 'tool_use') {
+                        $message = new FunctionInvocationMessage(
+                            role: Role::Assistant,
+                            call: ($name = $data['content_block']['name'])
+                                ? new FunctionCall(
+                                    name: $name,
+                                    arguments: $data['content_block']['input'] ?? [],
+                                )
+                                : null,
+                            partial: $part,
+                        );
+                    } else if (($part = $data['content_block']['text'] ?? null) && $message instanceof PartialMessage) {
                         $message->append($part);
                     } else {
-                        Log::warning('Received content_block_start without having started a partial message');
+                        Log::warning('Received content_block_start without having started a partial message', ['data' => $data]);
                     }
 
                     if ($this->onMessageProgress) {

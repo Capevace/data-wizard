@@ -3,10 +3,11 @@
 namespace Mateffy\Magic\LLM;
 
 use Closure;
+use Illuminate\Support\Collection;
 
 interface PreconfiguredModelLaunchInterface
 {
-    public function stream(?Closure $onMessageProgress = null, ?Closure $onMessage = null): array;
+    public function stream(?Closure $onMessageProgress = null, ?Closure $onMessage = null): Collection;
 
-    public function send(): array;
+    public function send(): Collection;
 }

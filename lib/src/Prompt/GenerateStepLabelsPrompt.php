@@ -93,4 +93,9 @@ class GenerateStepLabelsPrompt implements Prompt
             ? new OutputStepLabels
             : null;
     }
+
+    public function shouldParseJson(): bool
+    {
+        return true;
+    }
 }

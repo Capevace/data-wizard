@@ -72,4 +72,9 @@ class SmartModifyPrompt implements Prompt
             ? new ModifyData(schema: $this->schema)
             : null;
     }
+
+    public function shouldParseJson(): bool
+    {
+        return true;
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace Mateffy\Magic\LLM\Message;
 
-readonly class FunctionCall
+class FunctionCall
 {
     public function __construct(
         public string $name,
@@ -20,4 +20,5 @@ readonly class FunctionCall
             arguments: $data['arguments'] ?? [],
         );
     }
+
 }

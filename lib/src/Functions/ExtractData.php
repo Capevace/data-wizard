@@ -235,7 +235,7 @@ class ExtractData implements InvokableFunction
         ];
     }
 
-    public function validate(array $data): array
+    public function validate(array $arguments): array
     {
         //        $validator = validator($data, [
         //            'a' => 'required|numeric',
@@ -245,12 +245,12 @@ class ExtractData implements InvokableFunction
         //        $validator->validate();
         //
         //        return $validator->validated();
-        return $data;
+        return $arguments;
     }
 
-    public function execute(array $data): mixed
+    public function execute(array $arguments): mixed
     {
-        dd('execute extract', $data);
+        dd('execute extract', $arguments);
     }
 
     public function callback(): \Closure

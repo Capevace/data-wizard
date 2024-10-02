@@ -42,9 +42,9 @@ class SaveResources implements InvokableFunction
         ];
     }
 
-    public function validate(array $data): array
+    public function validate(array $arguments): array
     {
-        $validator = validator($data, [
+        $validator = validator($arguments, [
             'models' => 'required|array',
         ]);
 
@@ -53,7 +53,7 @@ class SaveResources implements InvokableFunction
         return $validator->validated();
     }
 
-    public function execute(array $data): mixed
+    public function execute(array $arguments): mixed
     {
         return $this->callback()();
     }

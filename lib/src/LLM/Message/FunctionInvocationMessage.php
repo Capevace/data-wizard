@@ -50,7 +50,10 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
         $this->partial .= $chunk;
 
         $data = PartialJson::parse($this->partial);
-        $this->call = FunctionCall::tryFrom($data) ?? $this->call;
+        $this->call = new FunctionCall(
+            name: $this->call->name,
+            arguments: $data ?? $this->call->arguments,
+        );
 
         return $this;
     }
@@ -73,4 +76,5 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
             partial: $chunk,
         );
     }
+
 }

@@ -37,9 +37,9 @@ class Multiply implements InvokableFunction
         ];
     }
 
-    public function validate(array $data): array
+    public function validate(array $arguments): array
     {
-        $validator = validator($data, [
+        $validator = validator($arguments, [
             'a' => 'required|numeric',
             'b' => 'required|numeric',
         ]);
@@ -49,9 +49,9 @@ class Multiply implements InvokableFunction
         return $validator->validated();
     }
 
-    public function execute(array $data): mixed
+    public function execute(array $arguments): mixed
     {
-        return $this->callback()($data['a'], $data['b']);
+        return $this->callback()($arguments['a'], $arguments['b']);
     }
 
     public function callback(): Closure

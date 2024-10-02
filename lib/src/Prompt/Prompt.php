@@ -18,4 +18,10 @@ interface Prompt
      * @return InvokableFunction[]
      */
     public function functions(): array;
+
+    /**
+     * Wether to parse the output as JSON.
+     * @return bool
+     */
+    public function shouldParseJson(): bool;
 }

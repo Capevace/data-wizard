@@ -95,12 +95,12 @@ class OutputStepLabels implements InvokableFunction
         ];
     }
 
-    public function validate(array $data): array
+    public function validate(array $arguments): array
     {
-        return $data;
+        return $arguments;
     }
 
-    public function execute(array $data): mixed
+    public function execute(array $arguments): mixed
     {
         return null;
     }

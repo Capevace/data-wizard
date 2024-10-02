@@ -46,4 +46,20 @@ class TextMessage implements Message, PartialMessage
             content: $chunk,
         );
     }
+
+    public static function user(string $content): static
+    {
+        return new self(
+            role: Role::User,
+            content: $content,
+        );
+    }
+
+    public static function assistant(string $content): static
+    {
+        return new self(
+            role: Role::Assistant,
+            content: $content,
+        );
+    }
 }

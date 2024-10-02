@@ -2,12 +2,19 @@
 
 namespace Mateffy\Magic\LLM\Models\Apis;
 
+use Illuminate\Support\Collection;
 use Mateffy\Magic\Functions\InvokableFunction;
 use Mateffy\Magic\LLM\Exceptions\InvalidRequest;
 use Mateffy\Magic\LLM\Exceptions\TooManyTokensForModelRequested;
+use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
 use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
+use Mateffy\Magic\LLM\Message\JsonMessage;
 use Mateffy\Magic\LLM\Message\Message;
+use Mateffy\Magic\LLM\Message\MultimodalMessage;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\Text;
 use Mateffy\Magic\LLM\Message\TextMessage;
+use Mateffy\Magic\LLM\MessageCollection;
 use Mateffy\Magic\LLM\Models\Decoders\ClaudeResponseDecoder;
 use Mateffy\Magic\Prompt\Prompt;
 use Mateffy\Magic\Prompt\Role;
@@ -35,13 +42,6 @@ trait UsesAnthropicApi
      */
     protected function createStreamedHttpRequest(Prompt $prompt): \Psr\Http\Message\StreamInterface
     {
-        // Prepare logical messages to Claude API messages
-        $serializedMessages = collect($prompt->messages())
-            ->map(fn (Message $message) => match ($message::class) {
-                FunctionOutputMessage::class => new TextMessage(role: Role::User, content: 'OUTPUT: '.json_encode($message->output, JSON_THROW_ON_ERROR)),
-                default => $message
-            });
-
         $client = new Client([
             'base_uri' => 'https://api.anthropic.com',
             'headers' => [
@@ -52,7 +52,8 @@ trait UsesAnthropicApi
             ],
         ]);
 
-        $otherMessages = $serializedMessages->filter(fn (Message $message) => $message->role !== Role::System);
+        $otherMessages = collect($prompt->messages())
+            ->filter(fn (Message $message) => $message->role !== Role::System);
 
         $options = $this->getOptions();
         $data = [
@@ -60,7 +61,72 @@ trait UsesAnthropicApi
             'max_tokens' => $options->maxTokens,
             'system' => $prompt->system(),
             'messages' => collect($otherMessages)
-                ->map(fn (Message $message) => $message->toArray())
+                ->map(fn (Message $message) => match ($message::class) {
+                    TextMessage::class => [
+                        'role' => $message->role,
+                        'content' => $message->content,
+                    ],
+
+                    JsonMessage::class => [
+                        'role' => $message->role,
+                        'content' => json_encode($message->data),
+                    ],
+
+//                    {"role": "assistant", "content": [
+//                        {"type": "tool_use", "id": "toolu_01A09q90qw90lq917835lq9", "name": "get_weather", "input": {"location": "San Francisco, CA"}}
+//                    ]},
+                    FunctionInvocationMessage::class => [
+                        'role' => $message->role,
+                        'content' => [
+                            [
+                                'type' => 'tool_use',
+                                'id' => $message->call->id ?? $message->call->name,
+                                'name' => $message->call->name,
+                                'input' => $message->call->arguments,
+                            ],
+                        ],
+                    ],
+
+//                    {"role": "user", "content": [
+//                        {"type": "tool_result", "tool_use_id": "toolu_01A09q90qw90lq917835lq9", "content": "15 degrees"}
+//                    ]},
+                    FunctionOutputMessage::class => [
+                        'role' => $message->role,
+                        'content' => [
+                            [
+                                'type' => 'tool_result',
+                                'tool_use_id' => $message->call->id ?? $message->call->name,
+                                'content' => [
+                                    ['type' => 'text', 'text' => $message->text()],
+                                ]
+                            ],
+                        ],
+                    ],
+
+                    MultimodalMessage::class => [
+                        'role' => $message->role,
+                        'content' => collect($message->content)
+                            ->map(fn (Base64Image|Text $message) => match ($message::class) {
+                                Text::class => [
+                                    'type' => 'text',
+                                    'text' => $message->text,
+                                ],
+                                Base64Image::class => [
+                                    'type' => 'image',
+                                    'source' => [
+                                        'type' => 'base64',
+                                        'media_type' => $message->mime,
+                                        'data' => $message->imageBase64,
+                                    ]
+                                ],
+                            })
+                            ->toArray(),
+                    ],
+
+                    default => null,
+                })
+                ->dump()
+                ->filter()
                 ->values()
                 ->toArray(),
             'stream' => true,
@@ -103,7 +169,7 @@ trait UsesAnthropicApi
         }
     }
 
-    public function stream(Prompt $prompt, ?Closure $onMessageProgress = null, ?Closure $onMessage = null, ?Closure $onTokenStats = null): array
+    public function stream(Prompt $prompt, ?Closure $onMessageProgress = null, ?Closure $onMessage = null, ?Closure $onTokenStats = null): MessageCollection
     {
         $stream = $this->createStreamedHttpRequest($prompt);
 
@@ -118,10 +184,11 @@ trait UsesAnthropicApi
                     ? $stats->withCost($cost)
                     : $stats
                 )
-                : $stats
+                : $stats,
+            json: $prompt->shouldParseJson()
         );
 
-        return $decoder->process();
+        return MessageCollection::make($decoder->process());
     }
 
     protected function createHttpRequest(Prompt $prompt): StreamInterface|CreateResponse|null
@@ -129,7 +196,7 @@ trait UsesAnthropicApi
         throw new \Exception('Not implemented');
     }
 
-    public function send(Prompt $prompt): array
+    public function send(Prompt $prompt): MessageCollection
     {
         throw new \Exception('Not implemented');
     }

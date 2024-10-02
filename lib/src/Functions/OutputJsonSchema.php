@@ -2,6 +2,8 @@
 
 namespace Mateffy\Magic\Functions;
 
+use Mateffy\Magic\LLM\Message\FunctionCall;
+
 class OutputJsonSchema implements InvokableFunction
 {
     public function __construct() {}
@@ -48,12 +50,12 @@ class OutputJsonSchema implements InvokableFunction
         ];
     }
 
-    public function validate(array $data): array
+    public function validate(array $arguments): array
     {
-        return $data;
+        return $arguments;
     }
 
-    public function execute(array $data): mixed
+    public function execute(FunctionCall $call): mixed
     {
         return null;
     }

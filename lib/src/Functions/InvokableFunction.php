@@ -3,6 +3,7 @@
 namespace Mateffy\Magic\Functions;
 
 use Closure;
+use Mateffy\Magic\LLM\Message\FunctionCall;
 
 interface InvokableFunction
 {
@@ -10,9 +11,7 @@ interface InvokableFunction
 
     public function schema(): array;
 
-    public function validate(array $data): array;
+    public function validate(array $arguments): array;
 
-    public function callback(): Closure;
-
-    public function execute(array $data): mixed;
+    public function execute(FunctionCall $call): mixed;
 }

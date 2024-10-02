@@ -4,8 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
-
+        <title>Data Wizard – Extract structured data from PDFs, images and documents</title>
 
         <?php
             \Filament\Support\Facades\FilamentColor::register([
@@ -21,6 +20,10 @@
         ?>
 
         @filamentStyles
+
+        @if ($favicon = filament()->getFavicon())
+            <link rel="icon" href="{{ $favicon }}" />
+        @endif
 
         {{ filament()->getTheme()->getHtml() }}
         {{ filament()->getFontHtml() }}

@@ -9,7 +9,8 @@ class FunctionOutputMessage implements Message
     public function __construct(
         public Role $role,
         public FunctionCall $call,
-        public mixed $output
+        public mixed $output,
+        public bool $endConversation = false,
     ) {}
 
     public static function fromArray(array $data): static
@@ -44,10 +45,29 @@ class FunctionOutputMessage implements Message
 
     public function text(): ?string
     {
-        if (! is_string($this->output)) {
+        if ($this->output === null) {
             return null;
         }
 
+        if (! is_string($this->output)) {
+            return json_encode($this->output, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+
         return $this->output;
+    }
+
+    public static function output(FunctionCall $call, mixed $output): static
+    {
+        return new self(role: Role::User, call: $call, output: $output);
+    }
+
+    public static function end(FunctionCall $call, mixed $output): static
+    {
+        return new self(role: Role::User, call: $call, output: $output, endConversation: true);
+    }
+
+    public static function error(FunctionCall $call, string $message): static
+    {
+        return new self(role: Role::User, call: $call, output: ['error' => $message]);
     }
 }

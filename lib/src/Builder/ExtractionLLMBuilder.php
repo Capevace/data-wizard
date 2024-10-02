@@ -3,9 +3,11 @@
 namespace Mateffy\Magic\Builder;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mateffy\Magic\Builder\Concerns\HasArtifacts;
 use Mateffy\Magic\Builder\Concerns\HasModel;
+use Mateffy\Magic\Builder\Concerns\HasModelCallbacks;
 use Mateffy\Magic\Builder\Concerns\HasSchema;
 use Mateffy\Magic\Builder\Concerns\HasStrategy;
 use Mateffy\Magic\Builder\Concerns\HasSystemPrompt;
@@ -20,6 +22,7 @@ class ExtractionLLMBuilder implements PreconfiguredModelLaunchInterface
 {
     use HasArtifacts;
     use HasModel;
+    use HasModelCallbacks;
     use HasSchema;
     use HasStrategy;
     use HasSystemPrompt;
@@ -32,7 +35,7 @@ class ExtractionLLMBuilder implements PreconfiguredModelLaunchInterface
         ?Closure $onTokenStats = null,
         ?Closure $onActorTelemetry = null,
         ?Closure $onDataProgress = null,
-    ): array
+    ): Collection
     {
         $strategyClass = $this->getStrategyClass();
 
@@ -59,10 +62,10 @@ class ExtractionLLMBuilder implements PreconfiguredModelLaunchInterface
         return $result->value;
     }
 
-    public function send(): array
+    public function send(): Collection
     {
         $prompt = $this->build();
 
-        return $this->model->send($prompt);
+        return collect($this->model->send($prompt));
     }
 }

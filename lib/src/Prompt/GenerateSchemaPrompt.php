@@ -149,4 +149,9 @@ class GenerateSchemaPrompt implements Prompt
             ? new OutputJsonSchema
             : null;
     }
+
+    public function shouldParseJson(): bool
+    {
+        return true;
+    }
 }
