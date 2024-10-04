@@ -102,7 +102,7 @@ class GenerateSchemaAction extends Actions\Action
             ->stream()
             ->firstData();
 
-        if ($data === null || $data['schema'] ?? null) {
+        if ($data === null || ($data['schema'] ?? null) === null) {
             report(new \Exception('Could not generate schema: '.json_encode($data)));
 
             Notification::make()
