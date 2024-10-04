@@ -3,9 +3,11 @@
 use App\Http\Middleware\AllowEmbeddingMiddleware;
 use App\Livewire\Components\Concerns\HasChat;
 use App\Livewire\Components\StreamableMessage;
+use App\Models\ExtractionBucket;
 use App\Models\SavedExtractor;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Mateffy\Magic\LLM\Message\Message;
 
 /*
@@ -57,6 +59,27 @@ Route::get('/full-page/{extractorId}', \App\Livewire\Components\EmbeddedExtracto
     ->name('full-page-extractor');
 
 Route::get('/test-chat', \App\Livewire\Components\TestChat::class);
+
+Route::get('/bucket/{bucketId}/files/{name}/image/{number}', function (string $bucketId, string $name, int $number) {
+    $bucket = ExtractionBucket::findOrFail($bucketId);
+
+    if ($name === 'first') {
+        $file = $bucket->files()->firstOrFail();
+    } else {
+        $name = base64_decode($name);
+        $file = $bucket->files()->where('name', $name)->firstOrFail();
+    }
+    /** @var \App\Models\File $file */
+
+    if ($file->artifact === null) {
+        abort(404);
+    }
+
+    $imagePath = $file->artifact->getEmbedPath("images/image{$number}.jpg");
+
+    return response()->file($imagePath);
+})
+    ->name('bucket.image');
 
 Route::get('/poll/{chat}/{conversationId}', function (string $chat, string $conversationId) {
     if (!class_exists($chat) || !class_implements($chat, HasChat::class)) {

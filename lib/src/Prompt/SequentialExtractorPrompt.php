@@ -96,18 +96,20 @@ class SequentialExtractorPrompt implements Prompt
         $artifacts = collect($this->artifacts)
             ->map(function (Artifact $artifact) {
                 $pages = collect($artifact->getContents())
-                    ->filter(fn (TextContent|ImageContent $content) => $content instanceof TextContent)
+                    ->filter(fn ($content) => $content instanceof TextContent)
                     ->groupBy(fn (TextContent $content) => $content->page ?? 0)
                     ->sortBy(fn (Collection $contents, $page) => $page)
                     ->values()
                     ->flatMap(fn (Collection $contents) => collect($contents)
-                        ->map(fn (TextContent $content) => Blade::render("<page num=\"{{ \$content->page }}\">\n{{ \$content->text }}\n</page>", ['content' => $content]))
+                        ->map(fn (TextContent $content) => match ($content::class) {
+                            TextContent::class => Blade::render("<page num=\"{{ \$content->page }}\">\n{{ \$content->text }}\n</page>", ['content' => $content]),
+                        })
                     )
                     ->join("\n\n");
 
                 return Blade::render(
                     <<<'BLADE'
-                    <artifact name="{{ $name }}">
+                    <artifact name="{{ $name }}" >
                     {!! $pages !!}
                     </artifact>
                     BLADE,

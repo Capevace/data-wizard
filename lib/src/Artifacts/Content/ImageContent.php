@@ -2,6 +2,8 @@
 
 namespace Mateffy\Magic\Artifacts\Content;
 
+use Illuminate\Support\Str;
+
 readonly class ImageContent
 {
     public function __construct(
@@ -10,7 +12,8 @@ readonly class ImageContent
         public ?int $page = null,
         public ?int $width = null,
         public ?int $height = null,
-    ) {}
+    ) {
+    }
 
     public function toArray(): array
     {
@@ -24,7 +27,7 @@ readonly class ImageContent
     public static function from(array $data): static
     {
         return new static(
-            path: $data['path'],
+            path: Str::replace('pages/', 'pages_marked/', $data['path']),
             mimetype: $data['mimetype'],
             page: $data['page'] ?? null,
         );

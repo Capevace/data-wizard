@@ -34,15 +34,36 @@ class FilesRelationManager extends RelationManager
             ->schema(function (File $record) {
                 $root = Storage::disk('public')->path('');
                 $imagesPath = "{$record->artifact_path}/images";
+                $pagesPath = "{$record->artifact_path}/pages_marked";
 
-                $publicRelativePath = str($imagesPath)
+                $publicImageRelativePath = str($imagesPath)
+                    ->after($root);
+
+                $publicPagesRelativePath = str($pagesPath)
                     ->after($root);
 
                 $images = collect(\Illuminate\Support\Facades\File::files($imagesPath))
                     ->filter(fn (\SplFileInfo $file) => in_array(Str::lower($file->getExtension()), ['jpg', 'jpeg', 'png', 'webp', 'avif']))
                     ->sortBy(fn (\SplFileInfo $file) => $file->getBasename())
                     ->map(fn (\SplFileInfo $file) => ImageEntry::make($file)
-                        ->state(url("storage/{$publicRelativePath}/".Str::afterLast($file, '/')))
+                        ->state(url("storage/{$publicImageRelativePath}/".Str::afterLast($file, '/')))
+                        ->label($file->getBasename())
+                        ->height('auto')
+                        ->extraImgAttributes([
+                            'class' => 'w-full h-full object-contain',
+                        ])
+                        ->extraAttributes([
+                            'class' => 'w-full h-full flex justify-center items-center',
+                            'style' => 'aspect-ratio: 1/1',
+                        ]),
+                    )
+                    ->all();
+
+                $pages = collect(\Illuminate\Support\Facades\File::files($pagesPath))
+                    ->filter(fn (\SplFileInfo $file) => in_array(Str::lower($file->getExtension()), ['jpg', 'jpeg', 'png', 'webp', 'avif']))
+                    ->sortBy(fn (\SplFileInfo $file) => $file->getBasename())
+                    ->map(fn (\SplFileInfo $file) => ImageEntry::make($file)
+                        ->state(url("storage/{$publicPagesRelativePath}/".Str::afterLast($file, '/')))
                         ->label($file->getBasename())
                         ->height('auto')
                         ->extraImgAttributes([
@@ -69,7 +90,10 @@ class FilesRelationManager extends RelationManager
                         ->columns(4)
                         ->compact()
                         ->collapsed()
-                        ->schema($images),
+                        ->schema([
+                            ...$pages,
+                            ...$images,
+                        ]),
                 ]);
             });
     }
