@@ -2,7 +2,13 @@
 
 namespace Mateffy\Magic\LLM\Models\Apis;
 
-use Illuminate\Support\Collection;
+use Closure;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Mateffy\Magic\Functions\InvokableFunction;
 use Mateffy\Magic\LLM\Exceptions\InvalidRequest;
 use Mateffy\Magic\LLM\Exceptions\TooManyTokensForModelRequested;
@@ -12,20 +18,16 @@ use Mateffy\Magic\LLM\Message\JsonMessage;
 use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Message\MultimodalMessage;
 use Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\ContentInterface;
 use Mateffy\Magic\LLM\Message\MultimodalMessage\Text;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\ToolResult;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\ToolUse;
 use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\MessageCollection;
 use Mateffy\Magic\LLM\Models\Decoders\ClaudeResponseDecoder;
 use Mateffy\Magic\Prompt\Prompt;
 use Mateffy\Magic\Prompt\Role;
 use Mateffy\Magic\Prompt\TokenStats;
-use Closure;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use OpenAI\Responses\Chat\CreateResponse;
 use Psr\Http\Message\StreamInterface;
 
@@ -106,7 +108,7 @@ trait UsesAnthropicApi
                     MultimodalMessage::class => [
                         'role' => $message->role,
                         'content' => collect($message->content)
-                            ->map(fn (Base64Image|Text $message) => match ($message::class) {
+                            ->map(fn (ContentInterface $message) => match ($message::class) {
                                 Text::class => [
                                     'type' => 'text',
                                     'text' => $message->text,
@@ -119,13 +121,24 @@ trait UsesAnthropicApi
                                         'data' => $message->imageBase64,
                                     ]
                                 ],
+                                ToolUse::class => [
+                                    'type' => 'tool_use',
+                                    'id' => $message->call->id,
+                                    'name' => $message->call->name,
+                                    'input' => $message->call->arguments,
+                                ],
+                                ToolResult::class => [
+                                    'type' => 'tool_result',
+                                    'tool_use_id' => $message->call->id,
+                                    'content' => json_encode($message->output),
+                                ],
                             })
                             ->toArray(),
                     ],
 
                     default => null,
                 })
-                ->dump()
+//                ->dd()
                 ->filter()
                 ->values()
                 ->toArray(),

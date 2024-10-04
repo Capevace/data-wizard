@@ -4,6 +4,7 @@ namespace Mateffy\Magic\Artifacts;
 
 use Mateffy\Magic\Artifacts\Content\ImageContent;
 use Mateffy\Magic\Artifacts\Content\TextContent;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image;
 
 /**
  * Artifact directory:
@@ -51,6 +52,11 @@ readonly class SplitArtifact implements Artifact
     public function getEmbedPath(string $filename): string
     {
         return $this->original->getEmbedPath($filename);
+    }
+
+    public function getBase64Image(ImageContent $filename): Base64Image
+    {
+        return $this->original->getBase64Image($filename);
     }
 
     /**

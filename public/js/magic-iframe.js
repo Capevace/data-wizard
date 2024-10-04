@@ -1,5 +1,5 @@
 window.Magic = window.Magic ?? {
-    url: 'https://magic-import.test',
+    url: 'https://data-wizard.ai',
 
     iframe: {
         url({ extractorId, bucketId = null, runId = null, signature = null }) {

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         Route::model('bucket', ExtractionBucket::class);
         Route::model('run', ExtractionRun::class);
 
-        \Livewire::component('embedded-extractor', \App\Livewire\Components\EmbeddedExtractor::class);
+        Livewire::component('embedded-extractor', \App\Livewire\Components\EmbeddedExtractor::class);
+        Livewire::component('streamable-message', \App\Livewire\Components\StreamableMessage::class);
     }
 }

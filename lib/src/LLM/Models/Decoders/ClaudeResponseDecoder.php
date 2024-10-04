@@ -122,12 +122,21 @@ class ClaudeResponseDecoder implements Decoder
                     };
 
                     if ($data['content_block']['type'] === 'tool_use') {
+                        if ($message) {
+                            $messages[] = $message;
+
+                            if ($this->onMessage) {
+                                ($this->onMessage)($message);
+                            }
+                        }
+
                         $message = new FunctionInvocationMessage(
                             role: Role::Assistant,
                             call: ($name = $data['content_block']['name'])
                                 ? new FunctionCall(
                                     name: $name,
                                     arguments: $data['content_block']['input'] ?? [],
+                                    id: $data['content_block']['id'] ?? null,
                                 )
                                 : null,
                             partial: $part,

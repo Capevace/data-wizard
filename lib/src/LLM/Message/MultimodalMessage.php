@@ -3,14 +3,17 @@
 namespace Mateffy\Magic\LLM\Message;
 
 use Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\ContentInterface;
 use Mateffy\Magic\LLM\Message\MultimodalMessage\Text;
 use Mateffy\Magic\Prompt\Role;
 
 class MultimodalMessage implements Message
 {
+    use WireableViaArray;
+
     public function __construct(
         public Role $role,
-        /** @var array<Base64Image|Text> */
+        /** @var array<ContentInterface> */
         public array $content
     ) {}
 
@@ -18,7 +21,7 @@ class MultimodalMessage implements Message
     {
         return [
             'role' => $this->role->value,
-            'content' => array_map(fn (Base64Image|Text $item) => $item->toArray(), $this->content),
+            'content' => array_map(fn (ContentInterface $item) => $item->toArray(), $this->content),
         ];
     }
 
@@ -44,5 +47,32 @@ class MultimodalMessage implements Message
         }
 
         return $this->content;
+    }
+
+    /**
+     * @param array<ContentInterface> $content
+     */
+    public static function user(array $content): static
+    {
+        return new self(
+            role: Role::User,
+            content: $content,
+        );
+    }
+
+    /**
+     * @param array<ContentInterface> $content
+     */
+    public static function base64Image(string $base64Image, string $mime): static
+    {
+        return new self(
+            role: Role::User,
+            content: [
+                new Base64Image(
+                    imageBase64: $base64Image,
+                    mime: $mime,
+                ),
+            ],
+        );
     }
 }

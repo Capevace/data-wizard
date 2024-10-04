@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Middleware\AllowEmbeddingMiddleware;
+use App\Livewire\Components\Concerns\HasChat;
+use App\Livewire\Components\StreamableMessage;
 use App\Models\SavedExtractor;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Mateffy\Magic\LLM\Message\Message;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,3 +55,28 @@ Route::get('/embed/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::c
 
 Route::get('/full-page/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
     ->name('full-page-extractor');
+
+Route::get('/test-chat', \App\Livewire\Components\TestChat::class);
+
+Route::get('/poll/{chat}/{conversationId}', function (string $chat, string $conversationId) {
+    if (!class_exists($chat) || !class_implements($chat, HasChat::class)) {
+        abort(404);
+    }
+
+    /** @var class-string<HasChat> $chat */
+
+    $messages = StreamableMessage::getStreamedMessages($conversationId);
+
+    return response()->json([
+        'messages' => $messages
+            ->map(fn (Message $message, int $index) => $chat::renderChatMessage(
+                message:$message,
+                streaming: true,
+                isCurrent: $index === count($messages) - 1,
+            ))
+            ->values()
+            ->all(),
+    ]);
+})
+    ->middleware('signed')
+    ->name('chat.poll');

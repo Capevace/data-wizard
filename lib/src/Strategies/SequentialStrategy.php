@@ -79,8 +79,6 @@ class SequentialStrategy
             if ($this->onDataProgress && $data !== null) {
                 ($this->onDataProgress)($data);
             }
-
-            dump($data);
         }
 
         return new InferenceResult(value: $data, messages: []);

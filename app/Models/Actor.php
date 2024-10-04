@@ -55,7 +55,7 @@ class Actor extends Model
                 'json' => json_encode($message->data),
             ]),
             MultimodalMessage::class => collect($message->content)
-                ->each(fn (\Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image|\Mateffy\Magic\LLM\Message\MultimodalMessage\Text $content) => match ($content::class) {
+                ->each(fn (MultimodalMessage\ContentInterface $content) => match ($content::class) {
                     \Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Base64Image,
                         'role' => $message->role,

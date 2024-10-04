@@ -7,6 +7,8 @@ use Mateffy\Magic\Utils\PartialJson;
 
 class FunctionInvocationMessage implements DataMessage, PartialMessage
 {
+    use WireableViaArray;
+
     public function __construct(
         public Role $role,
         public ?FunctionCall $call = null,
@@ -17,21 +19,17 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
     {
         return [
             'role' => $this->role->value,
-            'function_call' => [
-                'name' => $this->call->name,
-                'arguments' => json_encode($this->call->arguments, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-            ],
+            'call' => $this->call->toArray(),
+            'partial' => $this->partial,
         ];
     }
 
     public static function fromArray(array $data): static
     {
         return new static(
-            role: Role::tryFrom($data['role']) ?? Role::Assistant,
-            call: new FunctionCall(
-                name: $data['function_call']['name'],
-                arguments: json_decode($data['function_call']['arguments'], true, 512, JSON_THROW_ON_ERROR)
-            )
+            role: Role::from($data['role']),
+            call: FunctionCall::fromArray($data['call']),
+            partial: $data['partial'] ?? null,
         );
     }
 
@@ -53,6 +51,7 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
         $this->call = new FunctionCall(
             name: $this->call->name,
             arguments: $data ?? $this->call->arguments,
+            id: $this->call->id,
         );
 
         return $this;
@@ -77,4 +76,12 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
         );
     }
 
+    public static function call(FunctionCall $call): static
+    {
+        return new self(
+            role: Role::Assistant,
+            call: $call,
+            partial: null,
+        );
+    }
 }

@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 
 class JsonMessage implements DataMessage, PartialMessage
 {
+    use WireableViaArray;
     public function __construct(
         public Role $role,
         public array $data,

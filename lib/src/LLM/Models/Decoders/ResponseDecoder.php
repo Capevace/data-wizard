@@ -51,8 +51,6 @@ class ResponseDecoder implements Decoder
     {
         $role = Role::tryFrom(Arr::get($message, 'role', ''));
 
-        dump([$this->currentPartial, $role]);
-
         if ($this->currentPartial === null) {
             $this->currentPartial = $this->beginNewMessage($message);
 

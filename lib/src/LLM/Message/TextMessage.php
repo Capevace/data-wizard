@@ -6,6 +6,8 @@ use Mateffy\Magic\Prompt\Role;
 
 class TextMessage implements Message, PartialMessage
 {
+    use WireableViaArray;
+
     public function __construct(
         public Role $role,
         public string $content,

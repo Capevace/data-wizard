@@ -7,6 +7,7 @@ use Mateffy\Magic\Artifacts\Content\TextContent;
 use Mateffy\Magic\Config\ExtractorFileType;
 use Illuminate\Support\Facades\File;
 use JsonException;
+use Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image;
 use Throwable;
 
 /**
@@ -93,6 +94,14 @@ readonly class LocalArtifact implements Artifact
         }
 
         return "{$this->path}/{$filename}";
+    }
+
+    public function getBase64Image(ImageContent $filename): Base64Image
+    {
+        return new Base64Image(
+            imageBase64: base64_encode(file_get_contents($this->getEmbedPath($filename->path))),
+            mime: $filename->mimetype,
+        );
     }
 
     /**

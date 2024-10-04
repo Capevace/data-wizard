@@ -10,6 +10,7 @@
         "akaunting/laravel-money": "^5.2",
         "blade-ui-kit/blade-heroicons": "^2.3",
         "blade-ui-kit/blade-icons": "^1.6",
+        "codewithkyrian/transformers": "^0.5.3",
         "davidhsianturi/blade-bootstrap-icons": "^1.5",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
@@ -25,13 +26,16 @@
         "novadaemon/filament-pretty-json": "^2.2",
         "nyholm/psr7": "^1.8",
         "openai-php/laravel": "^0.8.1",
+        "php-ai/php-ml": "^0.10.0",
+        "rubix/ml": "^2.5",
         "spatie/laravel-http-logger": "^1.11",
         "spatie/laravel-medialibrary": "^11.8",
         "spatie/laravel-webhook-server": "^3.8",
         "spatie/pdf-to-image": "^3.0",
         "swaggest/json-schema": "^0.12.42",
         "tempest/highlight": "^2.8",
-        "wire-elements/wire-extender": "^0.0.8"
+        "wire-elements/wire-extender": "^0.0.8",
+        "ext-fileinfo": "*"
     },
     "require-dev": {
         "buggregator/trap": "^1.10",
@@ -93,7 +97,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "codewithkyrian/transformers-libsloader": true
         }
     },
     "minimum-stability": "dev",

@@ -154,10 +154,7 @@ class ExtractorPrompt implements Prompt
                 ->sortBy(fn (Collection $contents, $page) => $page)
                 ->take($this->maxPages)
                 ->flatMap(fn (Collection $contents) => collect($contents)
-                    ->map(fn (ImageContent $image) => new \Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image(
-                        imageBase64: base64_encode(file_get_contents($artifact->getEmbedPath($image->path))),
-                        mime: $image->mimetype,
-                    ))
+                    ->map(fn (ImageContent $image) => $artifact->getBase64Image($image))
                 )
             );
 

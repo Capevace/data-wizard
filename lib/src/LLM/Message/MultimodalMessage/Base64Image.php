@@ -2,8 +2,12 @@
 
 namespace Mateffy\Magic\LLM\Message\MultimodalMessage;
 
-readonly class Base64Image
+use Mateffy\Magic\LLM\Message\WireableViaArray;
+
+readonly class Base64Image implements ContentInterface
 {
+    use WireableViaArray;
+
     public function __construct(
         public string $imageBase64,
         public string $mime,
@@ -29,7 +33,7 @@ readonly class Base64Image
         );
     }
 
-    public static function fromPath(string $path)
+    public static function fromPath(string $path): self
     {
         $mime = mime_content_type($path);
 

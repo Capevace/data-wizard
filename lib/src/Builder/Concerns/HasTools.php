@@ -2,6 +2,7 @@
 
 namespace Mateffy\Magic\Builder\Concerns;
 
+use Closure;
 use Mateffy\Magic\Functions\InvokableFunction;
 use Mateffy\Magic\Functions\MagicFunction;
 use Mateffy\Magic\LLM\Message\FunctionCall;
@@ -13,12 +14,18 @@ use ReflectionFunctionAbstract;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
+use Throwable;
 
 trait HasTools
 {
     public array $tools = [];
 
     public ?string $toolChoice = null;
+
+    /**
+     * @var Closure(Throwable): void|null $onToolError
+     */
+    public ?Closure $onToolError = null;
 
     /**
      * @throws ReflectionException
@@ -165,6 +172,13 @@ trait HasTools
     public function toolChoice(?string $name = 'auto'): static
     {
         $this->toolChoice = $name;
+
+        return $this;
+    }
+
+    public function onToolError(?Closure $onToolError): static
+    {
+        $this->onToolError = $onToolError;
 
         return $this;
     }

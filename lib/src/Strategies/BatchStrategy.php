@@ -88,8 +88,6 @@ class ParallelStrategy
             $datas[] = $data;
         }
 
-        dump($datas);
-
         $data = $this->merge($datas);
 
         return new InferenceResult(value: $data, messages: []);

@@ -16,8 +16,11 @@ use Mateffy\Magic\Builder\Concerns\LaunchesBuilderLLM;
 use Mateffy\Magic\Functions\InvokableFunction;
 use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
 use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
+use Mateffy\Magic\LLM\Message\MultimodalMessage;
+use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\MessageCollection;
 use Mateffy\Magic\LLM\PreconfiguredModelLaunchInterface;
+use Mateffy\Magic\Loop\EndConversation;
 use Mateffy\Magic\Prompt\Prompt;
 
 class ChatPreconfiguredModelBuilder
@@ -44,7 +47,42 @@ class ChatPreconfiguredModelBuilder
 
             public function messages(): array
             {
-                return $this->builder->messages;
+                $messages = MessageCollection::make();
+                $current = [];
+                $role = null;
+
+                foreach ($this->builder->messages as $message) {
+                    if ($message instanceof MultimodalMessage && count($current) > 0) {
+                        $messages->push(new MultimodalMessage(role: $role, content: $current));
+                        $current = [];
+
+                        $messages->push($message);
+
+                        continue;
+                    } else if ($message instanceof MultimodalMessage) {
+                        $messages->push($message);
+
+                        continue;
+                    } else if ($role && $message->role !== $role) {
+                        $messages->push(new MultimodalMessage(role: $role, content: $current));
+                        $current = [];
+                    }
+
+                    $role = $message->role;
+                    $current[] = match($message::class) {
+                        TextMessage::class => MultimodalMessage\Text::make($message->content),
+                        FunctionInvocationMessage::class => MultimodalMessage\ToolUse::call($message->call),
+                        FunctionOutputMessage::class => MultimodalMessage\ToolResult::output($message->call, $message->output),
+                    };
+                }
+
+                if (count($current) > 0) {
+                    $messages->push(new MultimodalMessage(role: $role, content: $current));
+                }
+
+//                dd($messages);
+
+                return $messages->all();
             }
 
             public function functions(): array
@@ -84,26 +122,36 @@ class ChatPreconfiguredModelBuilder
 
                         if ($output instanceof FunctionOutputMessage) {
                             $outputMessage = $output;
+                        } else if ($output instanceof EndConversation) {
+                            $outputMessage = FunctionOutputMessage::end(call: $message->call, output: $output->getOutput());
                         } else {
                             $outputMessage = FunctionOutputMessage::output(call: $message->call, output: $output);
                         }
                     } catch (\Throwable $e) {
                         $outputMessage = FunctionOutputMessage::error(call: $message->call, message: $e->getMessage());
+
+                        if ($this->onToolError) {
+                            ($this->onToolError)($e);
+                        }
                     }
 
                     $messages->push($outputMessage);
 
+                    if ($this->onMessageProgress) {
+                        ($this->onMessageProgress)($outputMessage);
+                    }
+
+                    if ($this->onMessage) {
+                        ($this->onMessage)($outputMessage);
+                    }
+
                     if ($continue && !$outputMessage->endConversation) {
-                        $messages
-                            ->push(
-                                ...$this
-                                    ->addMessage($message)
-                                    ->addMessage($outputMessage)
-                                    ->onMessageProgress($this->onMessageProgress)
-                                    ->onMessage($this->onMessage)
-                                    ->onTokenStats($this->onTokenStats)
-                                    ->stream()
-                            );
+                        $messages->push(
+                            ...$this
+                                ->addMessage($message)
+                                ->addMessage($outputMessage)
+                                ->stream()
+                        );
                     }
                 }
             }

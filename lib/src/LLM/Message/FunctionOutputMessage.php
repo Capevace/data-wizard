@@ -6,6 +6,8 @@ use Mateffy\Magic\Prompt\Role;
 
 class FunctionOutputMessage implements Message
 {
+    use WireableViaArray;
+
     public function __construct(
         public Role $role,
         public FunctionCall $call,
@@ -16,12 +18,9 @@ class FunctionOutputMessage implements Message
     public static function fromArray(array $data): static
     {
         return new self(
-            role: Role::tryFrom($data['role']) ?? Role::Assistant,
-            call: new FunctionCall(
-                name: $data['function_call'],
-                arguments: []
-            ),
-            output: $data['output'],
+            role: Role::from($data['role']),
+            call: FunctionCall::fromArray($data['call']),
+            output: $data['output'] ?? null,
         );
     }
 
@@ -29,7 +28,7 @@ class FunctionOutputMessage implements Message
     {
         return [
             'role' => $this->role->value,
-            'function_call' => $this->call->name,
+            'call' => $this->call->toArray(),
             'output' => $this->output,
         ];
     }

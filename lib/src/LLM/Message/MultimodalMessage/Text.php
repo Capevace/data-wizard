@@ -2,8 +2,12 @@
 
 namespace Mateffy\Magic\LLM\Message\MultimodalMessage;
 
-readonly class Text
+use Mateffy\Magic\LLM\Message\WireableViaArray;
+
+readonly class Text implements ContentInterface
 {
+    use WireableViaArray;
+
     public function __construct(
         public string $text
     ) {}
@@ -21,5 +25,10 @@ readonly class Text
         return new self(
             text: $data['text'],
         );
+    }
+
+    public static function make(string $text): self
+    {
+        return new self(text: $text);
     }
 }
