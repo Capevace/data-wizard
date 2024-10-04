@@ -7,6 +7,7 @@ use Mateffy\Magic\LLM\ElElEm;
 use Mateffy\Magic\LLM\Message\JsonMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\Loop\Response\JsonResponse;
+use Mateffy\Magic\Magic;
 use Mateffy\Magic\Prompt\GenerateSchemaPrompt;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Textarea;
@@ -95,25 +96,24 @@ class GenerateSchemaAction extends Actions\Action
     {
         $prompt = new GenerateSchemaPrompt(instructions: $instructions, previouslyGeneratedSchema: $previouslyGeneratedSchema);
 
-        $llm = ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::HAIKU));
+        $data = Magic::chat()
+            ->model(Claude3Family::haiku())
+            ->prompt($prompt)
+            ->stream()
+            ->firstData();
 
-        $responses = $llm->stream(prompt: $prompt);
-
-        $response = collect($responses)->first(fn ($message) => $message instanceof JsonMessage);
-
-        if ($response === null) {
-            report(new \Exception('Could not generate schema: '.json_encode($responses)));
+        if ($data === null || $data['schema'] ?? null) {
+            report(new \Exception('Could not generate schema: '.json_encode($data)));
 
             Notification::make()
                 ->danger()
                 ->title('Could not generate schema')
+                ->body(json_encode($data))
                 ->send();
 
             return null;
         }
 
-        return ($properties = $response->data['schema'] ?? null)
-            ? JsonEditor::formatJson($properties)
-            : null;
+        return JsonEditor::formatJson($data['schema']);
     }
 }
