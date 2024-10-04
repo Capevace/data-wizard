@@ -210,6 +210,6 @@ class ParallelStrategy
 
         $this->totalTokenStats = $this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats;
 
-        return $messages->lastData();
+        return $messages->firstData();
     }
 }

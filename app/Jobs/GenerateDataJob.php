@@ -81,7 +81,7 @@ class GenerateDataJob implements ShouldQueue
                 })
                 ->stream();
 
-            $this->run->result_json = $data?->toArray() ?? $this->run->result_json;
+            $this->run->result_json = $data->toArray() ?? $this->run->result_json;
             $this->run->status = RunStatus::Completed;
             $this->run->save();
         } catch (\Exception $e) {
