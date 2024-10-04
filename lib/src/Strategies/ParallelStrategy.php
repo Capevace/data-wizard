@@ -45,7 +45,7 @@ class ParallelStrategy
     /**
      * @param  Artifact[]  $artifacts
      */
-    public function run(array $artifacts): InferenceResult
+    public function run(array $artifacts): array
     {
         $maxTokens = 20000;
 
@@ -92,7 +92,11 @@ class ParallelStrategy
 
         $data = $this->merge($datas);
 
-        return new InferenceResult(value: $data, messages: []);
+        if ($this->onDataProgress) {
+            ($this->onDataProgress)($data);
+        }
+
+        return $data;
     }
 
     protected function generate(Collection $artifacts, ?array $data): ?array

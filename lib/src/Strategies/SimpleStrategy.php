@@ -38,7 +38,7 @@ class SimpleStrategy
     /**
      * @param  Artifact[]  $artifacts
      */
-    public function run(array $artifacts): InferenceResult
+    public function run(array $artifacts): array
     {
         $threadId = Str::uuid();
         $prompt = new ExtractorPrompt(extractor: $this->extractor, artifacts: $artifacts);

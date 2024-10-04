@@ -43,7 +43,7 @@ class ParallelStrategy
     /**
      * @param  Artifact[]  $artifacts
      */
-    public function run(array $artifacts): InferenceResult
+    public function run(array $artifacts): array
     {
         $maxTokens = 20000;
 

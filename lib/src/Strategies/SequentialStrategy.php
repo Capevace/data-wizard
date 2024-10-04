@@ -39,7 +39,7 @@ class SequentialStrategy
     /**
      * @param  Artifact[]  $artifacts
      */
-    public function run(array $artifacts): InferenceResult
+    public function run(array $artifacts): array
     {
         $maxTokens = 50000;
 
