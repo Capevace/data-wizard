@@ -13,8 +13,8 @@ class ListExtractionRuns extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            ExtractionRunResource\Widgets\CostWidget::make(),
-            ExtractionRunResource\Widgets\TotalCostWidget::make(),
+//            ExtractionRunResource\Widgets\CostWidget::make(),
+//            ExtractionRunResource\Widgets\TotalCostWidget::make(),
         ];
     }
 
