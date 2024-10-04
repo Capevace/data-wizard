@@ -21,7 +21,7 @@ use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\Magic;
 use Mateffy\Magic\Prompt\TokenStats;
 
-class  GenerateDataJob implements ShouldQueue
+class GenerateDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -49,40 +49,39 @@ class  GenerateDataJob implements ShouldQueue
                 ->schema($this->run->target_schema)
                 ->strategy($this->run->strategy)
                 ->artifacts($artifacts->all())
-                ->stream(
-                    onMessage: function (Message $message, string $actorId) {
-                        /** @var ?Actor $actor */
-                        $actor = $this->run->actors()->find($actorId);
+                ->onMessage(function (Message $message, string $actorId) {
+                    /** @var ?Actor $actor */
+                    $actor = $this->run->actors()->find($actorId);
 
-                        if (! $actor) {
-                            throw new \InvalidArgumentException("Actor {$actorId} not found");
-                        }
-
-                        $actor->add($message);
-                    },
-                    onTokenStats: function (TokenStats $tokenStats) {
-                        $this->run->token_stats = $tokenStats;
-                        $this->run->save();
-                    },
-                    onActorTelemetry: function (ActorTelemetry $telemetry) {
-                        /** @var ?Actor $actor */
-                        $actor = $this->run->actors()->find($telemetry->id);
-
-                        if (! $actor) {
-                            $actor = $this->run->actors()->make();
-                            $actor->id = $telemetry->id;
-                        }
-
-                        $actor->fill($telemetry->toDatabase());
-                        $actor->save();
-                    },
-                    onDataProgress: function (array $data) {
-                        $this->run->partial_result_json = $data;
-                        $this->run->save();
+                    if (! $actor) {
+                        throw new \InvalidArgumentException("Actor {$actorId} not found");
                     }
-                );
 
-            $this->run->result_json = $data ?? $this->run->result_json;
+                    $actor->add($message);
+                })
+                ->onTokenStats(function (TokenStats $tokenStats) {
+                    $this->run->token_stats = $tokenStats;
+                    $this->run->save();
+                })
+                ->onActorTelemetry(function (ActorTelemetry $telemetry) {
+                    /** @var ?Actor $actor */
+                    $actor = $this->run->actors()->find($telemetry->id);
+
+                    if (! $actor) {
+                        $actor = $this->run->actors()->make();
+                        $actor->id = $telemetry->id;
+                    }
+
+                    $actor->fill($telemetry->toDatabase());
+                    $actor->save();
+                })
+                ->onDataProgress(function (array $data) {
+                    $this->run->partial_result_json = $data;
+                    $this->run->save();
+                })
+                ->stream();
+
+            $this->run->result_json = $data?->toArray() ?? $this->run->result_json;
             $this->run->status = RunStatus::Completed;
             $this->run->save();
         } catch (\Exception $e) {

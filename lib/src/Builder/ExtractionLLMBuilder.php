@@ -6,43 +6,36 @@ use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mateffy\Magic\Builder\Concerns\HasArtifacts;
+use Mateffy\Magic\Builder\Concerns\HasExtractionModelCallbacks;
 use Mateffy\Magic\Builder\Concerns\HasModel;
 use Mateffy\Magic\Builder\Concerns\HasModelCallbacks;
 use Mateffy\Magic\Builder\Concerns\HasSchema;
 use Mateffy\Magic\Builder\Concerns\HasStrategy;
 use Mateffy\Magic\Builder\Concerns\HasSystemPrompt;
 use Mateffy\Magic\Builder\Concerns\HasTools;
-use Mateffy\Magic\Builder\Concerns\LaunchesBuilderLLM;
 use Mateffy\Magic\Config\Extractor;
 use Mateffy\Magic\Config\ExtractorFileType;
-use Mateffy\Magic\LLM\PreconfiguredModelLaunchInterface;
 use Mateffy\Magic\Strategies\Strategy;
 
-class ExtractionLLMBuilder implements PreconfiguredModelLaunchInterface
+class ExtractionLLMBuilder
 {
     use HasArtifacts;
+    use HasExtractionModelCallbacks;
     use HasModel;
     use HasModelCallbacks;
     use HasSchema;
     use HasStrategy;
     use HasSystemPrompt;
     use HasTools;
-    use LaunchesBuilderLLM;
 
-    public function stream(
-        ?Closure $onMessageProgress = null,
-        ?Closure $onMessage = null,
-        ?Closure $onTokenStats = null,
-        ?Closure $onActorTelemetry = null,
-        ?Closure $onDataProgress = null,
-    ): Collection
+    public function stream(): Collection
     {
         $strategyClass = $this->getStrategyClass();
 
         /** @var Strategy $strategy */
         $strategy = new $strategyClass(
             extractor: new Extractor(
-                id: Str::uuid(),
+                id: Str::uuid()->toString(),
                 title: 'Title',
                 outputInstructions: 'Output instructions',
                 allowedTypes: [ExtractorFileType::IMAGES, ExtractorFileType::DOCUMENTS],
@@ -50,22 +43,20 @@ class ExtractionLLMBuilder implements PreconfiguredModelLaunchInterface
                 schema: $this->schema,
                 strategy: 'simple'
             ),
-            onMessageProgress: $onMessageProgress,
-            onMessage: $onMessage,
-            onTokenStats: $onTokenStats,
-            onActorTelemetry: $onActorTelemetry,
-            onDataProgress: $onDataProgress,
+            onMessageProgress: $this->onMessageProgress,
+            onMessage: $this->onMessage,
+            onTokenStats: $this->onTokenStats,
+            onActorTelemetry: $this->onActorTelemetry,
+            onDataProgress: $this->onDataProgress,
         );
 
         $result = $strategy->run($this->artifacts);
 
-        return $result->value;
+        return collect($result->value);
     }
 
     public function send(): Collection
     {
-        $prompt = $this->build();
-
-        return collect($this->model->send($prompt));
+        return collect();
     }
 }
