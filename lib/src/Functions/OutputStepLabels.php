@@ -2,6 +2,8 @@
 
 namespace Mateffy\Magic\Functions;
 
+use Mateffy\Magic\LLM\Message\FunctionCall;
+
 class OutputStepLabels implements InvokableFunction
 {
     public function __construct() {}
@@ -100,7 +102,7 @@ class OutputStepLabels implements InvokableFunction
         return $arguments;
     }
 
-    public function execute(array $arguments): mixed
+    public function execute(FunctionCall $call): mixed
     {
         return null;
     }

@@ -2,6 +2,8 @@
 
 namespace Mateffy\Magic\Functions;
 
+use Mateffy\Magic\LLM\Message\FunctionCall;
+
 class Extract implements InvokableFunction
 {
     public function __construct(
@@ -28,9 +30,9 @@ class Extract implements InvokableFunction
         return $arguments;
     }
 
-    public function execute(array $arguments): mixed
+    public function execute(FunctionCall $call): mixed
     {
-        return null;
+        return $call->arguments;
     }
 
     public function callback(): \Closure

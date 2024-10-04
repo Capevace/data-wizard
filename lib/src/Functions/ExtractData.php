@@ -3,6 +3,7 @@
 namespace Mateffy\Magic\Functions;
 
 use Mateffy\Magic\FeatureType;
+use Mateffy\Magic\LLM\Message\FunctionCall;
 
 class ExtractData implements InvokableFunction
 {
@@ -248,9 +249,9 @@ class ExtractData implements InvokableFunction
         return $arguments;
     }
 
-    public function execute(array $arguments): mixed
+    public function execute(FunctionCall $call): mixed
     {
-        dd('execute extract', $arguments);
+        return null;
     }
 
     public function callback(): \Closure

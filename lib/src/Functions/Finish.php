@@ -3,6 +3,7 @@
 namespace Mateffy\Magic\Functions;
 
 use Closure;
+use Mateffy\Magic\LLM\Message\FunctionCall;
 
 class Finish implements InvokableFunction
 {
@@ -37,7 +38,7 @@ class Finish implements InvokableFunction
         return $validator->validated();
     }
 
-    public function execute(array $arguments): mixed
+    public function execute(FunctionCall $call): mixed
     {
         return null;
     }

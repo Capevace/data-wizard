@@ -2,6 +2,8 @@
 
 namespace Mateffy\Magic\Functions;
 
+use Mateffy\Magic\LLM\Message\FunctionCall;
+
 class ModifyData implements InvokableFunction
 {
     public function __construct(
@@ -28,7 +30,7 @@ class ModifyData implements InvokableFunction
         return $arguments;
     }
 
-    public function execute(array $arguments): mixed
+    public function execute(FunctionCall $call): mixed
     {
         return null;
     }
