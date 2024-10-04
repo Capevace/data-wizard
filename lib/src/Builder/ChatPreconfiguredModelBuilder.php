@@ -6,6 +6,7 @@ use Mateffy\Magic\Builder\Concerns\HasArtifacts;
 use Mateffy\Magic\Builder\Concerns\HasMessages;
 use Mateffy\Magic\Builder\Concerns\HasModel;
 use Mateffy\Magic\Builder\Concerns\HasModelCallbacks;
+use Mateffy\Magic\Builder\Concerns\HasPrompt;
 use Mateffy\Magic\Builder\Concerns\HasSchema;
 use Mateffy\Magic\Builder\Concerns\HasSystemPrompt;
 use Mateffy\Magic\Builder\Concerns\HasTools;
@@ -24,13 +25,14 @@ class ChatPreconfiguredModelBuilder
     use HasMessages;
     use HasModel;
     use HasModelCallbacks;
+    use HasPrompt;
     use HasSchema;
     use HasSystemPrompt;
     use HasTools;
 
     public function build(): Prompt
     {
-        return new class($this) implements Prompt
+        return $this->prompt ?? new class($this) implements Prompt
         {
             public function __construct(protected ChatPreconfiguredModelBuilder $builder) {}
 

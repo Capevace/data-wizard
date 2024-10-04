@@ -3,12 +3,21 @@
 namespace App\Models;
 
 use App\Models\Actor\ActorMessageType;
+use Illuminate\Support\Arr;
 use Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image;
 use Mateffy\Magic\Prompt\Role;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property Role $role
+ * @property string $text
+ * @property array $json
+ * @property Base64Image|null $media
+ * @property ActorMessageType $type
+ * @property ?string $partial
+ */
 class ActorMessage extends Model
 {
     use HasUuids, HasUuids;
@@ -49,5 +58,14 @@ class ActorMessage extends Model
     public function base64Image(): ?Base64Image
     {
         return Base64Image::fromArray($this->json);
+    }
+
+    public function data(?string $key = null): ?array
+    {
+        if ($key === null) {
+            return $this->json;
+        }
+
+        return Arr::get($this->json ?? [], $key);
     }
 }

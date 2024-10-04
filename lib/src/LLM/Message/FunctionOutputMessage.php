@@ -4,7 +4,7 @@ namespace Mateffy\Magic\LLM\Message;
 
 use Mateffy\Magic\Prompt\Role;
 
-class FunctionOutputMessage implements Message
+class FunctionOutputMessage implements Message, DataMessage
 {
     use WireableViaArray;
 
@@ -14,6 +14,19 @@ class FunctionOutputMessage implements Message
         public mixed $output,
         public bool $endConversation = false,
     ) {}
+
+    public function data(): ?array
+    {
+        if (is_array($this->output)) {
+            return $this->output;
+        }
+
+        if ($this->output === null) {
+            return null;
+        }
+
+        return json_decode($this->output, true);
+    }
 
     public static function fromArray(array $data): static
     {

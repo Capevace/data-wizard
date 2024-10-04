@@ -3,12 +3,14 @@
 namespace Mateffy\Magic\Strategies;
 
 use App\Models\Actor\ActorTelemetry;
+use Illuminate\Support\Facades\Log;
 use Mateffy\Magic\Artifacts\Artifact;
 use Mateffy\Magic\Config\Extractor;
 use Mateffy\Magic\LLM\Message\DataMessage;
 use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\Loop\InferenceResult;
+use Mateffy\Magic\Magic;
 use Mateffy\Magic\Prompt\ParallelMergerPrompt;
 use Mateffy\Magic\Prompt\Role;
 use Mateffy\Magic\Prompt\SequentialExtractorPrompt;
@@ -95,7 +97,7 @@ class ParallelStrategy
 
     protected function generate(Collection $artifacts, ?array $data): ?array
     {
-        $threadId = Str::uuid();
+        $threadId = Str::uuid()->toString();
         $prompt = new SequentialExtractorPrompt(extractor: $this->extractor, artifacts: $artifacts->all(), previousData: $data);
 
         if ($this->onActorTelemetry) {
@@ -117,48 +119,39 @@ class ParallelStrategy
         }
 
         $messages = [];
-
-        $onMessageProgress = function (Message $message) use (&$messages, $threadId) {
-            //            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
-
-            if ($this->onMessageProgress) {
-                ($this->onMessageProgress)($message, $threadId);
-            }
-        };
-
-        $onMessage = function (Message $message) use (&$messages, $threadId) {
-            $messages[] = $message;
-
-            //            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
-
-            if ($this->onMessage) {
-                ($this->onMessage)($message, $threadId);
-            }
-        };
-
         $lastTokenStats = null;
 
-        $messages = $this->extractor->llm->stream(
-            prompt: $prompt,
-            onMessageProgress: $onMessageProgress,
-            onMessage: $onMessage,
-            onTokenStats: function (TokenStats $tokenStats) use (&$data, &$lastTokenStats) {
+        $messages = Magic::chat()
+            ->model($this->extractor->llm)
+            ->prompt($prompt)
+            ->onMessageProgress(function (Message $message) use (&$messages, $threadId) {
+                //            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
+
+                if ($this->onMessageProgress) {
+                    ($this->onMessageProgress)($message, $threadId);
+                }
+            })
+            ->onMessage(function (Message $message) use (&$messages, $threadId) {
+                $messages[] = $message;
+
+                //            ($this->onDataProgress)(new InferenceResult(value: $message->toArray(), messages: $messages));
+
+                if ($this->onMessage) {
+                    ($this->onMessage)($message, $threadId);
+                }
+            })
+            ->onTokenStats(function (TokenStats $tokenStats) use (&$data, &$lastTokenStats) {
                 $lastTokenStats = $tokenStats;
 
                 if ($this->onTokenStats) {
                     ($this->onTokenStats)($this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats);
                 }
-            }
-        );
+            })
+            ->stream();
 
         $this->totalTokenStats = $this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats;
 
-        /** @var DataMessage|null $message */
-        $message = collect($messages)
-            ->filter(fn (Message $message) => $message instanceof DataMessage)
-            ->first();
-
-        return $message?->data() ?? $data;
+        return $messages->firstData();
     }
 
     protected function merge(array $datas): ?array
@@ -185,9 +178,10 @@ class ParallelStrategy
         $lastTokenStats = null;
         $strategy = $this;
 
-        $messages = $this->extractor->llm->stream(
-            prompt: $prompt,
-            onMessageProgress: function (Message $message) use (&$messages, $threadId, $strategy) {
+        $messages = Magic::chat()
+            ->model($this->extractor->llm)
+            ->prompt($prompt)
+            ->onMessageProgress(function (Message $message) use (&$messages, $threadId, $strategy) {
                 if ($strategy->onDataProgress && $data = $message->toArray()['data'] ?? null) {
                     ($strategy->onDataProgress)($data, $threadId);
                 }
@@ -195,8 +189,8 @@ class ParallelStrategy
                 if ($strategy->onMessageProgress) {
                     ($strategy->onMessageProgress)($message, $threadId);
                 }
-            },
-            onMessage: function (Message $message) use (&$messages, $threadId, $strategy) {
+            })
+            ->onMessage(function (Message $message) use (&$messages, $threadId, $strategy) {
                 if ($strategy->onDataProgress && $data = $message->toArray()['data'] ?? null) {
                     ($strategy->onDataProgress)($data, $threadId);
                 }
@@ -204,23 +198,18 @@ class ParallelStrategy
                 if ($strategy->onMessage) {
                     ($strategy->onMessage)($message, $threadId);
                 }
-            },
-            onTokenStats: function (TokenStats $tokenStats) use (&$data, &$lastTokenStats, $strategy) {
+            })
+            ->onTokenStats(function (TokenStats $tokenStats) use (&$data, &$lastTokenStats, $strategy) {
                 $lastTokenStats = $tokenStats;
 
                 if ($strategy->onTokenStats) {
                     ($strategy->onTokenStats)($strategy->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats);
                 }
-            }
-        );
+            })
+            ->stream();
 
         $this->totalTokenStats = $this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats;
 
-        /** @var DataMessage|null $message */
-        $message = collect($messages)
-            ->filter(fn (Message $message) => $message instanceof DataMessage)
-            ->first();
-
-        return $message?->data() ?? $data;
+        return $messages->lastData();
     }
 }

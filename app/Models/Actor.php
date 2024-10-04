@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
+use Illuminate\Support\Facades\Log;
+use Mateffy\Magic\LLM\Message\DataMessage;
 use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
 use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
 use Mateffy\Magic\LLM\Message\JsonMessage;
@@ -43,16 +45,17 @@ class Actor extends Model
      */
     public function add(Message $message): Collection
     {
+        Log::info('Adding message', ['message' => $message]);
         $messages = match ($message::class) {
             TextMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::Text,
                 'role' => $message->role,
                 'text' => $message->content,
             ]),
-            JsonMessage::class => $this->messages()->create([
+            DataMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::Json,
                 'role' => $message->role,
-                'json' => json_encode($message->data),
+                'json' => json_encode($message->data()),
             ]),
             MultimodalMessage::class => collect($message->content)
                 ->each(fn (MultimodalMessage\ContentInterface $content) => match ($content::class) {
@@ -72,13 +75,18 @@ class Actor extends Model
             FunctionInvocationMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::FunctionInvocation,
                 'role' => $message->role,
-                'json' => $message->toArray(),
+                'json' => [
+                    'call' => $message->call?->toArray(),
+                ]
             ]),
 
             FunctionOutputMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::FunctionOutput,
                 'role' => $message->role,
-                'json' => $message->toArray(),
+                'json' => [
+                    'call' => $message->call?->toArray(),
+                    'output' => $message->output,
+                ]
             ]),
 
             default => null,

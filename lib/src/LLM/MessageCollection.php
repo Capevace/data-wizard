@@ -3,6 +3,7 @@
 namespace Mateffy\Magic\LLM;
 
 use Illuminate\Support\Collection;
+use Mateffy\Magic\LLM\Message\DataMessage;
 use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
 use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
 use Mateffy\Magic\LLM\Message\JsonMessage;
@@ -21,14 +22,14 @@ class MessageCollection extends Collection
         return $this->firstTextMessage()?->text();
     }
 
-    public function firstJsonMessage(): ?JsonMessage
+    public function firstDataMessage(): ?DataMessage
     {
-        return $this->first(fn (Message $message) => $message instanceof JsonMessage);
+        return $this->first(fn (Message $message) => $message instanceof DataMessage);
     }
 
-    public function firstJson(): ?array
+    public function firstData(): ?array
     {
-        return $this->firstJson()?->data();
+        return $this->firstDataMessage()?->data();
     }
 
     public function firstFunctionInvokation(): ?FunctionInvocationMessage
@@ -46,9 +47,14 @@ class MessageCollection extends Collection
         return $this->last(fn (Message $message) => $message instanceof TextMessage);
     }
 
-    public function lastJson(): ?array
+    public function lastDataMessage(): ?DataMessage
     {
-        return $this->last(fn (Message $message) => $message instanceof JsonMessage);
+        return $this->last(fn (Message $message) => $message instanceof DataMessage);
+    }
+
+    public function lastData(): ?array
+    {
+        return $this->lastDataMessage()?->data();
     }
 
     public function lastFunctionInvokation(): ?FunctionInvocationMessage

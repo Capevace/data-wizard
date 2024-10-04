@@ -78,7 +78,7 @@
         <template x-if="tab === 'chat'">
             <div class="flex flex-col gap-4">
                 @foreach ($this->messages ?? [] as $message)
-                    <?php /** @var \App\Models\ActorMessage $message */ ?>
+                    @php /** @var \App\Models\ActorMessage $message */ @endphp
 
                     <div
                         @class([
@@ -95,6 +95,24 @@
                                     src="data:image/png;base64,{{ $message->base64Image()?->imageBase64 ?? '' }}"
                                     class="w-full aspect-video object-center object-cover"
                                 />
+                            @elseif ($message->type === \App\Models\Actor\ActorMessageType::FunctionInvocation)
+                                <div x-data="{
+                                    json: @js($message->data('call.arguments')),
+                                    get prettyJson() {
+                                        return window.prettyPrint(this.json);
+                                    }
+                                }" class="min-w-0 flex-1">
+                                    <pre class="prettyjson" x-html="prettyJson"></pre>
+                                </div>
+                            @elseif ($message->type === \App\Models\Actor\ActorMessageType::FunctionOutput)
+                                <div x-data="{
+                                    json: @js($message->data('output')),
+                                    get prettyJson() {
+                                        return window.prettyPrint(this.json);
+                                    }
+                                }" class="min-w-0 flex-1">
+                                    <pre class="prettyjson" x-html="prettyJson"></pre>
+                                </div>
                             @else
                                 <div x-data="{
                                     json: @js($message->json),

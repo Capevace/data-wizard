@@ -5,7 +5,7 @@ namespace Mateffy\Magic\Functions;
 use Mateffy\Magic\LLM\Message\FunctionCall;
 use Mateffy\Magic\Magic;
 
-class Extract implements InvokableFunction
+class MergeData implements InvokableFunction
 {
     public function __construct(
         protected array $schema,
@@ -13,12 +13,12 @@ class Extract implements InvokableFunction
 
     public function name(): string
     {
-        return 'extract';
+        return 'mergeData';
     }
 
     public function description(): ?string
     {
-        return 'Output the extracted data in the defined schema.';
+        return 'Merge the data together by calling this function. The data you pass in should be the data that you merged together. This will save it.';
     }
 
     public function schema(): array

@@ -125,7 +125,7 @@ class ClaudeResponseDecoder implements Decoder
                         if ($message) {
                             $messages[] = $message;
 
-                            if ($this->onMessage) {
+                            if ($this->onMessage && !empty($message->text())) {
                                 ($this->onMessage)($message);
                             }
                         }
