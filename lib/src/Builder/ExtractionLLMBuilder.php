@@ -52,7 +52,7 @@ class ExtractionLLMBuilder
 
         $result = $strategy->run($this->artifacts);
 
-        return collect($result->value);
+        return collect($result);
     }
 
     public function send(): Collection
