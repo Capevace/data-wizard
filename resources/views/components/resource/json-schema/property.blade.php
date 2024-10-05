@@ -42,7 +42,7 @@
 ?>
 
 <div {{ $attributes }}>
-    @if ($schema['type'] === 'array')
+    @if (($schema['type'] ?? null) === 'array')
         <div class="grid grid-cols-1 gap-4 col-span-full">
             @if ($description = $schema['description'] ?? null)
                 <p class="text-sm text-gray-500 dark:text-gray-400 col-span-full">
@@ -67,13 +67,13 @@
                 </x-previews.loop>
             @endif
         </div>
-    @elseif ($matchesTypes($schema['type'], ['object']))
-        @if (count($schema['properties'] ?? []) === 1 && ($property = array_keys($schema['properties'] ?? [])[0]))
+    @elseif ($matchesTypes(($schema['type'] ?? null), ['object']))
+        @if (count(($schema['properties'] ?? [])) === 1 && ($property = array_keys(($schema['properties'] ?? []))[0]))
             <x-resource.json-schema.property
                 :label="$property"
                 :name="$name . '_' . $property"
                 :state-path="$statePath . '.' . $property"
-                :schema="$schema['properties'] ?? [][$property]"
+                :schema="($schema['properties'] ?? [])[$property]"
                 :required="collect($schema['required'])->contains($property)"
                 :disabled="$disabled"
             />
@@ -89,7 +89,7 @@
                     </p>
                 @endif
 
-                @foreach($schema['properties'] ?? [] as $property => $propertySchema)
+                @foreach(($schema['properties'] ?? []) as $property => $propertySchema)
                     <div
                         wire:key="{{ $name . '_' . $property }}"
                         x-data="{ '{{ $name . '_' . $property }}': '{{ $statePath }}.{{ $property }}' }"
@@ -111,7 +111,7 @@
                 @endforeach
             </article>
         @endif
-    @elseif ($matchesTypes($schema['type'], ['integer', 'number', 'float', 'string']))
+    @elseif ($matchesTypes(($schema['type'] ?? null), ['integer', 'number', 'float', 'string']))
         <x-filament-forms::field-wrapper.label :$required>
             {{ $getMagicUiLabel($schema) ?? \Illuminate\Support\Str::title($label) }}
         </x-filament-forms::field-wrapper.label>
@@ -129,11 +129,11 @@
                         required
                     @endif
 
-                    @if ($matchesTypes($schema['type'], ['string']) && ($schema['minLength'] ?? null))
+                    @if ($matchesTypes(($schema['type'] ?? null), ['string']) && ($schema['minLength'] ?? null))
                         minlength="{{ $schema['minLength'] }}"
                     @endif
 
-                    @if ($matchesTypes($schema['type'], ['string']) && ($schema['maxLength'] ?? null))
+                    @if ($matchesTypes(($schema['type'] ?? null), ['string']) && ($schema['maxLength'] ?? null))
                         maxlength="{{ $schema['maxLength'] }}"
                     @endif
 
@@ -169,36 +169,36 @@
                     :$disabled
                     :$required
                     :type="match (true) {
-                        $matchesTypes($schema['type'], ['integer', 'number', 'float']) => 'number',
-                        $matchesTypes($schema['type'], ['string']) => 'text',
+                        $matchesTypes(($schema['type'] ?? null), ['integer', 'number', 'float']) => 'number',
+                        $matchesTypes(($schema['type'] ?? null), ['string']) => 'text',
                         default => 'text',
                     }"
                     :minlength="match (true) {
-                        $matchesTypes($schema['type'], ['string']) => $schema['minLength'] ?? null,
+                        $matchesTypes(($schema['type'] ?? null), ['string']) => $schema['minLength'] ?? null,
                         default => null,
                     }"
-                    :maxlength="match ($schema['type']) {
-                        $matchesTypes($schema['type'], ['string']) => $schema['maxLength'] ?? null,
+                    :maxlength="match (($schema['type'] ?? null)) {
+                        $matchesTypes(($schema['type'] ?? null), ['string']) => $schema['maxLength'] ?? null,
                         default => null,
                     }"
-                    :min="match ($schema['type']) {
-                        $matchesTypes($schema['type'], ['integer', 'number', 'float']) => $schema['minimum'] ?? null,
+                    :min="match (($schema['type'] ?? null)) {
+                        $matchesTypes(($schema['type'] ?? null), ['integer', 'number', 'float']) => $schema['minimum'] ?? null,
                         default => null,
                     }"
-                    :max="match ($schema['type']) {
-                        $matchesTypes($schema['type'], ['integer', 'number', 'float']) => $schema['maximum'] ?? null,
+                    :max="match (($schema['type'] ?? null)) {
+                        $matchesTypes(($schema['type'] ?? null), ['integer', 'number', 'float']) => $schema['maximum'] ?? null,
                         default => null,
                     }"
-                    :step="match ($schema['type']) {
-                        $matchesTypes($schema['type'], ['integer']) => $schema['multipleOf'] ?? 1,
-                        $matchesTypes($schema['type'], ['number', 'float']) => $schema['multipleOf'] ?? null,
+                    :step="match (($schema['type'] ?? null)) {
+                        $matchesTypes(($schema['type'] ?? null), ['integer']) => $schema['multipleOf'] ?? 1,
+                        $matchesTypes(($schema['type'] ?? null), ['number', 'float']) => $schema['multipleOf'] ?? null,
                         default => null,
                     }"
                     :placeholder="$name"
                 />
             </x-filament::input.wrapper>
         @endif
-    @elseif ($matchesTypes($schema['type'], ['boolean']))
+    @elseif ($matchesTypes(($schema['type'] ?? null), ['boolean']))
         <x-filament-forms::field-wrapper.label :$required>
             <div class="inline-flex items-center gap-2">
                 <x-filament::input.checkbox
