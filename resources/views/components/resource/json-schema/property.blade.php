@@ -12,7 +12,7 @@
 ])
 
 <?php
-  $matchesTypes = function (array|string $type, array $typesToMatch) {
+  $matchesTypes = function (array|string|null $type, array $typesToMatch) {
       if (is_array($type)) {
           $type = $type[0];
       }
@@ -39,6 +39,12 @@
 
       return null;
   };
+
+  if (($schema['type'] ?? null) === null) {
+      \Illuminate\Support\Facades\Log::error('Property type is null', [
+          'schema' => $schema,
+      ]);
+  }
 ?>
 
 <div {{ $attributes }}>
