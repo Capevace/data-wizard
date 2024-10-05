@@ -68,12 +68,12 @@
             @endif
         </div>
     @elseif ($matchesTypes($schema['type'], ['object']))
-        @if (count($schema['properties']) === 1 && ($property = array_keys($schema['properties'])[0]))
+        @if (count($schema['properties'] ?? []) === 1 && ($property = array_keys($schema['properties'] ?? [])[0]))
             <x-resource.json-schema.property
                 :label="$property"
                 :name="$name . '_' . $property"
                 :state-path="$statePath . '.' . $property"
-                :schema="$schema['properties'][$property]"
+                :schema="$schema['properties'] ?? [][$property]"
                 :required="collect($schema['required'])->contains($property)"
                 :disabled="$disabled"
             />
@@ -89,7 +89,7 @@
                     </p>
                 @endif
 
-                @foreach($schema['properties'] as $property => $propertySchema)
+                @foreach($schema['properties'] ?? [] as $property => $propertySchema)
                     <div
                         wire:key="{{ $name . '_' . $property }}"
                         x-data="{ '{{ $name . '_' . $property }}': '{{ $statePath }}.{{ $property }}' }"
