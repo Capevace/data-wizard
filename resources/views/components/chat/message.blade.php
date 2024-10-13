@@ -9,7 +9,7 @@
 
 @switch ($message::class)
     @case(\Mateffy\Magic\LLM\Message\TextMessage::class)
-        <x-chat.bubble @class(['flex-1 mb-5', 'max-w-sm'])>
+        <x-chat.bubble @class(['mb-5 max-w-lg w-fit'])>
             <p class="whitespace-pre-wrap w-full bg-transparent text-inherit font-sans">{{ trim($message->text()) }}</p>
         </x-chat.bubble>
         @break
@@ -39,7 +39,7 @@
         </x-chat.bubble>
         @break
     @case(\Mateffy\Magic\LLM\Message\MultimodalMessage::class)
-        <x-chat.bubble class="flex-1 mb-5">
+        <x-chat.bubble class="mb-5 max-w-lg w-fit">
             @foreach ($message->content as $content)
                 @if ($content instanceof \Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image)
                     <img

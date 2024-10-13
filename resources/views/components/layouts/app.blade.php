@@ -15,11 +15,19 @@
 
 
     @php
+//        \Filament\Support\Facades\FilamentColor::register([
+//            'primary' => \Filament\Support\Colors\Color::Neutral,
+//            'warning' => \Filament\Support\Colors\Color::Yellow,
+//            'success' => \Filament\Support\Colors\Color::Emerald,
+//            'gray' => \Filament\Support\Colors\Color::Neutral,
+//        ]);
+
         \Filament\Support\Facades\FilamentColor::register([
-            'primary' => \Filament\Support\Colors\Color::Neutral,
+            'primary' => \Filament\Support\Colors\Color::Blue,
             'warning' => \Filament\Support\Colors\Color::Yellow,
-            'success' => \Filament\Support\Colors\Color::Emerald,
-            'gray' => \Filament\Support\Colors\Color::Neutral,
+            'success' => \Filament\Support\Colors\Color::Teal,
+            'danger' => \Filament\Support\Colors\Color::Rose,
+            'gray' => \Filament\Support\Colors\Color::Slate,
         ]);
     @endphp
 

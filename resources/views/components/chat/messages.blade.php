@@ -9,10 +9,18 @@
 ])
 
 <div
-    {{ $attributes }}
+    {{ $attributes->class('') }}
 >
     @foreach ($messages as $message)
-        <div class="flex items-start" wire:key="{{ md5($message->text()) }}">
+        <div
+            @class([
+                'flex',
+                'justify-start' => $message->role === \Mateffy\Magic\Prompt\Role::Assistant,
+                'justify-end' => $message->role === \Mateffy\Magic\Prompt\Role::User,
+            ])
+
+            wire:key="{{ md5($message->text()) }}"
+        >
             {!! $renderMessage($message) !!}
         </div>
     @endforeach
