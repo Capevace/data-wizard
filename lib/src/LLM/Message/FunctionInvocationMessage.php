@@ -2,6 +2,7 @@
 
 namespace Mateffy\Magic\LLM\Message;
 
+use Illuminate\Support\Str;
 use Mateffy\Magic\Prompt\Role;
 use Mateffy\Magic\Utils\PartialJson;
 
@@ -53,6 +54,22 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
             arguments: $data ?? $this->call->arguments,
             id: $this->call->id,
         );
+
+        return $this;
+    }
+
+    public function appendFull(string $chunk): static
+    {
+        $this->partial .= $chunk;
+
+        $data = PartialJson::parse($this->partial);
+        $this->call = ($data['name'] ?? $this->call?->name)
+            ? new FunctionCall(
+                name: $data['name'] ?? $this->call?->name,
+                arguments: $data['parameters'] ?? $this->call?->arguments ?? [],
+                id: $this->call?->id ?? Str::uuid()->toString(),
+            )
+            : null;
 
         return $this;
     }

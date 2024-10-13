@@ -32,6 +32,7 @@ trait InteractsWithChat
     public string $conversationId;
 
 
+    #[Session]
     public array $chat_messages = [];
 
     protected array $temporary_messages = [];
@@ -159,6 +160,26 @@ trait InteractsWithChat
                 $messageContent[] = $artifact->getBase64Image($content);
             }
         }
+
+        $message = MultimodalMessage::user($messageContent);
+        $this->chat_messages[] = $message;
+        $chat->addMessage($message);
+
+        // Todo: Instead of this, we should now start a job and open a websocket connection to receive updates for streaming
+        $this->js('
+            $wire.$dispatch("startPolling");
+            setTimeout(() => $wire.start(), 1000);
+        ');
+    }
+
+    public function sendForm(array $data): void
+    {
+        $chat = $this->magic;
+
+        /** @var array<MultimodalMessage\ContentInterface> $messageContent */
+        $messageContent = [
+            Text::make("Form submitted with data: " . json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)),
+        ];
 
         $message = MultimodalMessage::user($messageContent);
         $this->chat_messages[] = $message;

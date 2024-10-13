@@ -6,8 +6,10 @@
     "license": "AGPL-3.0-only",
     "require": {
         "php": "^8.2",
+        "ext-fileinfo": "*",
         "ext-zip": "*",
         "akaunting/laravel-money": "^5.2",
+        "ardagnsrn/ollama-php": "^1.0",
         "blade-ui-kit/blade-heroicons": "^2.3",
         "blade-ui-kit/blade-icons": "^1.6",
         "codewithkyrian/transformers": "^0.5.3",
@@ -34,8 +36,7 @@
         "spatie/pdf-to-image": "^3.0",
         "swaggest/json-schema": "^0.12.42",
         "tempest/highlight": "^2.8",
-        "wire-elements/wire-extender": "^0.0.8",
-        "ext-fileinfo": "*"
+        "wire-elements/wire-extender": "^0.0.8"
     },
     "require-dev": {
         "buggregator/trap": "^1.10",

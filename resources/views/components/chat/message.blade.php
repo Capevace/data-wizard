@@ -9,7 +9,7 @@
 
 @switch ($message::class)
     @case(\Mateffy\Magic\LLM\Message\TextMessage::class)
-        <x-chat.bubble class="flex-1 mb-5">
+        <x-chat.bubble @class(['flex-1 mb-5', 'max-w-sm'])>
             <p class="whitespace-pre-wrap w-full bg-transparent text-inherit font-sans">{{ trim($message->text()) }}</p>
         </x-chat.bubble>
         @break

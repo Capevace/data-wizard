@@ -123,7 +123,7 @@ class ClaudeResponseDecoder implements Decoder
 
                     if ($data['content_block']['type'] === 'tool_use') {
                         if ($message) {
-                            $messages[] = $message;
+                            $this->messages[] = $message;
 
                             if ($this->onMessage && !empty($message->text())) {
                                 ($this->onMessage)($message);

@@ -10,6 +10,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Illuminate\Support\Facades\Blade;
+use JetBrains\PhpStorm\NoReturn;
 use Livewire\Component;
 use Mateffy\Magic\LLM\LLM;
 use Mateffy\Magic\LLM\Message\Message;
@@ -55,12 +56,29 @@ class TestChat extends Component implements HasForms, HasChat
     protected function getSystemPrompt(): string
     {
         return self::_getSystemPrompt() . "\n\n" .
-            'You can output information in a table using the outputTable tool. Do this for example for search results.';
+            'You can output information in a table using the outputTable tool. Do this for example for search results.' .
+            "\n\n" .
+            'You can also output a form using the outputForm tool. You can do this to show the user a form to fill in, which will be submitted to you when the form is submitted, allowing you to run tools on the data.';
     }
 
     protected function getTools(): array
     {
         return [
+            'ande' => function (int $how_much_do_i_love_her) {
+                return Magic::end([
+                    'how_much_do_i_love_her' => $how_much_do_i_love_her,
+                ]);
+            },
+            'sendMail' => fn (string $to, string $subject, string $body) => Magic::end([
+                'to' => $to,
+                'subject' => $subject,
+                'body' => $body,
+            ]),
+            'createEstate' => fn (string $name, string $address, bool $runLocationAnalysis) => Magic::end([
+                'name' => $name,
+                'address' => $address,
+                'runLocationAnalysis' => $runLocationAnalysis,
+            ]),
             'lookupLocation' => fn (string $query) => [
                 'latitude' => 52.5167,
                 'longitude' => 13.3833,
@@ -68,6 +86,13 @@ class TestChat extends Component implements HasForms, HasChat
             'outputTable' => fn (array $headerColumns, array $rows) => Magic::end([
                 'headerColumns' => $headerColumns,
                 'rows' => $rows,
+            ]),
+            'outputForm' => fn (array $jsonSchemaObject, ?array $initialData = null) => Magic::end([
+                'schema' => $jsonSchemaObject,
+                'initialData' => $initialData,
+                'actions' => [
+                    'submit' => 'Submit',
+                ]
             ]),
             'queryAvailableRentables' => function (array|string $location, array $areas) {
                 sleep(2);
@@ -149,6 +174,23 @@ class TestChat extends Component implements HasForms, HasChat
             return null;
         } else if ($message instanceof \Mateffy\Magic\LLM\Message\FunctionInvocationMessage && $message->call->name === 'outputTable') {
             return null;
+        }
+
+        if ($message instanceof \Mateffy\Magic\LLM\Message\FunctionOutputMessage && $message->call->name === 'outputForm') {
+            return Blade::render(<<<'BLADE'
+                <form class="w-full py-1" x-data="{ data: {} }" wire:submit.prevent="sendForm(data)">
+                    <div class="grid grid-cols-1 gap-2" >
+                        <x-resource.json-schema :schema="$schema" state-path="data" />
+                    </div>
+
+                    <x-filament::button
+                        type="submit"
+                        color="primary"
+                    >
+                        Submit
+                    </x-filament::button>
+                </form>
+            BLADE, ['schema' => $message->output['schema'][0]]);
         }
 
         if ($message instanceof \Mateffy\Magic\LLM\Message\FunctionOutputMessage && $message->call->name === 'outputTable') {

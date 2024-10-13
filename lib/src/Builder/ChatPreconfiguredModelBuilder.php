@@ -13,6 +13,7 @@ use Mateffy\Magic\Builder\Concerns\HasTools;
 use Mateffy\Magic\Functions\InvokableFunction;
 use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
 use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
+use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Message\MultimodalMessage;
 use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\MessageCollection;
@@ -97,12 +98,12 @@ class ChatPreconfiguredModelBuilder
     {
         $prompt = $this->build();
 
-        $messages = MessageCollection::make($this->model->stream(
+        $messages = $this->model->stream(
             prompt: $prompt,
             onMessageProgress: $this->onMessageProgress,
             onMessage: $this->onMessage,
             onTokenStats: $this->onTokenStats
-        ));
+        );
 
         $continue = true;
 
@@ -142,15 +143,18 @@ class ChatPreconfiguredModelBuilder
                     }
 
                     if ($continue && !$outputMessage->endConversation) {
-                        $messages->push(
-                            ...$this
-                                ->addMessage($message)
-                                ->addMessage($outputMessage)
-                                ->stream()
-                        );
+                        $this
+                            ->addMessage($message)
+                            ->addMessage($outputMessage);
+                    } else if ($outputMessage->endConversation) {
+                        $continue = false;
                     }
                 }
             }
+        }
+
+        if ($continue && $messages->filter(fn (Message $message) => $message instanceof FunctionOutputMessage)->isNotEmpty()) {
+            return $this->stream();
         }
 
         return $messages;

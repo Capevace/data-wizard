@@ -3,40 +3,20 @@
 A PHP app serving `@llm-magic/sdk` functionality via HTTP.
 Can be used via GUI or REST / Webhook API.
 
-- extract-data.ai
-- extract-data.dev
-- structured-data.ai
-- datamagician.ai
-- data-magician.ai
-- magicdata.ai
-- magic-data.ai
-- magic-data.dev
-- semantic-wizard.ai
-- json-wizard.ai
-- json-wizard.dev
-- json-wizard.org
-- jsonwizard.ai
-- jsonwizard.dev
-- jsonwizard.org
-- JSONWizard.dev
-- JSON-Wizard.dev
-- smart-json.ai
-- smartjson.ai
-- smartjson.dev
-- superjson.ai
-- superjson.dev
-- superjson.org
-- magic-json.ai
-- magic-json.dev
-- magic-json.org
-- magicjson.ai
-- magicjson.dev
-- magicjson.org
-- MagicJSON.ai
-- MagicJSON.dev
-- MagicJSON.org
-- extract-json.com
-- extract-json.ai
+### Premium Addons
+- Fully-fledged Chat UI
+- Generative UI Component Library
+  - Confirmation dialogs
+  - Forms (via JSON Schema)
+  - Tables
+  - File uploader
+- "Flying"/"Hovering" Mini-chat
+- Memory
+- 
+- Filament Integrations
+- Bricks
+- Data Wizard Input
+- 
 
 ### Copyright and License
 

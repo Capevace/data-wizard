@@ -1,5 +1,5 @@
 {
-    "name": "capevace/magic-import",
+    "name": "mateffy/llm-magic",
     "description": "A package to magically import complex data structures using LLMs and AI methods.",
     "type": "library",
     "license": "AGPL-3.0-only",

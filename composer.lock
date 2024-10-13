@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4cbff60cec04260cb7c2de1a7978ed9c",
+    "content-hash": "517dc7522ff8651d7b4a09bd98f215a8",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -690,6 +690,58 @@
                 "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.2.23"
             },
             "time": "2024-07-12T10:52:26+00:00"
+        },
+        {
+            "name": "ardagnsrn/ollama-php",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ArdaGnsrn/ollama-php.git",
+                "reference": "6aca7d826298092f7bd3edce204dc02380232400"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ArdaGnsrn/ollama-php/zipball/6aca7d826298092f7bd3edce204dc02380232400",
+                "reference": "6aca7d826298092f7bd3edce204dc02380232400",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.9",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "pestphp/pest": "^2.20",
+                "spatie/ray": "^1.28"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ArdaGnsrn\\Ollama\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arda GUNSUREN",
+                    "email": "ardagunsuren@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is my package ollama-php",
+            "homepage": "https://github.com/ardagnsrn/ollama-php",
+            "keywords": [
+                "ArdaGnsrn",
+                "ollama-php"
+            ],
+            "support": {
+                "issues": "https://github.com/ArdaGnsrn/ollama-php/issues",
+                "source": "https://github.com/ArdaGnsrn/ollama-php/tree/1.0.0"
+            },
+            "time": "2024-08-14T14:29:15+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -15225,6 +15277,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2",
+        "ext-fileinfo": "*",
         "ext-zip": "*"
     },
     "platform-dev": [],

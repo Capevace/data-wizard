@@ -83,7 +83,7 @@ trait HasTools
 
         return new MagicFunction(
             name: $name,
-            schema: $schema,
+            schema: $schema ?? ['type' => 'object'],
             callback: $tool,
         );
     }
@@ -100,11 +100,15 @@ trait HasTools
         return null;
     }
 
-    protected function getFunctionParameters(ReflectionFunctionAbstract $reflection): array
+    protected function getFunctionParameters(ReflectionFunctionAbstract $reflection): ?array
     {
         $parameters = [];
         foreach ($reflection->getParameters() as $param) {
             $parameters[$param->getName()] = $this->getParameterSchema($param);
+        }
+
+        if (count($parameters) === 0) {
+            return null;
         }
 
         return ['type' => 'object', 'properties' => $parameters];

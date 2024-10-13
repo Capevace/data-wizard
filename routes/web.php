@@ -49,6 +49,32 @@ Route::middleware(['auth'])
             return view('livewire.iframe-test');
         })
             ->name('iframe-test');
+
+        Route::get('/test-chat', \App\Livewire\Components\TestChat::class);
+
+        Route::get('/poll/{chat}/{conversationId}', function (string $chat, string $conversationId) {
+            if (!class_exists($chat) || !class_implements($chat, HasChat::class)) {
+                abort(404);
+            }
+
+            /** @var class-string<HasChat> $chat */
+
+            $messages = StreamableMessage::getStreamedMessages($conversationId);
+
+            return response()->json([
+                'messages' => $messages
+                    ->map(fn (Message $message, int $index) => $chat::renderChatMessage(
+                        message:$message,
+                        streaming: true,
+                        isCurrent: $index === count($messages) - 1,
+                    ))
+                    ->values()
+                    ->all(),
+            ]);
+        })
+            ->middleware('signed')
+            ->name('chat.poll');
+
     });
 
 Route::get('/embed/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
@@ -57,8 +83,6 @@ Route::get('/embed/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::c
 
 Route::get('/full-page/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
     ->name('full-page-extractor');
-
-Route::get('/test-chat', \App\Livewire\Components\TestChat::class);
 
 Route::get('/bucket/{bucketId}/files/{name}/image/{number}', function (string $bucketId, string $name, int $number) {
     $bucket = ExtractionBucket::findOrFail($bucketId);
@@ -81,25 +105,3 @@ Route::get('/bucket/{bucketId}/files/{name}/image/{number}', function (string $b
 })
     ->name('bucket.image');
 
-Route::get('/poll/{chat}/{conversationId}', function (string $chat, string $conversationId) {
-    if (!class_exists($chat) || !class_implements($chat, HasChat::class)) {
-        abort(404);
-    }
-
-    /** @var class-string<HasChat> $chat */
-
-    $messages = StreamableMessage::getStreamedMessages($conversationId);
-
-    return response()->json([
-        'messages' => $messages
-            ->map(fn (Message $message, int $index) => $chat::renderChatMessage(
-                message:$message,
-                streaming: true,
-                isCurrent: $index === count($messages) - 1,
-            ))
-            ->values()
-            ->all(),
-    ]);
-})
-    ->middleware('signed')
-    ->name('chat.poll');

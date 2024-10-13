@@ -60,6 +60,14 @@ class MultimodalMessage implements Message
         );
     }
 
+    public static function assistant(array $content): static
+    {
+        return new self(
+            role: Role::Assistant,
+            content: $content,
+        );
+    }
+
     /**
      * @param array<ContentInterface> $content
      */
