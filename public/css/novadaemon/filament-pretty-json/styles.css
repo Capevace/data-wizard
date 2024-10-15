@@ -27,3 +27,26 @@ pre.prettyjson {
 :is(.dark) pre.prettyjson span.json-value {
     color: deepskyblue !important;
 }
+
+.copy-button {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    color: rgb(156 163 175);
+    border: none;
+    outline: none;
+}
+
+.copy-button:hover {
+    color: rgb(75 85 99);
+}
+
+.copy-button:active, .copy-button:focus {
+    border: none;
+    outline: none;
+}

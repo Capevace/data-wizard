@@ -218,9 +218,10 @@ trait InteractsWithChat
     {
         // Todo: Instead of this, we should now start a job and open a websocket connection to receive updates for streaming
         $this->js('
-            $wire.$dispatch("startPolling");
             setTimeout(() => $wire.start(), 1000);
         ');
+
+        $this->dispatch('startPolling')->to(StreamableMessage::class);
     }
 
     public function delayHandle(): void

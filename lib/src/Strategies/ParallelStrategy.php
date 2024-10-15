@@ -155,7 +155,7 @@ class ParallelStrategy
 
         $this->totalTokenStats = $this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats;
 
-        return $messages->firstData();
+        return $messages->lastData();
     }
 
     protected function merge(array $datas): ?array
@@ -214,6 +214,6 @@ class ParallelStrategy
 
         $this->totalTokenStats = $this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats;
 
-        return $messages->firstData();
+        return $messages->lastFunctionOutput()?->call?->arguments ?? $messages->lastData();
     }
 }

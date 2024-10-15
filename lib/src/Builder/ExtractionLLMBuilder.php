@@ -15,6 +15,7 @@ use Mateffy\Magic\Builder\Concerns\HasSystemPrompt;
 use Mateffy\Magic\Builder\Concerns\HasTools;
 use Mateffy\Magic\Config\Extractor;
 use Mateffy\Magic\Config\ExtractorFileType;
+use Mateffy\Magic\LLM\MessageCollection;
 use Mateffy\Magic\Strategies\Strategy;
 
 class ExtractionLLMBuilder
@@ -52,7 +53,7 @@ class ExtractionLLMBuilder
 
         $result = $strategy->run($this->artifacts);
 
-        return collect($result);
+        return MessageCollection::make($result);
     }
 
     public function send(): Collection

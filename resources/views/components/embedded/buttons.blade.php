@@ -26,6 +26,7 @@
             icon-position="before"
             class="flex-1 {{ $labels->secondaryButton || $secondaryButton ? 'col-span-1' : '' }}"
             :disabled="$labels->backButton->disabledWhileRunning && $this->run?->status->shouldPoll()"
+            data-pan="embedded-extractor-back-{{ $labels->backButton->action }}"
         >
             {{ $labels->backButton->label }}
         </x-filament::button>
@@ -41,6 +42,7 @@
             icon-position="before"
             class="flex-1"
             :disabled="$labels->secondaryButton->disabledWhileRunning && $this->run?->status->shouldPoll()"
+            data-pan="embedded-extractor-secondary-{{ $labels->secondaryButton->action }}"
         >
             {{ $labels->secondaryButton->label }}
         </x-filament::button>
@@ -60,6 +62,7 @@
             icon-position="after"
             class="flex-1 col-span-1"
             :disabled="$labels->nextButton->disabledWhileRunning && $this->run?->status->shouldPoll()"
+            data-pan="embedded-extractor-next-{{ $labels->nextButton->action }}"
         >
             {{ $labels->nextButton->label }}
         </x-filament::button>

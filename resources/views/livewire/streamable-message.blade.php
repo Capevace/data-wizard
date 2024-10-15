@@ -2,7 +2,7 @@
     @class(['hidden' => !$poll])
     x-data="{
         interval: null,
-        messages: null,
+        messages: [],
         pollUrl: null,
 
         init() {
@@ -16,7 +16,7 @@
                 } else if (!poll && this.interval !== null) {
                     clearInterval(this.interval);
                     this.interval = null;
-                    this.messages = null;
+                    this.messages = [];
                     this.pollUrl = null;
                 }
             });

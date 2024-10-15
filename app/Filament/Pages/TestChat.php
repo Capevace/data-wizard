@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Components;
+namespace App\Filament\Pages;
 
 use App\Livewire\Components\Concerns\HasChat;
 use App\Livewire\Components\Concerns\InteractsWithChat;
@@ -9,21 +9,14 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Blade;
-use Livewire\Component;
-use Mateffy\Magic\Builder\ChatPreconfiguredModelBuilder;
-use Mateffy\Magic\Functions\InvokableFunction;
+use Filament\Pages\Page;
+use Illuminate\Contracts\View\View;
 use Mateffy\Magic\LLM\LLM;
-use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
 use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
-use Mateffy\Magic\LLM\Message\Message;
-use Mateffy\Magic\LLM\MessageCollection;
 use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\Magic;
-use Throwable;
 
-class TestChat extends Component implements HasForms, HasChat
+class TestChat extends Page implements HasForms, HasChat
 {
     use InteractsWithForms;
     use InteractsWithChat {
@@ -31,12 +24,21 @@ class TestChat extends Component implements HasForms, HasChat
         InteractsWithChat::getSystemPrompt as _getSystemPrompt;
     }
 
+    protected static string $view = 'filament.pages.test-chat';
+
+    protected static ?string $slug = 'test-chat';
+
     public string $text = 'find office spaces near brandenburger tor please';
 
     public array $estates = [
         ['name' => 'Office building ABC', 'address' => '123 Main St, New York, NY 10001'],
         ['name' => 'Elsenstrasse', 'address' => 'Elsenstrasse 67, Berlin']
     ];
+
+    public function getHeader(): ?View
+    {
+        return view('components.empty');
+    }
 
     public function form(Form $form): Form
     {
@@ -398,9 +400,4 @@ class TestChat extends Component implements HasForms, HasChat
 //
 //        return self::_renderChatMessage($message, $streaming, $isCurrent);
 //    }
-
-    public function render()
-    {
-        return view('livewire.test-chat');
-    }
 }

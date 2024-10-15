@@ -54,7 +54,7 @@ Route::middleware(['auth'])
         })
             ->name('iframe-test');
 
-        Route::get('/test-chat', \App\Livewire\Components\TestChat::class);
+//        Route::get('/test-chat', \App\Livewire\Components\TestChat::class);
 
         Route::get('/poll/{chat}/{conversationId}', function (string $chat, string $conversationId) {
             if (!class_exists($chat) || !class_implements($chat, HasChat::class)) {

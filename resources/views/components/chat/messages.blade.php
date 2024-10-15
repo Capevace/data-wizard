@@ -26,6 +26,6 @@
     <livewire:streamable-message
         :conversation-id="$this->conversationId"
         :chat="$chat"
-        key="streamable-message"
+        key="streamable-message-{{ $this->conversationId }}"
     />
 </div>
