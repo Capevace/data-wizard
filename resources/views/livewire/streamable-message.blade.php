@@ -57,7 +57,7 @@
         <div
             x-transition:enter="animate-fade-down animate-alternate animate-duration-300 duration-300 "
             x-transition:leave="animate-fade-down animate-alternate-reverse animate-duration-200 duration-200 "
-            x-html="message" x-bind:wire:key="'message-' + index"
+            x-html="message"
         ></div>
     </template>
 </div>

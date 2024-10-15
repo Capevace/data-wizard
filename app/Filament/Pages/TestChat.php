@@ -11,10 +11,13 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Computed;
 use Mateffy\Magic\LLM\LLM;
 use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\Magic;
+use Mateffy\Magic\Prompt\Reflection\Description;
+use Mateffy\Magic\Prompt\Reflection\Min;
 
 class TestChat extends Page implements HasForms, HasChat
 {
@@ -92,6 +95,7 @@ class TestChat extends Page implements HasForms, HasChat
                 useOutput: true,
             ),
             'lookupLocation' => ToolWidget::map(useOutput: true),
+            'outputMap' => ToolWidget::map(useOutput: true),
             'outputTable' => ToolWidget::table(
                 description: 'This is a table',
                 icon: 'heroicon-o-table-cells',
@@ -186,6 +190,22 @@ class TestChat extends Page implements HasForms, HasChat
                     ],
                 ];
             },
+
+//                #[Description()]
+//                #[Min('markers.*.coordinates', 2)]
+//                #[Max('markers.*.coordinates', 2)]
+//                #[Type('markers', ['type' => 'array', 'items' => ['type' => 'object', 'properties' => ['coordinates' => ['type' => 'array', 'items' => ['type' => 'number']], 'label' => ['type' => 'string']]]])]
+
+            /**
+             * @type $markers {"type": "array", "items": {"type": "object", "properties": {"coordinates": {"type": "array", "items": {"type": "number"}}, "label": {"type": "string"}}}}
+             * @description $js You can write some custom Javascript code, that can directly manipulate the map, which is rendered using Leaflet. You have the `L` and `map` global variables available. `L` is the imported Leaflet library, and `map` is the Leaflet map instance.
+             */
+            'outputMap' => fn (float $latitude, float $longitude, int $zoom, array $markers, ?string $js) => [
+                'center' => [$latitude, $longitude],
+                'zoom' => $zoom,
+                'markers' => $markers,
+                'js' => $js
+            ],
 
             'outputForm' => fn (array $jsonSchemaObject, ?array $initialData = null) => Magic::end([
                 'schema' => $jsonSchemaObject,

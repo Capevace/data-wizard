@@ -3,6 +3,7 @@
 namespace App\Livewire\Components\Concerns;
 
 use Closure;
+use Illuminate\Support\Js;
 use Mateffy\Magic\Functions\InvokableFunction;
 use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
 use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
@@ -149,6 +150,7 @@ abstract class ToolWidget
         Closure|string|null $chevronIcon = null,
         Closure|string|null $color = null,
         Closure|ToolWidget|null $loading = null,
+        Closure|Js|string|null $js = null,
         bool $useOutput = false,
     ): MapToolWidget
     {
@@ -188,6 +190,14 @@ abstract class ToolWidget
             $loading = fn() => $loading;
         }
 
+        if (is_string($js)) {
+            $js = fn() => new Js($js);
+        }
+
+        if ($js instanceof Js) {
+            $js = fn() => $js;
+        }
+
         return app(MapToolWidget::class, [
             'center' => $center,
             'zoom' => $zoom,
@@ -199,6 +209,7 @@ abstract class ToolWidget
             'color' => $color,
             'useOutput' => $useOutput,
             'loading' => $loading,
+            'js' => $js,
         ]);
     }
 

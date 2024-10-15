@@ -25,6 +25,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.5",
+        "mateffy/llm-magic": "dev-main",
+        "mateffy/llm-magic-chat": "dev-main",
         "novadaemon/filament-pretty-json": "^2.2",
         "nyholm/psr7": "^1.8",
         "openai-php/laravel": "^0.8.1",
@@ -57,8 +59,7 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/",
-            "Mateffy\\Magic\\": "lib/src/"
+            "Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
@@ -109,6 +110,20 @@
         {
             "type": "path",
             "url": "../magic-import"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/llm-magic"
+        },
+        {
+            "type": "path",
+            "url": "packages/llm-magic-chat"
+        },
+        {
+            "type": "path",
+            "url": "packages/llm-magic-memory"
         }
     ]
 }

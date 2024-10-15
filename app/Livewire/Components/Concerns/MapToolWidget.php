@@ -22,6 +22,7 @@ class MapToolWidget extends ViewToolWidget
     protected Closure $zoom;
     protected Closure $markers;
     protected Closure $loading;
+    protected Closure $js;
 
     public function __construct(
         ?Closure $label = null,
@@ -33,6 +34,7 @@ class MapToolWidget extends ViewToolWidget
         ?Closure $zoom = null,
         ?Closure $markers = null,
         ?Closure $loading = null,
+        ?Closure $js = null,
         protected bool $useOutput = false,
     )
     {
@@ -48,7 +50,8 @@ class MapToolWidget extends ViewToolWidget
         $this->center = $center ?? $get('center', null);
         $this->zoom = $zoom ?? $get('zoom', null);
         $this->markers = $markers ?? $get('markers', []);
-        $this->loading = $loading ?? fn () => ToolWidget::loading(loading: 'Searching...');
+        $this->loading = $loading ?? fn () => ToolWidget::loading(loading: 'Preparing map...');
+        $this->js = $js ?? $get('js', null);
 
         parent::__construct($this->view);
     }
@@ -66,7 +69,9 @@ class MapToolWidget extends ViewToolWidget
             ->with('color', $make($this->color))
             ->with('center', $make($this->center))
             ->with('zoom', $make($this->zoom))
-            ->with('markers', $make($this->markers));
+            ->with('markers', $make($this->markers))
+            ->with('loading', $make($this->loading))
+            ->with('js', $make($this->js));
     }
 
     public function render(InvokableFunction $tool, FunctionInvocationMessage $invocation, ?FunctionOutputMessage $output = null): string

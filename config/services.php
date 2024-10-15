@@ -37,5 +37,9 @@ return [
 
     'forge' => [
         'token' => env('FORGE_TOKEN'),
+    ],
+
+    'mapbox' => [
+        'access_token' => env('MAPBOX_ACCESS_TOKEN'),
     ]
 ];

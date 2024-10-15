@@ -91,12 +91,21 @@
 
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
         <script type="text/javascript">
-            function DynamicMap({ center, markers, zoom }) {
+            function DynamicMap({ center, markers, zoom, js }) {
                 return {
+                    map: null,
                     center,
                     markers,
+                    js,
                     init() {
+                        this.setupLeaflet();
+                        // this.setupMapbox();
+                    },
+
+                    setupLeaflet() {
                         this.map = L.map(this.$refs.map).setView(center, zoom);
 
                         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -108,6 +117,51 @@
                                 .addTo(this.map)
                                 .bindPopup(marker.label)
                                 .openPopup();
+                        }
+
+                        this.eval(this.map);
+                    },
+
+                    setupMapbox() {
+                        const toMapboxCoords = ([lat, lng]) => [lng, lat];
+
+                        console.warn('Setting up Mapbox', toMapboxCoords(Object.values(this.center)));
+
+                        mapboxgl.accessToken = '{{ config('services.mapbox.access_token') }}';
+                        this.map = new mapboxgl.Map({
+                            container: this.$refs.map,
+                            style: 'mapbox://styles/mapbox/streets-v9',
+                            projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
+                            center: toMapboxCoords(Object.values(this.center)),
+                            // zoom: this.zoom,
+                        });
+
+                        this.map.addControl(new mapboxgl.NavigationControl());
+
+                        // Add markers
+                        for (const marker of this.markers) {
+                            const coordinates = toMapboxCoords(Object.values(marker.coordinates));
+
+                            console.warn('Adding marker', coordinates);
+
+                            new mapboxgl.Marker(coordinates)
+                                .setPopup(new mapboxgl.Popup({ offset: 25 }) // Adds a little offset
+                                    .setHTML(marker.label))
+                                .addTo(this.map);
+                        }
+
+                        // this.eval(this.map);
+                    },
+
+                    // Run the JS code in `js` and inject L and map into the global scope
+                    eval(map) {
+                        if (this.js) {
+                            const L = window.L;
+                            const mapboxgl = window.mapboxgl;
+
+                            console.warn('Running', this.js, {L, mapboxgl, map});
+
+                            eval(this.js);
                         }
                     },
 
