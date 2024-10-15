@@ -28,6 +28,11 @@ trait HasTools
     public ?Closure $onToolError = null;
 
     /**
+     * @var Closure(FunctionCall): void|null $shouldInterrupt
+     */
+    public ?Closure $shouldInterrupt = null;
+
+    /**
      * @throws ReflectionException
      */
     public function tools(...$tools): static
@@ -77,41 +82,52 @@ trait HasTools
 
         $schema = $this->getFunctionParameters($reflection);
 
-        if ($description = $this->getFunctionDescription($reflection)) {
+        if ($description = $this->getDocblockDescription($reflection)) {
             $schema['description'] = $description;
         }
 
         return new MagicFunction(
             name: $name,
-            schema: $schema ?? ['type' => 'object'],
+            schema: $schema,
             callback: $tool,
         );
     }
 
-    protected function getFunctionDescription(ReflectionFunction $reflection): ?string
-    {
-        $docComment = $reflection->getDocComment();
-        if ($docComment) {
-            preg_match('/@description\s+(.+)/i', $docComment, $matches);
-
-            return $matches[1] ?? null;
-        }
-
-        return null;
-    }
-
     protected function getFunctionParameters(ReflectionFunctionAbstract $reflection): ?array
     {
+        $schema = ['type' => 'object'];
+        $required = [];
         $parameters = [];
+
         foreach ($reflection->getParameters() as $param) {
-            $parameters[$param->getName()] = $this->getParameterSchema($param);
+            if (!$param->isOptional()) {
+                $required[] = $param->getName();
+            }
+
+            if ($customType = $this->getBetterDocblockType($reflection, $param->getName())) {
+                if ($description = $this->getDocblockDescription($reflection, name: $param->getName())) {
+                    $customType['description'] = $description;
+                }
+
+                $parameters[$param->getName()] = $customType;
+            } else {
+                $parameters[$param->getName()] = $this->getParameterSchema($param);
+            }
         }
 
-        if (count($parameters) === 0) {
-            return null;
+        if ($description = $this->getDocblockDescription($reflection)) {
+            $schema['description'] = $description;
         }
 
-        return ['type' => 'object', 'properties' => $parameters];
+        if (count($parameters) > 0) {
+            $schema['properties'] = $parameters;
+        }
+
+        if (count($required) > 0) {
+            $schema['required'] = $required;
+        }
+
+        return $schema;
     }
 
     private function getParameterSchema(ReflectionParameter $param): array
@@ -137,18 +153,6 @@ trait HasTools
         }
     }
 
-    private function handleUnionType(ReflectionUnionType $type): array
-    {
-        $types = [];
-        foreach ($type->getTypes() as $t) {
-            if ($t instanceof ReflectionNamedType) {
-                $types[] = $this->handleNamedType($t);
-            }
-        }
-
-        return ['anyOf' => $types];
-    }
-
     private function getTypeSchema(string $typeName): array
     {
         $schema = ['type' => $this->mapPhpTypeToJsonSchemaType($typeName)];
@@ -171,6 +175,61 @@ trait HasTools
             'object', 'stdClass' => 'object',
             default => 'mixed',
         };
+    }
+
+    private function handleUnionType(ReflectionUnionType $type): array
+    {
+        $types = [];
+        foreach ($type->getTypes() as $t) {
+            if ($t instanceof ReflectionNamedType) {
+                $types[] = $this->handleNamedType($t);
+            }
+        }
+
+        return ['anyOf' => $types];
+    }
+
+    protected function getDocblockDescription(ReflectionFunctionAbstract|ReflectionFunction $reflection, ?string $name = null): ?string
+    {
+        $docComment = $reflection->getDocComment();
+
+        if ($docComment) {
+            if ($name) {
+                preg_match("/@description\s+\\\${$name}\s+(.+)\$/mi", $docComment, $matches);
+            } else {
+                preg_match("/@description\s+(.+)\$/i", $docComment, $matches);
+            }
+            preg_match('/@description\s+(.+)/i', $docComment, $matches);
+
+            return $matches[1] ?? null;
+        }
+
+        return null;
+    }
+
+    protected function getBetterDocblockType(ReflectionFunctionAbstract|ReflectionFunction $reflection, ?string $name = null): ?array
+    {
+        $docComment = $reflection->getDocComment();
+
+        // Match @type $name {"type": "object", "properties": {"name": {"type": "string"}}}
+        if ($docComment) {
+            if ($name) {
+                preg_match("/@type\s+\\\${$name}\s+([\\\{]?.*)\$/mi", $docComment, $matches);
+            } else {
+                preg_match("/@type\s+([\\\{]?.*)\$/mi", $docComment, $matches);
+            }
+
+            return json_decode(trim($matches[1] ?? null), true);
+        }
+
+        return null;
+    }
+
+    public function interrupt(?Closure $shouldInterrupt): static
+    {
+        $this->shouldInterrupt = $shouldInterrupt;
+
+        return $this;
     }
 
     public function toolChoice(?string $name = 'auto'): static

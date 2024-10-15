@@ -2,6 +2,7 @@
 
 namespace Mateffy\Magic\LLM;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Mateffy\Magic\LLM\Message\DataMessage;
 use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
@@ -32,14 +33,14 @@ class MessageCollection extends Collection
         return $this->firstDataMessage()?->data();
     }
 
-    public function firstFunctionInvokation(): ?FunctionInvocationMessage
+    public function firstFunctionInvokation(?Closure $filter = null): ?FunctionInvocationMessage
     {
-        return $this->first(fn (Message $message) => $message instanceof FunctionInvocationMessage);
+        return $this->first(fn (Message $message) => $message instanceof FunctionInvocationMessage && ($filter === null || $filter($message)));
     }
 
-    public function firstFunctionOutput(): ?FunctionOutputMessage
+    public function firstFunctionOutput(?Closure $filter = null): ?FunctionOutputMessage
     {
-        return $this->first(fn (Message $message) => $message instanceof FunctionOutputMessage);
+        return $this->first(fn (Message $message) => $message instanceof FunctionOutputMessage && ($filter === null || $filter($message)));
     }
 
     public function lastText(): ?string
@@ -57,13 +58,13 @@ class MessageCollection extends Collection
         return $this->lastDataMessage()?->data();
     }
 
-    public function lastFunctionInvokation(): ?FunctionInvocationMessage
+    public function lastFunctionInvokation(?Closure $filter = null): ?FunctionInvocationMessage
     {
-        return $this->last(fn (Message $message) => $message instanceof FunctionInvocationMessage);
+        return $this->last(fn (Message $message) => $message instanceof FunctionInvocationMessage && ($filter === null || $filter($message)));
     }
 
-    public function lastFunctionOutput(): ?FunctionOutputMessage
+    public function lastFunctionOutput(?Closure $filter = null): ?FunctionOutputMessage
     {
-        return $this->last(fn (Message $message) => $message instanceof FunctionOutputMessage);
+        return $this->last(fn (Message $message) => $message instanceof FunctionOutputMessage && ($filter === null || $filter($message)));
     }
 }

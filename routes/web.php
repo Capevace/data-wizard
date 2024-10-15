@@ -2,12 +2,16 @@
 
 use App\Http\Middleware\AllowEmbeddingMiddleware;
 use App\Livewire\Components\Concerns\HasChat;
+use App\Livewire\Components\Concerns\ToolWidget;
 use App\Livewire\Components\StreamableMessage;
 use App\Models\ExtractionBucket;
 use App\Models\SavedExtractor;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Mateffy\Magic\Functions\MagicFunction;
+use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
+use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
 use Mateffy\Magic\LLM\Message\Message;
 
 /*
@@ -63,11 +67,27 @@ Route::middleware(['auth'])
 
             return response()->json([
                 'messages' => $messages
-                    ->map(fn (Message $message, int $index) => $chat::renderChatMessage(
-                        message:$message,
-                        streaming: true,
-                        isCurrent: $index === count($messages) - 1,
-                    ))
+                    ->map(function (Message $message) use ($chat, $messages) {
+                        $result = $chat::renderChatMessage(message:$message);
+
+                        if ($result instanceof ToolWidget && $message instanceof FunctionInvocationMessage) {
+                            return $result->render(
+                                tool: new MagicFunction(
+                                    name: $message->call->name,
+                                    schema: $message->schema ?? [],
+                                    callback: fn () => null, // Never called, as we're only rendering here
+                                ),
+                                invocation: $message,
+                                output: $messages->firstFunctionOutput(fn (FunctionOutputMessage $output) => $message->call->id && $output->call->id === $message->call->id),
+                            );
+                        } else if ($result instanceof ToolWidget) {
+                            report(new \Exception('ToolWidget without invocation: ' . json_encode(['message' => $message, 'result' => $result])));
+
+                            return null;
+                        }
+
+                        return $result;
+                    })
                     ->values()
                     ->all(),
             ]);

@@ -105,14 +105,32 @@ class ChatPreconfiguredModelBuilder
             onTokenStats: $this->onTokenStats
         );
 
+        return $this->handleMessages($messages);
+    }
+
+    public function send(): MessageCollection
+    {
+        $prompt = $this->build();
+
+        return MessageCollection::make($this->model->send($prompt));
+    }
+
+    public function handleMessages(MessageCollection $messages, bool $ignoreInterrupts = false): MessageCollection
+    {
         $continue = true;
 
         foreach ($messages as $message) {
+            $this->addMessage($message);
+
             if ($message instanceof FunctionInvocationMessage) {
                 if ($fn = $this->tools[$message->call->name] ?? null) {
                     /** @var InvokableFunction $fn */
 
                     $message->call->arguments = $fn->validate($message->call->arguments);
+
+                    if (!$ignoreInterrupts && $this->shouldInterrupt && ($this->shouldInterrupt)($message->call)) {
+                        return MessageCollection::make([$message]);
+                    }
 
                     try {
                         $output = $fn->execute($message->call);
@@ -142,28 +160,20 @@ class ChatPreconfiguredModelBuilder
                         ($this->onMessage)($outputMessage);
                     }
 
-                    if ($continue && !$outputMessage->endConversation) {
-                        $this
-                            ->addMessage($message)
-                            ->addMessage($outputMessage);
-                    } else if ($outputMessage->endConversation) {
+                    $this->addMessage($outputMessage);
+
+                    if ($outputMessage->endConversation) {
                         $continue = false;
                     }
                 }
             }
         }
 
-        if ($continue && $messages->filter(fn (Message $message) => $message instanceof FunctionOutputMessage)->isNotEmpty()) {
+        // Immediately continue if
+        if ($continue && $messages->last() instanceof FunctionOutputMessage && !$messages->last()->endConversation) {
             return $this->stream();
         }
 
         return $messages;
-    }
-
-    public function send(): MessageCollection
-    {
-        $prompt = $this->build();
-
-        return MessageCollection::make($this->model->send($prompt));
     }
 }

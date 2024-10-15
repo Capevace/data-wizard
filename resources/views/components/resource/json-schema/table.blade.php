@@ -76,7 +76,7 @@
                                 :name="$name . '_' . $property"
                                 :state-path="$statePath . '.' . $property"
                                 :schema="$propertySchema"
-                                :required="collect($schema['required'])->contains($property)"
+                                :required="collect($schema['required'] ?? [])->contains($property)"
                                 :disabled="$disabled"
                             />
                         </td>
@@ -116,7 +116,7 @@
                                 :name="$name . '_' . $property"
                                 :state-path="$statePath . '[' . $name . '_index]' . '.' . $property"
                                 :schema="$propertySchema"
-                                :required="collect($schema['required'])->contains($property)"
+                                :required="collect($schema['required'] ?? [])->contains($property)"
                                 :disabled="$disabled"
                             />
                         </td>

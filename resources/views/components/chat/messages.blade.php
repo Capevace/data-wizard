@@ -3,13 +3,11 @@
     'chat' => $this instanceof \App\Livewire\Components\Concerns\HasChat
         ? get_class($this)
         : null,
-    'renderMessage' => fn (\Mateffy\Magic\LLM\Message\Message $message) => $this instanceof \App\Livewire\Components\Concerns\HasChat
-        ? self::renderChatMessage($message)
-        : null,
+    'renderMessage' => fn (\Mateffy\Magic\LLM\Message\Message $message) => $this->renderMessage($message)
 ])
 
 <div
-    {{ $attributes->class('') }}
+    {{ $attributes->class('flex flex-col gap-2') }}
 >
     @foreach ($messages as $message)
         <div

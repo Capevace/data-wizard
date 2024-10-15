@@ -82,4 +82,9 @@ class FunctionOutputMessage implements Message, DataMessage
     {
         return new self(role: Role::User, call: $call, output: ['error' => $message]);
     }
+
+    public static function canceled(FunctionCall $call): static
+    {
+        return new self(role: Role::User, call: $call, output: 'canceled');
+    }
 }

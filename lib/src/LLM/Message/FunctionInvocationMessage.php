@@ -14,6 +14,7 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
         public Role $role,
         public ?FunctionCall $call = null,
         public ?string $partial = null,
+        public ?array $schema = null,
     ) {}
 
     public function toArray(): array
@@ -22,6 +23,7 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
             'role' => $this->role->value,
             'call' => $this->call->toArray(),
             'partial' => $this->partial,
+            'schema' => $this->schema,
         ];
     }
 
@@ -31,6 +33,7 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
             role: Role::from($data['role']),
             call: FunctionCall::fromArray($data['call']),
             partial: $data['partial'] ?? null,
+            schema: $data['schema'] ?? null,
         );
     }
 
