@@ -212,8 +212,10 @@ class ParallelStrategy
             })
             ->stream();
 
-        $this->totalTokenStats = $this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats;
+        if ($lastTokenStats) {
+            $this->totalTokenStats = $this->totalTokenStats?->add($lastTokenStats) ?? $lastTokenStats;
+        }
 
-        return $messages->lastFunctionOutput()?->call?->arguments ?? $messages->lastData();
+        return $messages->lastData();
     }
 }

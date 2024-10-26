@@ -47,10 +47,12 @@ trait UsesAnthropicApi
         $client = new Client([
             'base_uri' => 'https://api.anthropic.com',
             'headers' => [
-                'anthropic-version' => '2023-06-01',
-                'anthropic-beta' => 'messages-2023-12-15',
+//                'anthropic-version' => '2023-06-01',
+//                'anthropic-beta' => 'messages-2023-12-15',
                 'content-type' => 'application/json',
                 'x-api-key' => $this->getApiToken(),
+                'anthropic-version' => '2023-06-01',
+//                'anthropic-beta' => 'computer-use-2024-10-22'
             ],
         ]);
 
@@ -144,11 +146,20 @@ trait UsesAnthropicApi
                 ->toArray(),
             'stream' => true,
             'tools' => collect($prompt->functions())
-                ->map(fn (InvokableFunction $function) => [
-                    'name' => $function->name(),
-                    'description' => method_exists($function, 'description') ? $function->description() : '',
-                    'input_schema' => $function->schema(),
-                ]),
+                ->map(fn (InvokableFunction $function) => ($name = $function->name()) && $name === 'computer'
+                    ? [
+                        'type' => 'computer_20241022',
+                        'name' => 'computer',
+                        'display_width_px' => 1024,
+                        'display_height_px' => 768,
+                        'display_number' => 1,
+                    ]
+                    : [
+                        'name' => $function->name(),
+                        'description' => method_exists($function, 'description') ? $function->description() : '',
+                        'input_schema' => $function->schema(),
+                    ]
+                )
         ];
 
         if (method_exists($prompt, 'forceFunction') && ($fn = $prompt->forceFunction())) {

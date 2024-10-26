@@ -4,7 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\GeneratePage;
 use App\Filament\Pages\LlmSettings;
-use App\Filament\Pages\TestChat;
+use App\Filament\Pages\ExampleChat;
 use App\Filament\Resources\ExtractionBucketResource;
 use App\Filament\Resources\ExtractionRunResource;
 use App\Filament\Resources\SavedExtractorResource;
@@ -59,7 +59,7 @@ class AppPanelProvider extends PanelProvider
                     ...ExtractionBucketResource::getNavigationItems(),
                     ...SavedExtractorResource::getNavigationItems(),
                     ...ExtractionRunResource::getNavigationItems(),
-                    ...TestChat::getNavigationItems()
+                    ...ExampleChat::getNavigationItems()
                 ])
                 ->group(
                     NavigationGroup::make(__('Settings'))
@@ -69,7 +69,6 @@ class AppPanelProvider extends PanelProvider
                         ])
                 )
             )
-            ->topbar()
             ->login()
             ->brandLogo(asset('images/logo.svg'))
             ->brandLogoHeight('3.7rem')
@@ -103,7 +102,7 @@ class AppPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
                 GeneratePage::class,
-                TestChat::class
+                ExampleChat::class
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')

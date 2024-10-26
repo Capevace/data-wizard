@@ -9,7 +9,6 @@ use App\Filament\Resources\ExtractionBucketResource\RelationManagers\FilesRelati
 use App\Filament\Resources\ExtractionBucketResource\RelationManagers\RunsRelationManager;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionBucket\BucketCreationSource;
-use App\Models\User;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -28,6 +27,7 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Mateffy\Magic\Chat\ToolWidget;
 
 class ExtractionBucketResource extends Resource
 {
@@ -96,9 +96,6 @@ class ExtractionBucketResource extends Resource
                     ->badge()
                     ->sortable(),
             ])
-            ->persistFiltersInSession()
-            ->persistSortInSession()
-            ->persistSearchInSession()
             ->filters([
                 SelectFilter::make('created_using')
                     ->label('Created using')
@@ -123,6 +120,30 @@ class ExtractionBucketResource extends Resource
                     ForceDeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getMagicTools(): array
+    {
+        return [
+            'index' => function (?string $search = null, int $limit = 10, int $offset = 0) {
+                $buckets = ExtractionBucket::query()
+                    ->when($search, fn ($query) => $query->where('description', 'ilike', "%{$search}%"))
+                    ->latest('created_at')
+                    ->limit($limit)
+                    ->offset($offset)
+                    ->get();
+            }
+        ];
+    }
+
+    public static function getMagicToolWidgets(): array
+    {
+        return [
+            'index' => ToolWidget::livewire(
+                Pages\ListExtractionBucketsInline::class,
+
+            )
+        ];
     }
 
     public static function getPages(): array

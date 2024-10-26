@@ -42,7 +42,7 @@ class RunPage extends ViewRecord
             ActionGroup::make([])
                 ->actions([
                     Action::make('toggleDebugMode')
-                        ->label(fn () => $this->debugModeEnabled ? 'Disable debug mode' : 'Enable debug mode')
+                        ->label(fn () => $this->debugModeEnabled ? __('Disable Debug-Mode') : __('Enable Debug-Mode'))
                         ->translateLabel()
                         ->icon('heroicon-o-code-bracket')
                         ->iconPosition('after')

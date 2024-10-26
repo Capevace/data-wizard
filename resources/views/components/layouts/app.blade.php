@@ -120,5 +120,7 @@
     @filamentScripts(withCore: true)
 
     @livewireScripts
+
+{{--    <x-pan-analytics::viewer />--}}
 </body>
 </html>

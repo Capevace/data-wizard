@@ -1,0 +1,19 @@
+{
+  "name": "mateffy/llm-magic-providers",
+  "description": "Reusable datamodel for LLM provider settings (api keys, etc.)",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Lukas Mateffy",
+      "email": "hey@mateffy.me"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Mateffy\\Magic\\Providers\\": "src/"
+    }
+  },
+  "require": {
+  }
+}

@@ -50,7 +50,7 @@
                 </div>
             @endif
 
-            <x-chat.messages
+            <x-llm-magic::chat.messages
                 class="w-full py-10 px-4 sm:px-6 lg:px-8 flex-1 max-w-2xl mx-auto"
                 :$messages
                 wire:key="messages"

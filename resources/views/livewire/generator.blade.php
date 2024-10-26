@@ -165,7 +165,7 @@
                     </x-filament::badge>
                 </x-generator.key-value>
 
-                <x-generator.key-value icon="heroicon-o-clock" label="Duration">
+                <x-generator.key-value icon="heroicon-o-clock" :label="__('Duration')">
                     <span class="text-lg">{{ $this->run?->status->formatDate($this->run?->created_at) }}</span>
                 </x-generator.key-value>
             </div>
@@ -192,7 +192,7 @@
         </x-filament::section>
 
         <x-filament::section
-            heading="LLM Costs"
+            :heading="__('LLM Costs')"
             icon="heroicon-o-currency-euro"
             compact
             class="col-span-1"

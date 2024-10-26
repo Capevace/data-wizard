@@ -2,8 +2,11 @@
 
 namespace Mateffy\Magic;
 
+use Closure;
 use Mateffy\Magic\Builder\ChatPreconfiguredModelBuilder;
+use Mateffy\Magic\Builder\EmbeddingsBuilder;
 use Mateffy\Magic\Builder\ExtractionLLMBuilder;
+use Mateffy\Magic\Embeddings\OpenAIEmbeddingModel;
 use Mateffy\Magic\Functions\MagicReturnFunction;
 use Mateffy\Magic\LLM\Exceptions\UnableToActAsFunction;
 use Mateffy\Magic\LLM\Exceptions\UnknownInferenceException;
@@ -95,5 +98,20 @@ class Magic
     public static function getDefaultModel(): LLM
     {
         return Claude3Family::haiku();
+    }
+
+    public static function embeddings(Closure|string|null $input = null, ?OpenAIEmbeddingModel $model = null): EmbeddingsBuilder
+    {
+        $builder = new EmbeddingsBuilder;
+
+        if ($input) {
+            $builder->input($input);
+        }
+
+        if ($model) {
+            $builder->model($model);
+        }
+
+        return $builder;
     }
 }

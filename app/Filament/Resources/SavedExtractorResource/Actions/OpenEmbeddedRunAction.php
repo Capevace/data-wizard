@@ -18,9 +18,9 @@ class OpenEmbeddedRunAction extends Action
         parent::setUp();
 
         $this
-            ->label('Open embedded run')
+            ->label('Open Embeddable Extractor')
             ->translateLabel()
-            ->icon('heroicon-o-eye')
+            ->icon('heroicon-o-arrow-top-right-on-square')
             ->url(fn (ExtractionRun $record) => $record->getEmbeddedUrl())
             ->openUrlInNewTab();
     }

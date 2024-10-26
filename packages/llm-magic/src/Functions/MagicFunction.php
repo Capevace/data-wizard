@@ -38,6 +38,9 @@ class MagicFunction implements InvokableFunction
 
     public function execute(FunctionCall $call): mixed
     {
-        return Container::getInstance()->call($this->callback, $call->arguments);
+        return Container::getInstance()->call($this->callback, [
+            ...$call->arguments,
+            'call' => $call,
+        ]);
     }
 }

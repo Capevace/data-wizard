@@ -39,6 +39,23 @@ readonly class LocalArtifact implements Artifact
         );
     }
 
+    /**
+     * @throws JsonException
+     */
+    public static function fromRawPath(string $path): static
+    {
+        $metadata = new ArtifactMetadata(
+            name: basename($path),
+            mimetype: mime_content_type($path),
+            extension: pathinfo($path, PATHINFO_EXTENSION),
+        );
+
+        return new static(
+            metadata: $metadata,
+            path: $path,
+        );
+    }
+
     public function getMetadata(): ArtifactMetadata
     {
         return $this->metadata;

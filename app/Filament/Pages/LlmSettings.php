@@ -5,8 +5,6 @@ namespace App\Filament\Pages;
 use App\Filament\Pages\LlmSettings\AddApiCredentialsAction;
 use App\Filament\Pages\LlmSettings\ApiConnectionDTO;
 use App\Filament\Pages\LlmSettings\DeleteApiCredentialsAction;
-use App\Models\ApiKey;
-use App\Models\ApiKey\ApiKeyProvider;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -16,6 +14,8 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
+use Mateffy\Magic\Providers\ApiKey;
+use Mateffy\Magic\Providers\ApiKey\ApiKeyProvider;
 
 class LlmSettings extends Page
 {

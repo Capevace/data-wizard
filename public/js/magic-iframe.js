@@ -2,7 +2,7 @@ window.Magic = window.Magic ?? {
     url: 'https://data-wizard.ai',
 
     iframe: {
-        url({ extractorId, bucketId = null, runId = null, signature = null }) {
+        url({ extractorId, bucketId = null, runId = null, signature = null, step = null }) {
             console.log('Magic iFrame URL', `${window.Magic.url}/embed/${extractorId}`);
             const url = new URL(`${window.Magic.url}/embed/${extractorId}`);
 
@@ -20,6 +20,10 @@ window.Magic = window.Magic ?? {
 
             if (signature) {
                 url.searchParams.append('signature', signature);
+            }
+
+            if (step) {
+                url.searchParams.append('step', step);
             }
 
             return url.toString();

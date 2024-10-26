@@ -33,6 +33,5 @@ class AppServiceProvider extends ServiceProvider
         Route::model('run', ExtractionRun::class);
 
         Livewire::component('embedded-extractor', \App\Livewire\Components\EmbeddedExtractor::class);
-        Livewire::component('streamable-message', \App\Livewire\Components\StreamableMessage::class);
     }
 }

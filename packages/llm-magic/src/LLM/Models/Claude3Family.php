@@ -19,6 +19,7 @@ class Claude3Family extends ElElEm
     public const OPUS = 'claude-3-opus-20240229';
 
     public const SONNET_3_5 = 'claude-3-5-sonnet-20240620';
+    public const SONNET_3_5_COMPUTER_USE = 'claude-3-5-sonnet-20241022';
 
     public function __construct(
         string $model,
@@ -77,6 +78,14 @@ class Claude3Family extends ElElEm
     {
         return new Claude3Family(
             model: Claude3Family::SONNET_3_5,
+            options: new ElElEmOptions
+        );
+    }
+
+    public static function sonnet_3_5_computer_use(): Claude3Family
+    {
+        return new Claude3Family(
+            model: Claude3Family::SONNET_3_5_COMPUTER_USE,
             options: new ElElEmOptions
         );
     }

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\SavedExtractorResource\Actions;
 
 use App\Filament\Forms\JsonEditor;
+use Mateffy\Magic\Artifacts\LocalArtifact;
 use Mateffy\Magic\LLM\ElElEm;
 use Mateffy\Magic\LLM\Message\JsonMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
@@ -100,7 +101,7 @@ class GenerateSchemaAction extends Actions\Action
             ->model(Claude3Family::haiku())
             ->prompt($prompt)
             ->stream()
-            ->firstData();
+            ->lastData();
 
         if ($data === null || ($data['schema'] ?? null) === null) {
             report(new \Exception('Could not generate schema: '.json_encode($data)));

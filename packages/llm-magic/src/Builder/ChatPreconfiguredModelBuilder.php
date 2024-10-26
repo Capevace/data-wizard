@@ -5,10 +5,11 @@ namespace Mateffy\Magic\Builder;
 use Mateffy\Magic\Builder\Concerns\HasArtifacts;
 use Mateffy\Magic\Builder\Concerns\HasMessages;
 use Mateffy\Magic\Builder\Concerns\HasModel;
-use Mateffy\Magic\Builder\Concerns\HasModelCallbacks;
+use Mateffy\Magic\Builder\Concerns\HasMessageCallbacks;
 use Mateffy\Magic\Builder\Concerns\HasPrompt;
 use Mateffy\Magic\Builder\Concerns\HasSchema;
 use Mateffy\Magic\Builder\Concerns\HasSystemPrompt;
+use Mateffy\Magic\Builder\Concerns\HasTokenCallback;
 use Mateffy\Magic\Builder\Concerns\HasTools;
 use Mateffy\Magic\Functions\InvokableFunction;
 use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
@@ -25,10 +26,11 @@ class ChatPreconfiguredModelBuilder
     use HasArtifacts;
     use HasMessages;
     use HasModel;
-    use HasModelCallbacks;
+    use HasMessageCallbacks;
     use HasPrompt;
     use HasSchema;
     use HasSystemPrompt;
+    use HasTokenCallback;
     use HasTools;
 
     public function build(): Prompt

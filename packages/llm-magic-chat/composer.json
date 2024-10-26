@@ -18,6 +18,13 @@
             "php-http/discovery": true
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mateffy\\Magic\\Chat\\MagicChatServiceProvider"
+            ]
+        }
+    },
     "require": {
         "illuminate/collections": "*"
     }

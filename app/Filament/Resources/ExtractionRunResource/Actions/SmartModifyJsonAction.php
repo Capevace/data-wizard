@@ -43,7 +43,7 @@ class SmartModifyJsonAction extends Action
         parent::setUp();
 
         $this
-            ->label('Smart Modify JSON')
+            ->label('Modify JSON with AI')
             ->translateLabel()
             ->icon('bi-magic')
             ->fillForm(fn () => [
