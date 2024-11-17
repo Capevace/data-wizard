@@ -7,6 +7,7 @@ use Mateffy\Magic\Builder\ChatPreconfiguredModelBuilder;
 use Mateffy\Magic\Builder\EmbeddingsBuilder;
 use Mateffy\Magic\Builder\ExtractionLLMBuilder;
 use Mateffy\Magic\Embeddings\OpenAIEmbeddingModel;
+use Mateffy\Magic\Functions\Exceptions\ToolCallException;
 use Mateffy\Magic\Functions\MagicReturnFunction;
 use Mateffy\Magic\LLM\Exceptions\UnableToActAsFunction;
 use Mateffy\Magic\LLM\Exceptions\UnknownInferenceException;
@@ -16,6 +17,7 @@ use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\Loop\EndConversation;
 use Mateffy\Magic\Memory\MagicMemory;
 use ReflectionException;
+use Throwable;
 
 class Magic
 {
@@ -113,5 +115,10 @@ class Magic
         }
 
         return $builder;
+    }
+
+    public static function error(string $message, ?string $code = null, ?Throwable $previous = null): ToolCallException
+    {
+        return new ToolCallException($message, $code, $previous);
     }
 }

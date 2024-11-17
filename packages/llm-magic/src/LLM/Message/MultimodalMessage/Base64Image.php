@@ -2,6 +2,7 @@
 
 namespace Mateffy\Magic\LLM\Message\MultimodalMessage;
 
+use Illuminate\Support\Facades\Storage;
 use Mateffy\Magic\LLM\Message\WireableViaArray;
 
 readonly class Base64Image implements ContentInterface
@@ -37,9 +38,27 @@ readonly class Base64Image implements ContentInterface
     {
         $mime = mime_content_type($path);
 
-        return new self(
-            imageBase64: base64_encode(file_get_contents($path)),
+        return self::fromContents(
+            contents: file_get_contents($path),
             mime: $mime,
+        );
+    }
+
+    public static function fromContents($contents, string $mime): self
+    {
+        return new self(
+            imageBase64: base64_encode($contents),
+            mime: $mime,
+        );
+    }
+
+    public static function fromDisk(string $disk, string $path): self
+    {
+        $disk = Storage::disk($disk);
+
+        return self::fromContents(
+            contents: $disk->get($path),
+            mime: $disk->mimeType($path),
         );
     }
 }

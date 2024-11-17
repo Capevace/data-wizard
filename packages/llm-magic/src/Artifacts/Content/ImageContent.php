@@ -4,7 +4,7 @@ namespace Mateffy\Magic\Artifacts\Content;
 
 use Illuminate\Support\Str;
 
-readonly class ImageContent
+readonly class ImageContent implements Content
 {
     public function __construct(
         public string $path,

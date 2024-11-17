@@ -16,6 +16,7 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Mateffy\Magic\Buckets\CloudArtifact;
 
 /**
  * @property-read array $target_schema
@@ -74,6 +75,11 @@ class ExtractionBucket extends Model implements HasMedia
     public function files(): MorphMany
     {
         return $this->media();
+    }
+
+    public function cloud_artifacts(): HasMany
+    {
+        return $this->hasMany(CloudArtifact::class, 'bucket_id');
     }
 
     public function runs(): HasMany

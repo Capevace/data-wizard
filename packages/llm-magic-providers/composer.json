@@ -2,7 +2,7 @@
   "name": "mateffy/llm-magic-providers",
   "description": "Reusable datamodel for LLM provider settings (api keys, etc.)",
   "minimum-stability": "stable",
-  "license": "proprietary",
+  "license": "AGPL-3.0-only",
   "authors": [
     {
       "name": "Lukas Mateffy",

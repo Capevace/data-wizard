@@ -257,6 +257,8 @@ trait InteractsWithChat
 
         $this->dispatch('stopPolling')->to(StreamableMessage::class);
         $this->temporary_messages = [];
+
+        $this->dispatch('resetChat')->self();
     }
 
     protected function onMessageProgress(Message $message): void

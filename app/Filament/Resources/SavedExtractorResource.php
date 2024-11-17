@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Forms\JsonEditor;
-use App\Filament\Resources\CustomExtractorResource\Pages;
+use App\Filament\Resources\SavedExtractorResource\Pages;
 use App\Filament\Resources\SavedExtractorResource\Actions\BulkExportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateSchemaAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;

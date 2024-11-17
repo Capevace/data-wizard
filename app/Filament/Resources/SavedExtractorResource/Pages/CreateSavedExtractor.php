@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\CustomExtractorResource\Pages;
+namespace App\Filament\Resources\SavedExtractorResource\Pages;
 
 use App\Filament\Resources\SavedExtractorResource;
 use Filament\Resources\Pages\CreateRecord;

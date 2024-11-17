@@ -17,10 +17,15 @@ class ViewToolWidget extends ToolWidget
 
     protected function prepare(InvokableFunction $tool, FunctionInvocationMessage $invocation, ?FunctionOutputMessage $output): View
     {
-        return view($this->view, $this->with)
+        return view($this->getView(), $this->with)
             ->with('tool', $tool)
             ->with('invocation', $invocation)
             ->with('output', $output);
+    }
+
+    protected function getView(): string
+    {
+        return $this->view;
     }
 
     /**

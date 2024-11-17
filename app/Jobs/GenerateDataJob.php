@@ -49,7 +49,7 @@ class GenerateDataJob implements ShouldQueue
                 ->schema($this->run->target_schema)
                 ->strategy($this->run->strategy)
                 ->artifacts($artifacts->all())
-                ->onMessage(function (Message $message, string $actorId) {
+                ->onMessage(function (Message $message, ?string $actorId = null) {
                     /** @var ?Actor $actor */
                     $actor = $this->run->actors()->find($actorId);
 
@@ -84,9 +84,7 @@ class GenerateDataJob implements ShouldQueue
             $this->run->result_json = $data->toArray() ?? $this->run->result_json;
             $this->run->status = RunStatus::Completed;
             $this->run->save();
-        } catch (\Exception $e) {
-            report($e);
-
+        } catch (\Throwable $e) {
             $this->run->error = [
                 'title' => method_exists($e, 'getTitle') ? $e->getTitle() : null,
                 'message' => $e->getMessage(),
@@ -94,6 +92,8 @@ class GenerateDataJob implements ShouldQueue
             ];
             $this->run->status = RunStatus::Failed;
             $this->run->save();
+
+            report($e);
         }
     }
 }

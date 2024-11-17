@@ -141,6 +141,8 @@ class ChatPreconfiguredModelBuilder
                             $outputMessage = $output;
                         } else if ($output instanceof EndConversation) {
                             $outputMessage = FunctionOutputMessage::end(call: $message->call, output: $output->getOutput());
+                        } else if ($output instanceof MultimodalMessage) {
+                            $outputMessage = $output;
                         } else {
                             $outputMessage = FunctionOutputMessage::output(call: $message->call, output: $output);
                         }
@@ -164,7 +166,7 @@ class ChatPreconfiguredModelBuilder
 
                     $this->addMessage($outputMessage);
 
-                    if ($outputMessage->endConversation) {
+                    if (property_exists($outputMessage, 'endConversation') && $outputMessage->endConversation) {
                         $continue = false;
                     }
                 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\CustomExtractorResource\Pages;
+namespace App\Filament\Resources\SavedExtractorResource\Pages;
 
 use App\Filament\Resources\SavedExtractorResource;
 use App\Filament\Resources\SavedExtractorResource\Actions\ImportExtractorAction;

@@ -48,11 +48,17 @@ class MessageCollection extends Collection
         return $this->last(fn (Message $message) => $message instanceof TextMessage);
     }
 
+    /**
+     * @return DataMessage[]|null
+     */
     public function lastDataMessage(): ?DataMessage
     {
         return $this->last(fn (Message $message) => $message instanceof DataMessage);
     }
 
+    /**
+     * @return array|null
+     */
     public function lastData(): ?array
     {
         return $this->lastDataMessage()?->data();

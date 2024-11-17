@@ -23,7 +23,7 @@
 //        ]);
 
         \Filament\Support\Facades\FilamentColor::register([
-            'primary' => \Filament\Support\Colors\Color::Blue,
+            'primary' => \Filament\Support\Colors\Color::Teal,
             'warning' => \Filament\Support\Colors\Color::Yellow,
             'success' => \Filament\Support\Colors\Color::Teal,
             'danger' => \Filament\Support\Colors\Color::Rose,

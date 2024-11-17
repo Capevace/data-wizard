@@ -1,0 +1,36 @@
+{
+    "name": "mateffy/json-schema",
+    "description": "A package for better JSON schema support in Laravel. Supports validation and import & transform from Filament schemas.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lukas Mateffy",
+            "email": "hello@mateffy.me"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Mateffy\\": "src/"
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "require": {
+        "laravel/framework": "^11",
+        "swaggest/json-schema": "^0.12.42"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mateffy\\JsonSchemaServiceProvider"
+            ]
+        }
+    }
+}

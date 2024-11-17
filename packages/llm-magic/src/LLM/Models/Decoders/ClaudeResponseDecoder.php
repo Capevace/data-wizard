@@ -122,10 +122,18 @@ class ClaudeResponseDecoder implements Decoder
                     };
 
                     if ($data['content_block']['type'] === 'tool_use') {
-                        if ($message) {
+                        if ($message instanceof TextMessage && !empty($message->text())) {
                             $this->messages[] = $message;
 
-                            if ($this->onMessage && !empty($message->text())) {
+                            if ($this->onMessage) {
+                                ($this->onMessage)($message);
+                            }
+                        }
+
+                        if ($message instanceof FunctionInvocationMessage && $message->data() !== null && count($message->data()) > 0) {
+                            $this->messages[] = $message;
+
+                            if ($this->onMessage) {
                                 ($this->onMessage)($message);
                             }
                         }

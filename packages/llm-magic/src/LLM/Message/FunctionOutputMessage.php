@@ -2,9 +2,10 @@
 
 namespace Mateffy\Magic\LLM\Message;
 
+use Mateffy\Magic\LLM\Message\MultimodalMessage\ContentInterface;
 use Mateffy\Magic\Prompt\Role;
 
-class FunctionOutputMessage implements Message, DataMessage
+class FunctionOutputMessage implements Message, DataMessage, ContentInterface
 {
     use WireableViaArray;
 

@@ -6,10 +6,7 @@ use App\Models\Actor\ActorTelemetry;
 use Illuminate\Support\Str;
 use Mateffy\Magic\Artifacts\Artifact;
 use Mateffy\Magic\Config\Extractor;
-use Mateffy\Magic\LLM\Message\JsonMessage;
 use Mateffy\Magic\LLM\Message\Message;
-use Mateffy\Magic\Loop\InferenceResult;
-use Mateffy\Magic\Loop\Response\JsonResponse;
 use Mateffy\Magic\Prompt\ExtractorPrompt;
 use Mateffy\Magic\Prompt\TokenStats;
 use Closure;
@@ -20,7 +17,7 @@ class SimpleStrategy
         protected Extractor $extractor,
 
         /** @var ?Closure(array): void */
-        protected Closure $onDataProgress,
+        protected ?Closure $onDataProgress,
 
         /** @var ?Closure(TokenStats): void */
         protected ?Closure $onTokenStats = null,
@@ -28,7 +25,7 @@ class SimpleStrategy
         /** @var ?Closure(Message): void */
         protected ?Closure $onMessageProgress = null,
 
-        /** @var ?Closure(Message): void */
+        /** @var ?Closure(Message, string): void */
         protected ?Closure $onMessage = null,
 
         /** @var ?Closure(ActorTelemetry): void */
@@ -54,7 +51,7 @@ class SimpleStrategy
         $messages = [];
 
         $onMessageProgress = function (Message $message) use (&$messages) {
-            if ($data = $message->toArray()['data'] ?? null) {
+            if ($this->onDataProgress && $data = $message->toArray()['data'] ?? null) {
                 ($this->onDataProgress)($data);
             }
 
@@ -63,15 +60,15 @@ class SimpleStrategy
             }
         };
 
-        $onMessage = function (Message $message) use (&$messages) {
+        $onMessage = function (Message $message) use (&$messages, $threadId) {
             $messages[] = $message;
 
-            if ($data = $message->toArray()['data'] ?? null) {
+            if ($this->onDataProgress && $data = $message->toArray()['data'] ?? null) {
                 ($this->onDataProgress)($data);
             }
 
             if ($this->onMessage) {
-                ($this->onMessage)($message);
+                ($this->onMessage)($message, $threadId);
             }
         };
 
@@ -82,9 +79,6 @@ class SimpleStrategy
             onTokenStats: $this->onTokenStats
         );
 
-        /** @var ?JsonMessage $jsonResponse */
-        $jsonResponse = collect($responses)->first(fn ($response) => $responses instanceof JsonMessage);
-
-        return new InferenceResult(value: $jsonResponse?->data, messages: $messages);
+        return $responses->lastData();
     }
 }

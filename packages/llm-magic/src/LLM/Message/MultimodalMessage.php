@@ -30,7 +30,7 @@ class MultimodalMessage implements Message
         return new self(
             role: Role::tryFrom($data['role']) ?? Role::Assistant,
             content: collect($data['content'])
-                ->map(fn (array $item) => match ($item['type']) {
+                ->map(fn (array $item) => match ($item['type'] ?? null) {
                     'text' => Text::fromArray($item),
                     'image' => Base64Image::fromArray($item),
                     default => null,

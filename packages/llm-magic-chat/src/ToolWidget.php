@@ -60,7 +60,7 @@ abstract class ToolWidget
         Closure|string|null $doneIcon = null,
         Closure|string|null $doneIconColor = null,
         array $with = [],
-        string $variant = 'default'
+        Closure|string $variant = 'default'
     ): LoadingToolWidget
     {
         if (is_string($loading)) {
@@ -85,6 +85,10 @@ abstract class ToolWidget
 
         if (is_string($doneIconColor)) {
             $doneIconColor = fn () => $doneIconColor;
+        }
+
+        if (is_string($variant)) {
+            $variant = fn () => $variant;
         }
 
         return app(LoadingToolWidget::class, [

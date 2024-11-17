@@ -10,7 +10,7 @@ use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
 
 class LoadingToolWidget extends ViewToolWidget
 {
-    public string $view = 'llm-magic::components.tools.loaders.detailed';
+    public string $view = 'llm-magic::components.tools.loaders.default';
 
     protected Closure $loading;
     protected Closure $done;
@@ -20,6 +20,8 @@ class LoadingToolWidget extends ViewToolWidget
     protected Closure $doneIcon;
     protected Closure $doneIconColor;
 
+    protected Closure $variant;
+
     public function __construct(
         ?Closure $loading = null,
         ?Closure $done = null,
@@ -27,6 +29,7 @@ class LoadingToolWidget extends ViewToolWidget
         ?Closure $loadingIconColor = null,
         ?Closure $doneIcon = null,
         ?Closure $doneIconColor = null,
+        ?Closure $variant = null,
         array $with = []
     )
     {
@@ -36,6 +39,7 @@ class LoadingToolWidget extends ViewToolWidget
         $this->loadingIconColor = $loadingIconColor ?? fn () => 'gray';
         $this->doneIcon = $doneIcon ?? fn () => 'heroicon-o-check-circle';
         $this->doneIconColor = $doneIconColor ?? fn () => 'success';
+        $this->variant = $variant ?? fn () => 'default';
 
         parent::__construct($this->view, $with);
     }
@@ -60,5 +64,15 @@ class LoadingToolWidget extends ViewToolWidget
             ->with('loadingIconColor', $callWithArguments($this->loadingIconColor))
             ->with('doneIcon', $callWithArguments($this->doneIcon))
             ->with('doneIconColor', $callWithArguments($this->doneIconColor));
+    }
+
+    protected function getView(): string
+    {
+        $variant = app()->call($this->variant);
+
+        return match ($variant) {
+            default => 'llm-magic::components.tools.loaders.detailed',
+            'simple' => 'llm-magic::components.tools.loaders.default',
+        };
     }
 }

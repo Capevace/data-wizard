@@ -39,7 +39,7 @@ class Actor extends Model
     }
 
     /**
-     * @return Collection<ActorMessage>
+     * @return SmartCollection<ActorMessage>
      *
      * @throws \JsonException
      */

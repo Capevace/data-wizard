@@ -24,7 +24,7 @@ class GenerateSchemaPrompt implements Prompt
         For example you may be asked to come up with a new custom schema for something yourself, you may be asked to make a schema with some specific properties, or you may be asked to output a well-known, public JSON schema (e.g. Schema.org).
         If you know there is a fitting JSON schema published already, you should prefer that to making your own. But don't be afraid to modify those to fit your needs by adding or removing properties.
 
-        You can output the JSON minified, by leaving out the whitespace.
+        You use the `generateSchema` tool to return the JSON Schema. Do not output any text or markdown messages.
 
         Schema's MUST be contained withing a JSON object.
         This means, the schema MUST always be an object that then contains the requested contents. A schema may NEVER be anything else at the root level. Not arrays, not strings, not numbers, not booleans, not null. Only objects.

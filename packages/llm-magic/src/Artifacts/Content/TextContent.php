@@ -2,7 +2,7 @@
 
 namespace Mateffy\Magic\Artifacts\Content;
 
-readonly class TextContent
+readonly class TextContent implements Content
 {
     public function __construct(
         public string $text,

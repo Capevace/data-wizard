@@ -6,6 +6,7 @@ use App\Filament\Forms\JsonEditor;
 use Mateffy\Magic\Artifacts\LocalArtifact;
 use Mateffy\Magic\LLM\ElElEm;
 use Mateffy\Magic\LLM\Message\JsonMessage;
+use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\Loop\Response\JsonResponse;
 use Mateffy\Magic\Magic;
@@ -19,6 +20,15 @@ use Livewire\Component;
 
 class GenerateSchemaAction extends Actions\Action
 {
+    protected string $schemaStatePath = 'data.json_schema';
+
+    public function schemaStatePath(string $schemaStatePath): static
+    {
+        $this->schemaStatePath = $schemaStatePath;
+
+        return $this;
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -33,7 +43,7 @@ class GenerateSchemaAction extends Actions\Action
             ->modalFooterActionsAlignment('end')
             ->fillForm(fn (Component $livewire) => [
                 'schema_instructions' => '',
-                'edit_schema' => json_decode(data_get($livewire, 'data.json_schema'), associative: true),
+                'edit_schema' => json_decode(data_get($livewire, $this->schemaStatePath), associative: true),
             ])
             ->form([
                 Textarea::make('schema_instructions')
@@ -97,14 +107,36 @@ class GenerateSchemaAction extends Actions\Action
     {
         $prompt = new GenerateSchemaPrompt(instructions: $instructions, previouslyGeneratedSchema: $previouslyGeneratedSchema);
 
-        $data = Magic::chat()
+        $messages = Magic::chat()
             ->model(Claude3Family::haiku())
+            ->system($prompt->system())
+//            ->system($prompt->system())
+//            ->schema([
+//                'type' => 'object',
+//                'properties' => [
+//                    'schema' => [
+//                        'type' => 'object',
+//                        'description' => 'The JSON Schema as a JSON string',
+//                        'additionalProperties' => true,
+//                    ],
+//                ],
+//            ])
             ->prompt($prompt)
-            ->stream()
-            ->lastData();
+            ->tools([
+                /**
+                 * @type $schema {"type": "object", "description": "The JSON Schema you generated", "additionalProperties": true}
+                 */
+                'generateSchema' => fn (array $schema) => Magic::end(['schema' => $schema]),
+            ])
+            ->toolChoice('generateSchema')
+//            ->onMessageProgress(fn (Message $message) => dd($message))
+//            ->onMessage(fn (Message $message) => dd($message))
+            ->stream();
+
+        $data = $messages->lastData();
 
         if ($data === null || ($data['schema'] ?? null) === null) {
-            report(new \Exception('Could not generate schema: '.json_encode($data)));
+            report(new \Exception('Could not generate schema: '.json_encode($messages)));
 
             Notification::make()
                 ->danger()

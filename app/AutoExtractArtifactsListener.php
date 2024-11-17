@@ -5,6 +5,8 @@ namespace App;
 use App\Models\ExtractionBucket;
 use App\Models\File;
 use Mateffy\Magic\Artifacts\GenerateArtifactJob;
+use Mateffy\Magic\Artifacts\GenerateCloudArtifactJob;
+use Mateffy\Magic\Buckets\CloudArtifact;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
 class AutoExtractArtifactsListener
@@ -13,12 +15,15 @@ class AutoExtractArtifactsListener
 
     public function handle(MediaHasBeenAddedEvent $event): void
     {
-        /** @var ExtractionBucket $bucket */
-        $bucket = $event->media->model()->first();
+        /** @var ExtractionBucket|CloudArtifact $model */
+        $model = $event->media->model()->first();
 
         /** @var File $file */
         $file = $event->media;
 
-        GenerateArtifactJob::dispatch(bucket: $bucket, file: $file);
+        match ($model::class) {
+            ExtractionBucket::class => GenerateArtifactJob::dispatch(bucket: $model, file: $file),
+            CloudArtifact::class => GenerateCloudArtifactJob::dispatch(cloudArtifact: $model),
+        };
     }
 }
