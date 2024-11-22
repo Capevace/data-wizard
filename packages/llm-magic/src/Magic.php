@@ -3,6 +3,7 @@
 namespace Mateffy\Magic;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Mateffy\Magic\Builder\ChatPreconfiguredModelBuilder;
 use Mateffy\Magic\Builder\EmbeddingsBuilder;
 use Mateffy\Magic\Builder\ExtractionLLMBuilder;
@@ -14,6 +15,9 @@ use Mateffy\Magic\LLM\Exceptions\UnknownInferenceException;
 use Mateffy\Magic\LLM\LLM;
 use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\LLM\Models\Gpt4Family;
+use Mateffy\Magic\LLM\Models\OpenRouter;
+use Mateffy\Magic\LLM\Models\TogetherAI;
 use Mateffy\Magic\Loop\EndConversation;
 use Mateffy\Magic\Memory\MagicMemory;
 use ReflectionException;
@@ -120,5 +124,16 @@ class Magic
     public static function error(string $message, ?string $code = null, ?Throwable $previous = null): ToolCallException
     {
         return new ToolCallException($message, $code, $previous);
+    }
+
+    public static function models(): Collection
+    {
+        return collect([
+            ...Claude3Family::models(),
+            ...Gpt4Family::models(),
+            ...OpenRouter::models(),
+            ...TogetherAI::models(),
+        ])
+            ->sortBy(fn ($name, $key) => $key);
     }
 }

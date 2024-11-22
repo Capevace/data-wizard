@@ -31,6 +31,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Mateffy\FilaTheme\Shadowy\ShadowyThemePlugin;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -75,6 +76,7 @@ class AppPanelProvider extends PanelProvider
             ->brandName(new HtmlString('Data Wizard 🪄'))
             ->favicon('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪄</text></svg>')
             ->viteTheme('resources/css/filament/app/theme.css')
+//            ->plugin(new ShadowyThemePlugin())
             ->font('Armata')
             ->font('Asap')
             ->font('Prompt')

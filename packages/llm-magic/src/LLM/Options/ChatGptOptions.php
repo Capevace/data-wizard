@@ -5,7 +5,7 @@ namespace Mateffy\Magic\LLM\Options;
 readonly class ChatGptOptions extends ElElEmOptions
 {
     public function __construct(
-        public int $maxTokens = ElElEmOptions::DEFAULT_MAX_TOKENS,
+        int $maxTokens = ElElEmOptions::DEFAULT_MAX_TOKENS,
         public float $temperature = 0,
         public float $topP = 1,
     ) {

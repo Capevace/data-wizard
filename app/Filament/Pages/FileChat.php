@@ -24,9 +24,12 @@ use Mateffy\Magic\Chat\FilamentToolWidget;
 use Mateffy\Magic\Chat\HasChat;
 use Mateffy\Magic\Chat\InteractsWithChat;
 use Mateffy\Magic\Chat\ToolWidget;
+use Mateffy\Magic\LLM\ElElEm;
 use Mateffy\Magic\LLM\LLM;
 use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\LLM\Models\GeminiFamily;
+use Mateffy\Magic\LLM\Models\Gpt4Family;
 use Mateffy\Magic\Magic;
 
 class FileChat extends Page implements HasForms, HasChat
@@ -87,11 +90,6 @@ class FileChat extends Page implements HasForms, HasChat
                         'x-on:keydown.shift.enter.prevent' => '$wire.text += \'\n\'',
                     ]),
             ]);
-    }
-
-    protected function getLLM(): LLM
-    {
-        return Claude3Family::haiku();
     }
 
     protected function getSystemPrompt(): string

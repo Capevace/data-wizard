@@ -50,12 +50,12 @@ class SavedExtractorResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('Saved Extractor');
+        return __('Extractor');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('Saved Extractors');
+        return __('Extractors');
     }
 
     public static function form(Form $form): Form
@@ -257,7 +257,8 @@ class SavedExtractorResource extends Resource
     {
         return [
             'index' => Pages\ListSavedExtractors::route('/'),
-            'create' => Pages\CreateSavedExtractor::route('/create'),
+            'quick-create' => Pages\CreateSavedExtractor::route('/quick-create'),
+            'create' => Pages\CreationWizard::route('/create'),
             'edit' => SavedExtractorResource\Pages\EditSavedExtractor::route('/{record}/edit'),
         ];
     }

@@ -4,6 +4,9 @@ namespace App\Console\Commands;
 
 use HelgeSverre\Extractor\Facades\Text;
 use Illuminate\Console\Command;
+use Mateffy\Magic\LLM\Message\TextMessage;
+use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\Magic;
 
 class RunCommand extends Command
 {
@@ -13,20 +16,25 @@ class RunCommand extends Command
 
     public function handle(): void
     {
-        $sample = Text::text(file_get_contents('fixtures/elsenstrasse/expose.txt'));
-        $schema = file_get_contents('../magic-import/schema-alt.json');
+        // leftover = (581 % 17) = 3
+        // each = (581 - leftover) / 17 = 34
 
-        $prompt = <<<TXT
-        You need to carry out data extraction from the provided document and transform it into a structured JSON format.
+        $answer = Magic::chat()
+            ->model(Claude3Family::haiku())
+            ->system('You are a calculator. Always use tools to perform calculations, NEVER guess the answer.')
+            ->messages([
+                TextMessage::user('If I have 581 apples and I need to give them to 17 elephants, how many apples will each elephant get? An apple is not divisible, so how many elephants will get an extra apple?'),
+            ])
+            ->tools([
+                'add' => fn (float $a, float $b) => $a + $b,
+                'subtract' => fn (float $a, float $b) => $a - $b,
+                'multiply' => fn (float $a, float $b) => $a * $b,
+                'divide' => fn (float $a, float $b) => $a / $b,
+                'modulo' => fn (float $a, float $b) => $a % $b,
+            ])
+            ->stream()
+            ->formattedText();
 
-        You will be provided JSON schemas for multiple resources that can be extracted.
-        Try to see which resources are relevant and return these as a JSON array.
-        Only fill the fields that are in the schema, do not add your own. Also, only fill in information that is directly knowable from the documents provided.
-        Return all resources in a 1D-array and use JSON-LD references to include them inside resource properties. Do not nest data. E.g. all buildings and rentables are defined in the root array, and later referenced by their ID. Go by smallest possible data unit to largest (e.g. start with address, end with estate). Make sure to include the type of the resource (https://schema.immo/Building), but skip the \$schema redefinition.
-
-        $schema
-        TXT;
-
-        echo $prompt;
+        $this->info($answer);
     }
 }

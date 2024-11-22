@@ -1,0 +1,17 @@
+.fi-global-search > div {
+    @apply flex-1;
+}
+
+.mft-sidebar-search-icon {
+    @apply hidden;
+}
+
+.fi-sidebar:not(.fi-sidebar-open) {
+    .mft-sidebar-search {
+        @apply hidden;
+    }
+
+    .mft-sidebar-search-icon {
+        @apply flex;
+    }
+}

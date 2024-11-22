@@ -4,6 +4,7 @@ namespace Mateffy\Magic\Buckets\Functions;
 
 use App\Models\ExtractionBucket;
 use Illuminate\Support\Facades\DB;
+use Mateffy\Magic\Bucket\BucketInterface;
 use Mateffy\Magic\Buckets\CloudArtifact;
 use Mateffy\Magic\Functions\InvokableFunction;
 
@@ -13,7 +14,7 @@ class CreateFile implements InvokableFunction
 
     public static string $name = 'bucket_createFile';
 
-    public function __construct(protected ExtractionBucket $bucket)
+    public function __construct(protected BucketInterface $bucket)
     {
     }
 

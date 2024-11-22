@@ -173,7 +173,7 @@
 
         <x-filament::section
             icon="bi-robot"
-            :description="__('Saved Extractor')"
+            :description="__('Extractor')"
             :heading="$this->run->saved_extractor?->label ?? __('Extraction')"
             compact
             class="col-span-1"

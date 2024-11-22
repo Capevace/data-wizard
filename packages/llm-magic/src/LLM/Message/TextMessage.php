@@ -64,4 +64,9 @@ class TextMessage implements Message, PartialMessage
             content: $content,
         );
     }
+
+    public function role(): Role
+    {
+        return $this->role;
+    }
 }

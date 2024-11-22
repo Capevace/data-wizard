@@ -68,4 +68,9 @@ class JsonMessage implements DataMessage, PartialMessage
             partial: $chunk,
         );
     }
+
+    public function role(): Role
+    {
+        return $this->role;
+    }
 }

@@ -18,6 +18,7 @@ use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
 use Mateffy\Magic\LLM\ElElEm;
 use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\LLM\Models\OpenRouter;
 use Mateffy\Magic\Magic;
 use Mateffy\Magic\Prompt\TokenStats;
 
@@ -44,7 +45,7 @@ class GenerateDataJob implements ShouldQueue
             $this->run->save();
 
             $data = Magic::extract()
-                ->model(ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::SONNET_3_5)))
+                ->model(OpenRouter::model(OpenRouter::X_AI_GROK_BETA))
                 ->system($this->run->saved_extractor->output_instructions)
                 ->schema($this->run->target_schema)
                 ->strategy($this->run->strategy)

@@ -8,7 +8,7 @@ return [
 
             'info' => [
                 'title' => 'Data-Wizard.ai',
-                'description' => 'A reusable LLM-based data extraction tool',
+                'description' => null,
                 'version' => '1.0.0',
                 'contact' => [],
             ],
@@ -36,8 +36,8 @@ return [
             ],
 
             'security' => [
-                 GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement::create()
-                     ->securityScheme(\GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityScheme::TYPE_API_KEY),
+//                 GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement::create()
+//                     ->securityScheme(\GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityScheme::TYPE_API_KEY),
             ],
 
             // Non standard attributes used by code/doc generation tools can be added here

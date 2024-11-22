@@ -28,7 +28,7 @@
                 'justify-start' => $message->role === \Mateffy\Magic\Prompt\Role::Assistant,
                 'justify-end' => $message->role === \Mateffy\Magic\Prompt\Role::User,
             ])
-
+            data-magic-id="{{ md5($message->text()) }}"
             wire:key="{{ md5($message->text()) }}"
         >
             {!! $renderMessage($message) !!}

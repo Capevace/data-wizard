@@ -16,6 +16,17 @@ return [
         'groq' => [
             'token' => env('GROQ_API_KEY'),
         ],
+        'gemini' => [
+            'token' => env('GEMINI_API_KEY'),
+        ],
+        'openrouter' => [
+            'token' => env('OPENROUTER_API_KEY'),
+            'url' => env('OPENROUTER_API_URL', 'openrouter.ai/api/v1'),
+        ],
+        'togetherai' => [
+            'token' => env('TOGETHERAI_API_KEY'),
+            'url' => env('TOGETHERAI_API_URL', 'api.together.xyz/v1'),
+        ]
     ],
 
     'extractors' => [

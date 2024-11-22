@@ -175,7 +175,10 @@ class ChatPreconfiguredModelBuilder
 
         // Immediately continue if
         if ($continue && $messages->last() instanceof FunctionOutputMessage && !$messages->last()->endConversation) {
-            return $this->stream();
+            return MessageCollection::make([
+                ...$messages,
+                ...$this->stream()
+            ]);
         }
 
         return $messages;

@@ -85,3 +85,9 @@ Route::get('/bucket/{bucketId}/files/{name}/image/{number}', function (string $b
 })
     ->name('bucket.image');
 
+
+Route::get('/api/v1/extractions', [\App\Http\Controllers\Extraction\ExtractionController::class, 'index']);
+Route::post('/api/v1/extractions', [\App\Http\Controllers\Extraction\ExtractionController::class, 'store']);
+Route::get('/api/v1/extractions/{id}', [\App\Http\Controllers\Extraction\ExtractionController::class, 'show']);
+//Route::put('/api/v1/extractions/{id}', [\App\Http\Controllers\Extraction\ExtractionController::class, 'update']);
+//Route::delete('/api/v1/extractions/{id}', [\App\Http\Controllers\Extraction\ExtractionController::class, 'destroy']);

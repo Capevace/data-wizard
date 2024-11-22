@@ -9,6 +9,8 @@ use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
 use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\LLM\Models\GeminiFamily;
+use Mateffy\Magic\LLM\Models\Gpt4Family;
 use Mateffy\Magic\Magic;
 use Throwable;
 use function Laravel\Prompts\progress;
@@ -23,14 +25,26 @@ class SimpleChatCommand extends Command
 
     public function handle(): void
     {
-        $memory = Magic::memory()
-            ->file(path: database_path('memory.json'));
+//        $memory = Magic::memory()
+//            ->file(path: database_path('memory.json'));
 
         $chat = Magic::chat()
-            ->model(Claude3Family::sonnet_3_5())
+            ->model(GeminiFamily::flash())
+            ->tools([
+                /**
+                 * @description Test tool
+                 * @description $message The message to test
+                 */
+                'test' => function (string $message) {
+                    return [
+                        'message' => $message,
+                    ];
+                }
+            ])
             ->system(<<<PROMPT
             You are a personal coding assistant living in a Laravel codebase.
             When outputting text, don't use any formatting, XML, or HTML tags. Just plain text.
+            After functions have been called, you can respond to the output, for example with a summary or a follow-up question.
             PROMPT);
 
         while (true) {
@@ -46,9 +60,10 @@ class SimpleChatCommand extends Command
                 message: 'Thinking...'
             );
 
-            $text= $messages->firstText();
+            $chat->addMessages($messages->all());
 
-            $chat->addMessage(TextMessage::assistant($text));
+            $text = $messages->lastText();
+
             $this->info("[LLM]: " . $text);
         }
     }

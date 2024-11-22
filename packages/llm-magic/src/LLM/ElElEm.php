@@ -2,12 +2,16 @@
 
 namespace Mateffy\Magic\LLM;
 
+use Illuminate\Support\Collection;
 use Mateffy\Magic\Config\Organization;
 use Mateffy\Magic\LLM\Models\BedrockClaude3Family;
 use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\LLM\Models\GeminiFamily;
 use Mateffy\Magic\LLM\Models\Gpt4Family;
 use Mateffy\Magic\LLM\Models\GroqLlama3;
 use Mateffy\Magic\LLM\Models\GroqMixtral8X7B;
+use Mateffy\Magic\LLM\Models\OpenRouter;
+use Mateffy\Magic\LLM\Models\TogetherAI;
 use Mateffy\Magic\LLM\Options\ElElEmOptions;
 use Illuminate\Support\Str;
 
@@ -60,28 +64,34 @@ abstract class ElElEm implements LLM
         $model = Str::after($value, '/');
 
         return match ($organization) {
+            'openrouter' => new OpenRouter(model: $model),
+            'togetherai' => new TogetherAI(model: $model),
             'anthropic' => match ($model) {
+                'claude-3-haiku' => new Claude3Family(model: Claude3Family::HAIKU),
+                'claude-3-sonnet' => new Claude3Family(model: Claude3Family::SONNET),
+                'claude-3-opus' => new Claude3Family(model: Claude3Family::OPUS),
+                'claude-3.5-sonnet' => new Claude3Family(model: Claude3Family::SONNET_3_5),
                 Claude3Family::HAIKU,
                 Claude3Family::SONNET,
                 Claude3Family::OPUS,
                 Claude3Family::SONNET_3_5 => new Claude3Family(model: $model),
             },
             'bedrock' => match ($model) {
+                'claude-3-haiku' => new BedrockClaude3Family(model: BedrockClaude3Family::HAIKU),
+                'claude-3-sonnet' => new BedrockClaude3Family(model: BedrockClaude3Family::SONNET),
+                'claude-3-opus' => new BedrockClaude3Family(model: BedrockClaude3Family::OPUS),
+                'claude-3.5-sonnet' => new BedrockClaude3Family(model: BedrockClaude3Family::SONNET_3_5),
                 BedrockClaude3Family::HAIKU,
                 BedrockClaude3Family::SONNET,
                 BedrockClaude3Family::SONNET_3_5,
                 BedrockClaude3Family::OPUS => new BedrockClaude3Family(model: $model),
             },
             'openai' => match ($model) {
-                'gpt-4o',
-                'gpt-4-turbo',
-                'gpt-4' => new Gpt4Family(model: $model),
-                default => throw new \InvalidArgumentException("Invalid model type: {$value}"),
+                default => new Gpt4Family(model: str($model)->after('openai/')),
             },
-            'groq' => match ($model) {
-
-                'llama-3-70b' => new GroqLlama3(model: 'llama-3-70b-8192'),
-                'mixtral-8x7b' => new GroqMixtral8X7B(model: $model),
+            'google' => new GeminiFamily(model: $model),
+            'groq' => match (true) {
+                Str::startsWith($model, 'llama-') => new GroqLlama3(model: $model),
                 default => throw new \InvalidArgumentException("Invalid model type: {$value}"),
             },
             default => throw new \InvalidArgumentException("Invalid model type: {$value}"),
@@ -101,5 +111,25 @@ abstract class ElElEm implements LLM
     public static function id(string $organization, string $model): string
     {
         return "{$organization}/{$model}";
+    }
+
+    public static function model(string $model): static
+    {
+        return new static(
+            model: $model,
+            options: new ElElEmOptions,
+        );
+    }
+
+    protected static function prefixModels(array|Collection $models, ?string $prefix = null, ?string $prefixLabels = null): Collection
+    {
+        return Collection::wrap($models)
+            ->when($prefix, fn ($models) => $models->mapWithKeys(fn ($name, $key) => ["{$prefix}/{$key}" => $name]))
+            ->when($prefixLabels, fn ($models) => $models->mapWithKeys(fn ($name, $key) => [$key => "[$prefixLabels]: {$name}"]));
+    }
+
+    public static function models(?string $prefix = 'togetherai', ?string $prefixLabels = 'TogetherAI'): Collection
+    {
+        return static::prefixModels([], $prefix, $prefixLabels);
     }
 }

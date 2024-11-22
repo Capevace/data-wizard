@@ -4,12 +4,24 @@ namespace App\Http\Controllers\Extraction;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExtractionRun;
+use App\OpenApi\Parameters\ExtractionParameters;
+use App\OpenApi\RequestBodies\ExtractionRequestBody;
+use App\OpenApi\Responses\EmptySuccessResponse;
+use App\OpenApi\Responses\ErrorValidationResponse;
+use App\OpenApi\Responses\ExtractionResponse;
+use App\OpenApi\Responses\NotFoundResponse;
 use Illuminate\Http\Request;
+use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
 class ExtractionController extends Controller
 {
-    #[OpenApi\Operation(tags: ['Extraction'], summary: 'List all extractions')]
+    /**
+     * Get a list of all extractions.
+     */
+    #[OpenApi\Operation()]
+    #[OpenApi\Response(factory: EmptySuccessResponse::class)]
+    #[OpenApi\Parameters(factory: ExtractionParameters::class)]
     public function index()
     {
         $extractions = ExtractionRun::all();
@@ -17,23 +29,72 @@ class ExtractionController extends Controller
         return ExtractionResource::collection($extractions);
     }
 
-    #[OpenApi\Operation(tags: ['Extraction'], summary: 'Create a new extraction')]
+    /**
+     * Create a new extraction.
+     */
+    #[OpenApi\Operation(method: 'post')]
+    #[OpenApi\Parameters(factory: ExtractionParameters::class)]
+    #[OpenApi\RequestBody(factory: ExtractionRequestBody::class)]
+    #[OpenApi\Response(factory: ExtractionResponse::class, statusCode: 200)]
+////    #[OpenApi\Response(factory: ErrorValidationResponse::class, statusCode: 422)]
     public function store(Request $request)
     {
+        $data = $request->validate([
+            'extractor_id' => 'required|exists:saved_extractors,id',
+            'description' => 'nullable|string',
+        ]);
+
+        $extraction = ExtractionRun::create($data);
+
+        return new ExtractionResource($extraction);
     }
 
-    #[OpenApi\Operation(tags: ['Extraction'], summary: 'Show a specific extraction')]
+    /**
+     * Get a specific extraction.
+     */
+    #[OpenApi\Operation]
+    #[OpenApi\Parameters(factory: ExtractionParameters::class)]
+    #[OpenApi\Response(factory: ExtractionResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
     public function show($id)
     {
-    }
+        $extraction = ExtractionRun::findOrFail($id);
 
-    #[OpenApi\Operation(tags: ['Extraction'], summary: 'Update a specific extraction')]
-    public function update(Request $request, $id)
-    {
+        return new ExtractionResource($extraction);
     }
-
-    #[OpenApi\Operation(tags: ['Extraction'], summary: 'Delete a specific extraction')]
-    public function destroy($id)
-    {
-    }
+//
+//    /**
+//     * Update an extraction.
+//     */
+//    #[OpenApi\Operation(tags: ['Extraction'], method: 'put')]
+//    #[OpenApi\Response(factory: ExtractionResponse::class, statusCode: 200)]
+//    #[OpenApi\Response(factory: ErrorValidationResponse::class, statusCode: 422)]
+//    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+//    public function update(Request $request, $id)
+//    {
+//        $extraction = ExtractionRun::findOrFail($id);
+//
+//        $data = $request->validate([
+//            'description' => 'nullable|string',
+//        ]);
+//
+//        $extraction->update($data);
+//
+//        return new ExtractionResource($extraction);
+//    }
+//
+//    /**
+//     * Delete an extraction.
+//     */
+//    #[OpenApi\Operation(tags: ['Extraction'], method: 'delete')]
+//    #[OpenApi\Response(factory: EmptySuccessResponse::class)]
+//    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+//    public function destroy($id)
+//    {
+//        $extraction = ExtractionRun::findOrFail($id);
+//
+//        $extraction->delete();
+//
+//        return response()->noContent();
+//    }
 }

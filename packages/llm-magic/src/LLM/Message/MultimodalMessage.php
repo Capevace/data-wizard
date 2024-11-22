@@ -83,4 +83,9 @@ class MultimodalMessage implements Message
             ],
         );
     }
+
+    public function role(): Role
+    {
+        return $this->role;
+    }
 }

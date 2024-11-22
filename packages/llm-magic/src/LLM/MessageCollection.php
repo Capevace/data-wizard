@@ -43,9 +43,14 @@ class MessageCollection extends Collection
         return $this->first(fn (Message $message) => $message instanceof FunctionOutputMessage && ($filter === null || $filter($message)));
     }
 
-    public function lastText(): ?string
+    public function lastTextMessage(): ?TextMessage
     {
         return $this->last(fn (Message $message) => $message instanceof TextMessage);
+    }
+
+    public function lastText(): ?string
+    {
+        return $this->lastTextMessage()?->text();
     }
 
     /**
@@ -72,5 +77,19 @@ class MessageCollection extends Collection
     public function lastFunctionOutput(?Closure $filter = null): ?FunctionOutputMessage
     {
         return $this->last(fn (Message $message) => $message instanceof FunctionOutputMessage && ($filter === null || $filter($message)));
+    }
+
+    public function formattedText(): string
+    {
+        $lastIndex = $this->count() - 1;
+        $lineBreak = fn (int $index) => $index === $lastIndex ? '' : "\n";
+
+        return $this
+            ->map(fn (Message $message, int $index) => match ($message::class) {
+                FunctionInvocationMessage::class => "Tool: " . trim($message->text()),
+                FunctionOutputMessage::class => "Output: " . trim($message->text()) . $lineBreak($index),
+                default => trim($message->text()) . $lineBreak($index),
+            })
+            ->join("\n");
     }
 }

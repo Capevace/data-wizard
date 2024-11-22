@@ -2,6 +2,7 @@
 
 namespace Mateffy\Magic\Functions\Concerns;
 
+use Illuminate\Support\Str;
 use Mateffy\Magic\Functions\InvokableFunction;
 use Mateffy\Magic\Functions\MagicFunction;
 use Mateffy\Magic\Prompt\Reflection\ReflectionSchema;
@@ -43,6 +44,10 @@ class ToolProcessor
         $parameters = [];
 
         foreach ($reflection->getParameters() as $param) {
+            if (Str::contains($param->getType()->getName(), 'FunctionCall')) {
+                continue;
+            }
+
             if (!$param->isOptional()) {
                 $required[] = $param->getName();
             }
@@ -103,7 +108,10 @@ class ToolProcessor
             $schema['type'] = 'integer';
         } elseif ($typeName === 'float') {
             $schema['type'] = 'number';
+        } elseif ($typeName === 'array') {
+            $schema['items'] = ['type' => 'string'];
         }
+
         return $schema;
     }
 

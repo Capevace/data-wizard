@@ -65,9 +65,6 @@
     "Search...": "Search...",
     ":value / 1M Tokens": ":value / 1M Tokens",
     "Avg. :value / 1M Tokens": "Avg. :value / 1M Tokens",
-
-    "Saved Extractor": "Saved Extractor",
-    "Saved Extractors": "Saved Extractors",
     "LLM Output Instructions": "LLM Output Instructions",
     "example-output-instructions": "Example 1: \nWrite any texts from the perspective of being a representative of Example Ltd.\n\nExample 2: \nKeep in mind that Product categories are not mutually exclusive. For example, a product may be both a laptop and a desktop computer.\n\nExample 3: \nAnything you write needs to be in formal English language.",
     "It is recommended to keep the output instructions short and concise to save LLM tokens. You can write prompts in other languages, but English is recommended.": "It is recommended to keep the output instructions short and concise to save LLM tokens. You can write prompts in other languages, but English is recommended.",

@@ -56,7 +56,7 @@ class StartExtractionAction extends Action
                     ->required()
                     ->default(fn () => $this->getExtractor()?->id)
                     ->disabled(fn () => $this->getExtractor() ? true : false)
-                    ->label('Saved Extractor')
+                    ->label('Extractor')
                     ->translateLabel()
                     ->searchable()
                     ->searchDebounce(200)

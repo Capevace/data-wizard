@@ -14,8 +14,8 @@ $bubble = $plain ? 'llm-magic::chat.plain-bubble' : 'llm-magic::chat.bubble';
 
 @switch ($message::class)
     @case(\Mateffy\Magic\LLM\Message\TextMessage::class)
-        <x-dynamic-component :component="$bubble" @class(['mb-8 mt-2 max-w-lg w-fit'])>
-            <p class="whitespace-pre-wrap w-full bg-transparent text-inherit font-sans">{{ trim($message->text()) }}</p>
+        <x-dynamic-component :component="$bubble" @class(['mb-8 mt-2 max-w-lg w-fit prose'])>
+            <p class="whitespace-pre-wrap w-full bg-transparent text-inherit font-sans">{{ \Filament\Support\Markdown::block(trim($message->text())) }}</p>
         </x-dynamic-component>
         @break
     @case(\Mateffy\Magic\LLM\Message\MultimodalMessage::class)

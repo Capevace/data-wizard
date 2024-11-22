@@ -66,8 +66,8 @@
     ":value / 1M Tokens": ":value / 1M Tokens",
     "Avg. :value / 1M Tokens": "Durchschnittlich :value / 1M Tokens",
 
-    "Saved Extractor": "Extraktor",
-    "Saved Extractors": "Extraktoren",
+    "Extractor": "Extraktor",
+    "Extractors": "Extraktoren",
     "LLM Output Instructions": "Anweisungen für LLM-Output",
     "example-output-instructions": "Beispiel 1: \nWrite any texts from the perspective of being a representative of the company Beispiel GmbH.\n\nBeispiel 2: \nKeep in mind that Product categories are not mutually exclusive. For example, a product may be both a laptop and a desktop computer.\n\nBeispiel 3: \nAnything you write needs to be in formal German language.",
     "It is recommended to keep the output instructions short and concise to save LLM tokens. You can write prompts in other languages, but English is recommended.": "Halte die Anweisungen für den LLM-Output kurz und knapp, um LLM-Tokens zu sparen. Du kannst diese zwar auf Deutsch schreiben, aber Englisch wird empfohlen und führt oft zu besseren Ergebnissen.",

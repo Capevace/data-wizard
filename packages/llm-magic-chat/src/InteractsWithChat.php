@@ -13,6 +13,7 @@ use Mateffy\Magic\Builder\ChatPreconfiguredModelBuilder;
 use Mateffy\Magic\Chat\Livewire\StreamableMessage;
 use Mateffy\Magic\Functions\InvokableFunction;
 use Mateffy\Magic\Functions\MagicFunction;
+use Mateffy\Magic\LLM\ElElEm;
 use Mateffy\Magic\LLM\LLM;
 use Mateffy\Magic\LLM\Message\FunctionCall;
 use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
@@ -34,11 +35,20 @@ trait InteractsWithChat
     #[Locked]
     public string $conversationId;
 
+    #[Session]
+    public string $llm_model = 'openai/gpt-4o-mini';
 
     #[Session('wtf')]
     public array $chat_messages = [];
 
     protected array $temporary_messages = [];
+
+    public function updatedModel()
+    {
+        if (!Magic::models()->keys()->contains($this->model)) {
+            $this->model = 'openai/gpt-4o-mini';
+        }
+    }
 
     public function mountInteractsWithChat()
     {
@@ -133,7 +143,7 @@ trait InteractsWithChat
     public function magic(): ChatPreconfiguredModelBuilder
     {
         return Magic::chat()
-            ->model(Claude3Family::haiku())
+            ->model($this->getLLM())
             ->system($this->getSystemPrompt())
             ->messages($this->chat_messages)
             ->onMessageProgress(fn (Message $message) => $this->onMessageProgress($message))
@@ -311,9 +321,11 @@ trait InteractsWithChat
         StreamableMessage::put($this->conversationId, $messages);
     }
 
+
+
     protected function getLLM(): LLM
     {
-        throw new \Exception('Not implemented');
+        return ElElEm::fromString($this->llm_model);
     }
 
     protected function getSystemPrompt(): string

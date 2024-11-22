@@ -61,8 +61,20 @@
 
         <div class="shadow-inner bg-gray-100 dark:bg-gray-900 border-t border-gray-300 dark:border-gray-700 pt-5 pb-10 ">
             <form wire:submit.prevent="send($wire.text)" class="flex gap-5 items-start w-full max-w-2xl mx-auto pr-2" @submit="$wire.text = '';">
-                <div class="flex-1">
+                <div class="flex-1 flex flex-col">
                     {{ $this->form }}
+                    <div class="flex items-start justify-start">
+                        <x-filament::input.select wire:model.live="llm_model" class="!text-xs -mb-14">
+                            @foreach(\Mateffy\Magic\Magic::models() as $key => $model)
+                                <option
+                                    @if ($key === $this->llm_model)
+                                        selected
+                                    @endif
+                                    value="{{ $key }}"
+                                >{{ $model }} ({{ $key }})</option>
+                            @endforeach
+                        </x-filament::input.select>
+                    </div>
                 </div>
 
                 <div class="flex flex-col gap-5">

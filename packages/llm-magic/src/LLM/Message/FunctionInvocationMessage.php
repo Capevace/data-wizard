@@ -44,7 +44,16 @@ class FunctionInvocationMessage implements DataMessage, PartialMessage
 
     public function text(): ?string
     {
-        return $this->call->name;
+        $arguments = collect($this->call->arguments)
+            ->map(fn ($value, $key) => "$key: $value")
+            ->join(', ');
+
+        return "{$this->call->name}($arguments)";
+    }
+
+    public function role(): Role
+    {
+        return $this->role;
     }
 
     public function append(string $chunk): static

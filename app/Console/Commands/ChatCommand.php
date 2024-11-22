@@ -17,7 +17,7 @@ use function Laravel\Prompts\text;
 
 class ChatCommand extends Command
 {
-    protected $signature = 'chat';
+    protected $signature = 'chats';
 
     protected $description = 'Do some LLM chatting';
 

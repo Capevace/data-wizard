@@ -2,6 +2,7 @@
 
 namespace Mateffy\Magic\LLM\Models;
 
+use Illuminate\Support\Collection;
 use Mateffy\Magic\Config\Organization;
 use Mateffy\Magic\LLM\ElElEm;
 use Mateffy\Magic\LLM\ModelCost;
@@ -96,5 +97,15 @@ class Claude3Family extends ElElEm
             model: Claude3Family::OPUS,
             options: new ElElEmOptions
         );
+    }
+
+    public static function models(?string $prefix = null, ?string $prefixLabels = 'Claude API'): Collection
+    {
+        return static::prefixModels([
+            static::HAIKU => 'Claude 3 Haiku',
+            static::SONNET => 'Claude 3 Sonnet',
+            static::OPUS => 'Claude 3 Opus',
+            static::SONNET_3_5 => 'Claude 3.5 Sonnet',
+        ], $prefix, $prefixLabels);
     }
 }

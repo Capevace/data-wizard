@@ -6,6 +6,8 @@
         pollUrl: null,
 
         init() {
+
+
             this.$wire.$watch('poll', (poll) => {
                 if (poll && this.interval === null) {
                     this.pollUrl = poll;
@@ -22,6 +24,33 @@
             });
         },
 
+        async fetchScripts() {
+            if (window.STREAMABLE_MESSAGE_PURIFY && window.STREAMABLE_MESSAGE_MARKDOWN) {
+                return [window.STREAMABLE_MESSAGE_PURIFY, window.STREAMABLE_MESSAGE_MARKDOWN];
+            }
+
+            const [purify, markdown] = await Promise.all([
+                import('https://esm.sh/dompurify'),
+                import('https://esm.sh/marked'),
+            ]);
+
+            console.log(purify, markdown);
+            window.STREAMABLE_MESSAGE_PURIFY = purify.default;
+            window.STREAMABLE_MESSAGE_MARKDOWN = markdown.marked;
+
+            return [window.STREAMABLE_MESSAGE_PURIFY, window.STREAMABLE_MESSAGE_MARKDOWN];
+        },
+
+        markdown(message) {
+            this.fetchScripts();
+            if (window.STREAMABLE_MESSAGE_MARKDOWN && window.STREAMABLE_MESSAGE_PURIFY) {
+                const sanitized = window.STREAMABLE_MESSAGE_PURIFY.sanitize(message);
+                return window.STREAMABLE_MESSAGE_MARKDOWN(message);
+            }
+
+            return message;
+        },
+
         async poll() {
             if (!this.pollUrl) {
                 console.error('No poll URL');
@@ -32,6 +61,7 @@
                 .then(response => response.json())
                 .then(data => {
                     this.messages = data.messages;
+                    console.log(data.messages);
 
                     this.$dispatch('polled', { messages: data.messages });
                 });
@@ -46,7 +76,7 @@
         x-show="messages?.length === 0"
         x-cloak
         x-transition:enter="animate-fade-down animate-alternate animate-duration-300 duration-300 "
-        x-transition:leave="animate-fade-down animate-alternate-reverse animate-duration-200 duration-200 "
+        x-transition:leave="animate-fade-down animate-alternate-reverse animate-duration-200 duration-200 absolute"
     >
         <x-filament::loading-indicator @class(['w-8 h-8 text-gray-600'])/>
 

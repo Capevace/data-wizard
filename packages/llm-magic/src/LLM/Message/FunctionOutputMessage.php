@@ -69,6 +69,11 @@ class FunctionOutputMessage implements Message, DataMessage, ContentInterface
         return $this->output;
     }
 
+    public function role(): Role
+    {
+        return $this->role;
+    }
+
     public static function output(FunctionCall $call, mixed $output): static
     {
         return new self(role: Role::User, call: $call, output: $output);

@@ -4,6 +4,7 @@ namespace Mateffy\Magic\LLM\Message;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Livewire\Wireable;
+use Mateffy\Magic\Prompt\Role;
 
 interface Message extends Arrayable, Wireable
 {
@@ -12,4 +13,5 @@ interface Message extends Arrayable, Wireable
     public function toArray(): array;
 
     public function text(): ?string;
+    public function role(): Role;
 }
