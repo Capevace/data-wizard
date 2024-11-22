@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->integer('page');
             $table->integer('tokens');
 
-            $table->unique(['cloud_artifact_id', 'media_id', 'page']);
+            $table->unique(['cloud_artifact_id', 'page']);
         });
     }
 
