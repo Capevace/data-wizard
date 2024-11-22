@@ -47,7 +47,7 @@ class GenerateDataJob implements ShouldQueue
 
             $data = Magic::extract()
 //                ->model(OpenRouter::model(OpenRouter::X_AI_GROK_BETA))
-                ->model(Gpt4Family::model('gpt-4o-mini'))
+                ->model(ElElEm::model('openai/gpt-4o-mini'))
                 ->system($this->run->saved_extractor->output_instructions)
                 ->schema($this->run->target_schema)
                 ->strategy($this->run->strategy)
