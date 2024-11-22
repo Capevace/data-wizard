@@ -53,7 +53,7 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
     #[Computed]
     public function saved_extractor(): SavedExtractor
     {
-        return SavedExtractor::find($this->extractorId);
+        return SavedExtractor::findOrFail($this->extractorId);
     }
 
     #[Computed]

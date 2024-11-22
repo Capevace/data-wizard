@@ -92,7 +92,7 @@ class ParallelStrategy
 
         $data = $this->merge($datas);
 
-        if ($this->onDataProgress) {
+        if ($this->onDataProgress && $data !== null) {
             ($this->onDataProgress)($data);
         }
 

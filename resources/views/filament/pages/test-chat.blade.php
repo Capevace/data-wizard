@@ -22,7 +22,7 @@
                 },
             }"
             @scroll="
-                if ($el.scrollTop + $el.clientHeight >= $el.scrollHeight - 10) {
+                if ($el.scrollTop + $el.clientHeight >= $el.scrollHeight - 100) {
                     scrolled = false;
                 } else {
                     scrolled = true;
