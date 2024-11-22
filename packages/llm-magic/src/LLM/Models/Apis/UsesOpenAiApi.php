@@ -175,7 +175,11 @@ trait UsesOpenAiApi
             ->toArray();
 
         if (method_exists($prompt, 'forceFunction') && ($fn = $prompt->forceFunction())) {
-            $data['tool_choice'] = ['type' => 'tool', 'name' => $fn->name()];
+//            $toolchoice = ['type' => 'tool', 'name' => $fn->name()];
+//            {"type": "function", "function": {"name": "my_function"}}
+            $toolchoice = ['type' => 'function', 'function' => ['name' => $fn->name()]];
+        } else {
+            $toolchoice = null;
         }
 
         try {
@@ -195,6 +199,7 @@ trait UsesOpenAiApi
                         ->after('google/'),
                     'messages' => $messages,
                     'tools' => count($tools) > 0 ? $tools : null,
+                    'toolchoice' => $toolchoice,
                 ]));
 
             $cost = $this->getModelCost();
