@@ -199,7 +199,7 @@ trait UsesOpenAiApi
                         ->after('google/'),
                     'messages' => $messages,
                     'tools' => count($tools) > 0 ? $tools : null,
-                    'toolchoice' => $toolchoice,
+                    'tool_choice' => $toolchoice,
                 ]));
 
             $cost = $this->getModelCost();
