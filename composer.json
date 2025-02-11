@@ -119,7 +119,17 @@
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
-	"repositories": [
+    "repositories": [
+		{
+			"type": "path",
+			"url": "packages/llm-magic-providers"
+		},
+        {
+            "type": "path",
+            "url": "packages/laravel-json-schema"
+        }
+	],
+	"__repositories": [
 		{
 			"type": "path",
 			"url": "../magic/llm-magic"
@@ -127,10 +137,6 @@
         {
 			"type": "path",
 			"url": "../magic/llm-magic-ui"
-		},
-		{
-			"type": "path",
-			"url": "packages/llm-magic-memory"
 		},
 		{
 			"type": "path",

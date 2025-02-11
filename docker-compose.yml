@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: app
+    restart: always
+    ports:
+      - "8000:80"
+    depends_on:
+      - postgres
+    volumes:
+      - storage:/app/storage
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=http://localhost:8000
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=data_wizard
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=secret
+    networks:
+      - app_network
+
+  postgres:
+    image: postgres:17
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: data_wizard
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app_network
+
+volumes:
+  storage:
+  postgres_data:
+
+networks:
+  app_network:
+    driver: bridge
