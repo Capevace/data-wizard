@@ -6,10 +6,8 @@ use App\Filament\Resources\SavedExtractorResource\Pages\EditSavedExtractor;
 use Filament\Actions\Action;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
-use Mateffy\Magic\LLM\ElElEm;
-use Mateffy\Magic\LLM\Message\JsonMessage;
-use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\Prompt\GenerateStepLabelsPrompt;
+use Mateffy\Magic;
+use Mateffy\Magic\Models\Anthropic;
 
 class GenerateStepLabelsAction extends Action
 {
@@ -53,16 +51,16 @@ class GenerateStepLabelsAction extends Action
             });
     }
 
-    protected function generate(string $instructions, ?string $schema = null): ?array
+    protected function generate(?string $instructions, ?string $schema = null): ?array
     {
-        $prompt = new GenerateStepLabelsPrompt(instructions: $instructions, schema: $schema);
+        $prompt = new \App\Magic\Prompts\GenerateStepLabelsPrompt(instructions: $instructions ?? '', schema: $schema);
 
-        $llm = ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::HAIKU));
+        $responses = Magic::chat()
+            ->model('cheap')
+            ->prompt($prompt)
+            ->stream();
 
-        $responses = $llm->stream(prompt: $prompt);
-
-        /** @var ?JsonMessage $response */
-        $response = collect($responses)->first(fn ($message) => $message instanceof JsonMessage);
+        $response = $responses->lastData();
 
         if ($response === null) {
             report(new \Exception('Could not generate texts: '.json_encode($responses)));
@@ -75,7 +73,7 @@ class GenerateStepLabelsAction extends Action
             return null;
         }
 
-        return $response->data;
+        return $response;
     }
 
     public static function getDefaultName(): ?string

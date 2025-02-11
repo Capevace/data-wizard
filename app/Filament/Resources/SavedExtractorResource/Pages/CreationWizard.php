@@ -5,19 +5,17 @@ namespace App\Filament\Resources\SavedExtractorResource\Pages;
 use App\Filament\Forms\JsonEditor;
 use App\Filament\Resources\SavedExtractorResource;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateSchemaAction;
-use Filament\Actions\StaticAction;
+use App\Magic\Prompts\GenerateSchemaPrompt;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
-use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\Magic;
-use Mateffy\Magic\Prompt\GenerateSchemaPrompt;
+use Mateffy\Magic;
+use Mateffy\Magic\Exceptions\UnknownInferenceException;
 
 class CreationWizard extends CreateRecord
 {
@@ -47,7 +45,7 @@ class CreationWizard extends CreateRecord
         $prompt = new GenerateSchemaPrompt(instructions: $instructions, previouslyGeneratedSchema: $previouslyGeneratedSchema);
 
         $messages = Magic::chat()
-            ->model(Claude3Family::haiku())
+            ->model('cheap')
             ->system($prompt->system())
             ->prompt($prompt)
             ->tools([
@@ -133,7 +131,19 @@ class CreationWizard extends CreateRecord
                         'wizard::nextStep' => [
                             function (Wizard $wizard, string $statePath, int $currentStepIndex) {
                                 if ($currentStepIndex === 0 && $this->generateWith === null) {
-                                    $this->generateSchema();
+                                    try {
+                                        $this->generateSchema();
+                                    } catch (UnknownInferenceException $e) {
+                                        report($e);
+
+                                        Notification::make()
+                                            ->danger()
+                                            ->title($e->getTitle())
+                                            ->body($e->getMessage())
+                                            ->send();
+
+                                        return;
+                                    }
                                 }
                             }
                         ]

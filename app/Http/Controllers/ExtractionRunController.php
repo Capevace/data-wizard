@@ -16,10 +16,11 @@ class ExtractionRunController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'status' => ['required'],
-            'started_by_id' => ['nullable', 'exists:users'],
+            'status' => ['required', 'string', 'max:255'],
+            'started_by_id' => ['nullable', 'uuid', 'exists:users'],
             'result_json' => ['nullable'],
             'partial_result_json' => ['nullable'],
+            'model' => ['required', 'string', 'max:255'],
         ]);
 
         return new ExtractionRunResource(ExtractionRun::create($data));

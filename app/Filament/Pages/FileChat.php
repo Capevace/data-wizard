@@ -30,7 +30,7 @@ use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\LLM\Models\GeminiFamily;
 use Mateffy\Magic\LLM\Models\Gpt4Family;
-use Mateffy\Magic\Magic;
+use Mateffy\Magic;
 
 class FileChat extends Page implements HasForms, HasChat
 {

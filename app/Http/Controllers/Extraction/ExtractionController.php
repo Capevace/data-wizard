@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Extraction;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExtractionRun;
+use App\Models\SavedExtractor;
 use App\OpenApi\Parameters\ExtractionParameters;
 use App\OpenApi\RequestBodies\ExtractionRequestBody;
 use App\OpenApi\Responses\EmptySuccessResponse;
@@ -44,7 +45,12 @@ class ExtractionController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $extraction = ExtractionRun::create($data);
+        $extractor = SavedExtractor::findOrFail($data['extractor_id']);
+
+        $extraction = ExtractionRun::create([
+            'model' => $extractor->model ?? config('magic-extract.default-model'),
+            ...$data
+        ]);
 
         return new ExtractionResource($extraction);
     }

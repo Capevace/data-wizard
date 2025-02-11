@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use Filament\Notifications\Notification;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
+use Mateffy\Magic\LLM\Exceptions\InvalidRequest;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -22,7 +25,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+
     ];
 
     /**
@@ -42,7 +45,8 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            dump($e);
+            Log::critical($e->getMessage(), ['exception' => $e]);
+
         });
     }
 }

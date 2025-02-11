@@ -3,10 +3,6 @@
 namespace App\Filament\Resources\ExtractionRunResource\Actions;
 
 use App\Filament\Forms\JsonEditor;
-use Mateffy\Magic\LLM\ElElEm;
-use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\Loop\Response\JsonResponse;
-use Mateffy\Magic\Prompt\SmartModifyPrompt;
 use Closure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Actions;
@@ -15,6 +11,10 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Livewire\Component;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\Loop\Response\JsonResponse;
+use Mateffy\Magic\Prompt\SmartModifyPrompt;
 
 class SmartModifyJsonAction extends Action
 {

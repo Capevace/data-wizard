@@ -9,7 +9,7 @@ use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
 use Mateffy\Magic\LLM\Message\MultimodalMessage;
 use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\Magic;
+use Mateffy\Magic;
 use Mateffy\Magic\Prompt\Role;
 use function Laravel\Prompts\spin;
 

@@ -1,7 +1,7 @@
 <?php
 
 use Mateffy\Magic\Builder\ChatPreconfiguredModelBuilder;
-use Mateffy\Magic\Magic;
+use Mateffy\Magic;
 
 class Brain
 {

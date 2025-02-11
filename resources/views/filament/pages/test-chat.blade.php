@@ -65,7 +65,7 @@
                     {{ $this->form }}
                     <div class="flex items-start justify-start">
                         <x-filament::input.select wire:model.live="llm_model" class="!text-xs -mb-14">
-                            @foreach(\Mateffy\Magic\Magic::models() as $key => $model)
+                            @foreach(\Mateffy\Magic::models() as $key => $model)
                                 <option
                                     @if ($key === $this->llm_model)
                                         selected

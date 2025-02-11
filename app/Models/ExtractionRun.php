@@ -8,6 +8,8 @@ use App\Livewire\Components\EmbeddedExtractor;
 use App\Models\Concerns\TokenStatsCast;
 use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionRun\RunStatus;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\LLM;
 use Mateffy\Magic\Prompt\TokenStats;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +27,7 @@ use Swaggest\JsonSchema\SchemaContract;
  * @property ?array $error
  * @property ?TokenStats $token_stats
  * @property string $strategy
+ * @property string $model
  * @property ?string $saved_extractor_id
  * @property RunStatus $status
  * @property-read ?SavedExtractor $saved_extractor
@@ -40,6 +43,7 @@ class ExtractionRun extends Model
         'target_schema',
         'strategy',
         'status',
+        'model',
         'error',
         'started_by_id',
         'result_json',
@@ -123,5 +127,12 @@ class ExtractionRun extends Model
     public function getAdminUrl(): string
     {
         return RunPage::getUrl(['record' => $this->id], panel: 'admin');
+    }
+
+    public function llm(): LLM
+    {
+        $model = $this->model ?? config('magic-extract.default-model');
+
+        return ElElEm::fromString($model);
     }
 }

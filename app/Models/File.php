@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\URL;
+use Mateffy\Magic\Artifacts\Artifact;
 use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
-use Mateffy\Magic\Artifacts\LocalArtifact;
+use Mateffy\Magic\Artifacts\FileArtifact;
 
 /**
  * @property ArtifactGenerationStatus $artifact_status
  * @property-read string $thumbnail_src
- * @property-read LocalArtifact|null $artifact
+ * @property-read Artifact|null $artifact
  * @property-read string $artifact_path
  */
 class File extends \Spatie\MediaLibrary\MediaCollections\Models\Media
@@ -39,10 +42,31 @@ class File extends \Spatie\MediaLibrary\MediaCollections\Models\Media
     /**
      * @throws \JsonException
      */
-    public function getArtifactAttribute(): ?LocalArtifact
+    public function getArtifactAttribute(): ?Artifact
     {
-        return $this->artifact_status === ArtifactGenerationStatus::Complete
-            ? LocalArtifact::fromPath($this->artifact_path)
-            : null;
+        return FileArtifact::from(path: $this->getOriginalPath(), disk: $this->getOriginalDisk());
+    }
+
+    public function getOriginalPath(): string
+    {
+        return $this->getPathRelativeToRoot();
+    }
+
+    public function getOriginalDisk(): string
+    {
+        return $this->disk;
+    }
+
+    public function getSignedEmbedUrl(string $path): string
+    {
+        return URL::signedRoute(
+            name: 'files.contents',
+            parameters: [
+                'fileId' => $this->id,
+                'path' => base64_encode($path),
+                'debug_path' => $path
+            ],
+            expiration: now()->addDay()
+        );
     }
 }

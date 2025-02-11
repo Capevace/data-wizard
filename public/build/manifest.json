@@ -1,11 +1,16 @@
 {
+  "packages/shadowy-theme/resources/css/theme.css": {
+    "file": "assets/theme-2f7ce834.css",
+    "isEntry": true,
+    "src": "packages/shadowy-theme/resources/css/theme.css"
+  },
   "resources/css/app.css": {
     "file": "assets/app-4ed993c7.js",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/filament/app/theme.css": {
-    "file": "assets/theme-0150bb6a.css",
+    "file": "assets/theme-5ccf7bdb.css",
     "isEntry": true,
     "src": "resources/css/filament/app/theme.css"
   },

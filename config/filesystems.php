@@ -36,6 +36,12 @@ return [
             'throw' => false,
         ],
 
+        'artifacts' => [
+            'driver' => 'local',
+            'root' => storage_path('app/magic-artifacts'),
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

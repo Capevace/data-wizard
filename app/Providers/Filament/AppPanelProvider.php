@@ -2,9 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\ExampleChat;
 use App\Filament\Pages\GeneratePage;
 use App\Filament\Pages\LlmSettings;
-use App\Filament\Pages\ExampleChat;
 use App\Filament\Resources\ExtractionBucketResource;
 use App\Filament\Resources\ExtractionRunResource;
 use App\Filament\Resources\SavedExtractorResource;
@@ -31,7 +32,6 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Mateffy\FilaTheme\Shadowy\ShadowyThemePlugin;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -56,7 +56,7 @@ class AppPanelProvider extends PanelProvider
             ->topNavigation()
             ->navigation(fn (NavigationBuilder $builder) => $builder
                 ->items([
-                    ...Pages\Dashboard::getNavigationItems(),
+                    ...Dashboard::getNavigationItems(),
                     ...ExtractionBucketResource::getNavigationItems(),
                     ...SavedExtractorResource::getNavigationItems(),
                     ...ExtractionRunResource::getNavigationItems(),
@@ -102,7 +102,7 @@ class AppPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                Dashboard::class,
                 GeneratePage::class,
                 ExampleChat::class
             ])

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'default-model' => env('MAGIC_DEFAULT_MODEL', 'openai/gpt-4o-mini'),
     'uv' => [
         'path' => env('MAGIC_EXTRACT_UV_PATH', '/usr/bin/env uv'),
     ],

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\ExtractionBucketResource\Actions;
 
+use App\Filament\Forms\ModelSelect;
+use App\Filament\Forms\StrategySelect;
 use App\Filament\Resources\ExtractionRunResource;
 use App\Jobs\GenerateDataJob;
 use App\Models\ExtractionBucket;
@@ -12,12 +14,31 @@ use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Mateffy\Magic;
 
 class StartExtractionAction extends Action
 {
     protected Closure|SavedExtractor|null $extractor = null;
 
     protected Closure|ExtractionBucket|null $bucket = null;
+
+    protected Closure|string|null $llm = null;
+    protected Closure|string|null $strategy = null;
+
+    public function llm(Closure|string|null $llm): static
+    {
+        $this->llm = $llm;
+
+        return $this;
+    }
+
+    public function strategy(Closure|string|null $strategy): static
+    {
+        $this->strategy = $strategy;
+
+        return $this;
+    }
+
 
     public function extractor(Closure|SavedExtractor|null $extractor): static
     {
@@ -43,6 +64,16 @@ class StartExtractionAction extends Action
         return $this->evaluate($this->bucket);
     }
 
+    public function getLlm(): ?string
+    {
+        return $this->evaluate($this->llm);
+    }
+
+    public function getStrategy(): ?string
+    {
+        return $this->evaluate($this->strategy);
+    }
+
     public function hasExtractorForm(): static
     {
         return $this
@@ -55,7 +86,7 @@ class StartExtractionAction extends Action
                 Select::make('saved_extractor_id')
                     ->required()
                     ->default(fn () => $this->getExtractor()?->id)
-                    ->disabled(fn () => $this->getExtractor() ? true : false)
+                    ->hidden(fn () => $this->getExtractor() ? true : false)
                     ->label('Extractor')
                     ->translateLabel()
                     ->searchable()
@@ -76,7 +107,7 @@ class StartExtractionAction extends Action
 
                 Select::make('bucket_id')
                     ->default(fn () => $this->getBucket()?->id)
-                    ->disabled(fn () => $this->getBucket() ? true : false)
+                    ->hidden(fn () => $this->getBucket() ? true : false)
                     ->label('Bucket')
                     ->translateLabel()
                     ->searchable()
@@ -92,6 +123,14 @@ class StartExtractionAction extends Action
                         ->get()
                         ->pluck('description', 'id')
                     )
+                    ->required(),
+
+                StrategySelect::make('strategy')
+                    ->default(fn () => $this->getStrategy() ?? $this->getExtractor()?->strategy)
+                    ->required(),
+
+                ModelSelect::make('model')
+                    ->default(fn () => $this->getLlm() ?? $this->getExtractor()?->model)
                     ->required(),
 
                 Fieldset::make('Options')
@@ -142,6 +181,7 @@ class StartExtractionAction extends Action
                 $bucket = $this->getBucket();
                 $extractorId = $data['saved_extractor_id'] ?? null;
                 $bucketId = $data['bucket_id'] ?? null;
+                $model = $data['model'] ?? $this->getLlm() ?? $extractor?->model ?? Magic::defaultModelName();
                 $startedBy = auth()->user();
 
                 if ($extractorId) {
@@ -173,6 +213,7 @@ class StartExtractionAction extends Action
                     'started_by_id' => $startedBy?->id,
                     'target_schema' => $extractor->json_schema,
                     'saved_extractor_id' => $extractor->id,
+                    'model' => $model,
                 ]);
 
                 GenerateDataJob::dispatch(

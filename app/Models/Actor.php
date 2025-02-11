@@ -45,7 +45,6 @@ class Actor extends Model
      */
     public function add(Message $message): Collection
     {
-        Log::info('Adding message', ['message' => $message]);
         $messages = match ($message::class) {
             TextMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::Text,

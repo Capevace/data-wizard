@@ -159,12 +159,6 @@
             class="col-span-1"
         >
             <div class="grid grid-cols-1 gap-1 gap-y-4">
-                <x-generator.key-value icon="bi-robot" label="Model">
-                    <x-filament::badge size="lg" class="w-fit">
-                        anthropic/claude-sonnet-3.5
-                    </x-filament::badge>
-                </x-generator.key-value>
-
                 <x-generator.key-value icon="heroicon-o-clock" :label="__('Duration')">
                     <span class="text-lg">{{ $this->run?->status->formatDate($this->run?->created_at) }}</span>
                 </x-generator.key-value>
@@ -186,9 +180,30 @@
                     :href="\App\Filament\Resources\SavedExtractorResource::getUrl('edit', ['record' => $this->run->saved_extractor?->id])"
                 />
             </x-slot:header-actions>
-            <div class="prose prose-sm">
-                <p class="whitespace-pre-wrap">{{ $this->run->saved_extractor?->output_instructions }}</p>
-            </div>
+
+            <x-generator.key-value :icon="\Mateffy\Magic\Providers\ApiKey\ApiKeyProvider::tryFromModelString($this->run?->model ?? $this->saved_extractor->model)?->getIcon() ?? 'bi-robot'" label="Model" class="mb-5">
+                {{ \Mateffy\Magic::models()->get($this->run?->model ?? $this->saved_extractor->model) ?? $this->run?->model ?? $this->saved_extractor->model }}
+            </x-generator.key-value>
+
+            <x-generator.key-value icon="heroicon-o-beaker" label="Strategy" class="mb-5">
+                {{ ucfirst($this->run?->strategy) }}
+            </x-generator.key-value>
+
+            <x-generator.key-value
+                icon="heroicon-o-adjustments-horizontal"
+                label="Output Instructions"
+            >
+                @if ($instructions = $this->run->saved_extractor?->output_instructions)
+                    <div class="prose prose-sm">
+                        <p class="whitespace-pre-wrap">{{ $instructions }}</p>
+                    </div>
+                @else
+                    <p class="text-sm text-gray-500">No custom instructions</p>
+                @endif
+            </x-generator.key-value>
+
+
+
         </x-filament::section>
 
         <x-filament::section

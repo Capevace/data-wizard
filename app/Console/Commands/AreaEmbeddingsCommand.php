@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Mateffy\Magic\Embeddings\OpenAIEmbeddingModel;
-use Mateffy\Magic\Magic;
+use Mateffy\Magic;
 
 class AreaEmbeddingsCommand extends Command
 {

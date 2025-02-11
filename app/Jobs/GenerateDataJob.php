@@ -14,14 +14,16 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
 use Mateffy\Magic\LLM\ElElEm;
 use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\LLM\Models\Gpt4Family;
 use Mateffy\Magic\LLM\Models\OpenRouter;
-use Mateffy\Magic\Magic;
+use Mateffy\Magic;
 use Mateffy\Magic\Prompt\TokenStats;
+use OpenAI\Exceptions\ErrorException;
 
 class GenerateDataJob implements ShouldQueue
 {
@@ -46,8 +48,7 @@ class GenerateDataJob implements ShouldQueue
             $this->run->save();
 
             $data = Magic::extract()
-//                ->model(OpenRouter::model(OpenRouter::X_AI_GROK_BETA))
-                ->model(ElElEm::fromString('openai/gpt-4o-mini'))
+                ->model(ElElEm::fromString($this->run->model))
                 ->system($this->run->saved_extractor->output_instructions)
                 ->schema($this->run->target_schema)
                 ->strategy($this->run->strategy)
@@ -87,7 +88,7 @@ class GenerateDataJob implements ShouldQueue
             $this->run->result_json = $data->toArray() ?? $this->run->result_json;
             $this->run->status = RunStatus::Completed;
             $this->run->save();
-        } catch (\Throwable $e) {
+        } catch (\Throwable|ErrorException $e) {
             $this->run->error = [
                 'title' => method_exists($e, 'getTitle') ? $e->getTitle() : null,
                 'message' => $e->getMessage(),
@@ -96,7 +97,11 @@ class GenerateDataJob implements ShouldQueue
             $this->run->status = RunStatus::Failed;
             $this->run->save();
 
-            report($e);
+            if (app()->isProduction()) {
+                report($e);
+            } else {
+                Log::error($e->getMessage(), ['exception' => $e]);
+            }
         }
     }
 }

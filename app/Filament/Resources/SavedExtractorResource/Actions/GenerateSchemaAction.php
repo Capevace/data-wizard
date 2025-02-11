@@ -3,20 +3,14 @@
 namespace App\Filament\Resources\SavedExtractorResource\Actions;
 
 use App\Filament\Forms\JsonEditor;
-use Mateffy\Magic\Artifacts\LocalArtifact;
-use Mateffy\Magic\LLM\ElElEm;
-use Mateffy\Magic\LLM\Message\JsonMessage;
-use Mateffy\Magic\LLM\Message\Message;
-use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\Loop\Response\JsonResponse;
-use Mateffy\Magic\Magic;
-use Mateffy\Magic\Prompt\GenerateSchemaPrompt;
+use App\Magic\Prompts\GenerateSchemaPrompt;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Livewire\Component;
+use Mateffy\Magic;
 
 class GenerateSchemaAction extends Actions\Action
 {
@@ -108,19 +102,8 @@ class GenerateSchemaAction extends Actions\Action
         $prompt = new GenerateSchemaPrompt(instructions: $instructions, previouslyGeneratedSchema: $previouslyGeneratedSchema);
 
         $messages = Magic::chat()
-            ->model(Claude3Family::haiku())
+            ->model('cheap')
             ->system($prompt->system())
-//            ->system($prompt->system())
-//            ->schema([
-//                'type' => 'object',
-//                'properties' => [
-//                    'schema' => [
-//                        'type' => 'object',
-//                        'description' => 'The JSON Schema as a JSON string',
-//                        'additionalProperties' => true,
-//                    ],
-//                ],
-//            ])
             ->prompt($prompt)
             ->tools([
                 /**

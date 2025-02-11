@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use App\Livewire\Components\EmbeddedExtractor\ExtractorSteps;
 use App\Models\Concerns\UsesUuid;
+use App\WidgetAlignment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic\LLM\LLM;
 use Swaggest\JsonSchema\JsonSchema;
 
 /**
@@ -12,6 +16,7 @@ use Swaggest\JsonSchema\JsonSchema;
  * @property ?string $label
  * @property bool $was_automatically_created
  * @property array $json_schema
+ * @property ?string $model
  * @property ?string $output_instructions
  * @property ?string $introduction_view_heading
  * @property ?string $introduction_view_description
@@ -52,6 +57,7 @@ class SavedExtractor extends Model
         'was_automatically_created',
         'json_schema',
         'output_instructions',
+        'model',
 
         'page_title',
         'logo',
@@ -141,13 +147,29 @@ class SavedExtractor extends Model
         $this->save();
     }
 
-    public function getEmbeddedUrl(): string
+    public function getEmbeddedUrl(?ExtractorSteps $step = null, ?WidgetAlignment $horizontalAlignment = null, ?WidgetAlignment $verticalAlignment = null): string
     {
-        return route('embedded-extractor', ['extractorId' => $this->id]);
+        $step = $step ?? ExtractorSteps::Introduction;
+        $horizontalAlignment = $horizontalAlignment ?? WidgetAlignment::Center;
+        $verticalAlignment = $verticalAlignment ?? WidgetAlignment::Center;
+
+        return route('embedded-extractor', [
+            'extractorId' => $this->id,
+            'step' => $step->value,
+            'horizontal-alignment' => $horizontalAlignment->value,
+            'vertical-alignment' => $verticalAlignment->value,
+        ]);
     }
 
     public function getFullPageUrl(): string
     {
         return route('full-page-extractor', ['extractorId' => $this->id]);
+    }
+
+    public function llm(): LLM
+    {
+        $model = $this->model ?? config('magic-extract.default-model');
+
+        return ElElEm::fromString($model);
     }
 }

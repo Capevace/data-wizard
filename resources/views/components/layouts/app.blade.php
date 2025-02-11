@@ -22,6 +22,7 @@
 //            'gray' => \Filament\Support\Colors\Color::Neutral,
 //        ]);
 
+
         \Filament\Support\Facades\FilamentColor::register([
             'primary' => \Filament\Support\Colors\Color::Teal,
             'warning' => \Filament\Support\Colors\Color::Yellow,

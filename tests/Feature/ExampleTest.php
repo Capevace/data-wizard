@@ -7,7 +7,7 @@ use Mateffy\Magic\LLM\Message\FunctionCall;
 use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\Magic;
+use Mateffy\Magic;
 use Mateffy\Magic\Prompt\TokenStats;
 
 test('the application returns a successful response', function () {

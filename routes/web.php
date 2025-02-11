@@ -3,6 +3,10 @@
 use App\Http\Middleware\AllowEmbeddingMiddleware;
 use App\Models\ExtractionBucket;
 use Illuminate\Support\Facades\Route;
+use Mateffy\Magic\Artifacts\Content\Content;
+use Mateffy\Magic\Artifacts\Content\EmbedContent;
+use Mateffy\Magic\Artifacts\Content\ImageContent;
+use Mateffy\Magic\Artifacts\Content\ImageFileContent;
 use Mateffy\Magic\Chat\HasChat;
 use Mateffy\Magic\Chat\Livewire\StreamableMessage;
 use Mateffy\Magic\Chat\ToolWidget;
@@ -32,6 +36,34 @@ Route::middleware(['auth'])
         Route::get('/claude', \App\Http\Controllers\ClaudeStreamController::class);
         Route::get('/api/bucket/{bucket}/runs/{run}/generate', \App\Http\Controllers\JsonStreamController::class)
             ->name('api.bucket.runs.generate');
+
+        Route::get('/files/{fileId}/contents/{path}', function (string $fileId, string $path) {
+            $file = \App\Models\File::findOrFail($fileId);
+            $artifact = $file->artifact;
+
+            $decodedPath = base64_decode($path);
+
+            if (!\Illuminate\Support\Str::startsWith($decodedPath, ['images', 'pages', 'pages_marked', 'pages_txt'])) {
+                abort(404);
+            }
+
+            /** @var ?EmbedContent $content */
+            $content = collect($artifact->getContents())
+                ->filter(fn (Content $content) => $content instanceof EmbedContent)
+                ->first(fn (EmbedContent $content) => $content->getPath() === $decodedPath);
+
+            if ($content === null) {
+                abort(404);
+            }
+
+            $contents = $artifact->getEmbedContents($content);
+
+            return response($contents, 200, [
+                'Content-Type' => $content->getMimeType(),
+            ]);
+        })
+            ->middleware('signed')
+            ->name('files.contents');
 
         Route::get('/api/dataset/{dataset}', \App\Http\Controllers\PreloadDatasetController::class);
 

@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Forms\JsonEditor;
+use App\Filament\Forms\ModelSelect;
+use App\Filament\Forms\StrategySelect;
 use App\Filament\Resources\SavedExtractorResource\Pages;
 use App\Filament\Resources\SavedExtractorResource\Actions\BulkExportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateSchemaAction;
@@ -11,6 +13,7 @@ use App\Filament\Resources\SavedExtractorResource\RelationManagers\RunsRelationM
 use App\Filament\Resources\SavedExtractorResource\StepLabelsForm;
 use App\Models\SavedExtractor;
 use App\Models\SavedExtractor\RedirectMode;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
@@ -39,6 +42,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
+use Mateffy\Magic\LLM\ElElEm;
+use Mateffy\Magic;
 
 class SavedExtractorResource extends Resource
 {
@@ -74,22 +79,21 @@ class SavedExtractorResource extends Resource
                             ->icon('heroicon-o-code-bracket')
                             ->iconPosition('after')
                             ->schema([
-                                TextInput::make('label')
-                                    ->label('Label')
-                                    ->translateLabel()
-                                    ->placeholder(__('e.g. Extracting products from brochure PDFs')),
+                                Grid::make(3)
+                                    ->schema([
+                                        TextInput::make('label')
+                                            ->label('Label')
+                                            ->translateLabel()
+                                            ->placeholder(__('e.g. Extracting products from brochure PDFs')),
 
-                                Select::make('strategy')
-                                    ->label('LLM Strategy')
-                                    ->translateLabel()
-                                    ->selectablePlaceholder(false)
-                                    ->default('simple')
-                                    ->options([
-                                        'simple' => __('Simple'),
-                                        'sequential' => __('Sequential'),
-                                        'parallel' => __('Parallel'),
-                                    ])
-                                    ->required(),
+                                        StrategySelect::make('strategy')
+                                            ->required()
+                                            ->live(),
+
+                                        ModelSelect::make('model')
+                                            ->required()
+                                            ->live()
+                                    ]),
 
                                 JsonEditor::make('json_schema')
                                     ->id('data.json_schema_string')

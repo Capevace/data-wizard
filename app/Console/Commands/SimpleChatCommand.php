@@ -11,7 +11,7 @@ use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
 use Mateffy\Magic\LLM\Models\GeminiFamily;
 use Mateffy\Magic\LLM\Models\Gpt4Family;
-use Mateffy\Magic\Magic;
+use Mateffy\Magic;
 use Throwable;
 use function Laravel\Prompts\progress;
 use function Laravel\Prompts\spin;

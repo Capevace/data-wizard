@@ -6,7 +6,7 @@ use HelgeSverre\Extractor\Facades\Text;
 use Illuminate\Console\Command;
 use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\Magic;
+use Mateffy\Magic;
 
 class RunCommand extends Command
 {

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\SavedExtractorResource\Pages;
 
 use App\Filament\Resources\SavedExtractorResource;
+use App\Filament\Resources\SavedExtractorResource\Actions\ConfigureIFrameAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\ExportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateStepLabelsAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\ImportExtractorAction;
@@ -38,6 +39,7 @@ class EditSavedExtractor extends EditRecord
 
             StartWithBucketActionGroup::make(),
             ActionGroup::make([
+                ConfigureIFrameAction::make(),
                 GenerateStepLabelsAction::make(),
                 OpenEmbeddedExtractorAction::make(),
                 ExportExtractorAction::make(),

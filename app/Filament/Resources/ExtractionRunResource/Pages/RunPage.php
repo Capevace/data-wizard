@@ -5,7 +5,6 @@ namespace App\Filament\Resources\ExtractionRunResource\Pages;
 use App\Filament\Resources\ExtractionBucketResource\Actions\StartExtractionAction;
 use App\Filament\Resources\ExtractionRunResource;
 use App\Filament\Resources\ExtractionRunResource\Actions\SmartModifyJsonAction;
-use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedRunAction;
 use App\Models\ExtractionRun;
 use Filament\Actions\Action;
@@ -29,8 +28,11 @@ class RunPage extends ViewRecord
     {
         return [
             StartExtractionAction::make('startExtraction')
+                ->hasExtractorForm()
                 ->label('Restart extraction')
                 ->translateLabel()
+                ->llm(fn () => $this->record->model)
+                ->strategy(fn () => $this->record->strategy)
                 ->record(fn () => $this->record->bucket)
                 ->extractor(fn () => $this->record->saved_extractor)
                 ->bucket(fn () => $this->record->bucket),

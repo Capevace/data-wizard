@@ -113,7 +113,13 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
 
     public function mount()
     {
-        if (request()->routeIs('full-page-extractor')) {
+        $horizontalAlignment = WidgetAlignment::tryFrom(request()->get('horizontal-alignment') ?? '');
+        $verticalAlignment = WidgetAlignment::tryFrom(request()->get('vertical-alignment') ?? '');
+
+        if ($horizontalAlignment && $verticalAlignment) {
+            $this->horizontalAlignment = $horizontalAlignment;
+            $this->verticalAlignment = $verticalAlignment;
+        } else if (request()->routeIs('full-page-extractor')) {
             $this->horizontalAlignment = WidgetAlignment::Center;
             $this->verticalAlignment = WidgetAlignment::Center;
         } else if (request()->routeIs('embedded-extractor')) {
@@ -145,6 +151,7 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
             'started_by_id' => auth()->user()?->id,
             'target_schema' => $this->saved_extractor->json_schema,
             'saved_extractor_id' => $this->saved_extractor->id,
+            'model' => $this->saved_extractor->model ?? config('magic-extract.default-model'),
         ]);
 
         $this->runId = $run->id;
