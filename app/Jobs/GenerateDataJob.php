@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Actor;
-use App\Models\Actor\ActorTelemetry;
+use App\Models\ArtifactGenerationStatus;
 use App\Models\ExtractionRun;
 use App\Models\ExtractionRun\RunStatus;
 use App\Models\File;
@@ -15,14 +15,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
-use Mateffy\Magic\LLM\ElElEm;
-use Mateffy\Magic\LLM\Message\Message;
-use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\LLM\Models\Gpt4Family;
-use Mateffy\Magic\LLM\Models\OpenRouter;
 use Mateffy\Magic;
-use Mateffy\Magic\Prompt\TokenStats;
+use Mateffy\Magic\Chat\ActorTelemetry;
+use Mateffy\Magic\Chat\Messages\Message;
+use Mateffy\Magic\Chat\TokenStats;
+use Mateffy\Magic\Models\ElElEm;
 use OpenAI\Exceptions\ErrorException;
 
 class GenerateDataJob implements ShouldQueue
@@ -58,7 +55,9 @@ class GenerateDataJob implements ShouldQueue
                     $actor = $this->run->actors()->find($actorId);
 
                     if (! $actor) {
-                        throw new \InvalidArgumentException("Actor {$actorId} not found");
+                        $actor = $this->run->actors()->make();
+                        $actor->id = $actorId;
+                        $actor->save();
                     }
 
                     $actor->add($message);

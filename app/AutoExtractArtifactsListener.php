@@ -2,11 +2,9 @@
 
 namespace App;
 
+use App\Jobs\GenerateArtifactJob;
 use App\Models\ExtractionBucket;
 use App\Models\File;
-use Mateffy\Magic\Artifacts\GenerateArtifactJob;
-use Mateffy\Magic\Artifacts\GenerateCloudArtifactJob;
-use Mateffy\Magic\Buckets\CloudArtifact;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
 class AutoExtractArtifactsListener
@@ -23,7 +21,7 @@ class AutoExtractArtifactsListener
 
         match ($model::class) {
             ExtractionBucket::class => GenerateArtifactJob::dispatch(bucket: $model, file: $file),
-            CloudArtifact::class => GenerateCloudArtifactJob::dispatch(cloudArtifact: $model),
+//            CloudArtifact::class => GenerateCloudArtifactJob::dispatch(cloudArtifact: $model),
         };
     }
 }

@@ -3,18 +3,18 @@
 namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
-use Illuminate\Support\Facades\Log;
-use Mateffy\Magic\LLM\Message\DataMessage;
-use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
-use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
-use Mateffy\Magic\LLM\Message\JsonMessage;
-use Mateffy\Magic\LLM\Message\Message;
-use Mateffy\Magic\LLM\Message\MultimodalMessage;
-use Mateffy\Magic\LLM\Message\TextMessage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Collection;
+use Mateffy\Magic\Chat\MessageCollection;
+use Mateffy\Magic\Chat\Messages\DataMessage;
+use Mateffy\Magic\Chat\Messages\FunctionInvocationMessage;
+use Mateffy\Magic\Chat\Messages\FunctionOutputMessage;
+use Mateffy\Magic\Chat\Messages\Message;
+use Mateffy\Magic\Chat\Messages\MultimodalMessage;
+use Mateffy\Magic\Chat\Messages\MultimodalMessage\Base64Image;
+use Mateffy\Magic\Chat\Messages\MultimodalMessage\Text;
+use Mateffy\Magic\Chat\Messages\TextMessage;
 
 class Actor extends Model
 {
@@ -38,12 +38,7 @@ class Actor extends Model
         return $this->hasMany(ActorMessage::class, 'actor_id');
     }
 
-    /**
-     * @return SmartCollection<ActorMessage>
-     *
-     * @throws \JsonException
-     */
-    public function add(Message $message): Collection
+    public function add(Message $message): MessageCollection
     {
         $messages = match ($message::class) {
             TextMessage::class => $this->messages()->create([
@@ -58,12 +53,12 @@ class Actor extends Model
             ]),
             MultimodalMessage::class => collect($message->content)
                 ->each(fn (MultimodalMessage\ContentInterface $content) => match ($content::class) {
-                    \Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image::class => $this->messages()->create([
+                    Base64Image::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Base64Image,
                         'role' => $message->role,
                         'json' => $content->toArray(),
                     ]),
-                    \Mateffy\Magic\LLM\Message\MultimodalMessage\Text::class => $this->messages()->create([
+                    Text::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Text,
                         'role' => $message->role,
                         'text' => $content->text,
@@ -91,8 +86,6 @@ class Actor extends Model
             default => null,
         };
 
-        $messages = Collection::wrap($messages)->filter();
-
-        return $messages;
+        return MessageCollection::wrap($messages)->filter();
     }
 }

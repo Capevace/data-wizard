@@ -3,17 +3,6 @@
 use App\Http\Middleware\AllowEmbeddingMiddleware;
 use App\Models\ExtractionBucket;
 use Illuminate\Support\Facades\Route;
-use Mateffy\Magic\Artifacts\Content\Content;
-use Mateffy\Magic\Artifacts\Content\EmbedContent;
-use Mateffy\Magic\Artifacts\Content\ImageContent;
-use Mateffy\Magic\Artifacts\Content\ImageFileContent;
-use Mateffy\Magic\Chat\HasChat;
-use Mateffy\Magic\Chat\Livewire\StreamableMessage;
-use Mateffy\Magic\Chat\ToolWidget;
-use Mateffy\Magic\Functions\MagicFunction;
-use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
-use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
-use Mateffy\Magic\LLM\Message\Message;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +15,8 @@ use Mateffy\Magic\LLM\Message\Message;
 |
 */
 
+Route::get('/setup', \App\Livewire\Components\Setup::class)
+    ->name('setup');
 
 Route::middleware(['auth'])
     ->group(function () {
@@ -33,24 +24,20 @@ Route::middleware(['auth'])
             return view('welcome');
         });
 
-        Route::get('/claude', \App\Http\Controllers\ClaudeStreamController::class);
-        Route::get('/api/bucket/{bucket}/runs/{run}/generate', \App\Http\Controllers\JsonStreamController::class)
-            ->name('api.bucket.runs.generate');
-
         Route::get('/files/{fileId}/contents/{path}', function (string $fileId, string $path) {
             $file = \App\Models\File::findOrFail($fileId);
             $artifact = $file->artifact;
 
             $decodedPath = base64_decode($path);
 
-            if (!\Illuminate\Support\Str::startsWith($decodedPath, ['images', 'pages', 'pages_marked', 'pages_txt'])) {
+            if (!\Illuminate\Support\Str::startsWith($decodedPath, ['images', 'pages', 'pages_marked', 'pages_txt', 'source.'])) {
                 abort(404);
             }
 
-            /** @var ?EmbedContent $content */
+            /** @var ?\Mateffy\Magic\Extraction\Slices\EmbedSlice $content */
             $content = collect($artifact->getContents())
-                ->filter(fn (Content $content) => $content instanceof EmbedContent)
-                ->first(fn (EmbedContent $content) => $content->getPath() === $decodedPath);
+                ->filter(fn (\Mateffy\Magic\Extraction\Slices\Slice $content) => $content instanceof \Mateffy\Magic\Extraction\Slices\EmbedSlice)
+                ->first(fn (\Mateffy\Magic\Extraction\Slices\EmbedSlice $content) => $content->getPath() === $decodedPath);
 
             if ($content === null) {
                 abort(404);

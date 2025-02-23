@@ -53,6 +53,7 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('app')
+            ->brandName('Data Wizard 🪄')
             ->topNavigation()
             ->navigation(fn (NavigationBuilder $builder) => $builder
                 ->items([
@@ -79,8 +80,8 @@ class AppPanelProvider extends PanelProvider
 //            ->plugin(new ShadowyThemePlugin())
             ->font('Armata')
             ->font('Asap')
-            ->font('Prompt')
-            ->font('PT Sans')
+//            ->font('PT Sans')
+//            ->font('Manrope')
             ->colors([
                 'primary' => json_decode(<<<JSON
                 {
@@ -109,8 +110,8 @@ class AppPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+//                Widgets\AccountWidget::class,
+//                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

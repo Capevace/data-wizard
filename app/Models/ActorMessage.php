@@ -4,11 +4,11 @@ namespace App\Models;
 
 use App\Models\Actor\ActorMessageType;
 use Illuminate\Support\Arr;
-use Mateffy\Magic\LLM\Message\MultimodalMessage\Base64Image;
-use Mateffy\Magic\Prompt\Role;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Mateffy\Magic\Chat\Messages\MultimodalMessage\Base64Image;
+use Mateffy\Magic\Chat\Prompt\Role;
 
 /**
  * @property Role $role
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class ActorMessage extends Model
 {
-    use HasUuids, HasUuids;
+    use HasUuids;
 
     protected $table = 'actor_messages';
 

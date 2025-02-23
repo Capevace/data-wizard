@@ -1,6 +1,6 @@
 {
   "packages/shadowy-theme/resources/css/theme.css": {
-    "file": "assets/theme-2f7ce834.css",
+    "file": "assets/theme-468dfd6f.css",
     "isEntry": true,
     "src": "packages/shadowy-theme/resources/css/theme.css"
   },
@@ -10,7 +10,7 @@
     "src": "resources/css/app.css"
   },
   "resources/css/filament/app/theme.css": {
-    "file": "assets/theme-5ccf7bdb.css",
+    "file": "assets/theme-ebd7a8a1.css",
     "isEntry": true,
     "src": "resources/css/filament/app/theme.css"
   },

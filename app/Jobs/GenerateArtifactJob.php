@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\ArtifactGenerationStatus;
 use App\Models\ExtractionBucket;
 use App\Models\File;
 use Illuminate\Bus\Queueable;
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Mateffy\Magic\Exceptions\ArtifactGenerationFailed;
+use Mateffy\Magic\Extraction\DiskArtifact;
 
 /**
  * @method static mixed dispatch(ExtractionBucket $bucket, File $file)

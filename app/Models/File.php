@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\URL;
-use Mateffy\Magic\Artifacts\Artifact;
-use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
-use Mateffy\Magic\Artifacts\FileArtifact;
+use Mateffy\Magic\Extraction\Artifact;
+use Mateffy\Magic\Extraction\DiskArtifact;
 
 /**
  * @property ArtifactGenerationStatus $artifact_status
@@ -44,7 +42,7 @@ class File extends \Spatie\MediaLibrary\MediaCollections\Models\Media
      */
     public function getArtifactAttribute(): ?Artifact
     {
-        return FileArtifact::from(path: $this->getOriginalPath(), disk: $this->getOriginalDisk());
+        return DiskArtifact::from(path: $this->getOriginalPath(), disk: $this->getOriginalDisk());
     }
 
     public function getOriginalPath(): string

@@ -4,15 +4,11 @@ namespace App\Filament\Resources\ExtractionBucketResource\RelationManagers;
 
 use App\Filament\Forms\BucketFileUpload;
 use App\Filament\Forms\ImageColumnWithLoadingIndicator;
+use App\Jobs\GenerateArtifactJob;
+use App\Models\ArtifactGenerationStatus;
 use App\Models\ExtractionBucket;
 use App\Models\File;
-use Illuminate\Support\Facades\URL;
-use Mateffy\Magic\Artifacts\ArtifactGenerationStatus;
-use Mateffy\Magic\Artifacts\Content\Content;
-use Mateffy\Magic\Artifacts\Content\EmbedContent;
-use Mateffy\Magic\Artifacts\GenerateArtifactJob;
 use Filament\Actions\StaticAction;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section;
@@ -25,6 +21,8 @@ use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Mateffy\Magic\Extraction\Slices\EmbedSlice;
+use Mateffy\Magic\Extraction\Slices\Slice;
 
 class FilesRelationManager extends RelationManager
 {
@@ -38,8 +36,8 @@ class FilesRelationManager extends RelationManager
                 $artifact = $record->artifact;
 
                 $images = collect($artifact?->getContents())
-                    ->filter(fn (Content $content) => $content instanceof EmbedContent && Str::startsWith($content->getMimeType(), 'image/'))
-                    ->map(fn (EmbedContent $content) => ImageEntry::make($content->getPath())
+                    ->filter(fn (Slice $content) => $content instanceof EmbedSlice && Str::startsWith($content->getMimeType(), 'image/'))
+                    ->map(fn (EmbedSlice $content) => ImageEntry::make($content->getPath())
                         ->state($record->getSignedEmbedUrl($content->getPath()))
                         ->label($content->getPath())
                         ->height('auto')

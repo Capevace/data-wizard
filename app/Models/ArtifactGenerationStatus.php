@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Extraction;
+namespace App\Models;
 
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;

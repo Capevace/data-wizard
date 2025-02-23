@@ -16,7 +16,7 @@ return [
     */
 
     'dataset' => 'maxdohrn',
-    'name' => env('APP_NAME', 'Data Wizard'),
+    'name' => env('APP_NAME', 'Data Wizard 🪄'),
 
     'allow_custom_user_keys' => env('ALLOW_CUSTOM_USER_KEYS', true),
 
@@ -202,7 +202,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\Filament\AppPanelProvider::class,
-        App\Providers\Filament\CollectionsPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ],
