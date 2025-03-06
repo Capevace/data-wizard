@@ -4,7 +4,7 @@ export default {
     darkMode: 'class',
     presets: [preset],
     content: [
-        './app/Filament/**/*.php',
+        './app/**/*.php',
         './resources/views/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
     ],

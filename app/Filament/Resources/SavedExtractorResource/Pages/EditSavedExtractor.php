@@ -9,6 +9,7 @@ use App\Filament\Resources\SavedExtractorResource\Actions\GenerateStepLabelsActi
 use App\Filament\Resources\SavedExtractorResource\Actions\ImportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\StartWithBucketActionGroup;
+use App\Filament\Resources\SavedExtractorResource\Actions\TestWebhookAction;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
@@ -38,12 +39,14 @@ class EditSavedExtractor extends EditRecord
             RestoreAction::make(),
 
             StartWithBucketActionGroup::make(),
+
             ActionGroup::make([
                 ConfigureIFrameAction::make(),
                 GenerateStepLabelsAction::make(),
                 OpenEmbeddedExtractorAction::make(),
                 ExportExtractorAction::make(),
                 ImportExtractorAction::make(),
+                TestWebhookAction::make(),
             ])
         ];
     }

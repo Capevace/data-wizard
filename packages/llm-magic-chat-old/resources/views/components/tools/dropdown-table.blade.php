@@ -36,8 +36,8 @@
                 return this.rows;
             },
         }">
-        <x-resource.debug x-model="data" />
-        <x-resource.json-schema.table
+        <x-llm-magic::resource.debug x-model="data" />
+        <x-llm-magic::resource.json-schema.table
             name="table"
             state-path="data"
             :schema="[

@@ -3,6 +3,7 @@
 namespace App\Filament\Pages\LlmSettings;
 
 use App\Filament\Pages\LlmSettings\Concerns\HasApiConnectionDTO;
+use App\Models\ApiKey;
 use Filament\Infolists\Components\Actions\Action;
 
 class DeleteApiCredentialsAction extends Action
@@ -27,8 +28,7 @@ class DeleteApiCredentialsAction extends Action
                     return;
                 }
 
-                auth()->user()
-                    ->apiKeys()
+                ApiKey::query()
                     ->where('provider', $provider)
                     ->delete();
             });

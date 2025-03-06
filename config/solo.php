@@ -50,8 +50,10 @@ return [
         'Vite' => 'bun run dev',
 
         // Lazy commands do no automatically start when Solo starts.
-        'Dumps' => Command::from('php artisan solo:dumps'),
-        'Queue' => Command::from('php artisan queue:listen'),
+//        'Dumps' => Command::from('php artisan solo:dumps'),
+        'Queue #1' => Command::from('php artisan queue:listen --timeout=0'),
+        'Queue #2' => Command::from('php artisan queue:listen --timeout=0')->lazy(),
+        'Queue #3' => Command::from('php artisan queue:listen --timeout=0')->lazy(),
 
         'Reverb' => Command::from('php artisan reverb')->lazy(),
         'Pint' => Command::from('./vendor/bin/pint --ansi')->lazy(),

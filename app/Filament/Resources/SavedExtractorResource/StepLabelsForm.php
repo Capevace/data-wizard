@@ -15,6 +15,7 @@ class StepLabelsForm
     {
         return [
             Section::make('Heading')
+                ->hiddenLabel()
                 ->translateLabel()
                 ->icon('bi-fonts')
                 ->description(__('The heading is shown at the top of the page.'))
@@ -27,6 +28,7 @@ class StepLabelsForm
                 ]),
 
             Section::make('Description')
+                ->hiddenLabel()
                 ->translateLabel()
                 ->icon('bi-text-left')
                 ->description(__('The description text should instruct the user what this is about, and what they should do next.'))
@@ -50,17 +52,18 @@ class StepLabelsForm
                         ->default(true)
                 ]),
 
-            Section::make('Labels')
+            Section::make('Button Labels')
                 ->translateLabel()
                 ->icon('bi-input-cursor-text')
                 ->description(__('Button labels can be customized to better integrate with your application.'))
                 ->aside()
+                ->hidden(fn () => empty($buttons))
                 ->schema($buttons),
 
-            View::make("components.content.image")
-                ->viewData([
-                    "src" => "/images/ui/results.png",
-                ]),
+//            View::make("components.content.image")
+//                ->viewData([
+//                    "src" => "/images/ui/results.png",
+//                ]),
         ];
     }
 }

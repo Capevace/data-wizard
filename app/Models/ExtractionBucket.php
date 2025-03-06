@@ -2,6 +2,14 @@
 
 namespace App\Models;
 
+use ApiPlatform\Laravel\Eloquent\Filter\PartialSearchFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\QueryParameter;
 use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionBucket\BucketCreationSource;
 use App\Models\ExtractionBucket\BucketStatus;
@@ -16,11 +24,30 @@ use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Mateffy\Magic\Buckets\CloudArtifact;
 
 /**
  * @property-read array $target_schema
  */
+#[ApiResource(
+    uriTemplate: '/buckets',
+    operations: [
+        new GetCollection
+    ],
+)]
+#[ApiResource(
+    uriTemplate: '/buckets/{id}',
+    operations: [
+        new Get,
+        new Post,
+        new Patch,
+        new Delete
+    ],
+    rules: [
+
+    ]
+)]
+#[QueryParameter(key: 'model', filter: PartialSearchFilter::class)]
+#[QueryParameter(key: 'output_instructions', filter: PartialSearchFilter::class)]
 class ExtractionBucket extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes;
@@ -77,34 +104,9 @@ class ExtractionBucket extends Model implements HasMedia
         return $this->media();
     }
 
-    public function cloud_artifacts(): HasMany
-    {
-        return $this->hasMany(CloudArtifact::class, 'bucket_id');
-    }
-
     public function runs(): HasMany
     {
         return $this->hasMany(ExtractionRun::class, 'bucket_id');
-    }
-
-    public function getTargetSchemaAttribute(): ?array
-    {
-        return [
-            'type' => 'object',
-            'properties' => [
-                'estates' => [
-                    'type' => 'array',
-                    'items' => [
-                        'type' => 'object',
-                        'properties' => [
-                            'id' => ['type' => 'integer'],
-                            'name' => ['type' => 'string'],
-                            'buildings' => (new ExtractData)->schema(),
-                        ],
-                    ],
-                ],
-            ],
-        ];
     }
 
     public function logUsage(): void
@@ -117,7 +119,8 @@ class ExtractionBucket extends Model implements HasMedia
     {
         return self::create([
             'description' => "Embedded extraction bucket",
-
+            'created_by_id' => auth()->user()?->id,
+            'created_using' => BucketCreationSource::Embed,
         ]);
     }
 }

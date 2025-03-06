@@ -2,8 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\ApiTokenSettings;
 use App\Filament\Pages\Dashboard;
-use App\Filament\Pages\ExampleChat;
 use App\Filament\Pages\GeneratePage;
 use App\Filament\Pages\LlmSettings;
 use App\Filament\Resources\ExtractionBucketResource;
@@ -14,15 +14,18 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Alignment;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
+use Filament\Actions\Action;
+use Filament\Tables\Actions\Action as TableAction;
+use Filament\Forms\Components\Actions\Action as FormAction;
+use Filament\Infolists\Components\Actions\Action as InfolistAction;
 use Filament\View\PanelsRenderHook;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -61,13 +64,13 @@ class AppPanelProvider extends PanelProvider
                     ...ExtractionBucketResource::getNavigationItems(),
                     ...SavedExtractorResource::getNavigationItems(),
                     ...ExtractionRunResource::getNavigationItems(),
-                    ...ExampleChat::getNavigationItems()
                 ])
                 ->group(
                     NavigationGroup::make(__('Settings'))
                         ->icon('heroicon-o-cog')
                         ->items([
                             ...LlmSettings::getNavigationItems(),
+                            ...ApiTokenSettings::getNavigationItems(),
                         ])
                 )
             )
@@ -105,7 +108,6 @@ class AppPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
                 GeneratePage::class,
-                ExampleChat::class
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
@@ -132,6 +134,26 @@ class AppPanelProvider extends PanelProvider
                     PanelsRenderHook::SCRIPTS_BEFORE,
                     fn () => Blade::render("@vite(['resources/js/src/magic-extract.ts'])")
                 );
+
+                Action::configureUsing(function (Action $action) {
+                    $action
+                        ->modalFooterActionsAlignment(Alignment::Right);
+                });
+
+                FormAction::configureUsing(function (FormAction $action) {
+                    $action
+                        ->modalFooterActionsAlignment(Alignment::Right);
+                });
+
+                TableAction::configureUsing(function (TableAction $action) {
+                    $action
+                        ->modalFooterActionsAlignment(Alignment::Right);
+                });
+
+                InfolistAction::configureUsing(function (InfolistAction $action) {
+                    $action
+                        ->modalFooterActionsAlignment(Alignment::Right);
+                });
             });
     }
 }

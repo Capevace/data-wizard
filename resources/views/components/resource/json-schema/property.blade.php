@@ -57,11 +57,11 @@
             @endif
 
             @if ($table = $getMagicUiTableConfig($schema))
-                <x-resource.json-schema.table :name="$name" :state-path="$statePath" :schema="$schema['items']" :disabled="$disabled" />
+                <x-llm-magic::resource.json-schema.table :name="$name" :state-path="$statePath" :schema="$schema['items']" :disabled="$disabled" />
             @else
-                <x-previews.loop :name="$name" :state-path="$statePath" class="grid gap-5">
-                    <x-resource.json-schema.property
-                        x-bind:id="{{ $name }}_index . '_' . hashObject({{ $name }})"
+                <x-llm-magic::previews.loop :name="$name" :state-path="$statePath" class="grid gap-5">
+                    <x-llm-magic::resource.json-schema.property
+                        x-bind:id="{{ $name }}_index + '_' + hashObject({{ $name }})"
                         class="col-span-full"
                         :label="$getMagicUiLabel($schema) ?? \Illuminate\Support\Str::singular($label)"
                         :name="$name . '_0'"
@@ -70,12 +70,12 @@
                         :required="true"
                         :disabled="$disabled"
                     />
-                </x-previews.loop>
+                </x-llm-magic::previews.loop>
             @endif
         </div>
     @elseif ($matchesTypes(($schema['type'] ?? null), ['object']))
         @if (count(($schema['properties'] ?? [])) === 1 && ($property = array_keys(($schema['properties'] ?? []))[0]))
-            <x-resource.json-schema.property
+            <x-llm-magic::resource.json-schema.property
                 :label="$property"
                 :name="$name . '_' . $property"
                 :state-path="$statePath . '.' . $property"
@@ -105,7 +105,7 @@
                             'col-span-full' => $matchesTypes($propertySchema['type'] ?? '', ['object', 'array']),
                         ])
                     >
-                        <x-resource.json-schema.property
+                        <x-llm-magic::resource.json-schema.property
                             :label="$property"
                             :name="$name . '_' . $property"
                             :state-path="$statePath . '.' . $property"

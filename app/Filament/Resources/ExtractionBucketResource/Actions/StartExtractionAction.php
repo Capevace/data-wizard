@@ -14,6 +14,7 @@ use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Get;
 use Mateffy\Magic;
 
 class StartExtractionAction extends Action
@@ -82,8 +83,10 @@ class StartExtractionAction extends Action
             ->icon('heroicon-o-cursor-arrow-rays')
             ->color('gray')
             ->modalIconColor('primary')
+            ->modalWidth('xl')
             ->form([
                 Select::make('saved_extractor_id')
+                    ->columnSpan(1)
                     ->required()
                     ->default(fn () => $this->getExtractor()?->id)
                     ->hidden(fn () => $this->getExtractor() ? true : false)
@@ -136,25 +139,63 @@ class StartExtractionAction extends Action
                 Fieldset::make('Options')
                     ->columns(1)
                     ->schema([
-                        Toggle::make('include_pdf_text')
-                            ->label('PDF text')
-                            ->helperText('Send the text contents of the PDF to the LLM')
+                        Toggle::make('include_text')
+                            ->default(fn () => $this->getExtractor()?->include_text ?? true)
+                            ->label('Include text')
+                            ->helperText('Include the raw text of the document')
                             ->translateLabel()
-                            ->default(true)
+                            ->onIcon('bi-fonts')
+                            ->onColor('success')
+                            ->offIcon('heroicon-o-x-mark')
+                            ->offColor('danger')
                             ->required(),
 
-                        Toggle::make('include_pdf_pages_as_images')
-                            ->label('PDF pages as images')
-                            ->helperText('Send the screenshots of the PDF pages to the LLM')
+                        Toggle::make('include_embedded_images')
+                            ->default(fn () => $this->getExtractor()?->include_embedded_images ?? true)
+                            ->label('Include embedded images')
+                            ->helperText('Include the images embedded in the document')
+                            ->live()
                             ->translateLabel()
-                            ->default(false)
+                            ->onIcon('bi-image')
+                            ->onColor('success')
+                            ->offIcon('heroicon-o-x-mark')
+                            ->offColor('danger')
                             ->required(),
 
-                        Toggle::make('inclide_pdf_images')
-                            ->label('PDF raw images')
-                            ->helperText('Extract and send the embedded images of the PDF to the LLM')
+                        Toggle::make('mark_embedded_images')
+                            ->default(fn () => $this->getExtractor()?->mark_embedded_images ?? true)
+                            ->label('Mark images with identifiers')
+                            ->helperText('Draws text labels onto the embedded images for the LLM to reference in the output')
                             ->translateLabel()
-                            ->default(false)
+                            ->onIcon('bi-123')
+                            ->onColor('success')
+                            ->offIcon('heroicon-o-x-mark')
+                            ->offColor('danger')
+                            ->hidden(fn (Get $get) => ! $get('include_embedded_images'))
+                            ->required(),
+
+                        Toggle::make('include_page_images')
+                            ->default(fn () => $this->getExtractor()?->include_page_images ?? false)
+                            ->label('Include PDF screenshots')
+                            ->helperText('Include screenshots of each of the pages')
+                            ->live()
+                            ->translateLabel()
+                            ->onIcon('bi-file-earmark-image')
+                            ->onColor('success')
+                            ->offIcon('heroicon-o-x-mark')
+                            ->offColor('danger')
+                            ->required(),
+
+                        Toggle::make('mark_page_images')
+                            ->default(fn () => $this->getExtractor()?->mark_page_images ?? true)
+                            ->label('Mark embedded images')
+                            ->helperText('Draw a rectangle and label around embedded images directly onto the page')
+                            ->hidden(fn (Get $get) => ! $get('include_page_images'))
+                            ->translateLabel()
+                            ->onIcon('heroicon-o-paint-brush')
+                            ->onColor('success')
+                            ->offIcon('heroicon-o-x-mark')
+                            ->offColor('danger')
                             ->required(),
                     ]),
             ]);
@@ -214,12 +255,14 @@ class StartExtractionAction extends Action
                     'target_schema' => $extractor->json_schema,
                     'saved_extractor_id' => $extractor->id,
                     'model' => $model,
+                    'include_text' => $data['include_text'] ?? $extractor->include_text,
+                    'include_embedded_images' => $data['include_embedded_images'] ?? $extractor->include_embedded_images,
+                    'mark_embedded_images' => $data['mark_embedded_images'] ?? $extractor->mark_embedded_images,
+                    'include_page_images' => $data['include_page_images'] ?? $extractor->include_page_images,
+                    'mark_page_images' => $data['mark_page_images'] ?? $extractor->mark_page_images,
                 ]);
 
-                GenerateDataJob::dispatch(
-                    run: $run,
-                    startedBy: $startedBy
-                );
+                GenerateDataJob::dispatch(run: $run);
 
                 $url = ExtractionRunResource::getUrl('view', ['record' => $run->id]);
 

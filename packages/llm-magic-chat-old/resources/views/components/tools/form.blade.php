@@ -12,7 +12,7 @@
 @if (!$output)
     <form class="w-full py-1 mb-5" x-data="{ data: {} }" wire:submit.prevent="sendForm(data)">
         <div class="grid grid-cols-1 gap-2" >
-            <x-resource.json-schema :schema="$schema" state-path="data" />
+            <x-llm-magic::resource.json-schema :schema="$schema" state-path="data" />
         </div>
 
         <nav class="flex justify-end py-3">

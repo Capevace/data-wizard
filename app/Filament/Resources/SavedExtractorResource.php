@@ -16,6 +16,7 @@ use App\Models\SavedExtractor\RedirectMode;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -42,6 +43,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Mateffy\Magic\LLM\ElElEm;
 use Mateffy\Magic;
 
@@ -75,13 +77,14 @@ class SavedExtractorResource extends Resource
                     ->columnSpanFull()
                     ->columns(2)
                     ->schema([
-                        Tabs\Tab::make('JSON Schema & Strategy')
+                        Tabs\Tab::make('Data Schema & Strategy')
                             ->icon('heroicon-o-code-bracket')
                             ->iconPosition('after')
                             ->schema([
                                 Grid::make(3)
                                     ->schema([
                                         TextInput::make('label')
+                                            ->required()
                                             ->label('Label')
                                             ->translateLabel()
                                             ->placeholder(__('e.g. Extracting products from brochure PDFs')),
@@ -110,7 +113,88 @@ class SavedExtractorResource extends Resource
                                     ->placeholder(__('example-output-instructions'))
                                     ->autosize()
                                     ->extraAttributes(['class' => 'h-full', 'style' => 'min-height: 26rem'])
-                                    ->helperText(__('It is recommended to keep the output instructions short and concise to save LLM tokens. You can write prompts in other languages, but English is recommended.')),
+                                    ->helperText(__('You can write prompts in other languages, but English is recommended as the rest of the process is also in English. However, if you want the LLM to output a specific language, you can simply tell it here.'))
+                            ]),
+
+                        Tabs\Tab::make('Context Options')
+                            ->icon('heroicon-o-cube')
+                            ->iconPosition('after')
+                            ->schema([
+                                Section::make('Text')
+                                    ->description('The text of uploaded documents is extracted, split by pages and included in the prompt.')
+                                    ->icon('bi-fonts')
+                                    ->aside()
+                                    ->schema([
+                                        Toggle::make('include_text')
+                                            ->label('Include text')
+                                            ->translateLabel()
+                                            ->onIcon('bi-fonts')
+                                            ->onColor('success')
+                                            ->offIcon('bi-x')
+                                            ->offColor('danger')
+                                            ->default(true),
+                                    ]),
+
+                                Section::make('Images')
+                                    ->description('Any images you upload or that are contained within documents can be sent to the LLM to be processed with Vision capabilities.')
+                                    ->icon('bi-image')
+                                    ->aside()
+                                    ->schema([
+                                        Toggle::make('include_embedded_images')
+                                            ->label('Include images')
+                                            ->translateLabel()
+                                            ->onIcon('bi-image')
+                                            ->onColor('success')
+                                            ->offIcon('bi-x')
+                                            ->offColor('danger')
+                                            ->default(true)
+                                            ->helperText(__('Only possible if the LLM has Vision capabilities.')),
+
+                                        Toggle::make('mark_embedded_images')
+                                            ->label('Mark images with identifiers')
+                                            ->translateLabel()
+                                            ->hidden(fn (Get $get) => ! $get('include_embedded_images'))
+                                            ->onIcon('bi-123')
+                                            ->onColor('success')
+                                            ->offIcon('bi-x')
+                                            ->offColor('danger')
+                                            ->default(true)
+                                            ->helperText(__('Enabling this option will draw identifiers onto the images, which are also referenced in the text contents. This helps the LLM associate the images with the text blocks and is especially useful if you want image assignments as part of your data schema.')),
+                                    ]),
+
+                                Section::make('PDF Screenshots')
+                                    ->description('If you upload PDFs, screenshots of the pages can be sent to the LLM to be processed with Vision capabilities.')
+                                    ->icon('bi-file-earmark-pdf')
+                                    ->aside()
+                                    ->schema([
+                                        Toggle::make('include_page_images')
+                                            ->label('Include PDF screenshots')
+                                            ->translateLabel()
+                                            ->onIcon('bi-image')
+                                            ->onColor('success')
+                                            ->offIcon('bi-x')
+                                            ->offColor('danger')
+                                            ->default(true)
+                                            ->helperText(__('Only possible if the LLM has Vision capabilities.')),
+
+                                        Toggle::make('mark_page_images')
+                                            ->label('Marke embedded images on PDF screenshots')
+                                            ->translateLabel()
+                                            ->hidden(fn (Get $get) => ! $get('include_page_images'))
+                                            ->onIcon('heroicon-o-paint-brush')
+                                            ->onColor('success')
+                                            ->offIcon('bi-x')
+                                            ->offColor('danger')
+                                            ->default(false)
+                                            ->helperText(__('Enabling this option will draw a rectangle around embedded images and place a label next to them in the PDF screenshots. This can help the LLM associate the images with the correct text blocks.')),
+
+
+                                        Placeholder::make('context_warning')
+                                            ->hiddenLabel()
+                                            ->extraAttributes(['class' => 'text-warning-600 dark:text-warning-400'])
+                                            ->content(__('Enabling both "Include Images" "Include PDF screenshots" can massively increase the number of Vision tokens used and will make the extraction process slower and more expensive.'))
+                                            ->hidden(fn (Get $get) => ! $get('include_page_images') || ! $get('include_embedded_images'))
+                                    ]),
                             ]),
 
                         Tabs\Tab::make('Sendoff')
@@ -191,6 +275,7 @@ class SavedExtractorResource extends Resource
                                 prefix: 'introduction',
                                 buttons: [
                                     TextInput::make("introduction_view_next_button_label")
+                                        ->hiddenLabel()
                                         ->label("Next Button Label")
                                         ->translateLabel()
                                         ->placeholder(__("default_introduction_view_next_button_label"))
@@ -223,14 +308,17 @@ class SavedExtractorResource extends Resource
             ->columns([
                 TextColumn::make('label')
                     ->default('No label')
+                    ->wrap()
                     ->color(fn ($state) => $state === 'No label' ? 'gray' : null),
 
                 TextColumn::make('output_instructions')
-                    ->grow(false)
                     ->wrap()
-                    ->limit(200),
+                    ->lineClamp(2)
+                    ->limit(100),
 
-                TextColumn::make('strategy'),
+                TextColumn::make('strategy')
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => Str::title($state))
             ])
             ->filters([
                 TrashedFilter::make(),

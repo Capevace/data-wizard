@@ -24,6 +24,44 @@ Route::middleware(['auth'])
             return view('welcome');
         });
 
+        Route::get('/runs/{runId}/artifacts', function (string $runId) {
+            if (!request()->hasValidSignatureWhileIgnoring(['artifactId'])) {
+                abort(404);
+            }
+
+            $artifactId = request()->query('artifactId');
+
+            $run = \App\Models\ExtractionRun::findOrFail($runId);
+
+            $path = str($artifactId)->after('/');
+            $check1 = $check2 = $path->toString();
+
+            // sometimes, AIs will just rename .jpeg to .jpg as if stuff just doesn't matter anymore.
+            // rather than throw an error, we just allow both and check both... it's a bit of a mess.
+            if ($path->endsWith(['.jpeg', '.jpg'])) {
+                $check1 = $path->beforeLast('.')->append('.jpeg')->toString();
+                $check2 = $path->beforeLast('.')->append('.jpg')->toString();
+            }
+
+            $artifact = \Mateffy\Magic\Extraction\DiskArtifact::tryFromArtifactId($artifactId);
+
+            /** @var \Mateffy\Magic\Extraction\Slices\EmbedSlice $slice */
+            $slice = $artifact->getContents()
+                ->first(fn (\Mateffy\Magic\Extraction\Slices\Slice $content) => $content instanceof \Mateffy\Magic\Extraction\Slices\EmbedSlice && ($content->getPath() === $check1 || $content->getPath() === $check2));
+
+            if ($slice === null) {
+                abort(404);
+            }
+
+            $contents = $artifact->getRawEmbedContents($slice);
+
+            return response($contents, 200, [
+                'Content-Type' => $slice->getMimeType()
+            ]);
+        })
+            ->where('artifactId', '.*')
+            ->name('runs.artifacts.embed');
+
         Route::get('/files/{fileId}/contents/{path}', function (string $fileId, string $path) {
             $file = \App\Models\File::findOrFail($fileId);
             $artifact = $file->artifact;
@@ -43,7 +81,7 @@ Route::middleware(['auth'])
                 abort(404);
             }
 
-            $contents = $artifact->getEmbedContents($content);
+            $contents = $artifact->getRawEmbedContents($content);
 
             return response($contents, 200, [
                 'Content-Type' => $content->getMimeType(),
@@ -51,29 +89,6 @@ Route::middleware(['auth'])
         })
             ->middleware('signed')
             ->name('files.contents');
-
-        Route::get('/api/dataset/{dataset}', \App\Http\Controllers\PreloadDatasetController::class);
-
-        Route::get('/api/dataset/{dataset}/images/{image}', function (string $dataset, string $image) {
-            $path = base_path("../magic-import/fixtures/{$dataset}/images/{$image}");
-
-            if (! file_exists($path)) {
-                abort(404);
-            }
-
-            return response()->file($path);
-        });
-
-        Route::get('/iframe-test', function () {
-            // Layout: app
-            return view('livewire.iframe-test');
-        })
-            ->name('iframe-test');
-
-//        Route::get('/test-chat', \App\Livewire\Components\TestChat::class);
-
-
-
     });
 
 Route::get('/embed/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
@@ -82,27 +97,6 @@ Route::get('/embed/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::c
 
 Route::get('/full-page/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
     ->name('full-page-extractor');
-
-Route::get('/bucket/{bucketId}/files/{name}/image/{number}', function (string $bucketId, string $name, int $number) {
-    $bucket = ExtractionBucket::findOrFail($bucketId);
-
-    if ($name === 'first') {
-        $file = $bucket->files()->firstOrFail();
-    } else {
-        $name = base64_decode($name);
-        $file = $bucket->files()->where('name', $name)->firstOrFail();
-    }
-    /** @var \App\Models\File $file */
-
-    if ($file->artifact === null) {
-        abort(404);
-    }
-
-    $imagePath = $file->artifact->getEmbedPath("images/image{$number}.jpg");
-
-    return response()->file($imagePath);
-})
-    ->name('bucket.image');
 
 
 Route::get('/api/v1/extractions', [\App\Http\Controllers\Extraction\ExtractionController::class, 'index']);

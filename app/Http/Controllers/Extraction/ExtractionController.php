@@ -49,6 +49,11 @@ class ExtractionController extends Controller
 
         $extraction = ExtractionRun::create([
             'model' => $extractor->model ?? config('magic-extract.default-model'),
+            'include_text' => $extractor->include_text,
+            'include_embedded_images' => $extractor->include_embedded_images,
+            'mark_embedded_images' => $extractor->mark_embedded_images,
+            'include_page_images' => $extractor->include_page_images,
+            'mark_page_images' => $extractor->mark_page_images,
             ...$data
         ]);
 

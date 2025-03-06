@@ -71,7 +71,7 @@
                                 'rounded-tl-lg' => $loop->first,
                             ])
                         >
-                            <x-resource.json-schema.column-header
+                            <x-llm-magic::resource.json-schema.column-header
                                 :label="$property"
                                 :name="$name . '_' . $property"
                                 :state-path="$statePath . '.' . $property"
@@ -85,7 +85,7 @@
                     <td class="rounded-tr-lg"></td>
                 </tr>
             </thead>
-            <x-previews.loop :name="$name" :state-path="$statePath" sorted-by-js tag="tbody" class="rounded-b-lg">
+            <x-llm-magic::previews.loop :name="$name" :state-path="$statePath" sorted-by-js tag="tbody" class="rounded-b-lg">
                 <tr
                     class="border-b  dark:border-gray-700 "
                     :id="{{ $name }}_index + '_' + hashObject({{ $name }})"
@@ -110,7 +110,7 @@
                                 'border-gray-200 dark:border-gray-700' => !$loop->first,
                             ])
                         >
-                            <x-resource.json-schema.column
+                            <x-llm-magic::resource.json-schema.column
                                 :label="$property"
                                 :column="$name"
                                 :name="$name . '_' . $property"
@@ -132,7 +132,7 @@
                         />
                     </td>
                 </tr>
-            </x-previews.loop>
+            </x-llm-magic::previews.loop>
         </table>
     </div>
 </div>

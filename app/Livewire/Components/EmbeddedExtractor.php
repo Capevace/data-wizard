@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Components;
 
+use App\Filament\Resources\ExtractionRunResource\Actions\DownloadAsCsvAction;
+use App\Filament\Resources\ExtractionRunResource\Actions\DownloadAsJsonAction;
+use App\Filament\Resources\ExtractionRunResource\Actions\DownloadAsXmlAction;
 use App\Jobs\GenerateDataJob;
 use App\Livewire\Components\EmbeddedExtractor\ExtractorSteps;
 use App\Livewire\Components\EmbeddedExtractor\HasStepLabels;
@@ -9,6 +12,7 @@ use App\Livewire\Components\EmbeddedExtractor\HasUploadForm;
 use App\Livewire\Components\Shared\HasPartialJson;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
+use App\Models\ExtractionRun\RunStatus;
 use App\Models\SavedExtractor;
 use App\WidgetAlignment;
 use Filament\Actions\Contracts\HasActions;
@@ -273,6 +277,35 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
         }
 
         $this->dispatchCompletion();
+    }
+
+    public function canDownload(): bool
+    {
+        return $this->run?->status === RunStatus::Completed && $this->run?->saved_extractor->allow_download;
+    }
+
+    public function downloadAsCsvAction(): DownloadAsCsvAction
+    {
+        return DownloadAsCsvAction::make()
+            ->visible(fn () => $this->canDownload())
+            ->grouped()
+            ->record($this->run);
+    }
+
+    public function downloadAsJsonAction(): DownloadAsJsonAction
+    {
+        return DownloadAsJsonAction::make()
+            ->visible(fn () => $this->canDownload())
+            ->grouped()
+            ->record($this->run);
+    }
+
+    public function downloadAsXmlAction(): DownloadAsXmlAction
+    {
+        return DownloadAsXmlAction::make()
+            ->visible(fn () => $this->canDownload())
+            ->grouped()
+            ->record($this->run);
     }
 
     public function render()

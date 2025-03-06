@@ -2,10 +2,10 @@
 
 namespace App\Filament\Pages\LlmSettings;
 
+use App\Models\ApiKey;
+use App\Models\ApiKey\ApiKeyProvider;
+use App\Models\ApiKey\ApiKeyTokenType;
 use Illuminate\Support\Collection;
-use Mateffy\Magic\Providers\ApiKey;
-use Mateffy\Magic\Providers\ApiKey\ApiKeyProvider;
-use Mateffy\Magic\Providers\ApiKey\ApiKeyTokenType;
 
 readonly class ApiConnectionDTO
 {

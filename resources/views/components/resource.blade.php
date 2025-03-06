@@ -20,8 +20,8 @@
     {{ $slot }}
 
     @if ($resources)
-        <x-resource.sub-resources :label="$heading">
+        <x-llm-magic::resource.sub-resources :label="$heading">
             {{ $resources }}
-        </x-resource.sub-resources>
+        </x-llm-magic::resource.sub-resources>
     @endif
 </article>

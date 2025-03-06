@@ -1,7 +1,7 @@
 <div
-    x-ignore
-	ax-load
-    ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('GeneratorComponent') }}"
+    {{--    x-ignore--}}
+    {{--	ax-load--}}
+    {{--    ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('GeneratorComponent') }}"--}}
     x-data="GeneratorComponent({ debugModeEnabled: @entangle('debugModeEnabled') })"
     class="grid grid-cols-1 gap-6 md:grid-cols-3 items-start"
     @start-streaming.window="startStreaming($event.detail.sourceUrl)"
@@ -47,19 +47,8 @@
 
         <template x-if="tab === 'gui'">
             <div class="flex flex-col gap-4">
-                <x-resource.debug />
-                <x-resource.json-schema :schema="$this->schema" />
-
-{{--                <template x-for="(estate, estateIndex) in $wire.partialResultJson?.data?.estates" :key="estateIndex">--}}
-{{--                    <x-previews.estate/>--}}
-{{--                </template>--}}
-
-{{--                <div class="grid grid-cols-1 gap-6 md:grid-cols-3">--}}
-{{--                    <x-previews.products />--}}
-{{--                </div>--}}
-{{--                <x-resource.assign name="perso">--}}
-{{--                    <x-previews.perso />--}}
-{{--                </x-resource.assign>--}}
+                {{--                <x-llm-magic::resource.debug />--}}
+                <x-llm-magic::resource.json-schema :schema="$this->schema" />
             </div>
         </template>
 
@@ -96,31 +85,49 @@
                                     class="w-full aspect-video object-center object-cover"
                                 />
                             @elseif ($message->type === \App\Models\Actor\ActorMessageType::FunctionInvocation)
-                                <div x-data="{
+                                <div
+                                    x-data="{
                                     json: @js($message->data('call.arguments')),
                                     get prettyJson() {
                                         return window.prettyPrint(this.json);
                                     }
-                                }" class="min-w-0 flex-1">
-                                    <pre class="prettyjson" x-html="prettyJson"></pre>
+                                }"
+                                    class="min-w-0 flex-1"
+                                >
+                                    <pre
+                                        class="prettyjson"
+                                        x-html="prettyJson"
+                                    ></pre>
                                 </div>
                             @elseif ($message->type === \App\Models\Actor\ActorMessageType::FunctionOutput)
-                                <div x-data="{
+                                <div
+                                    x-data="{
                                     json: @js($message->data('output')),
                                     get prettyJson() {
                                         return window.prettyPrint(this.json);
                                     }
-                                }" class="min-w-0 flex-1">
-                                    <pre class="prettyjson" x-html="prettyJson"></pre>
+                                }"
+                                    class="min-w-0 flex-1"
+                                >
+                                    <pre
+                                        class="prettyjson"
+                                        x-html="prettyJson"
+                                    ></pre>
                                 </div>
                             @else
-                                <div x-data="{
+                                <div
+                                    x-data="{
                                     json: @js($message->json),
                                     get prettyJson() {
                                         return window.prettyPrint(JSON.parse(this.json));
                                     }
-                                }" class="min-w-0 flex-1">
-                                    <pre class="prettyjson" x-html="prettyJson"></pre>
+                                }"
+                                    class="min-w-0 flex-1"
+                                >
+                                    <pre
+                                        class="prettyjson"
+                                        x-html="prettyJson"
+                                    ></pre>
                                 </div>
                             @endif
                         </div>
@@ -140,13 +147,13 @@
                 class="col-span-1"
             >
                 @if ($title = $this->run->error['title'] ?? null)
-                    <p class="text-sm font-semibold text-red-500">{{ $title }}</p>
+                    <p class="text-sm font-semibold text-danger-500 dark:text-danger-400">{{ $title }}</p>
                 @endif
                 @if ($errorMessage = $this->run->error['message'] ?? null)
-                    <p class="text-sm text-red-500 mb-2">{{ $errorMessage }}</p>
+                    <p class="text-sm text-danger-500 dark:text-danger-400 mb-2">{{ $errorMessage }}</p>
                 @endif
                 @if ($trace = $this->run->error['trace'] ?? null)
-                    <pre class="text-xs text-red-500 overflow-x-auto">{{ $trace }}</pre>
+                    <pre class="text-xs text-gray-500 dark:text-gray-400 overflow-x-auto bg-transparent">{{ $trace }}</pre>
                 @endif
             </x-filament::section>
         @endif
@@ -159,7 +166,10 @@
             class="col-span-1"
         >
             <div class="grid grid-cols-1 gap-1 gap-y-4">
-                <x-generator.key-value icon="heroicon-o-clock" :label="__('Duration')">
+                <x-generator.key-value
+                    icon="heroicon-o-clock"
+                    :label="__('Duration')"
+                >
                     <span class="text-lg">{{ $this->run?->status->formatDate($this->run?->created_at) }}</span>
                 </x-generator.key-value>
             </div>
@@ -181,11 +191,19 @@
                 />
             </x-slot:header-actions>
 
-            <x-generator.key-value :icon="\Mateffy\Magic\Providers\ApiKey\ApiKeyProvider::tryFromModelString($this->run?->model ?? $this->saved_extractor->model)?->getIcon() ?? 'bi-robot'" label="Model" class="mb-5">
+            <x-generator.key-value
+                :icon="\App\Models\ApiKey\ApiKeyProvider::tryFromModelString($this->run?->model ?? $this->saved_extractor->model)?->getIcon() ?? 'bi-robot'"
+                label="Model"
+                class="mb-5"
+            >
                 {{ \Mateffy\Magic::models()->get($this->run?->model ?? $this->saved_extractor->model) ?? $this->run?->model ?? $this->saved_extractor->model }}
             </x-generator.key-value>
 
-            <x-generator.key-value icon="heroicon-o-beaker" label="Strategy" class="mb-5">
+            <x-generator.key-value
+                icon="heroicon-o-beaker"
+                label="Strategy"
+                class="mb-5"
+            >
                 {{ ucfirst($this->run?->strategy) }}
             </x-generator.key-value>
 
@@ -194,14 +212,13 @@
                 label="Output Instructions"
             >
                 @if ($instructions = $this->run->saved_extractor?->output_instructions)
-                    <div class="prose prose-sm">
+                    <div class="prose prose-sm dark:prose-invert">
                         <p class="whitespace-pre-wrap">{{ $instructions }}</p>
                     </div>
                 @else
                     <p class="text-sm text-gray-500">No custom instructions</p>
                 @endif
             </x-generator.key-value>
-
 
 
         </x-filament::section>
@@ -213,7 +230,10 @@
             class="col-span-1"
         >
             @if ($stats = $this->run?->token_stats)
-                <x-generator.cost :stats="$stats" class="col-span-1" />
+                <x-generator.cost
+                    :stats="$stats"
+                    class="col-span-1"
+                />
             @endif
         </x-filament::section>
     </div>

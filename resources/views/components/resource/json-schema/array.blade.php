@@ -8,6 +8,6 @@
     ],
 ])
 
-<x-previews.loop :$name :$statePath>
-    <x-resource.json-schema.object :schema="$items" />
-</x-previews.loop>
+<x-llm-magic::previews.loop :$name :$statePath>
+    <x-llm-magic::resource.json-schema.object :schema="$items" />
+</x-llm-magic::previews.loop>

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Magic\DatabaseTokenResolver;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
 use App\Models\User;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
+use Mateffy\Magic\Tokens\TokenResolver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +35,9 @@ class AppServiceProvider extends ServiceProvider
         Route::model('run', ExtractionRun::class);
 
         Livewire::component('embedded-extractor', \App\Livewire\Components\EmbeddedExtractor::class);
+
+        $this->app->bind(TokenResolver::class, function () {
+            return new DatabaseTokenResolver();
+        });
     }
 }

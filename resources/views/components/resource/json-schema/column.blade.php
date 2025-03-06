@@ -33,10 +33,10 @@
 {{--            @endif--}}
 
 {{--            @if ($schema['magic_ui'] ?? false === 'table')--}}
-{{--                <x-resource.json-schema.table :name="$name" :state-path="$statePath" :schema="$schema['items']" :disabled="$disabled" />--}}
+{{--                <x-llm-magic::resource.json-schema.table :name="$name" :state-path="$statePath" :schema="$schema['items']" :disabled="$disabled" />--}}
 {{--            @else--}}
-{{--                <x-previews.loop :name="$name" :state-path="$statePath">--}}
-{{--                    <x-resource.json-schema.property--}}
+{{--                <x-llm-magic::previews.loop :name="$name" :state-path="$statePath">--}}
+{{--                    <x-llm-magic::resource.json-schema.property--}}
 {{--                        class="col-span-full"--}}
 {{--                        :label="\Illuminate\Support\Str::singular($label)"--}}
 {{--                        :name="$name . '_0'"--}}
@@ -45,7 +45,7 @@
 {{--                        :required="true"--}}
 {{--                        :disabled="$disabled"--}}
 {{--                    />--}}
-{{--                </x-previews.loop>--}}
+{{--                </x-llm-magic::previews.loop>--}}
 {{--            @endif--}}
 {{--        </div>--}}
     @elseif ($matchesTypes($schema['type'], ['object']))

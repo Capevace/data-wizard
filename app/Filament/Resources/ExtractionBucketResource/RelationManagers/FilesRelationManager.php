@@ -35,8 +35,8 @@ class FilesRelationManager extends RelationManager
             ->schema(function (File $record) {
                 $artifact = $record->artifact;
 
-                $images = collect($artifact?->getContents())
-                    ->filter(fn (Slice $content) => $content instanceof EmbedSlice && Str::startsWith($content->getMimeType(), 'image/'))
+                $toImageEntry = fn (Collection $slices) => $slices
+                    ->sortBy(fn (EmbedSlice $content) => (int) filter_var($content->getPath(), FILTER_SANITIZE_NUMBER_INT))
                     ->map(fn (EmbedSlice $content) => ImageEntry::make($content->getPath())
                         ->state($record->getSignedEmbedUrl($content->getPath()))
                         ->label($content->getPath())
@@ -54,22 +54,25 @@ class FilesRelationManager extends RelationManager
                     )
                     ->all();
 
-//                $pages = collect(\Illuminate\Support\Facades\File::files($pagesPath))
-//                    ->filter(fn (\SplFileInfo $file) => in_array(Str::lower($file->getExtension()), ['jpg', 'jpeg', 'png', 'webp', 'avif']))
-//                    ->sortBy(fn (\SplFileInfo $file) => $file->getBasename())
-//                    ->map(fn (\SplFileInfo $file) => ImageEntry::make($file)
-//                        ->state(url("storage/{$publicPagesRelativePath}/".Str::afterLast($file, '/')))
-//                        ->label($file->getBasename())
-//                        ->height('auto')
-//                        ->extraImgAttributes([
-//                            'class' => 'w-full h-full object-contain',
-//                        ])
-//                        ->extraAttributes([
-//                            'class' => 'w-full h-full flex justify-center items-center',
-//                            'style' => 'aspect-ratio: 1/1',
-//                        ]),
-//                    )
-//                    ->all();
+                $images = $toImageEntry(
+                    collect($artifact?->getContents())
+                        ->filter(fn (Slice $content) => $content instanceof EmbedSlice
+                            && Str::startsWith($content->getMimeType(), 'image/')
+                            && (Str::startsWith($content->getPath(), 'images/') || Str::startsWith($content->getPath(), 'source'))
+                        )
+                );
+
+                $pages = $toImageEntry(
+                    collect($artifact?->getContents())
+                        ->filter(fn (Slice $content) => $content instanceof EmbedSlice && Str::startsWith($content->getMimeType(), 'image/'))
+                        ->filter(fn (EmbedSlice $content) => Str::startsWith($content->getPath(), 'pages/'))
+                );
+
+                $pages_marked = $toImageEntry(
+                    collect($artifact?->getContents())
+                        ->filter(fn (Slice $content) => $content instanceof EmbedSlice && Str::startsWith($content->getMimeType(), 'image/'))
+                        ->filter(fn (EmbedSlice $content) => Str::startsWith($content->getPath(), 'pages_marked/'))
+                );
 
                 return array_filter([
                     ($text = $record->artifact?->getText())
@@ -90,10 +93,31 @@ class FilesRelationManager extends RelationManager
                         ])
                         ->compact()
                         ->collapsed()
-                        ->schema([
-//                            ...$pages,
-                            ...$images,
-                        ]),
+                        ->schema($images),
+
+                    Section::make()
+                        ->heading('Pages')
+                        ->columns([
+                            'DEFAULT' => 2,
+                            'xs' => 2,
+                            'md' => 3,
+                            'lg' => 4,
+                        ])
+                        ->compact()
+                        ->collapsed()
+                        ->schema($pages),
+
+                    Section::make()
+                        ->heading('Pages (marked)')
+                        ->columns([
+                            'DEFAULT' => 2,
+                            'xs' => 2,
+                            'md' => 3,
+                            'lg' => 4,
+                        ])
+                        ->compact()
+                        ->collapsed()
+                        ->schema($pages_marked),
                 ]);
             });
     }

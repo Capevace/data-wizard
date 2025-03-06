@@ -26,7 +26,7 @@ class GenerateDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(protected ExtractionRun $run, protected ?User $startedBy = null) {}
+    public function __construct(protected ExtractionRun $run) {}
 
     public function handle(): void
     {
@@ -49,18 +49,21 @@ class GenerateDataJob implements ShouldQueue
                 ->system($this->run->saved_extractor->output_instructions)
                 ->schema($this->run->target_schema)
                 ->strategy($this->run->strategy)
+                ->contextOptions($this->run->getContextOptions())
                 ->artifacts($artifacts->all())
                 ->onMessage(function (Message $message, ?string $actorId = null) {
                     /** @var ?Actor $actor */
                     $actor = $this->run->actors()->find($actorId);
 
                     if (! $actor) {
-                        $actor = $this->run->actors()->make();
-                        $actor->id = $actorId;
-                        $actor->save();
+                        Log::warning('Actor not found', [
+                            'runId' => $this->run->id,
+                            'actorId' => $actorId,
+                            'message' => $message->toArray()
+                        ]);
                     }
 
-                    $actor->add($message);
+                    $actor?->add($message);
                 })
                 ->onTokenStats(function (TokenStats $tokenStats) {
                     $this->run->token_stats = $tokenStats;
@@ -102,5 +105,7 @@ class GenerateDataJob implements ShouldQueue
                 Log::error($e->getMessage(), ['exception' => $e]);
             }
         }
+
+        $this->run->dispatchWebhook();
     }
 }

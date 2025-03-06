@@ -2,13 +2,14 @@
 
 namespace App\Filament\Pages\LlmSettings;
 
+use App\Models\ApiKey;
+use App\Models\ApiKey\ApiKeyProvider;
+use App\Models\ApiKey\ApiKeyTokenType;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Get;
 use Filament\Infolists\Components\Actions\Action;
-use Mateffy\Magic\Providers\ApiKey\ApiKeyProvider;
-use Mateffy\Magic\Providers\ApiKey\ApiKeyTokenType;
 
 class AddApiCredentialsAction extends Action
 {
@@ -95,8 +96,7 @@ class AddApiCredentialsAction extends Action
                 /** @var ApiKeyProvider $provider */
                 $provider = ApiKeyProvider::from($data['provider']);
 
-                auth()->user()
-                    ->apiKeys()
+                ApiKey::query()
                     ->createMany(match ($provider) {
                         ApiKeyProvider::OpenAI => [
                             [

@@ -1,12 +1,9 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
 @import "/vendor/tempest/highlight/src/Themes/Css/highlight-light-lite.css";
 
-/*.fi-layout {*/
-/*    background-image: url(https://fly.io/phx/ui/images/app-shapes-e20dd6e0903d3a31595108e6e1052a1e.webp?vsn=d);*/
-/*    background-origin: center center;*/
-/*    background-position: center;*/
-/*    background-size: cover 200%;*/
-/*}*/
+html {
+    scrollbar-gutter: stable;
+}
 
 .perso-card-container { perspective: 2000px; }
 .perso-card {

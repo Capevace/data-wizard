@@ -12,7 +12,7 @@
 @if (!$output)
     <form class="w-full py-1 mb-5" x-data="{ data: @js($invocation->call->arguments) }" wire:submit.prevent="continueAfterInterrupt(data)">
         <div class="grid grid-cols-1 gap-2" >
-            <x-resource.json-schema
+            <x-llm-magic::resource.json-schema
                 :schema="$tool->schema()"
                 state-path="data"
             />

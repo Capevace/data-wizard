@@ -5,6 +5,6 @@
 ])
 
 <div class="grid grid-cols-1 gap-2">
-    <x-resource.json-schema.property name="root" :$statePath :$schema :$disabled />
+    <x-llm-magic::resource.json-schema.property name="root" :$statePath :$schema :$disabled />
 </div>
 

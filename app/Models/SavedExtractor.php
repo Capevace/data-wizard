@@ -2,9 +2,17 @@
 
 namespace App\Models;
 
-use App\Livewire\Components\EmbeddedExtractor\ExtractorSteps;
+use ApiPlatform\Laravel\Eloquent\Filter\PartialSearchFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\QueryParameter;
 use App\Models\Concerns\UsesUuid;
-use App\WidgetAlignment;
+use App\Rules\JsonSchemaRule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Mateffy\Magic\LLM\ElElEm;
@@ -43,9 +51,69 @@ use Swaggest\JsonSchema\JsonSchema;
  * @property ?string $redirect_url
  * @property ?bool $allow_download
  * @property ?bool $enable_webhook
+ * @property bool $include_text
+ * @property bool $include_embedded_images
+ * @property bool $mark_embedded_images
+ * @property bool $include_page_images
+ * @property bool $mark_page_images
  * @property-read ?\Carbon\CarbonImmutable $last_ran_at
  * @property-read ?JsonSchema $typed_schema
  */
+#[ApiResource(
+    uriTemplate: '/extractors',
+    operations: [
+        new GetCollection
+    ],
+)]
+#[ApiResource(
+    uriTemplate: '/extractors/{id}',
+    operations: [
+        new Get,
+        new Post,
+        new Patch,
+        new Delete
+    ],
+    rules: [
+        'json_schema' => ['required', 'json', new JsonSchemaRule],
+        'model' => ['nullable', 'string', 'max:255'],
+        'output_instructions' => ['nullable', 'string'],
+        'webhook_url' => ['nullable', 'url', 'required_if:enable_webhook,true', 'required_with:webhook_secret', 'max:255'],
+        'webhook_secret' => ['nullable', 'string', 'max:255'],
+        'redirect_url' => ['nullable', 'url', 'max:255'],
+        'allow_download' => ['nullable', 'boolean'],
+        'enable_webhook' => ['nullable', 'boolean'],
+        'include_text' => ['nullable', 'boolean'],
+        'include_embedded_images' => ['nullable', 'boolean'],
+        'mark_embedded_images' => ['nullable', 'boolean'],
+        'include_page_images' => ['nullable', 'boolean'],
+        'mark_page_images' => ['nullable', 'boolean'],
+
+        // Labels
+        'page_title' => ['nullable', 'string', 'max:255'],
+        'introduction_view_heading' => ['nullable', 'string', 'max:255'],
+        'introduction_view_description' => ['nullable', 'string'],
+        'introduction_view_next_button_label' => ['nullable', 'string', 'max:255'],
+        'bucket_view_heading' => ['nullable', 'string', 'max:255'],
+        'bucket_view_description' => ['nullable', 'string'],
+        'bucket_view_back_button_label' => ['nullable', 'string', 'max:255'],
+        'bucket_view_continue_button_label' => ['nullable', 'string', 'max:255'],
+        'bucket_view_begin_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_heading' => ['nullable', 'string', 'max:255'],
+        'extraction_view_description' => ['nullable', 'string'],
+        'extraction_view_back_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_continue_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_restart_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_start_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_cancel_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_pause_button_label' => ['nullable', 'string', 'max:255'],
+        'results_view_heading' => ['nullable', 'string', 'max:255'],
+        'results_view_description' => ['nullable', 'string'],
+        'results_view_back_button_label' => ['nullable', 'string', 'max:255'],
+        'results_view_submit_button_label' => ['nullable', 'string', 'max:255'],
+    ]
+)]
+#[QueryParameter(key: 'model', filter: PartialSearchFilter::class)]
+#[QueryParameter(key: 'output_instructions', filter: PartialSearchFilter::class)]
 class SavedExtractor extends Model
 {
     use SoftDeletes;
@@ -86,6 +154,12 @@ class SavedExtractor extends Model
         'results_view_back_button_label',
         'results_view_submit_button_label',
 
+        'include_text',
+        'include_embedded_images',
+        'mark_embedded_images',
+        'include_page_images',
+        'mark_page_images',
+
         'allow_download',
         'enable_webhook',
 
@@ -99,6 +173,14 @@ class SavedExtractor extends Model
 
     protected $casts = [
         'json_schema' => 'json',
+        'was_automatically_created' => 'bool',
+        'allow_download' => 'bool',
+        'enable_webhook' => 'bool',
+        'include_text' => 'bool',
+        'include_embedded_images' => 'bool',
+        'mark_embedded_images' => 'bool',
+        'include_page_images' => 'bool',
+        'mark_page_images' => 'bool'
     ];
 
     protected $attributes = [
@@ -106,6 +188,17 @@ class SavedExtractor extends Model
         'was_automatically_created' => false,
         'allow_download' => true,
         'enable_webhook' => false,
+        'include_text' => true,
+        'include_embedded_images' => true,
+        'mark_embedded_images' => true,
+        'include_page_images' => false,
+        'mark_page_images' => false,
+    ];
+
+    protected $hidden = [
+        'webhook_secret',
+        'was_automatically_created',
+        'logo',
     ];
 
 //    protected $appends = ['json_schema_string'];
@@ -166,10 +259,48 @@ class SavedExtractor extends Model
         return route('full-page-extractor', ['extractorId' => $this->id]);
     }
 
-    public function llm(): LLM
+    public function getContextOptions(): ContextOptions
     {
-        $model = $this->model ?? config('magic-extract.default-model');
+        return new ContextOptions(
+            includeText: $this->include_text,
+            includeEmbeddedImages: $this->include_embedded_images,
+            markEmbeddedImages: $this->mark_embedded_images,
+            includePageImages: $this->include_page_images,
+            markPageImages: $this->mark_page_images,
+        );
+    }
 
-        return ElElEm::fromString($model);
+    public function dispatchWebhook(
+        string $runId,
+        array $data,
+        string $model,
+        int $duration_seconds,
+        ?TokenStats $tokenStats,
+        bool $sync = false
+    ): void
+    {
+        if ($this->webhook_url === null) {
+            return;
+        }
+
+        $call = WebhookCall::create()
+            ->url($this->webhook_url)
+            ->uuid($runId)
+            ->payload([
+                'data' => $data,
+                'runId' => $runId,
+                'model' => $model,
+                'duration_seconds' => $duration_seconds,
+                'token_stats' => $tokenStats?->toArray(),
+            ])
+            ->useSecret($this->webhook_secret);
+
+        if ($sync) {
+            $call
+                ->maximumTries(1)
+                ->dispatchSync();
+        } else {
+            $call->dispatch();
+        }
     }
 }

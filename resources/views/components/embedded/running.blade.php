@@ -18,7 +18,7 @@
             x-cloak
         @endif
     >
-        <x-filament::loading-indicator class="w-16 h-16 text-gray-500" />
+        <x-filament::loading-indicator class="w-16 h-16 text-gray-500" wire:ignore />
     </div>
 
     <div
@@ -29,12 +29,12 @@
             x-cloak
         @endif
     >
-        <x-resource.json-schema
+        <x-llm-magic::resource.json-schema
             :schema="$this->saved_extractor->json_schema"
             :disabled="$this->run?->status->shouldPoll()"
         />
 
-        <x-resource.debug />
+        <x-llm-magic::resource.debug />
     </div>
 
     <x-embedded.buttons :labels="$labels" />

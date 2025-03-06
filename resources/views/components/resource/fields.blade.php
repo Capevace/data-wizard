@@ -11,7 +11,7 @@ $data = collect($data)
 
 <div class="grid grid-cols-3 gap-5">
     @foreach ($data as $label => $value)
-        <x-resource.field :$label :$value />
+        <x-llm-magic::resource.field :$label :$value />
     @endforeach
 
     {{ $slot }}

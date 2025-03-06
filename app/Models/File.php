@@ -17,6 +17,15 @@ class File extends \Spatie\MediaLibrary\MediaCollections\Models\Media
 {
     use UsesUuid;
 
+    public function getHidden()
+    {
+        return [
+            ...parent::getHidden(),
+            'temporary_upload',
+            'temporaryUpload',
+        ];
+    }
+
     public function getCasts()
     {
         return [
@@ -66,5 +75,20 @@ class File extends \Spatie\MediaLibrary\MediaCollections\Models\Media
             ],
             expiration: now()->addDay()
         );
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'size' => $this->size,
+            'mime_type' => $this->mime_type,
+            'url' => $this->getUrl(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'thumbnail_src' => $this->thumbnail_src,
+            'artifact_path' => $this->artifact_path,
+        ];
     }
 }

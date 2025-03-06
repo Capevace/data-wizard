@@ -33,6 +33,9 @@ class StartWithBucketActionGroup extends ActionGroup
                         ->limit(4)
                         ->get()
                         ->map(fn (ExtractionBucket $bucket) => StartExtractionAction::make('start'.$bucket->id)
+                            ->hasExtractorForm()
+                            ->color('primary')
+                            ->icon('bi-bucket')
                             ->label(str($bucket->description)->limit(50))
                             ->bucket($bucket)
                             ->extractor(fn (?SavedExtractor $record) => $record)
@@ -40,6 +43,7 @@ class StartWithBucketActionGroup extends ActionGroup
                 ),
                 StartExtractionAction::make('startExtraction')
                     ->hasExtractorForm()
+                    ->label('Choose any bucket')
                     ->extractor(fn (?SavedExtractor $record) => $record),
             ]);
     }

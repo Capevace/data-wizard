@@ -2,9 +2,12 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Clusters\Settings;
 use App\Filament\Pages\LlmSettings\AddApiCredentialsAction;
 use App\Filament\Pages\LlmSettings\ApiConnectionDTO;
 use App\Filament\Pages\LlmSettings\DeleteApiCredentialsAction;
+use App\Models\ApiKey;
+use App\Models\ApiKey\ApiKeyProvider;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -14,11 +17,10 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
-use Mateffy\Magic\Providers\ApiKey;
-use Mateffy\Magic\Providers\ApiKey\ApiKeyProvider;
 
 class LlmSettings extends Page
 {
+    protected static ?string $cluster = Settings::class;
     protected static ?string $slug = 'llm-settings';
 
     protected static string $view = 'filament.pages.llm-settings';
@@ -45,9 +47,7 @@ class LlmSettings extends Page
     #[Computed]
     public function apiKeys(): Collection
     {
-        return auth()->user()
-            ->apiKeys()
-            ->get()
+        return ApiKey::query()->get()
             ->groupBy('provider')
             ->mapWithKeys(fn (Collection $apiKeys, string $provider) => [
                 $provider => ApiConnectionDTO::withKeys(
@@ -62,21 +62,6 @@ class LlmSettings extends Page
         if (! config('app.allow_custom_user_keys')) {
             abort(404);
         }
-
-        $apiKeys = auth()->user()
-            ->apiKeys()
-            ->get();
-
-        $this->form->fill(
-            collect(ApiKeyProvider::cases())
-                ->mapWithKeys(fn (ApiKeyProvider $provider) => [
-                    $provider->getLabel() => $apiKeys
-                        ->mapWithKeys(fn (ApiKey $apiKey) => [
-                            $apiKey->type->value => $apiKey->secret,
-                        ]),
-                ])
-                ->all()
-        );
     }
 
     public function infolist(Infolist $infolist): Infolist
@@ -89,12 +74,12 @@ class LlmSettings extends Page
                 Group::make()
                     ->extraAttributes(['class' => '[&_.fi-fo-component-ctn]:gap-0'])
                     ->schema([
-                        ...collect(ApiKeyProvider::cases())
+                        ...collect(ApiKeyProvider::getConfigurable())
                             ->map(fn (ApiKeyProvider $provider) => Section::make($provider->getLabel())
                                 ->description($provider->getDescription())
                                 ->statePath($provider->value)
                                 ->icon($provider->getIcon())
-                                ->iconSize('w-10 h-10')
+                                ->iconSize('w-8 h-8 mr-3')
                                 ->iconColor(fn (?ApiConnectionDTO $state) => $state?->active ? 'success' : 'danger')
                                 ->headerActions(array_filter([
                                     fn (?ApiConnectionDTO $state) => $state?->active
@@ -117,6 +102,7 @@ class LlmSettings extends Page
                                 ->schema(fn () => match ($provider) {
                                     ApiKeyProvider::OpenAI => [
                                         TextEntry::make('fields.token')
+                                            ->extraAttributes(['class' => 'mb-4'])
                                             ->label('API Token')
                                             ->translateLabel()
                                             ->placeholder(__('Not configured'))
@@ -145,11 +131,5 @@ class LlmSettings extends Page
                             ->all(),
                     ]),
             ]);
-    }
-
-    public function save(): void
-    {
-        $state = $this->form->getState();
-
     }
 }

@@ -9,25 +9,8 @@
     </x-slot:trigger>
 
     <x-filament::dropdown.list>
-        <x-filament::dropdown.list.item
-            icon="bi-filetype-csv"
-        >
-            CSV
-        </x-filament::dropdown.list.item>
-        <x-filament::dropdown.list.item
-            icon="bi-filetype-json"
-        >
-            JSON
-        </x-filament::dropdown.list.item>
-        <x-filament::dropdown.list.item
-            icon="bi-filetype-xml"
-        >
-            XML
-        </x-filament::dropdown.list.item>
-        <x-filament::dropdown.list.item
-            icon="bi-filetype-xlsx"
-        >
-            Excel (.xlsx)
-        </x-filament::dropdown.list.item>
+        {{ $this->downloadAsCsv }}
+        {{ $this->downloadAsJson }}
+        {{ $this->downloadAsXml }}
     </x-filament::dropdown.list>
 </x-filament::dropdown>

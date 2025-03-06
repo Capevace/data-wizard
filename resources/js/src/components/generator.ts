@@ -14,11 +14,8 @@ interface IGenerator {
 }
 
 export function GeneratorComponent({ sourceUrl, debugModeEnabled }: { sourceUrl?: string, debugModeEnabled?: boolean } = {}) {
-    console.log('Generator', sourceUrl);
-    const initialTab = debugModeEnabled ? 'json' : 'gui';
-
 	return {
-        tab: initialTab,
+        tab: 'gui',
         source: null,
         debugModeEnabled: debugModeEnabled ?? false,
 
