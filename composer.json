@@ -20,6 +20,7 @@
 		"ardagnsrn/ollama-php": "^1.0",
 		"blade-ui-kit/blade-heroicons": "^2.3",
 		"blade-ui-kit/blade-icons": "^1.6",
+		"blaspsoft/doxswap": "^0.1.0@beta",
 		"codewithkyrian/transformers": "^0.5.3",
 		"davidhsianturi/blade-bootstrap-icons": "^1.5",
 		"filament/filament": "^v3.2",

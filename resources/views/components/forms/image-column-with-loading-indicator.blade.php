@@ -27,7 +27,7 @@
             this.checkImage('{{ $url }}');
         },
 
-        checkImage(url, timeout = 50) {
+        checkImage(url, timeout = 1000) {
             const img = new Image();
             img.src = url;
             img.onload = () => {

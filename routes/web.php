@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\FileThumbnailController;
+use App\Http\Controllers\InternalArtifactEmbedController;
+use App\Http\Controllers\LlmArtifactEmbedController;
 use App\Http\Middleware\AllowEmbeddingMiddleware;
-use App\Models\ExtractionBucket;
+use App\Livewire\Components\EmbeddedExtractor;
+use App\Livewire\Components\Setup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,92 +19,39 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/setup', \App\Livewire\Components\Setup::class)
+// The setup route is used to set up the application for the first time.
+// When this is opened after setting up (aka. a user exists), it will redirect to the admin dashboard.
+Route::get('/setup', Setup::class)
     ->name('setup');
 
 Route::middleware(['auth'])
     ->group(function () {
+        // Render the "marketing" page. Since the "product" has not launched and it's just a part of the BA thesis,
+        // this requires authentication for now.
         Route::get('/', function () {
             return view('welcome');
         });
 
-        Route::get('/runs/{runId}/artifacts', function (string $runId) {
-            if (!request()->hasValidSignatureWhileIgnoring(['artifactId'])) {
-                abort(404);
-            }
-
-            $artifactId = request()->query('artifactId');
-
-            $run = \App\Models\ExtractionRun::findOrFail($runId);
-
-            $path = str($artifactId)->after('/');
-            $check1 = $check2 = $path->toString();
-
-            // sometimes, AIs will just rename .jpeg to .jpg as if stuff just doesn't matter anymore.
-            // rather than throw an error, we just allow both and check both... it's a bit of a mess.
-            if ($path->endsWith(['.jpeg', '.jpg'])) {
-                $check1 = $path->beforeLast('.')->append('.jpeg')->toString();
-                $check2 = $path->beforeLast('.')->append('.jpg')->toString();
-            }
-
-            $artifact = \Mateffy\Magic\Extraction\DiskArtifact::tryFromArtifactId($artifactId);
-
-            /** @var \Mateffy\Magic\Extraction\Slices\EmbedSlice $slice */
-            $slice = $artifact->getContents()
-                ->first(fn (\Mateffy\Magic\Extraction\Slices\Slice $content) => $content instanceof \Mateffy\Magic\Extraction\Slices\EmbedSlice && ($content->getPath() === $check1 || $content->getPath() === $check2));
-
-            if ($slice === null) {
-                abort(404);
-            }
-
-            $contents = $artifact->getRawEmbedContents($slice);
-
-            return response($contents, 200, [
-                'Content-Type' => $slice->getMimeType()
-            ]);
-        })
-            ->where('artifactId', '.*')
+        // A route that can return embed data for LLM generated artifact IDs. (requires a artifactId query parameter)
+        Route::get('/runs/{runId}/artifacts', LlmArtifactEmbedController::class)
             ->name('runs.artifacts.embed');
 
-        Route::get('/files/{fileId}/contents/{path}', function (string $fileId, string $path) {
-            $file = \App\Models\File::findOrFail($fileId);
-            $artifact = $file->artifact;
-
-            $decodedPath = base64_decode($path);
-
-            if (!\Illuminate\Support\Str::startsWith($decodedPath, ['images', 'pages', 'pages_marked', 'pages_txt', 'source.'])) {
-                abort(404);
-            }
-
-            /** @var ?\Mateffy\Magic\Extraction\Slices\EmbedSlice $content */
-            $content = collect($artifact->getContents())
-                ->filter(fn (\Mateffy\Magic\Extraction\Slices\Slice $content) => $content instanceof \Mateffy\Magic\Extraction\Slices\EmbedSlice)
-                ->first(fn (\Mateffy\Magic\Extraction\Slices\EmbedSlice $content) => $content->getPath() === $decodedPath);
-
-            if ($content === null) {
-                abort(404);
-            }
-
-            $contents = $artifact->getRawEmbedContents($content);
-
-            return response($contents, 200, [
-                'Content-Type' => $content->getMimeType(),
-            ]);
-        })
+        // A route that can return embed data for internal/backend exact paths.
+        Route::get('/files/{fileId}/contents/{path}', InternalArtifactEmbedController::class)
             ->middleware('signed')
             ->name('files.contents');
+
+        // A route that can return a thumbnail of a file.
+        Route::get('/files/{fileId}/thumbnail', FileThumbnailController::class)
+            ->middleware('signed')
+            ->name('files.thumbnail');
     });
 
-Route::get('/embed/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
+// The embedded extractor route is used to show the extractor in an iframe.
+Route::get('/embed/{extractorId}', EmbeddedExtractor::class)
     ->middleware([AllowEmbeddingMiddleware::class])
     ->name('embedded-extractor');
 
-Route::get('/full-page/{extractorId}', \App\Livewire\Components\EmbeddedExtractor::class)
+// The full page extractor route is used to show the extractor in a full page.
+Route::get('/full-page/{extractorId}', EmbeddedExtractor::class)
     ->name('full-page-extractor');
-
-
-Route::get('/api/v1/extractions', [\App\Http\Controllers\Extraction\ExtractionController::class, 'index']);
-Route::post('/api/v1/extractions', [\App\Http\Controllers\Extraction\ExtractionController::class, 'store']);
-Route::get('/api/v1/extractions/{id}', [\App\Http\Controllers\Extraction\ExtractionController::class, 'show']);
-//Route::put('/api/v1/extractions/{id}', [\App\Http\Controllers\Extraction\ExtractionController::class, 'update']);
-//Route::delete('/api/v1/extractions/{id}', [\App\Http\Controllers\Extraction\ExtractionController::class, 'destroy']);

@@ -145,12 +145,17 @@ class FilesRelationManager extends RelationManager
                 ImageColumnWithLoadingIndicator::make('thumbnail_src')
                     ->label('Preview')
                     ->translateLabel()
+                    ->state(fn (File $record) => $record->thumbnail_src)
                     ->width(200),
                 Tables\Columns\TextColumn::make('name')
                     ->translateLabel()
                     ->size('base')
                     ->weight('medium')
-                    ->description(fn (File $record) => "{$record->humanReadableSize} • {$record->getTypeFromMime()}"),
+                    ->description(function (File $record) {
+                        $type = $record->artifact?->getMetadata()->type->getLabel() ?? $record->getTypeFromMime();
+
+                        return "{$record->humanReadableSize} • {$type}";
+                    }),
                 Tables\Columns\IconColumn::make('artifact_status')
                     ->state(false)
                     ->true('heroicon-o-check-circle')
@@ -171,6 +176,8 @@ class FilesRelationManager extends RelationManager
                     ->label('Upload Files')
                     ->translateLabel()
                     ->icon('heroicon-o-cloud-arrow-up')
+                    ->modalIcon('heroicon-o-cloud-arrow-up')
+                    ->modalDescription('Accepted files: Images, PDFs, Word documents, Excel spreadsheets, PowerPoint presentations, and text files. Keep in mind that office documents will be converted to PDFs.')
                     ->modalSubmitAction(fn (StaticAction $action) => $action
                         ->label('Upload files')
                         ->translateLabel()

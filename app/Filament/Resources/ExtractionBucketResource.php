@@ -66,11 +66,6 @@ class ExtractionBucketResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('status')
-                    ->hidden()
-                    ->translateLabel()
-                    ->sortable(),
-
                 TextColumn::make('files_count')
                     ->label('Number of files')
                     ->translateLabel()
@@ -152,6 +147,7 @@ class ExtractionBucketResource extends Resource
             'index' => Pages\ListExtractionBuckets::route('/'),
             'create' => Pages\CreateExtractionBucket::route('/create'),
             'edit' => Pages\EditExtractionBucket::route('/{record}/edit'),
+            'analyze' => Pages\EvaluateExtractionBucket::route('/{record}/evaluate'),
         ];
     }
 

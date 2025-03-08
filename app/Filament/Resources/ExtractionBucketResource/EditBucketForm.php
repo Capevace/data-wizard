@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ExtractionBucketResource;
 
 use App\Filament\Forms\DataWizardInput;
+use App\Models\ExtractionBucket\BucketCreationSource;
 use App\Models\ExtractionBucket\BucketStatus;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
@@ -24,16 +25,15 @@ class EditBucketForm
                 ->extraInputAttributes(['style' => 'min-height: 10rem']),
 
             Group::make()
-//                ->compact()
                 ->columnSpan(1)
                 ->schema([
-                    Select::make('status')
+                    Select::make('created_using')
                         ->required()
-                        ->label('Status')
+                        ->label('Erstellt mit')
                         ->translateLabel()
                         ->searchable()
-                        ->options(BucketStatus::class)
-                        ->default(BucketStatus::Pending),
+                        ->options(BucketCreationSource::class)
+                        ->default(BucketCreationSource::App),
 
                     Select::make('created_by')
                         ->label('Created By')

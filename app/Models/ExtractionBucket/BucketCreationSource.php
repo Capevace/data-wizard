@@ -33,9 +33,9 @@ enum BucketCreationSource: string implements HasLabel, HasIcon, HasColor
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::App => __('App'),
-            self::Embed => __('Embed'),
-            self::Api => __('API'),
+            self::App => __('Via App'),
+            self::Embed => __('Via Extraction Embed'),
+            self::Api => __('Via API'),
         };
     }
 }

@@ -9,22 +9,28 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
 use App\Filament\Resources\ExtractionRunResource\Pages\RunPage;
 use App\Livewire\Components\EmbeddedExtractor;
+use App\Models\Actor\ActorMessageType;
 use App\Models\Concerns\TokenStatsCast;
 use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionRun\RunStatus;
-use Illuminate\Validation\Rules\Enum;
-use Mateffy\Magic\Chat\TokenStats;
-use Mateffy\Magic\Extraction\ContextOptions;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\WebhookServer\WebhookCall;
+use Mateffy\Magic\Chat\Prompt\Role;
+use Mateffy\Magic\Chat\TokenStats;
+use Mateffy\Magic\Extraction\ArtifactBatcher;
+use Mateffy\Magic\Extraction\Artifacts\Artifact;
+use Mateffy\Magic\Extraction\ContextOptions;
+use Mateffy\Magic\Extraction\EvaluationType;
+use Mateffy\Magic\Extraction\Slices\Slice;
+use Mateffy\Magic\Models\ElElEm;
 use Swaggest\JsonSchema\Schema;
 use Swaggest\JsonSchema\SchemaContract;
 
@@ -45,9 +51,15 @@ use Swaggest\JsonSchema\SchemaContract;
  * @property bool $mark_embedded_images
  * @property bool $include_page_images
  * @property bool $mark_page_images
+ * @property ?CarbonImmutable $finished_at
+ * @property ?CarbonImmutable $started_at
+ * @property ?int $chunk_size
  * @property-read ?SavedExtractor $saved_extractor
  * @property-read ?array $data
  * @property-read ?array $partial_data
+ * @property-read CarbonInterval $duration
+ * @property-read string $formatted_duration
+ * @property-read string $evaluation_type
  */
 #[ApiResource(
     uriTemplate: '/runs',
@@ -110,6 +122,9 @@ class ExtractionRun extends Model
         'mark_embedded_images',
         'include_page_images',
         'mark_page_images',
+        'started_at',
+        'finished_at',
+        'chunk_size'
     ];
 
     protected $casts = [
@@ -123,6 +138,9 @@ class ExtractionRun extends Model
         'mark_embedded_images' => 'boolean',
         'include_page_images' => 'boolean',
         'mark_page_images' => 'boolean',
+        'started_at' => 'immutable_datetime',
+        'finished_at' => 'immutable_datetime',
+        'chunk_size' => 'int',
     ];
 
     protected $attributes = [
@@ -148,11 +166,35 @@ class ExtractionRun extends Model
         return $this->belongsTo(User::class, 'started_by_id');
     }
 
+    public function getDurationAttribute(): ?CarbonInterval
+    {
+        if (! $this->started_at) {
+            return null;
+        }
+
+        $started_at = $this->started_at;
+        $finished_at = $this->finished_at ?? now();
+
+        return $started_at->diffAsCarbonInterval($finished_at);
+    }
+
+    public function getFormattedDurationAttribute(): string
+    {
+        return $this->duration?->forHumans() ?? __('Not started yet');
+    }
+
     public function getTargetSchemaTypedAttribute(): ?SchemaContract
     {
         return Schema::import(
             json_decode(json_encode($this->target_schema))
         );
+    }
+
+    public function getTotalInputTokensAttribute(): int
+    {
+        // Some APIs give back accurate token counts, so we can use that.
+        // If not, we use our own calculation method.
+        return $this->token_stats->inputTokens ?? $this->bucket->calculateInputTokens(contextOptions: $this->getContextOptions());
     }
 
     public function saved_extractor(): BelongsTo
@@ -184,6 +226,11 @@ class ExtractionRun extends Model
         return json_decode($this->partial_result_json, associative: true) ?? $this->data;
     }
 
+    public function getEvaluationTypeAttribute(): EvaluationType
+    {
+        return $this->getContextOptions()->getEvaluationType();
+    }
+
     public function getEmbeddedUrl(): string
     {
         return route('embedded-extractor', [
@@ -210,6 +257,46 @@ class ExtractionRun extends Model
         );
     }
 
+    /**
+     * While the stored token stats are more accurate and returned from LLM APIs (or not if they don't support it),
+     * we fill in some stats using the internal estimations, which are always available.
+     *
+     * We also support an evaluation mode, where the internal estimations are ALWAYS used to allow for
+     * comparing the costs of different strategies and models. In this mode, the same token calculation is used
+     * so the returned values are consistent across LLM providers.
+     */
+    public function getEnrichedTokenStats(): TokenStats
+    {
+        //
+        if (config('app.evaluation_mode') || $this->token_stats === null) {
+            return TokenStats::withInputAndOutput(
+                inputTokens: $this->bucket->calculateInputTokens(contextOptions: $this->getContextOptions()),
+                // Output tokens are not supported in evaluation mode, as the values are different across LLM providers.
+                outputTokens: $this->calculateOutputTokens(),
+                cost: ElElEm::fromString($this->model)->getModelCost(),
+            );
+        }
+
+        return $this->token_stats;
+    }
+
+    public function calculateOutputTokens(): int
+    {
+        return $this->actors()
+            ->with([
+                'messages' => fn ($query) => $query
+                    ->where('role', Role::Assistant)
+                    ->where('type', '!=', ActorMessageType::Base64Image)
+            ])
+            ->get()
+            ->flatMap(fn (Actor $actor) => $actor->messages
+                // We're only interested in Assistant messages. I'm not aware of any current LLMs directly outputting
+                // image data, but to be sure we filter it out.
+                ->filter(fn (ActorMessage $message) => $message->role === Role::Assistant && $message->type !== ActorMessageType::Base64Image)
+            )
+            ->sum(fn (ActorMessage $message) => $message->calculateTokens());
+    }
+
     public function dispatchWebhook(): void
     {
         $finished_at = now();
@@ -221,5 +308,29 @@ class ExtractionRun extends Model
             duration_seconds: $this->created_at->diffInSeconds($finished_at),
             tokenStats: $this->token_stats
         );
+    }
+
+    public function getCompletedSteps(): int
+    {
+        return $this->actors()->count();
+    }
+
+    public function getEstimatedSteps(): int
+    {
+        $batches = ArtifactBatcher::batch(
+			artifacts: $this->bucket->artifacts,
+			options: $this->getContextOptions(),
+			maxTokens: $this->chunk_size ?? $this->saved_extractor->chunk_size ?? config('llm-magic.artifacts.default_max_tokens'),
+			llm: ElElEm::fromString($this->model)
+		);
+
+        $count = count($batches);
+
+        // Add the merger step if we're using the parallel strategy.
+        if ($this->strategy === 'parallel') {
+            $count += 1;
+        }
+
+        return $count;
     }
 }

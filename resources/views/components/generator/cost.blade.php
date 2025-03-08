@@ -1,5 +1,5 @@
 @props([
-    /** @var \Mateffy\Magic\Prompt\TokenStats $stats */
+    /** @var \Mateffy\Magic\Chat\TokenStats $stats */
     'stats',
 ])
 

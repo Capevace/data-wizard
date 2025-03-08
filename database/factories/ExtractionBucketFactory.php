@@ -18,7 +18,6 @@ class ExtractionBucketFactory extends Factory
             'updated_at' => Carbon::now(),
             'description' => $this->faker->text(),
             'status' => $this->faker->word(),
-            'started_at' => Carbon::now(),
             'extractor_id' => $this->faker->word(),
 
             'created_by' => User::factory(),

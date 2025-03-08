@@ -2,9 +2,9 @@
 
 namespace App\Models\Concerns;
 
-use Mateffy\Magic\Prompt\TokenStats;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
+use Mateffy\Magic\Chat\TokenStats;
 
 class TokenStatsCast implements CastsAttributes
 {

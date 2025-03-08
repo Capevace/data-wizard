@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
 use Illuminate\Support\Facades\URL;
-use Mateffy\Magic\Extraction\Artifact;
-use Mateffy\Magic\Extraction\DiskArtifact;
+use Mateffy\Magic\Extraction\Artifacts\Artifact;
+use Mateffy\Magic\Extraction\Artifacts\DiskArtifact;
 
 /**
  * @property ArtifactGenerationStatus $artifact_status
@@ -36,7 +36,13 @@ class File extends \Spatie\MediaLibrary\MediaCollections\Models\Media
 
     public function getThumbnailSrcAttribute(): string
     {
-        return $this->getUrl('thumbnail');
+        return URL::temporarySignedRoute(
+            name: 'files.thumbnail',
+            expiration: now()->addDay(),
+            parameters: ['fileId' => $this->id]
+        );
+
+//        return $this->getUrl('thumbnail');
     }
 
     public function getArtifactPathAttribute(): string

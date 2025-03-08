@@ -107,5 +107,10 @@
     "Extractor was not run yet": "Extractor was not run yet",
     "Create a new run to start extracting data.": "Create a new run to start extracting data.",
     ":value files": ":value files",
-    "Number of files": "Number of files"
+    "Number of files": "Number of files",
+
+    "Start :count runs": "Start :count runs",
+    "Starting this evaluation will start :count runs": "Starting this evaluation will start :count runs",
+    ":count runs": ":count runs",
+    ":completed / :estimated estimated steps": ":completed / :estimated estimated steps"
 }

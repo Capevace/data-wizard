@@ -3,17 +3,13 @@
 namespace App\Jobs;
 
 use App\Models\Actor;
-use App\Models\ArtifactGenerationStatus;
 use App\Models\ExtractionRun;
 use App\Models\ExtractionRun\RunStatus;
-use App\Models\File;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Mateffy\Magic;
 use Mateffy\Magic\Chat\ActorTelemetry;
@@ -30,27 +26,22 @@ class GenerateDataJob implements ShouldQueue
 
     public function handle(): void
     {
-        /** @var Collection<File> $files */
-        $artifacts = $this->run->bucket->files
-            ->filter(fn (File $file) => $file->artifact && $file->artifact_status === ArtifactGenerationStatus::Complete)
-            ->sortBy(fn (File $file) => $file->artifact->getMetadata()->name)
-            ->values()
-            ->pluck('artifact');
-
         try {
-            $this->run->bucket?->logUsage();
-            $this->run->saved_extractor?->logUsage();
+            $this->run->bucket?->touch();
+            $this->run->saved_extractor?->touch();
 
             $this->run->status = RunStatus::Running;
+            $this->run->started_at = now();
             $this->run->save();
 
             $data = Magic::extract()
                 ->model(ElElEm::fromString($this->run->model))
-                ->system($this->run->saved_extractor->output_instructions)
+                ->instructions($this->run->saved_extractor->output_instructions)
                 ->schema($this->run->target_schema)
                 ->strategy($this->run->strategy)
+                ->chunkSize($this->run->chunk_size)
                 ->contextOptions($this->run->getContextOptions())
-                ->artifacts($artifacts->all())
+                ->artifacts($this->run->bucket->artifacts->all())
                 ->onMessage(function (Message $message, ?string $actorId = null) {
                     /** @var ?Actor $actor */
                     $actor = $this->run->actors()->find($actorId);
@@ -89,6 +80,7 @@ class GenerateDataJob implements ShouldQueue
 
             $this->run->result_json = $data->toArray() ?? $this->run->result_json;
             $this->run->status = RunStatus::Completed;
+            $this->run->finished_at = now();
             $this->run->save();
         } catch (\Throwable|ErrorException $e) {
             $this->run->error = [
@@ -97,6 +89,7 @@ class GenerateDataJob implements ShouldQueue
                 'trace' => $e->getTraceAsString(),
             ];
             $this->run->status = RunStatus::Failed;
+            $this->run->finished_at = now();
             $this->run->save();
 
             if (app()->isProduction()) {

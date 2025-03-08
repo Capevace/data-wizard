@@ -49,6 +49,8 @@ use Mateffy\Magic;
 
 class SavedExtractorResource extends Resource
 {
+    public const MIN_CHUNK_SIZE = 1000;
+
     protected static ?string $model = SavedExtractor::class;
 
     protected static ?string $slug = 'saved-extractors';
@@ -70,9 +72,6 @@ class SavedExtractorResource extends Resource
         return $form
             ->live(onBlur: true)
             ->schema([
-                Hidden::make('was_automatically_created')
-                    ->default(false),
-
                 Tabs::make('UI')
                     ->columnSpanFull()
                     ->columns(2)
@@ -120,6 +119,21 @@ class SavedExtractorResource extends Resource
                             ->icon('heroicon-o-cube')
                             ->iconPosition('after')
                             ->schema([
+                                Section::make('Chunk Size')
+                                    ->description('You can configure how large the batches of data should be that are sent to the LLM for processing.')
+                                    ->icon('heroicon-o-cube-transparent')
+                                    ->aside()
+                                    ->schema([
+                                        TextInput::make('chunk_size')
+                                            ->label('Chunk size (in tokens)')
+                                            ->translateLabel()
+                                            ->placeholder(config('llm-magic.artifacts.default_max_tokens'))
+                                            ->suffix(__('tokens'))
+                                            ->numeric()
+                                            ->step(1)
+                                            ->minValue(self::MIN_CHUNK_SIZE)
+                                    ]),
+
                                 Section::make('Text')
                                     ->description('The text of uploaded documents is extracted, split by pages and included in the prompt.')
                                     ->icon('bi-fonts')

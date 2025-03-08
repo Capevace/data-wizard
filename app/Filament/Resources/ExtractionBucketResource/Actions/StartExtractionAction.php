@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\ExtractionBucketResource\Actions;
 
 use App\Filament\Forms\ModelSelect;
+use App\Filament\Forms\SavedExtractorSelect;
 use App\Filament\Forms\StrategySelect;
 use App\Filament\Resources\ExtractionRunResource;
+use App\Filament\Resources\SavedExtractorResource;
 use App\Jobs\GenerateDataJob;
 use App\Models\ExtractionBucket;
 use App\Models\SavedExtractor;
@@ -13,6 +15,7 @@ use Filament\Actions\Action;
 use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
 use Mateffy\Magic;
@@ -85,28 +88,9 @@ class StartExtractionAction extends Action
             ->modalIconColor('primary')
             ->modalWidth('xl')
             ->form([
-                Select::make('saved_extractor_id')
-                    ->columnSpan(1)
-                    ->required()
+                SavedExtractorSelect::make('saved_extractor_id')
                     ->default(fn () => $this->getExtractor()?->id)
-                    ->hidden(fn () => $this->getExtractor() ? true : false)
-                    ->label('Extractor')
-                    ->translateLabel()
-                    ->searchable()
-                    ->searchDebounce(200)
-                    ->options(fn () => SavedExtractor::query()
-                        ->latest('updated_at')
-                        ->limit(10)
-                        ->get()
-                        ->pluck('label', 'id')
-                    )
-                    ->getSearchResultsUsing(fn (?string $search) => SavedExtractor::query()
-                        ->when($search, fn ($query) => $query->where('label', 'like', "%{$search}%"))
-                        ->latest('updated_at')
-                        ->limit(10)
-                        ->get()
-                        ->pluck('label', 'id')
-                    ),
+                    ->hidden(fn () => $this->getExtractor() ? true : false),
 
                 Select::make('bucket_id')
                     ->default(fn () => $this->getBucket()?->id)
@@ -139,6 +123,15 @@ class StartExtractionAction extends Action
                 Fieldset::make('Options')
                     ->columns(1)
                     ->schema([
+                        TextInput::make('chunk_size')
+                            ->label('Chunk size (in tokens)')
+                            ->translateLabel()
+                            ->placeholder(fn () => $this->getExtractor()?->chunk_size ?? config('llm-magic.artifacts.default_max_tokens'))
+                            ->suffix(__('tokens'))
+                            ->numeric()
+                            ->step(1)
+                            ->minValue(SavedExtractorResource::MIN_CHUNK_SIZE),
+
                         Toggle::make('include_text')
                             ->default(fn () => $this->getExtractor()?->include_text ?? true)
                             ->label('Include text')
@@ -223,6 +216,7 @@ class StartExtractionAction extends Action
                 $extractorId = $data['saved_extractor_id'] ?? null;
                 $bucketId = $data['bucket_id'] ?? null;
                 $model = $data['model'] ?? $this->getLlm() ?? $extractor?->model ?? Magic::defaultModelName();
+                $strategy = $data['strategy'] ?? $this->getStrategy() ?? $extractor?->strategy;
                 $startedBy = auth()->user();
 
                 if ($extractorId) {
@@ -249,8 +243,12 @@ class StartExtractionAction extends Action
                     return;
                 }
 
+                $chunk_size = ($data['chunk_size'] ?? null)
+                    ? intval($data['chunk_size'])
+                    : $extractor->chunk_size ?? config('llm-magic.artifacts.default_max_tokens');
+
                 $run = $bucket->runs()->create([
-                    'strategy' => $extractor->strategy,
+                    'strategy' => $strategy,
                     'started_by_id' => $startedBy?->id,
                     'target_schema' => $extractor->json_schema,
                     'saved_extractor_id' => $extractor->id,
@@ -260,6 +258,7 @@ class StartExtractionAction extends Action
                     'mark_embedded_images' => $data['mark_embedded_images'] ?? $extractor->mark_embedded_images,
                     'include_page_images' => $data['include_page_images'] ?? $extractor->include_page_images,
                     'mark_page_images' => $data['mark_page_images'] ?? $extractor->mark_page_images,
+                    'chunk_size' => $chunk_size
                 ]);
 
                 GenerateDataJob::dispatch(run: $run);

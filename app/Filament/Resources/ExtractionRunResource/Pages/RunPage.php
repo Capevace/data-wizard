@@ -7,6 +7,8 @@ use App\Filament\Resources\ExtractionRunResource;
 use App\Filament\Resources\ExtractionRunResource\Actions\DownloadAsCsvAction;
 use App\Filament\Resources\ExtractionRunResource\Actions\DownloadAsJsonAction;
 use App\Filament\Resources\ExtractionRunResource\Actions\DownloadAsXmlAction;
+use App\Filament\Resources\ExtractionRunResource\Actions\DownloadEvaluationResults;
+use App\Filament\Resources\ExtractionRunResource\Actions\MarkAsFinishedAction;
 use App\Filament\Resources\ExtractionRunResource\Actions\SmartModifyJsonAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedRunAction;
 use App\Models\ExtractionRun;
@@ -47,7 +49,9 @@ class RunPage extends ViewRecord
             ActionGroup::make([])
                 ->label('Download')
                 ->translateLabel()
+                ->size('xl')
                 ->icon('heroicon-o-cloud-arrow-down')
+                ->dropdownPlacement('bottom-end')
                 ->actions([
                     DownloadAsJsonAction::make()
                         ->record($this->getRecord()),
@@ -57,9 +61,13 @@ class RunPage extends ViewRecord
 
                     DownloadAsXmlAction::make()
                         ->record($this->getRecord()),
+
+                    DownloadEvaluationResults::make()
+                        ->record($this->getRecord()),
                 ]),
 
             ActionGroup::make([])
+                ->dropdownPlacement('bottom-end')
                 ->actions([
                     Action::make('toggleDebugMode')
                         ->label(fn () => $this->debugModeEnabled ? __('Disable Debug-Mode') : __('Enable Debug-Mode'))
@@ -72,6 +80,9 @@ class RunPage extends ViewRecord
                         }),
 
                     OpenEmbeddedRunAction::make()
+                        ->record($this->getRecord()),
+
+                    MarkAsFinishedAction::make()
                         ->record($this->getRecord()),
                 ]),
         ];

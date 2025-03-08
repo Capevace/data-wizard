@@ -5,6 +5,8 @@ namespace App\Filament\Resources\ExtractionBucketResource\Pages;
 use App\Filament\Resources\ExtractionBucketResource;
 use App\Filament\Resources\ExtractionBucketResource\Actions\StartWithExtractorActionGroup;
 use App\Models\ExtractionBucket;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
@@ -39,15 +41,37 @@ class EditExtractionBucket extends EditRecord
     {
         return [
             DeleteAction::make()
-                ->label('Delete files')
+                ->label(__('Delete bucket'))
+                ->tooltip(__('Delete bucket'))
                 ->translateLabel()
                 ->icon('heroicon-o-trash')
+                ->iconButton()
+                ->size('lg')
                 ->outlined()
                 ->requiresConfirmation(),
-            ForceDeleteAction::make(),
-            RestoreAction::make(),
+
+
+            ForceDeleteAction::make()
+                ->iconButton(),
+            RestoreAction::make()
+                ->iconButton(),
+
+            Action::make('evaluate')
+                ->label('Evaluate')
+                ->tooltip(__('Evaluate'))
+                ->translateLabel()
+                ->iconButton()
+                ->size('lg')
+                ->icon('heroicon-o-chart-pie')
+                ->url(EvaluateExtractionBucket::getUrl(['record' => $this->record->id])),
 
             StartWithExtractorActionGroup::make(),
+
+//            ActionGroup::make([
+//
+//            ])
+//                ->dropdownPlacement('bottom-end')
+//                ->size('xl')
         ];
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Mateffy\Magic\Tokens\TokenResolver;
+use Mateffy\Magic\Support\ApiTokens\TokenResolver;
 
 class AppServiceProvider extends ServiceProvider
 {

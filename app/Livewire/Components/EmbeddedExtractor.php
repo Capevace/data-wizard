@@ -22,6 +22,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Mateffy\Magic;
 use Spatie\WebhookServer\WebhookCall;
 use WireElements\WireExtender\Attributes\Embeddable;
 
@@ -150,12 +151,20 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
 
     public function begin(): void
     {
+        $options = $this->saved_extractor->getContextOptions();
+
         $run = $this->bucket->runs()->create([
             'strategy' => $this->saved_extractor->strategy,
             'started_by_id' => auth()->user()?->id,
             'target_schema' => $this->saved_extractor->json_schema,
             'saved_extractor_id' => $this->saved_extractor->id,
-            'model' => $this->saved_extractor->model ?? config('magic-extract.default-model'),
+            'model' => $this->saved_extractor->model ?? Magic::defaultModelName(),
+            'include_text' => $options->includeText,
+            'include_embedded_images' => $options->includeEmbeddedImages,
+            'mark_embedded_images' => $options->markEmbeddedImages,
+            'include_page_images' => $options->includePageImages,
+            'mark_page_images' => $options->markPageImages,
+            'chunk_size' => $this->saved_extractor->chunk_size ?? config('llm-magic.artifacts.default_max_tokens')
         ]);
 
         $this->runId = $run->id;

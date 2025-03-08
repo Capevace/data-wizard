@@ -1,22 +1,28 @@
 # `Data Wizard`
 
-A PHP app serving `@llm-magic/sdk` functionality via HTTP.
-Can be used via GUI or REST / Webhook API.
+## Usage
 
-### Premium Addons
-- Fully-fledged Chat UI
-- Generative UI Component Library
-  - Confirmation dialogs
-  - Forms (via JSON Schema)
-  - Tables
-  - File uploader
-- "Flying"/"Hovering" Mini-chat
-- Memory
-- 
-- Filament Integrations
-- Bricks
-- Data Wizard Input
-- 
+The easiest way to use Data Wizard is to use the pre-built Docker container.
+
+```php
+docker run \ 
+    -p 8000:8000 \
+    -e APP_KEY=base64:YOUR_APP_KEY \
+    mateffy/data-wizard
+```
+
+## Requirements for manual installation
+
+Data Wizard is a Laravel application, so you'll need everything that Laravel requires in order to run.
+Most databases should work, but SQLite and Postgres have been tested.
+
+DataWizard uses [`mateffy/llm-magic`](https://github.com/mateffy/llm-magic) for LLM interaction and file data extraction.
+
+In order for file extraction to work you'll need to have [`uv`](https://github.com/astral-sh/uv) installed on your machine and in your PATH.
+You can also configure custom paths to use in the `llm-magic.php` config file. For more on this see the [llm-magic documentation](https://github.com/mateffy/llm-magic).
+
+While `llm-magic` uses a custom Python script to extract text and images from PDFs, [`Blaspsoft/doxswap`](https://github.com/Blaspsoft/doxswap) is used for converting Word and other rich text documents to PDF beforehand.
+`doxswap` requires that LibreOffice is installed on your machine. You may need to set the `LIBRE_OFFICE_PATH` environment variable to the path of the `soffice` executable.
 
 ### Copyright and License
 

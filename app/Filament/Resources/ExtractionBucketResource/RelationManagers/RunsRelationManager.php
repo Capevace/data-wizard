@@ -9,10 +9,16 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Arr;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Reactive;
 
 class RunsRelationManager extends RelationManager
 {
     protected static string $relationship = 'runs';
+
+    #[Reactive]
+    public ?string $model = null;
 
     public function form(Form $form): Form
     {
@@ -24,14 +30,25 @@ class RunsRelationManager extends RelationManager
             ]);
     }
 
+    #[On('setRunFilter')]
+    public function setRunFilter(string $strategy, string $context): void
+    {
+        Arr::set($this->tableFilters, 'evaluation_type.value', $context);
+        Arr::set($this->tableFilters, 'strategy.value', $strategy);
+    }
+
+    #[On('setModel')]
+    public function setModel(): void
+    {
+        Arr::set($this->tableFilters, 'model.value', $this->model);
+    }
+
     public function table(Table $table): Table
     {
         return $table
+            ->description('Only completed runs are considered in the statistics.')
             ->recordTitleAttribute('created_At')
             ->columns(ExtractionRunResource::table($table)->getColumns())
-            ->filters([
-                //
-            ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
             ])

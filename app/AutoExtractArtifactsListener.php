@@ -13,15 +13,12 @@ class AutoExtractArtifactsListener
 
     public function handle(MediaHasBeenAddedEvent $event): void
     {
-        /** @var ExtractionBucket|CloudArtifact $model */
+        /** @var ExtractionBucket $model */
         $model = $event->media->model()->first();
 
         /** @var File $file */
         $file = $event->media;
 
-        match ($model::class) {
-            ExtractionBucket::class => GenerateArtifactJob::dispatch(bucket: $model, file: $file),
-//            CloudArtifact::class => GenerateCloudArtifactJob::dispatch(cloudArtifact: $model),
-        };
+        GenerateArtifactJob::dispatch(bucket: $model, file: $file);
     }
 }

@@ -9,20 +9,23 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\QueryParameter;
+use App\Livewire\Components\EmbeddedExtractor\ExtractorSteps;
 use App\Models\Concerns\UsesUuid;
 use App\Rules\JsonSchemaRule;
+use App\WidgetAlignment;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Mateffy\Magic\LLM\ElElEm;
-use Mateffy\Magic\LLM\LLM;
+use Mateffy\Magic\Chat\TokenStats;
+use Mateffy\Magic\Extraction\ContextOptions;
+use Spatie\WebhookServer\WebhookCall;
 use Swaggest\JsonSchema\JsonSchema;
 
 /**
  * @property string $strategy
  * @property ?string $label
- * @property bool $was_automatically_created
  * @property array $json_schema
  * @property ?string $model
  * @property ?string $output_instructions
@@ -56,7 +59,8 @@ use Swaggest\JsonSchema\JsonSchema;
  * @property bool $mark_embedded_images
  * @property bool $include_page_images
  * @property bool $mark_page_images
- * @property-read ?\Carbon\CarbonImmutable $last_ran_at
+ * @property ?int $chunk_size
+ * @property-read ?CarbonImmutable $last_ran_at
  * @property-read ?JsonSchema $typed_schema
  */
 #[ApiResource(
@@ -122,7 +126,6 @@ class SavedExtractor extends Model
     protected $fillable = [
         'strategy',
         'label',
-        'was_automatically_created',
         'json_schema',
         'output_instructions',
         'model',
@@ -169,23 +172,24 @@ class SavedExtractor extends Model
         'redirect_url',
 
         'json_schema_string',
+
+        'chunk_size'
     ];
 
     protected $casts = [
         'json_schema' => 'json',
-        'was_automatically_created' => 'bool',
         'allow_download' => 'bool',
         'enable_webhook' => 'bool',
         'include_text' => 'bool',
         'include_embedded_images' => 'bool',
         'mark_embedded_images' => 'bool',
         'include_page_images' => 'bool',
-        'mark_page_images' => 'bool'
+        'mark_page_images' => 'bool',
+        'chunk_size' => 'int',
     ];
 
     protected $attributes = [
         'strategy' => 'parallel',
-        'was_automatically_created' => false,
         'allow_download' => true,
         'enable_webhook' => false,
         'include_text' => true,
@@ -197,18 +201,15 @@ class SavedExtractor extends Model
 
     protected $hidden = [
         'webhook_secret',
-        'was_automatically_created',
         'logo',
     ];
 
-//    protected $appends = ['json_schema_string'];
-
-    public function runs(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function runs(): HasMany
     {
         return $this->hasMany(ExtractionRun::class);
     }
 
-    public function getLastRanAtAttribute(): ?\Carbon\CarbonImmutable
+    public function getLastRanAtAttribute(): ?CarbonImmutable
     {
         return $this->runs()->latest()->first()?->started_at;
     }
@@ -222,22 +223,6 @@ class SavedExtractor extends Model
 
             return null;
         }
-    }
-
-//    public function getJsonSchemaStringAttribute(): ?string
-//    {
-//        return json_encode($this->json_schema, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
-//    }
-//
-//    public function setJsonSchemaStringAttribute(?string $jsonSchemaString): void
-//    {
-//        $this->json_schema = json_decode($jsonSchemaString, true, 512, JSON_THROW_ON_ERROR);
-//    }
-
-    public function logUsage(): void
-    {
-        $this->updated_at = now()->toImmutable();
-        $this->save();
     }
 
     public function getEmbeddedUrl(?ExtractorSteps $step = null, ?WidgetAlignment $horizontalAlignment = null, ?WidgetAlignment $verticalAlignment = null): string

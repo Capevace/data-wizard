@@ -11,10 +11,8 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Livewire\Component;
-use Mateffy\Magic\LLM\ElElEm;
-use Mateffy\Magic\LLM\Models\Claude3Family;
-use Mateffy\Magic\Loop\Response\JsonResponse;
-use Mateffy\Magic\Prompt\SmartModifyPrompt;
+use Mateffy\Magic;
+use Mateffy\Magic\Chat\Prompt\SmartModifyPrompt;
 
 class SmartModifyJsonAction extends Action
 {
@@ -87,13 +85,12 @@ class SmartModifyJsonAction extends Action
             modificationInstructions: $instructions,
         );
 
-        $llm = ElElEm::fromString(ElElEm::id('anthropic', Claude3Family::HAIKU));
+        $llm = Magic::defaultModel();
 
         $responses = $llm->stream(prompt: $prompt);
+        $data = $responses->lastData();
 
-        $response = collect($responses)->first(fn ($message) => $message instanceof JsonResponse);
-
-        if ($response === null) {
+        if ($data === null) {
             report(new \Exception('Could not extract data: '.json_encode($responses)));
 
             Notification::make()
@@ -104,7 +101,7 @@ class SmartModifyJsonAction extends Action
             return null;
         }
 
-        return ($properties = $response->data ?? null)
+        return ($properties = $data ?? null)
             ? JsonEditor::formatJson($properties)
             : null;
     }

@@ -4,7 +4,7 @@ namespace App\Magic;
 
 use App\Models\ApiKey;
 use Mateffy\Magic\Exceptions\MissingApiToken;
-use Mateffy\Magic\Tokens\TokenResolver;
+use Mateffy\Magic\Support\ApiTokens\TokenResolver;
 
 class DatabaseTokenResolver implements TokenResolver
 {
@@ -14,7 +14,7 @@ class DatabaseTokenResolver implements TokenResolver
     public function resolve(string $provider, string $key = 'token'): ?string
     {
         $apiKey = ApiKey::query()
-            ->where('provider', $provider . 'asdasdas')
+            ->where('provider', $provider)
             ->where('type', $key)
             ->first();
 

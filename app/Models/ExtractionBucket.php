@@ -14,19 +14,28 @@ use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionBucket\BucketCreationSource;
 use App\Models\ExtractionBucket\BucketStatus;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Mateffy\Magic\Functions\ExtractData;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Mateffy\Magic\Extraction\Artifacts\Artifact;
+use Mateffy\Magic\Extraction\ContextOptions;
+use Mateffy\Magic\Extraction\Slices\Slice;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
- * @property-read array $target_schema
+ * @property string $description
+ * @property ?string $created_by_id
+ * @property ?string $extractor_id
+ * @property BucketCreationSource $created_using
+ * @property-read User $created_by
+ * @property-read Collection<Artifact> $artifacts
+ * @property-read Collection<File> $files
  */
 #[ApiResource(
     uriTemplate: '/buckets',
@@ -57,14 +66,10 @@ class ExtractionBucket extends Model implements HasMedia
     protected $fillable = [
         'description',
         'created_by_id',
-        'status',
-        'started_at',
         'extractor_id',
     ];
 
     protected $casts = [
-        'started_at' => 'timestamp',
-        'status' => BucketStatus::class,
         'created_using' => BucketCreationSource::class,
     ];
 
@@ -109,10 +114,24 @@ class ExtractionBucket extends Model implements HasMedia
         return $this->hasMany(ExtractionRun::class, 'bucket_id');
     }
 
-    public function logUsage(): void
+    public function getArtifactsAttribute(): Collection
     {
-        $this->updated_at = now();
-        $this->save();
+        $this->loadMissing('files');
+
+        return $this->files
+            ->filter(fn (File $file) => $file->artifact && $file->artifact_status === ArtifactGenerationStatus::Complete)
+            ->sortBy(fn (File $file) => $file->artifact->getMetadata()->name)
+            ->values()
+            ->map(fn (File $file) => $file->artifact);
+    }
+
+    public function calculateInputTokens(?ContextOptions $contextOptions): int
+    {
+        return $this->artifacts
+            ->map(fn (Artifact $artifact) => $artifact->getContents(contextOptions: $contextOptions)
+                ->reduce(fn (int $tokens, Slice $slice) => $tokens + $slice->getTokens(), 0)
+            )
+            ->sum();
     }
 
     public static function createEmbedded(?string $externalId = null): self

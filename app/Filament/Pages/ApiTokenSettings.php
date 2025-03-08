@@ -9,7 +9,6 @@ use App\Filament\Pages\ApiTokenSettings\ViewNewApiTokenOnceAction;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -26,13 +25,14 @@ class ApiTokenSettings extends Page implements HasTable
 
 	public function getTitle(): string|Htmlable
 	{
-		return 'API Tokens';
+		return 'Personal API Tokens';
 	}
 
     public static function getNavigationLabel(): string
     {
-        return 'API Tokens';
+        return 'Personal API Tokens';
     }
+
 
     public function table(Table $table): Table
 	{
@@ -55,9 +55,7 @@ class ApiTokenSettings extends Page implements HasTable
 			->headerActions([
 				IssueNewApiTokenAction::make()
 			])
-			->bulkActions([
-				DeleteBulkAction::make()
-			])
+			->bulkActions([])
 			->actions([
 				RenameApiTokenAction::make(),
 				DeleteAction::make(),

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Mateffy\Magic\Chat\Messages\MultimodalMessage\Base64Image;
 use Mateffy\Magic\Chat\Prompt\Role;
+use Mateffy\Magic\Tokens\TextTokenizer;
 
 /**
  * @property Role $role
@@ -67,5 +68,14 @@ class ActorMessage extends Model
         }
 
         return Arr::get($this->json ?? [], $key);
+    }
+
+    public function calculateTokens(): int
+    {
+        $content = $this->text ?? $this->attributes['json'] ?? '';
+
+        $tokenizer = app(TextTokenizer::class);
+
+        return $tokenizer->tokenize($content);
     }
 }

@@ -25,6 +25,8 @@ return [
 
     'admin_email' => env('ADMIN_EMAIL', null),
 
+    'evaluation_mode' => env('EVALUATION_MODE', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

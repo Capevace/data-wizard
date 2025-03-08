@@ -170,7 +170,19 @@
                     icon="heroicon-o-clock"
                     :label="__('Duration')"
                 >
-                    <span class="text-lg">{{ $this->run?->status->formatDate($this->run?->created_at) }}</span>
+                    <span class="text-lg">{{ $this->run?->formatted_duration }}</span>
+                </x-generator.key-value>
+
+                <x-generator.key-value
+                    icon="heroicon-o-list-bullet"
+                    :label="__('Steps')"
+                >
+                    <span class="text-lg">
+                        {{ __(':completed / :estimated estimated steps', [
+                            'completed' => $this->run?->getCompletedSteps(),
+                            'estimated' => $this->run?->getEstimatedSteps(),
+                        ]) }}
+                    </span>
                 </x-generator.key-value>
             </div>
         </x-filament::section>
@@ -208,6 +220,14 @@
             </x-generator.key-value>
 
             <x-generator.key-value
+                icon="heroicon-o-cube-transparent"
+                label="Chunk Size"
+                class="mb-5"
+            >
+                {{ $this->run?->chunk_size ?? config('llm-magic.artifacts.default_max_tokens') }} {{ __('tokens') }}
+            </x-generator.key-value>
+
+            <x-generator.key-value
                 icon="heroicon-o-adjustments-horizontal"
                 label="Output Instructions"
             >
@@ -229,12 +249,10 @@
             compact
             class="col-span-1"
         >
-            @if ($stats = $this->run?->token_stats)
-                <x-generator.cost
-                    :stats="$stats"
-                    class="col-span-1"
-                />
-            @endif
+            <x-generator.cost
+                :stats="$this->run->getEnrichedTokenStats()"
+                class="col-span-1"
+            />
         </x-filament::section>
     </div>
 </div>

@@ -3,6 +3,7 @@
 namespace App\Filament\Forms;
 
 use Filament\Forms\Components\Select;
+use Mateffy\Magic;
 
 class StrategySelect extends Select
 {
@@ -16,10 +17,10 @@ class StrategySelect extends Select
             ->selectablePlaceholder(false)
             ->placeholder('Select a strategy')
             ->default('simple')
-            ->options([
-                'simple' => __('Simple'),
-                'sequential' => __('Sequential'),
-                'parallel' => __('Parallel'),
-            ]);
+            ->options(
+                Magic::getExtractionStrategies()
+                    ->map(fn (string $strategyClass, string $strategy) => $strategyClass::getLabel())
+                    ->all()
+            );
     }
 }
