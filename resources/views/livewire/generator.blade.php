@@ -48,7 +48,10 @@
         <template x-if="tab === 'gui'">
             <div class="flex flex-col gap-4">
                 {{--                <x-llm-magic::resource.debug />--}}
-                <x-llm-magic::resource.json-schema :schema="$this->schema" />
+                <x-llm-magic::resource.json-schema
+                    :schema="$this->schema"
+                    :disabled="!$this->run?->status->isDataEditable()"
+                />
             </div>
         </template>
 

@@ -5,6 +5,7 @@
     'nextButton' => null,
     'backButton' => null,
     'secondaryButton' => null,
+    'canContinue',
 ])
 
 <nav @class([
@@ -56,13 +57,18 @@
         {{ $nextButton }}
     @elseif ($labels->nextButton)
         <x-filament::button
+            @class([
+                'flex-1 col-span-1',
+                'opacity-50 cursor-not-allowed' => !$canContinue,
+            ])
             :color="$labels->nextButton->color"
             :icon="$labels->nextButton->icon"
-            :wire:click="$labels->nextButton->action"
+            :wire:click="$canContinue ? $labels->nextButton->action : null"
             icon-position="after"
-            class="flex-1 col-span-1"
             :disabled="$labels->nextButton->disabledWhileRunning && $this->run?->status->shouldPoll()"
             data-pan="embedded-extractor-next-{{ $labels->nextButton->action }}"
+            :tooltip="$canContinue ? null : __('Fix all validation errors before continuing.')"
+            :aria-disabled="!$canContinue"
         >
             {{ $labels->nextButton->label }}
         </x-filament::button>

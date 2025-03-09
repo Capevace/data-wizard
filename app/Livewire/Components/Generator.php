@@ -6,11 +6,16 @@ use App\Livewire\Components\Shared\HasPartialJson;
 use App\Models\ExtractionBucket;
 use App\Models\ExtractionRun;
 use App\Models\SavedExtractor;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use JsonException;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
+use Mateffy\Magic\Support\JsonValidator;
 
 /**
  * @property-read ExtractionBucket $bucket
@@ -85,6 +90,35 @@ class Generator extends Component
         //        ]);
         //
         //        $this->js("\$dispatch('start-streaming', { sourceUrl: '$sourceUrl' })");
+    }
+
+    public function updated(string $statePath)
+    {
+        if (Str::startsWith($statePath, 'resultData') && $this->run->status === ExtractionRun\RunStatus::Completed) {
+            $this->validateData();
+
+            if (count($this->validationErrors) === 0) {
+                $this->run->update([
+                    'result_json' => $this->resultData,
+                    'partial_result_json' => $this->resultData,
+                ]);
+
+                Notification::make()
+                    ->success()
+                    ->title(__('Data saved'))
+                    ->send();
+            } else {
+                do {
+                    $lastError = Arr::last($lastError ?? $this->validationErrors);
+                } while (is_array($lastError));
+
+                Notification::make()
+                    ->danger()
+                    ->title(__('Data validation error'))
+                    ->body($lastError)
+                    ->send();
+            }
+        }
     }
 
     public function render()

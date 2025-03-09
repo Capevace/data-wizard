@@ -61,4 +61,9 @@ enum RunStatus: string implements HasColor, HasIcon, HasLabel
     {
         return $this === self::Pending || $this === self::Running;
     }
+
+    public function isDataEditable(): bool
+    {
+        return $this === self::Completed;
+    }
 }

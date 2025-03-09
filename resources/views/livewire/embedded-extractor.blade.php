@@ -100,7 +100,7 @@ $verticalClasses = match ($this->config->verticalAlignment) {
             @elseif ($this->step === ExtractorSteps::Bucket)
                 <x-embedded.bucket :labels="$this->bucket_labels" />
             @elseif ($this->step === ExtractorSteps::Extraction)
-                <x-embedded.running :labels="$this->extraction_labels" />
+                <x-embedded.running :labels="$this->extraction_labels" :can-continue="$this->canContinue()" />
             @elseif ($this->step === ExtractorSteps::Results)
                 <x-embedded.results :labels="$this->results_labels" :config="$this->config" />
             @endif

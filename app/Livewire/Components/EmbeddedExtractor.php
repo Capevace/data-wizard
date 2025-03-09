@@ -18,12 +18,12 @@ use App\WidgetAlignment;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Mateffy\Magic;
-use Spatie\WebhookServer\WebhookCall;
 use WireElements\WireExtender\Attributes\Embeddable;
 
 /**
@@ -172,10 +172,7 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
 
         $this->secret = self::generateIdSignature(bucketId: $this->bucketId, runId: $this->runId);
 
-        GenerateDataJob::dispatch(
-            run: $this->run,
-            startedBy: auth()->user()
-        );
+        GenerateDataJob::dispatch(run: $this->run);
 
         $this->step = ExtractorSteps::Extraction;
     }
@@ -222,23 +219,13 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
         };
     }
 
-    public function dispatchCompletion()
+    public function dispatchCompletion(): void
     {
         $this->dispatch('magic-iframe-submit', data: $this->resultData);
 
-        if ($this->saved_extractor->webhook_url && $this->saved_extractor->enable_webhook) {
-            WebhookCall::create()
-                ->url($this->saved_extractor->webhook_url)
-                ->doNotVerifySsl()
-                ->payload([
-                    'extractor_id' => $this->saved_extractor->id,
-                    'bucket_id' => $this->bucketId,
-                    'run_id' => $this->runId,
-                    'data' => $this->resultData,
-                ])
-                ->useSecret($this->saved_extractor->webhook_secret)
-                ->dispatchSync();
-        }
+        assert($this->run !== null, 'Run should be set');
+
+        $this->run->dispatchWebhook();
     }
 
     public function downloadFile(string $fileId)
@@ -264,8 +251,6 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
 
     public function restart($hardRestart = false): void
     {
-//        $this->run->stop();
-
         if ($hardRestart) {
             $this->bucketId = ExtractionBucket::createEmbedded()->id;
             unset($this->bucket);
@@ -315,6 +300,22 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
             ->visible(fn () => $this->canDownload())
             ->grouped()
             ->record($this->run);
+    }
+
+    public function updated(string $statePath)
+    {
+        if (Str::startsWith($statePath, 'resultData')) {
+            $this->validateData();
+        }
+    }
+
+    public function canContinue(): bool
+    {
+        if ($this->step === ExtractorSteps::Extraction) {
+            return count($this->validationErrors) === 0;
+        }
+
+        return true;
     }
 
     public function render()

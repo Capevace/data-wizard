@@ -1,6 +1,8 @@
 @props([
     /** @var \App\Livewire\Components\EmbeddedExtractor\StepLabels $labels */
     'labels',
+
+    'canContinue',
 ])
 
 <div>
@@ -37,5 +39,5 @@
         <x-llm-magic::resource.debug />
     </div>
 
-    <x-embedded.buttons :labels="$labels" />
+    <x-embedded.buttons :labels="$labels" :$canContinue />
 </div>

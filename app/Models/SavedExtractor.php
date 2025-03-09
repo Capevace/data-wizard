@@ -264,7 +264,7 @@ class SavedExtractor extends Model
         bool $sync = false
     ): void
     {
-        if ($this->webhook_url === null) {
+        if (!$this->enable_webhook || empty($this->webhook_url) || empty($this->webhook_secret)) {
             return;
         }
 
