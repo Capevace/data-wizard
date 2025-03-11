@@ -66,7 +66,7 @@ class ExtractionBucket extends Model implements HasMedia
     protected $fillable = [
         'description',
         'created_by_id',
-        'extractor_id',
+        'created_using',
     ];
 
     protected $casts = [
@@ -76,9 +76,6 @@ class ExtractionBucket extends Model implements HasMedia
     public function getAttributes()
     {
         return [
-            'status' => BucketStatus::Pending,
-            'started_at' => now()->toImmutable(),
-            'extractor_id' => 'default',
             'created_by_id' => auth()->user()?->id,
             'created_using' => BucketCreationSource::App,
             ...parent::getAttributes(),

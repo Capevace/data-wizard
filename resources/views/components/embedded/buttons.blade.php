@@ -5,7 +5,7 @@
     'nextButton' => null,
     'backButton' => null,
     'secondaryButton' => null,
-    'canContinue',
+    'canContinue' => true,
 ])
 
 <nav @class([

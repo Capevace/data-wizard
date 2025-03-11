@@ -6,7 +6,7 @@
     class="grid grid-cols-1 gap-6 md:grid-cols-3 items-start"
     @start-streaming.window="startStreaming($event.detail.sourceUrl)"
     @if (in_array($this->run?->status->value, ['running', 'pending']))
-        wire:poll.300ms="refreshJson"
+        wire:poll.2s="refreshJson"
     @endif
 >
     <div class="col-span-1 md:col-span-2">
@@ -219,7 +219,11 @@
                 label="Strategy"
                 class="mb-5"
             >
-                {{ ucfirst($this->run?->strategy) }}
+                @if ($class = \Mateffy\Magic::getExtractionStrategies()[$this->run?->strategy ?? ''] ?? null)
+                    {{ $class::getLabel() }}
+                @else
+                    {{ ucfirst($this->run?->strategy) }}
+                @endif
             </x-generator.key-value>
 
             <x-generator.key-value

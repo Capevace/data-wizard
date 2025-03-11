@@ -100,32 +100,19 @@
                         <x-icon name="bi-database-add" class="w-8 h-8 sm:w-12 sm:h-12 text-primary-600 dark:text-primary-400" />
                     </div>
                 </div>
-                <nav class="grid sm:grid-cols-2 items-start w-full gap-8">
+                <nav class="grid sm:grid-cols-1 items-start w-full gap-8">
                     <div class="flex flex-col gap-2">
                         <x-filament::button
                             icon="bi-upload"
                             icon-position="after"
                             color="gray"
                             tag="a"
-                            href="{{ \App\Filament\Resources\SavedExtractorResource\Pages\ListSavedExtractors::getUrl() }}"
+                            href="{{ \App\Filament\Resources\ExtractionBucketResource\Pages\CreateExtractionBucket::getUrl() }}"
                         >
-                            {{ __('Import an extractor') }}
+                            {{ __('Upload some files') }}
                         </x-filament::button>
                         <p class="text-xs text-gray-500 dark:text-gray-400">
-                            {{ __('You can use your previous extractors or use ones you got from the community.') }}
-                        </p>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <x-filament::button
-                            icon="heroicon-o-plus"
-                            icon-position="after"
-                            tag="a"
-                            href="{{ \App\Filament\Resources\SavedExtractorResource\Pages\CreationWizard::getUrl() }}"
-                        >
-                            {{ __('Create a new extractor') }}
-                        </x-filament::button>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">
-                            {{ __('You can use your previous extractors or use ones you got from the community.') }}
+                            {{ __('To start extracting some data, you\'ll need to create a new bucket and upload some files to it. Buckets can be reused across multiple extractors and runs.') }}
                         </p>
                     </div>
                 </nav>

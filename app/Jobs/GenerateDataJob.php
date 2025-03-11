@@ -73,12 +73,12 @@ class GenerateDataJob implements ShouldQueue
                     $actor->save();
                 })
                 ->onDataProgress(function (array $data) {
-                    $this->run->partial_result_json = $data;
+                    $this->run->partial_data = $data;
                     $this->run->save();
                 })
                 ->stream();
 
-            $this->run->result_json = $data->toArray() ?? $this->run->result_json;
+            $this->run->data = $data;
             $this->run->status = RunStatus::Completed;
             $this->run->finished_at = now();
             $this->run->save();

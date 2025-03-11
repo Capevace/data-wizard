@@ -95,7 +95,10 @@ class Generator extends Component
     public function updated(string $statePath)
     {
         if (Str::startsWith($statePath, 'resultData') && $this->run->status === ExtractionRun\RunStatus::Completed) {
-            $this->validateData();
+            // validateData returns false if it has been already called in the last second to prevent spamming updates
+            if (!$this->validateData()) {
+                return;
+            }
 
             if (count($this->validationErrors) === 0) {
                 $this->run->update([

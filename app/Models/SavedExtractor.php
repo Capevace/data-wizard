@@ -171,8 +171,6 @@ class SavedExtractor extends Model
 
         'redirect_url',
 
-        'json_schema_string',
-
         'chunk_size'
     ];
 

@@ -6661,7 +6661,7 @@
             "dist": {
                 "type": "path",
                 "url": "../magic/llm-magic",
-                "reference": "3d093d926884ce9ae3318f4d696bc254423f7a32"
+                "reference": "6a5831ec1911da3255bb3b2f98b60ec1fbc2edb9"
             },
             "require": {
                 "aws/aws-sdk-php": "^3.315",
@@ -6743,7 +6743,7 @@
                     "email": "github@mateffy.me"
                 }
             ],
-            "description": "A package to magically import complex data structures using LLMs and AI methods.",
+            "description": "A universal LLM package for Laravel",
             "transport-options": {
                 "relative": true
             }

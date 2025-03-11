@@ -18,6 +18,9 @@ trait HasPartialJson
     #[Locked]
     public array $validationErrors = [];
 
+    #[Locked]
+    public int $lastValidationTimestamp = 0;
+
     public function refreshJson()
     {
         $this->resultData = $this->run?->partial_data ?? $this->run?->data;
@@ -26,16 +29,25 @@ trait HasPartialJson
     /**
      * @throws JsonException
      */
-    public function validateData(): void
+    public function validateData(): bool
     {
+        $now = now()->timestamp;
+
+        // The last validation must have been at least 1 second ago
+        if ($now - $this->lastValidationTimestamp < 1) {
+            return false;
+        }
+
+        $this->lastValidationTimestamp = $now;
+
         if ($this->resultData === null) {
             $this->validationErrors = [];
-            return;
+            return true;
         }
 
         $validator = app(JsonValidator::class);
 
-        $resultDataWithNulls = $this->resultData;
+        $resultDataWithNulls = json_decode(json_encode($this->resultData), true);
 
         // Deeply replace empty strings with nulls
         array_walk_recursive($resultDataWithNulls, function (&$value) {
@@ -57,5 +69,7 @@ trait HasPartialJson
         foreach (($errors ?? []) as $dotKey => $message) {
             Arr::set($this->validationErrors, $dotKey, $message);
         }
+
+        return true;
     }
 }

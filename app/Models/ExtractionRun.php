@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
+use JsonException;
 use Mateffy\Magic\Chat\Prompt\Role;
 use Mateffy\Magic\Chat\TokenStats;
 use Mateffy\Magic\Extraction\ArtifactBatcher;
@@ -38,8 +40,8 @@ use Swaggest\JsonSchema\SchemaContract;
  * @property-read User $started_by
  * @property ?array $target_schema
  * @property ?SchemaContract $target_schema_typed
- * @property ?array $result_json
- * @property ?string $partial_result_json
+ * @property ?array $result_json Should be used internally to set the final data. Use $run->data instead.
+ * @property ?string $partial_result_json Should be used internally to set the partial data. Use $run->partial_data instead.
  * @property ?array $error
  * @property ?TokenStats $token_stats
  * @property string $strategy
@@ -54,9 +56,9 @@ use Swaggest\JsonSchema\SchemaContract;
  * @property ?CarbonImmutable $finished_at
  * @property ?CarbonImmutable $started_at
  * @property ?int $chunk_size
+ * @property ?array $data
+ * @property string|array|null $partial_data
  * @property-read ?SavedExtractor $saved_extractor
- * @property-read ?array $data
- * @property-read ?array $partial_data
  * @property-read CarbonInterval $duration
  * @property-read string $formatted_duration
  * @property-read string $evaluation_type
@@ -221,9 +223,33 @@ class ExtractionRun extends Model
         return $this->result_json;
     }
 
+    public function setDataAttribute(array|Collection|null $data): void
+    {
+        if ($data instanceof Collection) {
+            $data = $data->toArray();
+        }
+
+        $this->result_json = $data;
+
+        // Setting the final data should also set the partial data so there's no difference between the two.
+        $this->partial_data = $data;
+    }
+
     public function getPartialDataAttribute(): ?array
     {
         return json_decode($this->partial_result_json, associative: true) ?? $this->data;
+    }
+
+    /**
+     * @throws JsonException
+     */
+    public function setPartialDataAttribute(string|array|null $data): void
+    {
+        if (is_array($data)) {
+            $data = json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+
+        $this->partial_result_json = $data;
     }
 
     public function getEvaluationTypeAttribute(): EvaluationType

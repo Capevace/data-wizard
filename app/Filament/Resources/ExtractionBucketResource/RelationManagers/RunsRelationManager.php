@@ -20,6 +20,11 @@ class RunsRelationManager extends RelationManager
     #[Reactive]
     public ?string $model = null;
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -49,9 +54,6 @@ class RunsRelationManager extends RelationManager
             ->description('Only completed runs are considered in the statistics.')
             ->recordTitleAttribute('created_At')
             ->columns(ExtractionRunResource::table($table)->getColumns())
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
             ->actions([
                 Tables\Actions\ViewAction::make()
                     ->url(fn (ExtractionRun $record) => ExtractionRunResource::getUrl('view', ['record' => $record->id])),

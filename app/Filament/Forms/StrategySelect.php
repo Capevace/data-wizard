@@ -17,6 +17,7 @@ class StrategySelect extends Select
             ->selectablePlaceholder(false)
             ->placeholder('Select a strategy')
             ->default('simple')
+            ->native(false)
             ->options(
                 Magic::getExtractionStrategies()
                     ->map(fn (string $strategyClass, string $strategy) => $strategyClass::getLabel())
