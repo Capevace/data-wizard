@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\SavedExtractorResource\Actions;
 
+use App\Livewire\Components\EmbeddedExtractor\WidgetAlignment;
 use App\Models\SavedExtractor;
-use App\WidgetAlignment;
 use Filament\Actions\Action;
 
 class OpenEmbeddedExtractorAction extends Action

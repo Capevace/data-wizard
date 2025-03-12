@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Livewire\Components\EmbeddedExtractor;
 
 enum WidgetAlignment: string
 {
@@ -8,11 +8,6 @@ enum WidgetAlignment: string
     case Center = 'center';
     case End = 'end';
     case Stretch = 'stretch';
-
-    public function justifyClass(): string
-    {
-
-    }
 
     public function itemsClass(): string
     {

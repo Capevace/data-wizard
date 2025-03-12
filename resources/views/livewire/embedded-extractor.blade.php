@@ -1,6 +1,7 @@
 <?php
-use App\WidgetAlignment;
+
 use App\Livewire\Components\EmbeddedExtractor\ExtractorSteps;
+use App\Livewire\Components\EmbeddedExtractor\WidgetAlignment;
 
 $horizontalClasses = match ($this->config->horizontalAlignment) {
     WidgetAlignment::Start => 'items-start',
@@ -71,7 +72,11 @@ $verticalClasses = match ($this->config->verticalAlignment) {
                     },
                 ])
             >
-                <img src="{{ $this->config->logoUrl }}" alt="Logo BBK" class="h-32">
+                <img
+                    src="{{ $this->config->logoUrl }}"
+                    alt="Logo BBK"
+                    class="h-32"
+                >
             </div>
         @endif
 
@@ -91,9 +96,16 @@ $verticalClasses = match ($this->config->verticalAlignment) {
             @elseif ($this->step === ExtractorSteps::Bucket)
                 <x-embedded.bucket :labels="$this->bucket_labels" />
             @elseif ($this->step === ExtractorSteps::Extraction)
-                <x-embedded.running :labels="$this->extraction_labels" :can-continue="$this->canContinue()" :limit-height="$this->verticalAlignment === WidgetAlignment::Center" />
+                <x-embedded.running
+                    :labels="$this->extraction_labels"
+                    :can-continue="$this->canContinue()"
+                    :limit-height="$this->verticalAlignment === WidgetAlignment::Center"
+                />
             @elseif ($this->step === ExtractorSteps::Results)
-                <x-embedded.results :labels="$this->results_labels" :config="$this->config" />
+                <x-embedded.results
+                    :labels="$this->results_labels"
+                    :config="$this->config"
+                />
             @endif
         </div>
     </div>

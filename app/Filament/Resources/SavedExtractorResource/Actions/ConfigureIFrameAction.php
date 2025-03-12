@@ -4,18 +4,16 @@ namespace App\Filament\Resources\SavedExtractorResource\Actions;
 
 use App\Filament\Forms\iFrameField;
 use App\Livewire\Components\EmbeddedExtractor\ExtractorSteps;
+use App\Livewire\Components\EmbeddedExtractor\WidgetAlignment;
 use App\Models\SavedExtractor;
-use App\WidgetAlignment;
 use Filament\Actions\Action;
 use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\View;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 

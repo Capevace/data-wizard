@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Components\EmbeddedExtractor;
 
-use App\WidgetAlignment;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 
@@ -18,7 +17,7 @@ trait HasStepLabels
     public function config(): EmbeddingConfig
     {
         return new EmbeddingConfig(
-            allowDownload: $this->saved_extractor->allow_download ?? true, //'https://www.katrima.de/SharedDocs/Bilder/DE/Allgemein/Logos/LogoBBK.png?__blob=thumbnail&v=6',
+            allowDownload: $this->saved_extractor->allow_download ?? true,
             redirectUrl: $this->saved_extractor->redirect_url ?? null,
             logoUrl: null,
             horizontalAlignment: $this->horizontalAlignment,

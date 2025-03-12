@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Listeners;
 
 use App\Jobs\GenerateArtifactJob;
 use App\Models\ExtractionBucket;
