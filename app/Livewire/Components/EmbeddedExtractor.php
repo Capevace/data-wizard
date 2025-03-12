@@ -18,6 +18,7 @@ use App\WidgetAlignment;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
@@ -47,8 +48,11 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
     #[Url(as: 'run')]
     public ?string $runId = null;
 
+    #[Url(as: 'expiresAt', keep: true)]
+    public string $expiresAt;
+
     #[Url(as: 'signature', keep: true)]
-    public ?string $secret = null;
+    public string $secret;
 
     #[Url(history: true)]
     public ExtractorSteps $step = ExtractorSteps::Introduction;
@@ -77,28 +81,19 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
             : null;
     }
 
-    public static function generateIdSignature(?string $bucketId = null, ?string $runId = null): ?string
+    public static function generateIdSignature(?string $extractorId = null, ?string $bucketId = null, ?string $runId = null, ?string $expiresAt = null): ?string
     {
-        if ($bucketId === null && $runId === null) {
+        if ($bucketId === null && $runId === null && $extractorId === null) {
             return null;
         }
 
-        return hash_hmac('sha256', "{$bucketId}.{$runId}", config('app.key'));
+        return hash_hmac('sha256', "{$extractorId}.{$bucketId}.{$runId}.{$expiresAt}", config('app.key'));
     }
+
+
 
     public function boot()
     {
-        if (!$this->secret) {
-            $this->bucketId = ExtractionBucket::createEmbedded()->id;
-            $this->runId = null;
-            $this->secret = self::generateIdSignature(bucketId: $this->bucketId, runId: $this->runId);
-        } else if ($this->secret === self::generateIdSignature(bucketId: $this->bucketId ?? request()->get('bucketId'), runId: $this->runId ?? request()->get('runId'))) {
-            $this->bucketId = $this->bucketId ?? request()->get('bucketId');
-            $this->runId = $this->runId ?? request()->get('runId');
-        } else {
-            abort(404);
-        }
-
         if ($this->step === ExtractorSteps::Bucket && $this->bucketId === null) {
             $this->step = ExtractorSteps::Introduction;
         }
@@ -116,8 +111,34 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
         }
     }
 
-    public function mount()
+    public function mount(): void
     {
+        $expiresAt = $this->expiresAt ?? request()->get('expiresAt');
+
+        if (! $expiresAt) {
+            abort(401, 'No expiration');
+        }
+
+        $date = Date::createFromTimestamp($expiresAt);
+
+        if ($date->isPast()) {
+            abort(401, 'Expired');
+        }
+
+        $checkSignature = self::generateIdSignature(
+            extractorId: $this->extractorId,
+            bucketId: $this->bucketId,
+            runId: $this->runId,
+            expiresAt: $this->expiresAt
+        );
+
+        if ($this->secret === $checkSignature) {
+            $this->bucketId = $this->bucketId ?? request()->get('bucketId');
+            $this->runId = $this->runId ?? request()->get('runId');
+        } else {
+            abort(401, 'Invalid signature');
+        }
+
         $horizontalAlignment = WidgetAlignment::tryFrom(request()->get('horizontal-alignment') ?? '');
         $verticalAlignment = WidgetAlignment::tryFrom(request()->get('vertical-alignment') ?? '');
 
@@ -136,7 +157,7 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
             $this->bucketId = ExtractionBucket::createEmbedded()->id;
             unset($this->bucket);
 
-            $this->secret = self::generateIdSignature(bucketId: $this->bucketId, runId: $this->runId);
+            $this->refreshSignature();
         }
 
         if ($this->run) {
@@ -170,11 +191,22 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
         $this->runId = $run->id;
         unset($this->run);
 
-        $this->secret = self::generateIdSignature(bucketId: $this->bucketId, runId: $this->runId);
+        $this->refreshSignature();
 
         GenerateDataJob::dispatch(run: $this->run);
 
         $this->step = ExtractorSteps::Extraction;
+    }
+
+    protected function refreshSignature(): void
+    {
+        $this->expiresAt = Date::now()->addDay()->timestamp;
+        $this->secret = self::generateIdSignature(
+            extractorId: $this->extractorId,
+            bucketId: $this->bucketId,
+            runId: $this->runId,
+            expiresAt: $this->expiresAt
+        );
     }
 
     public function finish(): void
@@ -182,10 +214,6 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
         if (!in_array($this->run?->status, [ExtractionRun\RunStatus::Completed, ExtractionRun\RunStatus::Failed])) {
             return;
         }
-
-//        $validated = $this->validate([
-//            'data' => ['required', 'array'],
-//        ]);
 
         $this->step = ExtractorSteps::Results;
 
@@ -195,8 +223,6 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
     public function cancel(): void
     {
         $this->step = ExtractorSteps::Bucket;
-
-//        $this->run->stop();
     }
 
     public function nextStep(): void
@@ -258,6 +284,8 @@ class EmbeddedExtractor extends Component implements HasForms, HasActions
 
         $this->runId = null;
         unset($this->run);
+
+        $this->refreshSignature();
 
         $this->begin();
     }

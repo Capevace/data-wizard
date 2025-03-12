@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\SavedExtractorResource\Actions;
 
 use App\Models\SavedExtractor;
+use App\WidgetAlignment;
 use Filament\Actions\Action;
 
 class OpenEmbeddedExtractorAction extends Action
@@ -20,7 +21,7 @@ class OpenEmbeddedExtractorAction extends Action
             ->label('Launch embeded extractor')
             ->translateLabel()
             ->icon('heroicon-o-play')
-            ->url(fn (SavedExtractor $record) => $record->getFullPageUrl())
+            ->url(fn (SavedExtractor $record) => $record->getEmbeddedUrl(horizontalAlignment: WidgetAlignment::Center, verticalAlignment: WidgetAlignment::Center))
             ->openUrlInNewTab();
     }
 }

@@ -47,7 +47,7 @@ return [
     */
     'commands' => [
         'Logs' => EnhancedTailCommand::file(storage_path('logs/laravel.log')),
-        'Vite' => 'bun run dev',
+        'Vite' => Command::from('bun run dev')->lazy(),
 
         // Lazy commands do no automatically start when Solo starts.
 //        'Dumps' => Command::from('php artisan solo:dumps'),

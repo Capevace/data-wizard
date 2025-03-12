@@ -12,6 +12,7 @@ use App\Filament\Resources\SavedExtractorResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
@@ -72,6 +73,13 @@ class AppPanelProvider extends PanelProvider
                         ])
                 )
             )
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('API Documentation')
+                    ->icon('heroicon-o-code-bracket')
+                    ->color('gray')
+                    ->url(url('/api'), shouldOpenInNewTab: true),
+            ])
             ->login()
             ->brandLogo(asset('images/logo.svg'))
             ->brandLogoHeight('3.7rem')

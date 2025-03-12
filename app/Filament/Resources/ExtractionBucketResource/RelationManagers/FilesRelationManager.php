@@ -137,7 +137,7 @@ class FilesRelationManager extends RelationManager
                 ->getRecords()
                 ->contains(fn (File $record) => $record->artifact_status === ArtifactGenerationStatus::Pending
                     || $record->artifact_status === ArtifactGenerationStatus::InProgress
-                ) ? '500ms' : null,
+                ) ? '2s' : null,
             )
             ->defaultSort('name')
             ->recordTitleAttribute('name')

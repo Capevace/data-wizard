@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
+use App\Livewire\Components\EmbeddedExtractor;
 use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionBucket\BucketCreationSource;
 use App\Models\ExtractionBucket\BucketStatus;
@@ -40,20 +41,27 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 #[ApiResource(
     uriTemplate: '/buckets',
     operations: [
-        new GetCollection
+        new GetCollection,
+        new Post()
     ],
+    rules: [
+        'description' => ['required'],
+    ],
+    middleware: ['auth:sanctum']
 )]
 #[ApiResource(
     uriTemplate: '/buckets/{id}',
     operations: [
         new Get,
-        new Post,
-        new Patch,
         new Delete
     ],
+    defaults: [
+        'created_using' => BucketCreationSource::Api,
+    ],
     rules: [
-
-    ]
+        'description' => ['required'],
+    ],
+    middleware: ['auth:sanctum']
 )]
 #[QueryParameter(key: 'model', filter: PartialSearchFilter::class)]
 #[QueryParameter(key: 'output_instructions', filter: PartialSearchFilter::class)]

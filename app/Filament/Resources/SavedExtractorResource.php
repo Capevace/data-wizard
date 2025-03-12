@@ -192,7 +192,7 @@ class SavedExtractorResource extends Resource
                                             ->helperText(__('Only possible if the LLM has Vision capabilities.')),
 
                                         Toggle::make('mark_page_images')
-                                            ->label('Marke embedded images on PDF screenshots')
+                                            ->label('Mark embedded images on PDF screenshots')
                                             ->translateLabel()
                                             ->hidden(fn (Get $get) => ! $get('include_page_images'))
                                             ->onIcon('heroicon-o-paint-brush')

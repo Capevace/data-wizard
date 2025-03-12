@@ -47,16 +47,6 @@ $verticalClasses = match ($this->config->verticalAlignment) {
         window.parent.postMessage({ type: 'magic-iframe-submit', data: $event.detail.data }, '*');
     "
 >
-{{--    <style>--}}
-{{--        body {--}}
-{{--            background-color: {{ $bodyBackgroundColor }};--}}
-{{--        }--}}
-
-{{--        body.dark {--}}
-{{--            background-color: {{ $bodyBackgroundColorDark }};--}}
-{{--        }--}}
-{{--    </style>--}}
-
     <div
         x-ref="card"
         @class([
@@ -92,6 +82,7 @@ $verticalClasses = match ($this->config->verticalAlignment) {
                 $this->config->borderRadiusClasses,
                 $this->config->paddingClasses,
                 $this->config->shadowClasses,
+                'max-w-3xl' => $this->horizontalAlignment === WidgetAlignment::Center,
                 'flex-1' => $this->config->verticalAlignment === WidgetAlignment::Stretch,
             ])
         >
@@ -100,7 +91,7 @@ $verticalClasses = match ($this->config->verticalAlignment) {
             @elseif ($this->step === ExtractorSteps::Bucket)
                 <x-embedded.bucket :labels="$this->bucket_labels" />
             @elseif ($this->step === ExtractorSteps::Extraction)
-                <x-embedded.running :labels="$this->extraction_labels" :can-continue="$this->canContinue()" />
+                <x-embedded.running :labels="$this->extraction_labels" :can-continue="$this->canContinue()" :limit-height="$this->verticalAlignment === WidgetAlignment::Center" />
             @elseif ($this->step === ExtractorSteps::Results)
                 <x-embedded.results :labels="$this->results_labels" :config="$this->config" />
             @endif

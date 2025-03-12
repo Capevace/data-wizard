@@ -1,6 +1,6 @@
 {
   "packages/shadowy-theme/resources/css/theme.css": {
-    "file": "assets/theme-468dfd6f.css",
+    "file": "assets/theme-1e3556ff.css",
     "isEntry": true,
     "src": "packages/shadowy-theme/resources/css/theme.css"
   },
@@ -10,12 +10,12 @@
     "src": "resources/css/app.css"
   },
   "resources/css/filament/app/theme.css": {
-    "file": "assets/theme-ebd7a8a1.css",
+    "file": "assets/theme-e2e890f1.css",
     "isEntry": true,
     "src": "resources/css/filament/app/theme.css"
   },
   "resources/js/src/magic-extract.ts": {
-    "file": "assets/magic-extract-7dcc6d88.js",
+    "file": "assets/magic-extract-7513e686.js",
     "isEntry": true,
     "src": "resources/js/src/magic-extract.ts"
   }

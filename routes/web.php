@@ -32,20 +32,20 @@ Route::middleware(['auth'])
             return view('welcome');
         });
 
-        // A route that can return embed data for LLM generated artifact IDs. (requires a artifactId query parameter)
-        Route::get('/runs/{runId}/artifacts', LlmArtifactEmbedController::class)
-            ->name('runs.artifacts.embed');
-
         // A route that can return embed data for internal/backend exact paths.
         Route::get('/files/{fileId}/contents/{path}', InternalArtifactEmbedController::class)
             ->middleware('signed')
             ->name('files.contents');
-
-        // A route that can return a thumbnail of a file.
-        Route::get('/files/{fileId}/thumbnail', FileThumbnailController::class)
-            ->middleware('signed')
-            ->name('files.thumbnail');
     });
+
+// A route that can return embed data for LLM generated artifact IDs. (requires a artifactId query parameter)
+Route::get('/runs/{runId}/artifacts', LlmArtifactEmbedController::class)
+    ->name('runs.artifacts.embed');
+
+// A route that can return a thumbnail of a file.
+Route::get('/files/{fileId}/thumbnail', FileThumbnailController::class)
+    ->middleware('signed')
+    ->name('files.thumbnail');
 
 // The embedded extractor route is used to show the extractor in an iframe.
 Route::get('/embed/{extractorId}', EmbeddedExtractor::class)
@@ -55,3 +55,8 @@ Route::get('/embed/{extractorId}', EmbeddedExtractor::class)
 // The full page extractor route is used to show the extractor in a full page.
 Route::get('/full-page/{extractorId}', EmbeddedExtractor::class)
     ->name('full-page-extractor');
+
+
+Route::get('test', function () {
+    return 'test';
+})->middleware('auth:sanctum');

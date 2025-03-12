@@ -109,6 +109,10 @@
         window.MagicImport = {};
     </script>
 
+    @if (config('app.external_css_url'))
+        <link rel="stylesheet" href="{{ config('app.external_css_url') }}">
+    @endif
+
     @stack('components')
 </head>
 <body class="flex flex-col min-h-screen dark:bg-gray-950 antialiased">

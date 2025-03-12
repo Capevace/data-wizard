@@ -24,7 +24,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use JsonException;
+use Mateffy\Magic;
+use Mateffy\Magic\Builder\ExtractionLLMBuilder;
+use Mateffy\Magic\Chat\ActorTelemetry;
+use Mateffy\Magic\Chat\Messages\Message;
 use Mateffy\Magic\Chat\Prompt\Role;
 use Mateffy\Magic\Chat\TokenStats;
 use Mateffy\Magic\Extraction\ArtifactBatcher;
@@ -68,29 +73,15 @@ use Swaggest\JsonSchema\SchemaContract;
     operations: [
         new GetCollection
     ],
+    middleware: ['auth:sanctum']
 )]
 #[ApiResource(
     uriTemplate: '/runs/{id}',
     description: 'An in-progress or completed extraction run',
     operations: [
-        new Get,
-        new Delete,
-        new Post(
-            shortName: 'Start',
-            description: 'Start a new extraction run',
-        ),
+        new Get
     ],
-    rules: [
-        'target_schema' => ['required', 'json'],
-        'strategy' => ['required', 'string', 'max:255'],
-        'model' => ['required', 'string', 'max:255'],
-        'saved_extractor_id' => ['required', 'string', 'exists:saved_extractors,id'],
-        'include_text' => ['nullable', 'boolean'],
-        'include_embedded_images' => ['nullable', 'boolean'],
-        'mark_embedded_images' => ['nullable', 'boolean'],
-        'include_page_images' => ['nullable', 'boolean'],
-        'mark_page_images' => ['nullable', 'boolean'],
-    ],
+    middleware: ['auth:sanctum']
 )]
 #[QueryParameter(key: 'result_json', filter: PartialSearchFilter::class)]
 #[QueryParameter(key: 'partial_result_json', filter: PartialSearchFilter::class)]
@@ -336,6 +327,52 @@ class ExtractionRun extends Model
         );
     }
 
+    public function makeMagicExtractor(): ExtractionLLMBuilder
+    {
+        return Magic::extract()
+            ->model(ElElEm::fromString($this->model))
+            ->instructions($this->saved_extractor->output_instructions)
+            ->schema($this->target_schema)
+            ->strategy($this->strategy)
+            ->chunkSize($this->chunk_size)
+            ->contextOptions($this->getContextOptions())
+            ->artifacts($this->bucket->artifacts->all())
+            ->onMessage(function (Message $message, ?string $actorId = null) {
+                /** @var ?Actor $actor */
+                $actor = $this->actors()->find($actorId);
+
+                if (! $actor) {
+                    Log::warning('Actor not found', [
+                        'runId' => $this->id,
+                        'actorId' => $actorId,
+                        'message' => $message->toArray()
+                    ]);
+                }
+
+                $actor?->add($message);
+            })
+            ->onTokenStats(function (TokenStats $tokenStats) {
+                $this->token_stats = $tokenStats;
+                $this->save();
+            })
+            ->onActorTelemetry(function (ActorTelemetry $telemetry) {
+                /** @var ?Actor $actor */
+                $actor = $this->actors()->find($telemetry->id);
+
+                if (! $actor) {
+                    $actor = $this->actors()->make();
+                    $actor->id = $telemetry->id;
+                }
+
+                $actor->fill($telemetry->toDatabase());
+                $actor->save();
+            })
+            ->onDataProgress(function (array $data) {
+                $this->partial_data = $data;
+                $this->save();
+            });
+    }
+
     public function getCompletedSteps(): int
     {
         return $this->actors()->count();
@@ -343,20 +380,9 @@ class ExtractionRun extends Model
 
     public function getEstimatedSteps(): int
     {
-        $batches = ArtifactBatcher::batch(
-			artifacts: $this->bucket->artifacts,
-			options: $this->getContextOptions(),
-			maxTokens: $this->chunk_size ?? $this->saved_extractor->chunk_size ?? config('llm-magic.artifacts.default_max_tokens'),
-			llm: ElElEm::fromString($this->model)
-		);
-
-        $count = count($batches);
-
-        // Add the merger step if we're using the parallel strategy.
-        if ($this->strategy === 'parallel') {
-            $count += 1;
-        }
-
-        return $count;
+        return $this
+            ->makeMagicExtractor()
+            ->makeStrategy()
+            ->getEstimatedSteps($this->bucket->artifacts->all());
     }
 }

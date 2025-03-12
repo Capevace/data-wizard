@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\UsesUuid;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Mateffy\Magic\Extraction\Artifacts\Artifact;
 use Mateffy\Magic\Extraction\Artifacts\DiskArtifact;
@@ -41,8 +42,6 @@ class File extends \Spatie\MediaLibrary\MediaCollections\Models\Media
             expiration: now()->addDay(),
             parameters: ['fileId' => $this->id]
         );
-
-//        return $this->getUrl('thumbnail');
     }
 
     public function getArtifactPathAttribute(): string
@@ -96,5 +95,19 @@ class File extends \Spatie\MediaLibrary\MediaCollections\Models\Media
             'thumbnail_src' => $this->thumbnail_src,
             'artifact_path' => $this->artifact_path,
         ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function (File $file) {
+            $artifact = $file->artifact;
+
+            if ($artifact instanceof DiskArtifact) {
+                Storage::disk($artifact->artifactDirDisk)
+                    ->deleteDirectory($artifact->artifactDir);
+            }
+        });
     }
 }

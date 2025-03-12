@@ -15,13 +15,14 @@ return [
     |
     */
 
-    'dataset' => 'maxdohrn',
     'name' => env('APP_NAME', 'Data Wizard 🪄'),
 
     'allow_custom_user_keys' => env('ALLOW_CUSTOM_USER_KEYS', true),
 
     'github_url' => 'https://github.com/capevace/magic-extract',
     'image_name' => 'magic-extract/server',
+
+    'external_css_url' => env('DATA_WIZARD_CSS_URL', null),
 
     'admin_email' => env('ADMIN_EMAIL', null),
 
@@ -165,6 +166,7 @@ return [
     */
 
     'providers' => [
+        Illuminate\Concurrency\ConcurrencyServiceProvider::class,
 
         /*
          * Laravel Framework Service Providers...

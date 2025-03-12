@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
+use App\Livewire\Components\EmbeddedExtractor;
 use App\Livewire\Components\EmbeddedExtractor\ExtractorSteps;
 use App\Models\Concerns\UsesUuid;
 use App\Rules\JsonSchemaRule;
@@ -66,15 +67,54 @@ use Swaggest\JsonSchema\JsonSchema;
 #[ApiResource(
     uriTemplate: '/extractors',
     operations: [
-        new GetCollection
+        new GetCollection,
+        new Post(),
     ],
+    rules: [
+        'json_schema' => ['required', 'json', new JsonSchemaRule],
+        'strategy' => ['required', 'string', 'max:255'],
+        'model' => ['nullable', 'string', 'max:255'],
+        'output_instructions' => ['nullable', 'string'],
+        'webhook_url' => ['nullable', 'url', 'required_if:enable_webhook,true', 'required_with:webhook_secret', 'max:255'],
+        'webhook_secret' => ['nullable', 'string', 'max:255'],
+        'redirect_url' => ['nullable', 'url', 'max:255'],
+        'allow_download' => ['nullable', 'boolean'],
+        'enable_webhook' => ['nullable', 'boolean'],
+        'include_text' => ['nullable', 'boolean'],
+        'include_embedded_images' => ['nullable', 'boolean'],
+        'mark_embedded_images' => ['nullable', 'boolean'],
+        'include_page_images' => ['nullable', 'boolean'],
+        'mark_page_images' => ['nullable', 'boolean'],
+
+        // Labels
+        'page_title' => ['nullable', 'string', 'max:255'],
+        'introduction_view_heading' => ['nullable', 'string', 'max:255'],
+        'introduction_view_description' => ['nullable', 'string'],
+        'introduction_view_next_button_label' => ['nullable', 'string', 'max:255'],
+        'bucket_view_heading' => ['nullable', 'string', 'max:255'],
+        'bucket_view_description' => ['nullable', 'string'],
+        'bucket_view_back_button_label' => ['nullable', 'string', 'max:255'],
+        'bucket_view_continue_button_label' => ['nullable', 'string', 'max:255'],
+        'bucket_view_begin_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_heading' => ['nullable', 'string', 'max:255'],
+        'extraction_view_description' => ['nullable', 'string'],
+        'extraction_view_back_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_continue_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_restart_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_start_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_cancel_button_label' => ['nullable', 'string', 'max:255'],
+        'extraction_view_pause_button_label' => ['nullable', 'string', 'max:255'],
+        'results_view_heading' => ['nullable', 'string', 'max:255'],
+        'results_view_description' => ['nullable', 'string'],
+        'results_view_back_button_label' => ['nullable', 'string', 'max:255'],
+        'results_view_submit_button_label' => ['nullable', 'string', 'max:255'],
+    ],
+    middleware: ['auth:sanctum']
 )]
 #[ApiResource(
     uriTemplate: '/extractors/{id}',
     operations: [
         new Get,
-        new Post,
-        new Patch,
         new Delete
     ],
     rules: [
@@ -114,7 +154,8 @@ use Swaggest\JsonSchema\JsonSchema;
         'results_view_description' => ['nullable', 'string'],
         'results_view_back_button_label' => ['nullable', 'string', 'max:255'],
         'results_view_submit_button_label' => ['nullable', 'string', 'max:255'],
-    ]
+    ],
+    middleware: ['auth:sanctum']
 )]
 #[QueryParameter(key: 'model', filter: PartialSearchFilter::class)]
 #[QueryParameter(key: 'output_instructions', filter: PartialSearchFilter::class)]
@@ -229,17 +270,16 @@ class SavedExtractor extends Model
         $horizontalAlignment = $horizontalAlignment ?? WidgetAlignment::Center;
         $verticalAlignment = $verticalAlignment ?? WidgetAlignment::Center;
 
+        $expiresAt = CarbonImmutable::now()->addDay()->timestamp;
+
         return route('embedded-extractor', [
             'extractorId' => $this->id,
             'step' => $step->value,
             'horizontal-alignment' => $horizontalAlignment->value,
             'vertical-alignment' => $verticalAlignment->value,
+            'expiresAt' => $expiresAt,
+            'signature' => EmbeddedExtractor::generateIdSignature(extractorId: $this->id, expiresAt: $expiresAt),
         ]);
-    }
-
-    public function getFullPageUrl(): string
-    {
-        return route('full-page-extractor', ['extractorId' => $this->id]);
     }
 
     public function getContextOptions(): ContextOptions
@@ -285,5 +325,21 @@ class SavedExtractor extends Model
         } else {
             $call->dispatch();
         }
+    }
+
+    public function getEmbeddedUrlAttribute(): string
+    {
+        return $this->getEmbeddedUrl(
+            horizontalAlignment: WidgetAlignment::Stretch,
+            verticalAlignment: WidgetAlignment::Stretch
+        );
+    }
+
+    public function getFullPageUrlAttribute(): string
+    {
+        return $this->getEmbeddedUrl(
+            horizontalAlignment: WidgetAlignment::Center,
+            verticalAlignment: WidgetAlignment::Center
+        );
     }
 }

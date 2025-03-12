@@ -84,8 +84,19 @@ class StartExtractionAction extends Action
             ->label('Choose extractor')
             ->translateLabel()
             ->icon('heroicon-o-cursor-arrow-rays')
-            ->color('gray')
+            ->color('gray');
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this
+            ->label(__('Start extraction'))
+            ->icon('heroicon-o-play')
+            ->color('primary')
             ->modalIconColor('primary')
+            ->modalIcon('bi-robot')
             ->modalWidth('xl')
             ->form([
                 SavedExtractorSelect::make('saved_extractor_id')
@@ -191,18 +202,7 @@ class StartExtractionAction extends Action
                             ->offColor('danger')
                             ->required(),
                     ]),
-            ]);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this
-            ->label(__('Start extraction'))
-            ->icon('heroicon-o-play')
-            ->color('primary')
-            ->requiresConfirmation()
+            ])
             ->modalDescription(__('This action will cost money. Are you sure?'))
             ->modalSubmitAction(fn (StaticAction $action) => $action
                 ->label('Start extraction')

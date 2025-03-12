@@ -3,6 +3,7 @@
     'labels',
 
     'canContinue',
+    'limitHeight' => false,
 ])
 
 <div>
@@ -20,12 +21,15 @@
             x-cloak
         @endif
     >
-        <x-filament::loading-indicator class="w-16 h-16 text-gray-500" wire:ignore />
+        <x-filament::loading-indicator class="w-16 h-16 text-gray-500" wire:ignore.self />
     </div>
 
     <div
         x-show="!loading"
-        class="flex flex-col gap-5"
+        @class([
+            'flex flex-col gap-5',
+            'overflow-y-scroll max-h-[calc(50vh)]' => $limitHeight
+        ])
 
         @if ($this->run?->partial_data === null || count($this->run->partial_data) === 0)
             x-cloak

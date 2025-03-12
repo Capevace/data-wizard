@@ -1,9 +1,0 @@
-@import '/vendor/filament/filament/resources/css/theme.css';
-
-@import "bubbly/sidebar.css";
-@import "bubbly/body.css";
-@import "bubbly/topbar.css";
-@import "bubbly/global-search.css";
-
-@config 'tailwind.config.js';
-

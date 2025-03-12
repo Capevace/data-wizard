@@ -21,6 +21,7 @@ return [
     ],
 
     'formats' => [
+        'json' => ['application/json'],
         'jsonapi' => ['application/vnd.api+json'],
         'jsonld' => ['application/ld+json'],
         'csv' => ['text/csv'],
@@ -31,6 +32,7 @@ return [
     ],
 
     'docs_formats' => [
+        'json' => ['application/json'],
         'jsonapi' => ['application/vnd.api+json'],
         'jsonld' => ['application/ld+json'],
         'jsonopenapi' => ['application/vnd.openapi+json'],
@@ -75,13 +77,13 @@ return [
 
     'swagger_ui' => [
         'enabled' => true,
-        'apiKeys' => [
-            'api' => [
-                'type' => 'Bearer',
-                'name' => 'Authentication Token',
-                'in' => 'header'
-            ]
-        ],
+//        'apiKeys' => [
+//            'api' => [
+//                'type' => 'http',
+//                'scheme' => 'bearer',
+//                'name' => 'Bearer',
+//            ]
+//        ],
         //'oauth' => [
         //    'enabled' => true,
         //    'type' => 'oauth2',
@@ -96,17 +98,17 @@ return [
         //    'name' => 'Apache 2.0',
         //    'url' => 'https://www.apache.org/licenses/LICENSE-2.0.html',
         //],
-        //'contact' => [
-        //    'name' => 'API Support',
-        //    'url' => 'https://www.example.com/support',
-        //    'email' => 'support@example.com',
-        //],
-        //'http_auth' => [
-        //    'Personal Access Token' => [
-        //        'scheme' => 'bearer',
-        //        'bearerFormat' => 'JWT'
-        //    ]
-        //]
+        'contact' => [
+            'name' => 'Lukas Mateffy',
+            'url' => 'https://mateffy.me',
+            'email' => 'hey@mateffy.me',
+        ],
+        'http_auth' => [
+            'Personal Access Token' => [
+                'scheme' => 'bearer',
+                'bearerFormat' => 'JWT'
+            ]
+        ]
     ],
 
     // 'openapi' => [
@@ -121,5 +123,5 @@ return [
     ],
 
     // we recommend using "file" or "acpu"
-    'cache' => 'file'
+    'cache' => 'file',
 ];

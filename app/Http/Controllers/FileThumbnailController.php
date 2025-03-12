@@ -33,6 +33,10 @@ class FileThumbnailController extends Controller
             $stream = $artifact->getRawEmbedStream($page_image ?? $image);
         }
 
+        if (!$stream) {
+            abort(404);
+        }
+
         return response()->stream(function () use ($stream) {
             fpassthru($stream);
         }, 200, [
