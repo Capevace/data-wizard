@@ -32,6 +32,10 @@ You can also configure custom paths to use in the `llm-magic.php` config file. F
 While `llm-magic` uses a custom Python script to extract text and images from PDFs, [`Blaspsoft/doxswap`](https://github.com/Blaspsoft/doxswap) is used for converting Word and other rich text documents to PDF beforehand.
 `doxswap` requires that LibreOffice is installed on your machine. You may need to set the `LIBRE_OFFICE_PATH` environment variable to the path of the `soffice` executable.
 
+## Thesis
+
+This project was made as part of my 2025 BSc thesis at [Leuphana University Lüneburg](https://leuphana.de). The thesis is available [here](https://github.com/capevace/bachelor-thesis-submission).
+
 ### Copyright and License
 
 This project is made by [Lukas Mateffy](https://mateffy.me) and is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://choosealicense.com/licenses/agpl-3.0/).
