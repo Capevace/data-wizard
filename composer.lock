@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0cadf7d0b99cbd1d2faea740a842d36",
+    "content-hash": "74ca34b15fdea3e1df9f520f42a4172d",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -5535,16 +5535,16 @@
         },
         {
             "name": "mateffy/llm-magic",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Capevace/llm-magic.git",
-                "reference": "c1563666e3e7cb5309fd31f3bdb6544666a4de7a"
+                "reference": "106b2a0596f2681ddaa05a81d37ab5be15a42380"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Capevace/llm-magic/zipball/c1563666e3e7cb5309fd31f3bdb6544666a4de7a",
-                "reference": "c1563666e3e7cb5309fd31f3bdb6544666a4de7a",
+                "url": "https://api.github.com/repos/Capevace/llm-magic/zipball/106b2a0596f2681ddaa05a81d37ab5be15a42380",
+                "reference": "106b2a0596f2681ddaa05a81d37ab5be15a42380",
                 "shasum": ""
             },
             "require": {
@@ -5610,9 +5610,9 @@
             "description": "A universal LLM package for Laravel",
             "support": {
                 "issues": "https://github.com/Capevace/llm-magic/issues",
-                "source": "https://github.com/Capevace/llm-magic/tree/1.0.3"
+                "source": "https://github.com/Capevace/llm-magic/tree/1.0.4"
             },
-            "time": "2025-03-13T16:12:06+00:00"
+            "time": "2025-03-13T17:04:36+00:00"
         },
         {
             "name": "monolog/monolog",
