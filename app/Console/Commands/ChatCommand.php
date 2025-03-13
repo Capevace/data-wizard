@@ -4,11 +4,11 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
-use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
-use Mateffy\Magic\LLM\Message\Message;
-use Mateffy\Magic\LLM\Message\TextMessage;
-use Mateffy\Magic\LLM\Models\Claude3Family;
+use Mateffy\Magic\Chat\Messages\ToolCallMessage;
+use Mateffy\Magic\Chat\Messages\ToolResultMessage;
+use Mateffy\Magic\Chat\Messages\Message;
+use Mateffy\Magic\Chat\Messages\TextMessage;
+use Mateffy\Magic\Models\Anthropic;
 use Mateffy\Magic;
 use Throwable;
 use function Laravel\Prompts\progress;
@@ -27,7 +27,7 @@ class ChatCommand extends Command
             ->file(path: database_path('memory.json'));
 
         $chat = Magic::chat()
-            ->model(Claude3Family::sonnet_3_5())
+            ->model(Anthropic::sonnet_3_5())
             ->system(<<<PROMPT
             You are a personal coding assistant living in a Laravel codebase.
 
@@ -70,8 +70,8 @@ class ChatCommand extends Command
 
                 match ($message::class) {
                     TextMessage::class => $this->info("[LLM]: " . str($message->content)->trim("\n")->trim()),
-                    FunctionInvocationMessage::class => $this->line("[LLM]: Function call: {$message->call->name}(" . json_encode($message->call->arguments) . ")"),
-                    FunctionOutputMessage::class => $this->line("[LLM]: Function output: " . Str::limit(json_encode($message->output), 100)),
+                    ToolCallMessage::class => $this->line("[LLM]: Function call: {$message->call->name}(" . json_encode($message->call->arguments) . ")"),
+                    ToolResultMessage::class => $this->line("[LLM]: Function output: " . Str::limit(json_encode($message->output), 100)),
                     default => $this->error('[LLM]: Unknown message type'),
                 };
             }

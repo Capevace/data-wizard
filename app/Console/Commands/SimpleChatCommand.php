@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use Mateffy\Magic\LLM\Message\FunctionInvocationMessage;
-use Mateffy\Magic\LLM\Message\FunctionOutputMessage;
+use Mateffy\Magic\LLM\Message\ToolCallMessage;
+use Mateffy\Magic\LLM\Message\ToolResultMessage;
 use Mateffy\Magic\LLM\Message\Message;
 use Mateffy\Magic\LLM\Message\TextMessage;
 use Mateffy\Magic\LLM\Models\Claude3Family;

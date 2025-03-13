@@ -30,7 +30,7 @@
 		"laravel/tinker": "^2.8",
 		"livewire/livewire": "^3.5",
 		"mateffy/color": "^1.0",
-		"mateffy/llm-magic": "dev-main",
+		"mateffy/llm-magic": "^1.0.2",
 		"novadaemon/filament-pretty-json": "^2.2",
 		"nyholm/psr7": "^1.8",
 		"spatie/laravel-medialibrary": "^11.8",
@@ -106,7 +106,7 @@
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
-    "repositories": [
+    "__repositories": [
         {
 			"type": "path",
 			"url": "../magic/llm-magic"

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0ec8015b68aa9da58192b09b4676ad1",
+    "content-hash": "e0cadf7d0b99cbd1d2faea740a842d36",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -5165,16 +5165,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.6.1",
+            "version": "v3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "0df0a762698176d714e42e2dfed92b6b9e24b8e4"
+                "reference": "8f8914731f5eb43b6bb145d87c8d5a9edfc89313"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/0df0a762698176d714e42e2dfed92b6b9e24b8e4",
-                "reference": "0df0a762698176d714e42e2dfed92b6b9e24b8e4",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/8f8914731f5eb43b6bb145d87c8d5a9edfc89313",
+                "reference": "8f8914731f5eb43b6bb145d87c8d5a9edfc89313",
                 "shasum": ""
             },
             "require": {
@@ -5229,7 +5229,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.6.1"
+                "source": "https://github.com/livewire/livewire/tree/v3.6.2"
             },
             "funding": [
                 {
@@ -5237,7 +5237,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-04T21:48:52+00:00"
+            "time": "2025-03-12T20:24:15+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -5535,11 +5535,17 @@
         },
         {
             "name": "mateffy/llm-magic",
-            "version": "dev-main",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Capevace/llm-magic.git",
+                "reference": "c1563666e3e7cb5309fd31f3bdb6544666a4de7a"
+            },
             "dist": {
-                "type": "path",
-                "url": "../magic/llm-magic",
-                "reference": "8cd8fdf6766f244b065109cb19f07811c79d8834"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Capevace/llm-magic/zipball/c1563666e3e7cb5309fd31f3bdb6544666a4de7a",
+                "reference": "c1563666e3e7cb5309fd31f3bdb6544666a4de7a",
+                "shasum": ""
             },
             "require": {
                 "aws/aws-sdk-php": "^3.315",
@@ -5591,32 +5597,7 @@
                     "Mateffy\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Mateffy\\Magic\\Tests\\": "tests/",
-                    "Workbench\\App\\": "workbench/app/"
-                }
-            },
-            "scripts": {
-                "post-autoload-dump": [
-                    "@composer run prepare"
-                ],
-                "prepare": [
-                    "@php vendor/bin/testbench package:discover --ansi"
-                ],
-                "analyse": [
-                    "vendor/bin/phpstan analyse"
-                ],
-                "test": [
-                    "vendor/bin/pest"
-                ],
-                "test-coverage": [
-                    "vendor/bin/pest --coverage"
-                ],
-                "format": [
-                    "vendor/bin/pint"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "AGPL-3.0-only"
             ],
@@ -5627,9 +5608,11 @@
                 }
             ],
             "description": "A universal LLM package for Laravel",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/Capevace/llm-magic/issues",
+                "source": "https://github.com/Capevace/llm-magic/tree/1.0.3"
+            },
+            "time": "2025-03-13T16:12:06+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -16717,9 +16700,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "mateffy/llm-magic": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -1,11 +1,11 @@
 {
   "resources/css/filament/app/theme.css": {
-    "file": "assets/theme-17e4a07a.css",
+    "file": "assets/theme-69e5cc0f.css",
     "isEntry": true,
     "src": "resources/css/filament/app/theme.css"
   },
   "resources/js/src/magic-extract.ts": {
-    "file": "assets/magic-extract-7513e686.js",
+    "file": "assets/magic-extract-622a5bc6.js",
     "isEntry": true,
     "src": "resources/js/src/magic-extract.ts"
   }

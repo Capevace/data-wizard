@@ -19,7 +19,7 @@ return [
 
     'allow_custom_user_keys' => env('ALLOW_CUSTOM_USER_KEYS', true),
 
-    'github_url' => 'https://github.com/capevace/magic-extract',
+    'github_url' => 'https://github.com/capevace/data-wizard',
     'image_name' => 'magic-extract/server',
 
     'external_css_url' => env('DATA_WIZARD_CSS_URL', null),

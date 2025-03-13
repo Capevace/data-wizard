@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
-use Mateffy\Magic\Chat\Messages\MultimodalMessage\Base64Image;
+use Mateffy\Magic\Chat\Messages\Step\Base64Image;
 use Mateffy\Magic\Chat\Prompt\Role;
 use Mateffy\Magic\Tokens\ImageTokenizer;
 use Mateffy\Magic\Tokens\OpenAiImageTokenizer;

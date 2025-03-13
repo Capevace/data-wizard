@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mateffy\Magic\Chat\MessageCollection;
 use Mateffy\Magic\Chat\Messages\DataMessage;
-use Mateffy\Magic\Chat\Messages\FunctionInvocationMessage;
+use Mateffy\Magic\Chat\Messages\ToolCallMessage;
 use Mateffy\Magic\Chat\Messages\FunctionOutputMessage;
 use Mateffy\Magic\Chat\Messages\Message;
-use Mateffy\Magic\Chat\Messages\MultimodalMessage;
-use Mateffy\Magic\Chat\Messages\MultimodalMessage\Base64Image;
-use Mateffy\Magic\Chat\Messages\MultimodalMessage\Text;
+use Mateffy\Magic\Chat\Messages\Step;
+use Mateffy\Magic\Chat\Messages\Step\Base64Image;
+use Mateffy\Magic\Chat\Messages\Step\Text;
 use Mateffy\Magic\Chat\Messages\TextMessage;
 
 class Actor extends Model
@@ -51,8 +51,8 @@ class Actor extends Model
                 'role' => $message->role,
                 'json' => json_encode($message->data()),
             ]),
-            MultimodalMessage::class => collect($message->content)
-                ->each(fn (MultimodalMessage\ContentInterface $content) => match ($content::class) {
+            Step::class => collect($message->content)
+                ->each(fn (Step\ContentInterface $content) => match ($content::class) {
                     Base64Image::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Base64Image,
                         'role' => $message->role,
@@ -66,7 +66,7 @@ class Actor extends Model
                     default => null,
                 }),
 
-            FunctionInvocationMessage::class => $this->messages()->create([
+            ToolCallMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::FunctionInvocation,
                 'role' => $message->role,
                 'json' => [
