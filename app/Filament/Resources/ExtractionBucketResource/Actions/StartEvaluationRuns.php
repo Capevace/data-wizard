@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ExtractionBucketResource\Actions;
 
 use App\Filament\Forms\ModelSelect;
 use App\Filament\Forms\SavedExtractorSelect;
+use App\Filament\Forms\StrategySelect;
 use App\Filament\Resources\ExtractionRunResource;
 use App\Filament\Resources\SavedExtractorResource;
 use App\Jobs\GenerateDataJob;
@@ -13,6 +14,7 @@ use Closure;
 use Filament\Actions\Action;
 use Filament\Actions\StaticAction;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
@@ -66,7 +68,7 @@ class StartEvaluationRuns extends Action
                 'model' => $this->getExtractor()?->model ?? Magic::defaultModelName(),
                 'saved_extractor_id' => $this->getExtractor()?->id ?? null,
                 'count' => 2,
-                'also_run_all' => true,
+                'evaluation_types' => [EvaluationType::TextOnly, EvaluationType::EmbeddedImages, EvaluationType::PageImages, EvaluationType::All],
             ])
             ->form([
                 ModelSelect::make('model')
@@ -95,15 +97,18 @@ class StartEvaluationRuns extends Action
                     ->live()
                     ->helperText(__('Be careful when increasing the count, as this will drastically increase the number of runs but can be useful for getting statistical significance.')),
 
-                Toggle::make('also_run_all')
-                    ->label('Evaluate including both embedded and page images')
+                Select::make('evaluation_types')
+                    ->label('Evaluation types')
                     ->translateLabel()
-                    ->onIcon('heroicon-o-check')
-                    ->offIcon('heroicon-o-x-mark')
-                    ->onColor('success')
-                    ->offColor('danger')
-                    ->live()
-                    ->helperText(__('Including both embedded and page images can increase tokens counts and evaluation time significantly.')),
+                    ->options(EvaluationType::class)
+                    ->multiple()
+                    ->minItems(1)
+                    ->required(),
+
+                StrategySelect::make('strategies')
+                    ->multiple()
+                    ->minItems(1)
+                    ->required(),
 
                 Placeholder::make('total_count')
                     ->label('Total number of runs')
@@ -111,7 +116,8 @@ class StartEvaluationRuns extends Action
                     ->content(fn (Get $get) => __(':count runs', [
                         'count' => $this->getTotalRunCount(
                             count: $get('count') ?? 1,
-                            alsoRunAll: $get('also_run_all') ?? false
+                            evaluation_types: $get('evaluation_types') ?? [],
+                            strategies: $get('strategies') ?? []
                         )
                     ])),
             ])
@@ -130,14 +136,12 @@ class StartEvaluationRuns extends Action
                 $model = $data['model'] ?? $extractor?->model ?? Magic::defaultModelName();
                 $startedBy = auth()->user();
 
-                $strategies = Magic::getExtractionStrategies()->keys();
+                $strategies = $data['strategies'];
 
                 /**
                  * @var Collection<EvaluationType> $evaluation_types
                  */
-                $evaluation_types = collect(EvaluationType::cases())
-                    ->when($data['also_run_all'] !== true, fn ($types) => $types->filter(fn ($type) => $type !== EvaluationType::All))
-                    ->values();
+                $evaluation_types = collect($data['evaluation_types']);
 
                 $chunk_size = ($data['chunk_size'] ?? null)
                     ? intval($data['chunk_size'])
@@ -169,16 +173,14 @@ class StartEvaluationRuns extends Action
             });
     }
 
-    protected function getTotalRunCount(int $count, bool $alsoRunAll = false): int
+    protected function getTotalRunCount(int $count, array $evaluation_types, array $strategies): int
     {
-        $strategies = Magic::getExtractionStrategies();
+        $strategies = collect($strategies);
 
         /**
          * @var Collection<EvaluationType> $evaluation_types
          */
-        $evaluation_types = collect(EvaluationType::cases())
-            ->filter(fn ($type) => $type !== EvaluationType::All)
-            ->values();
+        $evaluation_types = collect($evaluation_types);
 
         return $strategies->count() * $evaluation_types->count() * $count;
     }

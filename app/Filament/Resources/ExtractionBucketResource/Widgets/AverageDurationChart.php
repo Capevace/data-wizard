@@ -12,7 +12,7 @@ class AverageDurationChart extends ChartWidget
 {
     use HasBucketForEvaluation;
 
-    protected static ?string $heading = 'Average duration by strategy and context';
+    protected static ?string $heading = 'Average duration in seconds by strategy and context';
 
     protected function getData(): array
     {

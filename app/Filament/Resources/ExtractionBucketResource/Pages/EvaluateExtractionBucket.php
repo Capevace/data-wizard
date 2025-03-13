@@ -8,6 +8,7 @@ use App\Filament\Resources\ExtractionBucketResource\Actions\StartEvaluationRuns;
 use App\Filament\Resources\ExtractionBucketResource\RelationManagers\RunsRelationManager;
 use App\Filament\Resources\ExtractionBucketResource\Widgets\AverageDurationChart;
 use App\Filament\Resources\ExtractionBucketResource\Widgets\AverageTokensChart;
+use App\Filament\Resources\ExtractionBucketResource\Widgets\CorrectnessChart;
 use App\Filament\Resources\ExtractionBucketResource\Widgets\MedianDurationChart;
 use App\Filament\Resources\ExtractionBucketResource\Widgets\MedianTokensChart;
 use App\Models\ExtractionBucket;
@@ -104,6 +105,10 @@ class EvaluateExtractionBucket extends ViewRecord
     protected function getStatisticsWidgets(): array
     {
         return [
+            ExtractionBucketResource\Widgets\BucketStatWidget::make([
+                'bucketId' => $this->record->id,
+                'colorByCount' => $this->colorByCount,
+            ]),
             AverageDurationChart::make([
                 'bucketId' => $this->record->id,
                 'model' => $this->model,
@@ -120,6 +125,11 @@ class EvaluateExtractionBucket extends ViewRecord
                 'colorByCount' => $this->colorByCount,
             ]),
             MedianTokensChart::make([
+                'bucketId' => $this->record->id,
+                'model' => $this->model,
+                'colorByCount' => $this->colorByCount,
+            ]),
+            CorrectnessChart::make([
                 'bucketId' => $this->record->id,
                 'model' => $this->model,
                 'colorByCount' => $this->colorByCount,

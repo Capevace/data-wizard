@@ -1,46 +1,38 @@
-version: '3.8'
-
 services:
   app:
-    build: .
+    working_dir: /app
+    image: mateffy/data-wizard:latest
     container_name: app
     restart: always
     ports:
-      - "8000:80"
-    depends_on:
-      - postgres
+      - "9090:80" # HTTP
+      - "4430:443" # HTTPS
+      - "4430:443/udp" # HTTP/3
     volumes:
       - storage:/app/storage
+      - sqlite_data:/app/database
+      - caddy_data:/data
+      - caddy_config:/config
     environment:
+      - APP_NAME="Data Wizard 🪄"
+      - APP_KEY=base64:aOiAgUH1E020+/W41SmdYP1kBjNegIieW9rhDCANoZA=
       - APP_ENV=production
       - APP_DEBUG=false
-      - APP_URL=http://localhost:8000
-      - DB_CONNECTION=pgsql
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_DATABASE=data_wizard
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=secret
-    networks:
-      - app_network
-
-  postgres:
-    image: postgres:17
-    container_name: postgres_db
-    restart: always
-    environment:
-      POSTGRES_DB: data_wizard
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: secret
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+      - APP_URL=http://localhost:9090
+      - DB_CONNECTION=sqlite
+#      - DB_HOST=postgres
+#      - DB_PORT=5432
+#      - DB_DATABASE=data_wizard
+#      - DB_USERNAME=postgres
+#      - DB_PASSWORD=secret
     networks:
       - app_network
 
 volumes:
   storage:
+  caddy_data:
+  caddy_config:
+  sqlite_data:
   postgres_data:
 
 networks:

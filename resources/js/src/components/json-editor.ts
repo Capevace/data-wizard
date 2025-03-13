@@ -88,7 +88,6 @@ export function JsonEditorComponent({ statePath, state }) {
 
         init() {
             let timeout = null;
-            console.log(this.$wire, JSON.parse(JSON.stringify(this.$wire.data)), this.$wire[this.statePath]);
 
             this.compartment = new Compartment();
 

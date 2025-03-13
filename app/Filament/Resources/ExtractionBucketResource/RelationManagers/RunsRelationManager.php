@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\ExtractionBucketResource\RelationManagers;
 
+use App\Filament\Resources\ExtractionBucketResource\Actions\BulkRetryExtractionAction;
+use App\Filament\Resources\ExtractionBucketResource\Actions\QuickViewRunAction;
 use App\Filament\Resources\ExtractionRunResource;
 use App\Models\ExtractionRun;
 use Filament\Forms;
@@ -54,13 +56,17 @@ class RunsRelationManager extends RelationManager
             ->description('Only completed runs are considered in the statistics.')
             ->recordTitleAttribute('created_At')
             ->columns(ExtractionRunResource::table($table)->getColumns())
+            ->recordUrl(null)
+            ->recordAction('quickView')
             ->actions([
+                QuickViewRunAction::make(),
                 Tables\Actions\ViewAction::make()
                     ->url(fn (ExtractionRun $record) => ExtractionRunResource::getUrl('view', ['record' => $record->id])),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    BulkRetryExtractionAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

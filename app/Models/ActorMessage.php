@@ -7,8 +7,11 @@ use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 use Mateffy\Magic\Chat\Messages\MultimodalMessage\Base64Image;
 use Mateffy\Magic\Chat\Prompt\Role;
+use Mateffy\Magic\Tokens\ImageTokenizer;
+use Mateffy\Magic\Tokens\OpenAiImageTokenizer;
 use Mateffy\Magic\Tokens\TextTokenizer;
 
 /**
@@ -61,7 +64,7 @@ class ActorMessage extends Model
         return Base64Image::fromArray($this->json);
     }
 
-    public function data(?string $key = null): ?array
+    public function data(?string $key = null): mixed
     {
         if ($key === null) {
             return $this->json;
@@ -72,6 +75,16 @@ class ActorMessage extends Model
 
     public function calculateTokens(): int
     {
+        if ($this->data('type') === 'image') {
+            $tokenizer = app(ImageTokenizer::class);
+
+            // TODO: improve the token calculation by actually getting the image width and height
+            // For now, we just use the default values, which assigns the same token count to all images.
+            // This is good enough for evaluations, as it's equal to all images.
+
+            return $tokenizer->tokenize(width: null, height: null);
+        }
+
         $content = $this->text ?? $this->attributes['json'] ?? '';
 
         $tokenizer = app(TextTokenizer::class);

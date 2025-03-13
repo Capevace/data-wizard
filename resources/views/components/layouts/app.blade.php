@@ -75,10 +75,7 @@
         }
     </style>
 
-    @vite([
-        'resources/css/filament/app/theme.css',
-        'resources/css/app.css',
-    ])
+    @vite(['resources/css/filament/app/theme.css'])
 
     {!! \Filament\Support\Facades\FilamentAsset::renderStyles() !!}
 

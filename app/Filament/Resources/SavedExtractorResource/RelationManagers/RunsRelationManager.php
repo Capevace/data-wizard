@@ -37,9 +37,6 @@ class RunsRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
             ->actions([
                 Tables\Actions\ViewAction::make()
                     ->url(fn (ExtractionRun $record) => $record->getAdminUrl()),

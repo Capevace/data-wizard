@@ -31,7 +31,6 @@
 		"livewire/livewire": "^3.5",
 		"mateffy/color": "^1.0",
 		"mateffy/llm-magic": "dev-main",
-		"mateffy/llm-magic-ui": "dev-main",
 		"novadaemon/filament-pretty-json": "^2.2",
 		"nyholm/psr7": "^1.8",
 		"spatie/laravel-medialibrary": "^11.8",
@@ -111,10 +110,6 @@
         {
 			"type": "path",
 			"url": "../magic/llm-magic"
-		},
-        {
-			"type": "path",
-			"url": "../magic/llm-magic-ui"
 		}
 	]
 }

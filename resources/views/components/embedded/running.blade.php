@@ -35,12 +35,12 @@
             x-cloak
         @endif
     >
-        <x-llm-magic::resource.json-schema
+        <x-llm-magic::json-schema
             :schema="$this->saved_extractor->json_schema"
             :disabled="$this->run?->status->shouldPoll()"
         />
 
-        <x-llm-magic::resource.debug />
+        <x-llm-magic::json-schema.debug />
     </div>
 
     <x-embedded.buttons :labels="$labels" :$canContinue />

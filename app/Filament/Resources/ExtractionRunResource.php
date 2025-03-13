@@ -17,6 +17,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Mateffy\Magic;
@@ -88,6 +89,14 @@ class ExtractionRunResource extends Resource
                     ->formatStateUsing(fn (string $state) => Str::title($state))
                     ->description(fn (ExtractionRun $record) => $record->getContextOptions()->getEvaluationTypeLabel()),
 
+                TextColumn::make('chunk_size')
+                    ->label('Chunk Size')
+                    ->translateLabel()
+                    ->sortable()
+                    ->searchable()
+                    ->formatStateUsing(fn (string $state) => Str::title($state))
+                    ->description(fn (ExtractionRun $record) => $record->getContextOptions()->getEvaluationTypeLabel()),
+
                 TextColumn::make('formatted_duration')
                     ->label('Duration')
                     ->translateLabel()
@@ -120,6 +129,21 @@ class ExtractionRunResource extends Resource
                     ->tooltip(fn (ExtractionRun $record) => $record->token_stats?->cost?->formatAveragePer1M())
                     ->searchable()
                     ->sortable(query: fn (Builder $query, string $direction) => $query->orderBy('token_stats->tokens', $direction)),
+
+                TextColumn::make('test')
+                    ->label('Test')
+                    ->translateLabel()
+                    ->listWithLineBreaks()
+                    ->state(function (ExtractionRun $run) {
+                        $products = collect(Arr::get($run->data, 'real_estate_property.units', []));
+
+                        $result = [
+                            'count' => count($products),
+                        ];
+
+                        return collect($result)
+                            ->map(fn ($value, $key) => "{$key}: {$value}");
+                    }),
 
                 TextColumn::make('bucket')
                     ->label('Bucket')

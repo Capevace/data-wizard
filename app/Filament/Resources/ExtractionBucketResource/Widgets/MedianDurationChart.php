@@ -12,7 +12,7 @@ class MedianDurationChart extends ChartWidget
 {
     use HasBucketForEvaluation;
 
-    protected static ?string $heading = 'Median duration by strategy and context';
+    protected static ?string $heading = 'Median duration in seconds by strategy and context';
 
     protected function getData(): array
     {

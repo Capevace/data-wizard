@@ -45,8 +45,7 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            dd($e);
-//            Log::critical($e->getMessage(), ['exception' => $e]);
+            Log::critical($e->getMessage(), ['exception' => $e]);
         });
     }
 }

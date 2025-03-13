@@ -41,6 +41,7 @@ trait HasBucketForEvaluation
     {
         return $this->bucket->runs()
             ->when($this->model, fn ($query, $model) => $query->where('model', $model))
+//            ->where('strategy', '!=', 'simple')
             ->where('status', RunStatus::Completed)
             ->get();
     }

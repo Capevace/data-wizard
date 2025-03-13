@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
 use App\Filament\Resources\ExtractionRunResource\Pages\RunPage;
+use App\Jobs\GenerateDataJob;
 use App\Livewire\Components\EmbeddedExtractor;
 use App\Models\Actor\ActorMessageType;
 use App\Models\Concerns\TokenStatsCast;
@@ -284,14 +285,36 @@ class ExtractionRun extends Model
      */
     public function getEnrichedTokenStats(): TokenStats
     {
-        //
         if (config('app.evaluation_mode') || $this->token_stats === null) {
-            return TokenStats::withInputAndOutput(
-                inputTokens: $this->bucket->calculateInputTokens(contextOptions: $this->getContextOptions()),
+            $cached = cache()->get('run-token-stats-' . $this->id);
+
+            if ($cached) {
+                return $cached;
+            }
+
+            $messages = $this->actors()
+                ->with('messages')
+                ->get()
+                ->flatMap(fn (Actor $actor) => $actor->messages);
+
+            $count = $messages
+                ->reduce(fn (int $carry, ActorMessage $message) => $carry + $message->calculateTokens(), 0);
+
+            $stats = TokenStats::withInputAndOutput(
+                inputTokens: $count,
                 // Output tokens are not supported in evaluation mode, as the values are different across LLM providers.
                 outputTokens: $this->calculateOutputTokens(),
                 cost: ElElEm::fromString($this->model)->getModelCost(),
             );
+
+            // If the run is finished, we cache the token stats for a minute to make it load quicker.
+            // TODO: it might make sense to store this permanently with the option to recalculate it.
+            if ($this->finished_at) {
+                // Since the token stats are expensive to calculate, we cache them for a minute.
+                cache()->put('run-token-stats-' . $this->id, $stats, now()->addHour());
+            }
+
+            return $stats;
         }
 
         return $this->token_stats;
@@ -384,5 +407,21 @@ class ExtractionRun extends Model
             ->makeMagicExtractor()
             ->makeStrategy()
             ->getEstimatedSteps($this->bucket->artifacts->all());
+    }
+
+    public function retry(): self
+    {
+        $run = $this->replicate();
+        $run->status = RunStatus::Pending;
+        $run->data = null;
+        $run->partial_data = null;
+        $run->finished_at = null;
+        $run->token_stats = null;
+        $run->started_by_id = auth()->id();
+        $run->save();
+
+        GenerateDataJob::dispatch(run: $run);
+
+        return $run;
     }
 }

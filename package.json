@@ -20,6 +20,7 @@
         "@types/alpinejs": "^3.13.10",
         "alpinejs": "^3.14.1",
         "autoprefixer": "^10.4.20",
+        "caniuse-lite": "^1.0.30001703",
         "cm6-theme-basic-light": "^0.2.0",
         "cm6-theme-nord": "^0.2.0",
         "codemirror": "^6.0.1",

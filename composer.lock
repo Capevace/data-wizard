@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70a8497bc8886a8a890b02f796a8d624",
+    "content-hash": "a0ec8015b68aa9da58192b09b4676ad1",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -3881,16 +3881,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.44.1",
+            "version": "v11.44.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "0883d4175f4e2b5c299e7087ad3c74f2ce195c6d"
+                "reference": "f85216c82cbd38b66d67ebd20ea762cb3751a4b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/0883d4175f4e2b5c299e7087ad3c74f2ce195c6d",
-                "reference": "0883d4175f4e2b5c299e7087ad3c74f2ce195c6d",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/f85216c82cbd38b66d67ebd20ea762cb3751a4b4",
+                "reference": "f85216c82cbd38b66d67ebd20ea762cb3751a4b4",
                 "shasum": ""
             },
             "require": {
@@ -4092,7 +4092,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-03-05T15:34:10+00:00"
+            "time": "2025-03-12T14:34:30+00:00"
         },
         {
             "name": "laravel/octane",
@@ -4396,32 +4396,32 @@
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v2.0.3",
+            "version": "v1.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "f379c13663245f7aa4512a7869f62eb14095f23f"
+                "reference": "4f48ade902b94323ca3be7646db16209ec76be3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/f379c13663245f7aa4512a7869f62eb14095f23f",
-                "reference": "f379c13663245f7aa4512a7869f62eb14095f23f",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/4f48ade902b94323ca3be7646db16209ec76be3d",
+                "reference": "4f48ade902b94323ca3be7646db16209ec76be3d",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.1"
+                "php": "^7.3|^8.0"
             },
             "require-dev": {
-                "illuminate/support": "^10.0|^11.0|^12.0",
-                "nesbot/carbon": "^2.67|^3.0",
-                "pestphp/pest": "^2.36|^3.0",
-                "phpstan/phpstan": "^2.0",
-                "symfony/var-dumper": "^6.2.0|^7.0.0"
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "nesbot/carbon": "^2.61|^3.0",
+                "pestphp/pest": "^1.21.3",
+                "phpstan/phpstan": "^1.8.2",
+                "symfony/var-dumper": "^5.4.11|^6.2.0|^7.0.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.x-dev"
+                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
@@ -4453,7 +4453,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2025-02-11T15:03:05+00:00"
+            "time": "2024-11-14T18:34:49+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -5539,7 +5539,7 @@
             "dist": {
                 "type": "path",
                 "url": "../magic/llm-magic",
-                "reference": "6a5831ec1911da3255bb3b2f98b60ec1fbc2edb9"
+                "reference": "8cd8fdf6766f244b065109cb19f07811c79d8834"
             },
             "require": {
                 "aws/aws-sdk-php": "^3.315",
@@ -5558,11 +5558,13 @@
                 "php": "^8.3",
                 "phpoffice/phpspreadsheet": "*",
                 "phpoffice/phpword": "^1.3",
+                "spatie/async": "^1.7",
                 "spatie/fork": "^1.2",
                 "spatie/laravel-package-tools": "^1.16",
                 "spatie/pdf-to-image": "^3.1",
                 "swaggest/json-schema": "^0.12.42",
-                "symfony/http-client": "^7.0"
+                "symfony/http-client": "^7.0",
+                "vxm/laravel-async": "^5.0"
             },
             "require-dev": {
                 "larastan/larastan": "^2.9",
@@ -5625,46 +5627,6 @@
                 }
             ],
             "description": "A universal LLM package for Laravel",
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "mateffy/llm-magic-ui",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "../magic/llm-magic-ui",
-                "reference": "a217f6ce9304c657c22d259c554e195aa2e82ec6"
-            },
-            "require": {
-                "illuminate/collections": "*",
-                "livewire/livewire": "^3.5",
-                "mateffy/llm-magic": "dev-main"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Mateffy\\Magic\\MagicChatServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Mateffy\\Magic\\": "src/"
-                }
-            },
-            "license": [
-                "AGPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "Lukas Mateffy",
-                    "email": "hey@mateffy.me"
-                }
-            ],
-            "description": "Ready-made Livewire components for use with mateffy/llm-magic.",
             "transport-options": {
                 "relative": true
             }
@@ -8530,6 +8492,73 @@
                 }
             ],
             "time": "2025-02-25T09:09:36+00:00"
+        },
+        {
+            "name": "spatie/async",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/async.git",
+                "reference": "318fed03bdaef5aa090cc08ee378e29c946ca38e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/async/zipball/318fed03bdaef5aa090cc08ee378e29c946ca38e",
+                "reference": "318fed03bdaef5aa090cc08ee378e29c946ca38e",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/serializable-closure": "^1.3.7",
+                "php": "^8.3",
+                "symfony/process": "^7.2"
+            },
+            "require-dev": {
+                "larapack/dd": "^1.1",
+                "phpunit/phpunit": "^11.0",
+                "symfony/stopwatch": "^7.2"
+            },
+            "suggest": {
+                "ext-pcntl": "Required to use async processes",
+                "ext-posix": "Required to use async processes"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Async\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent Roose",
+                    "email": "brent@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Asynchronous and parallel PHP with the PCNTL extension",
+            "homepage": "https://github.com/spatie/async",
+            "keywords": [
+                "async",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/async/issues",
+                "source": "https://github.com/spatie/async/tree/1.7.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-01-31T14:59:30+00:00"
         },
         {
             "name": "spatie/color",
@@ -12650,6 +12679,67 @@
             "time": "2024-11-21T01:49:47+00:00"
         },
         {
+            "name": "vxm/laravel-async",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vuongxuongminh/laravel-async.git",
+                "reference": "cdb0762f21fd7c322632f57a016012f1a3abae91"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vuongxuongminh/laravel-async/zipball/cdb0762f21fd7c322632f57a016012f1a3abae91",
+                "reference": "cdb0762f21fd7c322632f57a016012f1a3abae91",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^10.0|^11.0",
+                "php": "^8.1",
+                "spatie/async": "^1.6"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0|^9.0",
+                "symplify/easy-coding-standard": "^11.2|^12.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Async": "VXM\\Async\\AsyncFacade"
+                    },
+                    "providers": [
+                        "VXM\\Async\\AsyncServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "VXM\\Async\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vuong Xuong Minh",
+                    "email": "vuongxuongminh@gmail.com"
+                }
+            ],
+            "description": "Provide an easy way to run code asynchronously for Laravel",
+            "homepage": "https://github.com/vuongxuongminh/laravel-async",
+            "keywords": [
+                "laravel-async",
+                "vxm"
+            ],
+            "support": {
+                "issues": "https://github.com/vuongxuongminh/laravel-async/issues",
+                "source": "https://github.com/vuongxuongminh/laravel-async/tree/v5.0.0"
+            },
+            "time": "2024-06-27T14:48:58+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.11.0",
             "source": {
@@ -16628,8 +16718,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "mateffy/llm-magic": 20,
-        "mateffy/llm-magic-ui": 20
+        "mateffy/llm-magic": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

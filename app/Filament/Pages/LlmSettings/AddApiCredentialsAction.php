@@ -96,28 +96,27 @@ class AddApiCredentialsAction extends Action
                 /** @var ApiKeyProvider $provider */
                 $provider = ApiKeyProvider::from($data['provider']);
 
-                ApiKey::query()
-                    ->createMany(match ($provider) {
-                        ApiKeyProvider::OpenAI => [
-                            [
-                                'provider' => $provider,
-                                'type' => ApiKeyTokenType::Token,
-                                'secret' => $data['fields']['token'],
-                            ],
-                            [
-                                'provider' => $provider,
-                                'type' => ApiKeyTokenType::Organization,
-                                'secret' => $data['fields']['organization'] ?? null,
-                            ],
-                        ],
-                        default => [
-                            [
-                                'provider' => $provider,
-                                'type' => ApiKeyTokenType::Token,
-                                'secret' => $data['fields']['token'],
-                            ],
-                        ],
-                    });
+                if ($provider === ApiKeyProvider::OpenAI) {
+                    ApiKey::create([
+                        'provider' => $provider,
+                        'type' => ApiKeyTokenType::Token,
+                        'secret' => $data['fields']['token'],
+                    ]);
+
+                    if ($data['fields']['organization'] ?? null) {
+                        ApiKey::create([
+                            'provider' => $provider,
+                            'type' => ApiKeyTokenType::Organization,
+                            'secret' => $data['fields']['organization'],
+                        ]);
+                    }
+                } else {
+                    ApiKey::create([
+                        'provider' => $provider,
+                        'type' => ApiKeyTokenType::Token,
+                        'secret' => $data['fields']['token'],
+                    ]);
+                }
 
                 $this
                     ->successNotificationTitle(__('API connection created'))

@@ -9,3 +9,5 @@ storage/app/views
 .env.testing
 .env.testing.example
 .env.testing.example.php
+Dockerfile
+docker-compose.yml
