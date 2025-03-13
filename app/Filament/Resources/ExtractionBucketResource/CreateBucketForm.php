@@ -22,7 +22,6 @@ class CreateBucketForm
                 ->label('Upload your files')
                 ->columnSpanFull()
                 ->translateLabel()
-                ->acceptedFileTypes(['application/pdf', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
                 ->extraInputAttributes(['class' => 'min-h-64 justify-center flex flex-col'])
                 ->multiple(),
 
