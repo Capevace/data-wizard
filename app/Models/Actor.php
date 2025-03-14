@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mateffy\Magic\Chat\MessageCollection;
 use Mateffy\Magic\Chat\Messages\DataMessage;
+use Mateffy\Magic\Chat\Messages\Step\ContentInterface;
+use Mateffy\Magic\Chat\Messages\Step\Image;
 use Mateffy\Magic\Chat\Messages\ToolCallMessage;
-use Mateffy\Magic\Chat\Messages\FunctionOutputMessage;
 use Mateffy\Magic\Chat\Messages\Message;
 use Mateffy\Magic\Chat\Messages\Step;
-use Mateffy\Magic\Chat\Messages\Step\Base64Image;
 use Mateffy\Magic\Chat\Messages\Step\Text;
 use Mateffy\Magic\Chat\Messages\TextMessage;
+use Mateffy\Magic\Chat\Messages\ToolResultMessage;
 
 class Actor extends Model
 {
@@ -52,8 +53,8 @@ class Actor extends Model
                 'json' => json_encode($message->data()),
             ]),
             Step::class => collect($message->content)
-                ->each(fn (Step\ContentInterface $content) => match ($content::class) {
-                    Base64Image::class => $this->messages()->create([
+                ->each(fn (ContentInterface $content) => match ($content::class) {
+                    Image::class => $this->messages()->create([
                         'type' => Actor\ActorMessageType::Base64Image,
                         'role' => $message->role,
                         'json' => $content->toArray(),
@@ -62,6 +63,21 @@ class Actor extends Model
                         'type' => Actor\ActorMessageType::Text,
                         'role' => $message->role,
                         'text' => $content->text,
+                    ]),
+                    Step\ToolUse::class => $this->messages()->create([
+                        'type' => Actor\ActorMessageType::FunctionInvocation,
+                        'role' => $message->role,
+                        'json' => [
+                            'call' => $content->call->toArray(),
+                        ]
+                    ]),
+                    Step\ToolResult::class => $this->messages()->create([
+                        'type' => Actor\ActorMessageType::FunctionOutput,
+                        'role' => $message->role,
+                        'json' => [
+                            'call' => $content->call->toArray(),
+                            'output' => $content->output,
+                        ]
                     ]),
                     default => null,
                 }),
@@ -74,7 +90,7 @@ class Actor extends Model
                 ]
             ]),
 
-            FunctionOutputMessage::class => $this->messages()->create([
+            ToolResultMessage::class => $this->messages()->create([
                 'type' => Actor\ActorMessageType::FunctionOutput,
                 'role' => $message->role,
                 'json' => [

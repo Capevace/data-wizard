@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
-use Mateffy\Magic\Chat\Messages\Step\Base64Image;
+use Mateffy\Magic\Chat\Messages\Step\Image;
 use Mateffy\Magic\Chat\Prompt\Role;
 use Mateffy\Magic\Tokens\ImageTokenizer;
 use Mateffy\Magic\Tokens\OpenAiImageTokenizer;
@@ -18,7 +18,7 @@ use Mateffy\Magic\Tokens\TextTokenizer;
  * @property Role $role
  * @property string $text
  * @property array $json
- * @property Base64Image|null $media
+ * @property Image|null $media
  * @property ActorMessageType $type
  * @property ?string $partial
  */
@@ -59,9 +59,9 @@ class ActorMessage extends Model
         return $this->belongsTo(File::class);
     }
 
-    public function base64Image(): ?Base64Image
+    public function base64Image(): ?Image
     {
-        return Base64Image::fromArray($this->json);
+        return Image::fromArray($this->json);
     }
 
     public function data(?string $key = null): mixed
