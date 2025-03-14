@@ -116,12 +116,12 @@ class ExtractionRunResource extends Resource
                     ->translateLabel()
                     ->state(function (ExtractionRun $record) {
                         $stats = $record->getEnrichedTokenStats();
-                        $inputCost = $stats->calculateInputCost();
-                        $outputCost = $stats->calculateOutputCost();
+                        $inputCost = $stats->calculateInputCost()?->format() ?? 'N/A';
+                        $outputCost = $stats->calculateOutputCost()?->format() ?? 'N/A';
 
                         return collect([
-                            "Input: {$stats->inputTokens} ({$inputCost->format()})",
-                            "Output: {$stats->outputTokens} ({$outputCost->format()})",
+                            "Input: {$stats->inputTokens} ({$inputCost})",
+                            "Output: {$stats->outputTokens} ({$outputCost})",
                         ]);
                     })
                     ->listWithLineBreaks()
