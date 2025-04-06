@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\OpenApi\Model\Operation;
 use App\Livewire\Components\EmbeddedExtractor;
 use App\Livewire\Components\EmbeddedExtractor\ExtractorSteps;
 use App\Livewire\Components\EmbeddedExtractor\WidgetAlignment;
@@ -66,8 +67,16 @@ use Swaggest\JsonSchema\JsonSchema;
 #[ApiResource(
     uriTemplate: '/extractors',
     operations: [
-        new GetCollection,
-        new Post(),
+        new GetCollection(
+            openapi: new Operation(
+                summary: 'List all extractors',
+            ),
+        ),
+        new Post(
+            openapi: new Operation(
+                summary: 'Create a new extractor'
+            ),
+        ),
     ],
     rules: [
         'json_schema' => ['required', 'json', new JsonSchemaRule],
@@ -113,8 +122,16 @@ use Swaggest\JsonSchema\JsonSchema;
 #[ApiResource(
     uriTemplate: '/extractors/{id}',
     operations: [
-        new Get,
-        new Delete
+        new Get(
+            openapi: new Operation(
+                summary: 'Get a single extractor',
+            ),
+        ),
+        new Delete(
+            openapi: new Operation(
+                summary: 'Delete an extractor',
+            ),
+        )
     ],
     rules: [
         'json_schema' => ['required', 'json', new JsonSchemaRule],

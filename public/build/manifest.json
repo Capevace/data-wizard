@@ -1,8 +1,18 @@
 {
   "resources/css/filament/app/theme.css": {
-    "file": "assets/theme-69e5cc0f.css",
+    "file": "assets/theme-2a83b0a8.css",
     "isEntry": true,
     "src": "resources/css/filament/app/theme.css"
+  },
+  "resources/css/landing.css": {
+    "file": "assets/landing-2f0576d0.css",
+    "isEntry": true,
+    "src": "resources/css/landing.css"
+  },
+  "resources/js/src/landing.ts": {
+    "file": "assets/landing-60fd5801.js",
+    "isEntry": true,
+    "src": "resources/js/src/landing.ts"
   },
   "resources/js/src/magic-extract.ts": {
     "file": "assets/magic-extract-622a5bc6.js",

@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\OpenApi\Model\Operation;
 use App\Livewire\Components\EmbeddedExtractor;
 use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionBucket\BucketCreationSource;
@@ -41,8 +42,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 #[ApiResource(
     uriTemplate: '/buckets',
     operations: [
-        new GetCollection,
-        new Post()
+        new GetCollection(
+            openapi: new Operation(
+                summary: 'List all buckets',
+            ),
+        ),
+        new Post(
+            openapi: new Operation(
+                summary: 'Create a new bucket'
+            )
+        )
     ],
     rules: [
         'description' => ['required'],
@@ -52,8 +61,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 #[ApiResource(
     uriTemplate: '/buckets/{id}',
     operations: [
-        new Get,
-        new Delete
+        new Get(
+            openapi: new Operation(
+                summary: 'Get a single bucket'
+            )
+        ),
+        new Delete(
+            openapi: new Operation(
+                summary: 'Delete a bucket'
+            )
+        )
     ],
     defaults: [
         'created_using' => BucketCreationSource::Api,

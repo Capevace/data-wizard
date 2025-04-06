@@ -24,11 +24,34 @@ use Illuminate\Support\Facades\Route;
 Route::get('/setup', Setup::class)
     ->name('setup');
 
+Route::get('/', function () {
+    if (!config('landing.enable')) {
+        return redirect()->route('filament.app.auth.login');
+    }
+
+    return response(view('pages.landing'))
+        //Add cache headers to the response so Cloudflare can cache the response
+        ->header('Cache-Control', 'public, max-age=3600')
+        ->header('Expires', now()->addDay()->toRfc7231String())
+        ->header('Vary', 'Accept-Encoding');
+})
+    ->name('landing');
+
+Route::get('/legal', function () {
+    if (!config('landing.enable')) {
+        return redirect()->route('filament.app.auth.login');
+    }
+
+    return view('pages.legal');
+})
+    ->middleware(['cache.headers'])
+    ->name('landing');
+
 Route::middleware(['auth'])
     ->group(function () {
         // Render the "marketing" page. Since the "product" has not launched and it's just a part of the BA thesis,
         // this requires authentication for now.
-        Route::get('/', function () {
+        Route::get('/welcome', function () {
             return view('welcome');
         });
 

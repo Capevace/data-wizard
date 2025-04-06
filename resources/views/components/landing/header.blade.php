@@ -266,6 +266,28 @@
                         Run with Docker
                     </span>
                 </x-filament::button>
+                hi
+                <button class="magic-button">
+                    <div class="flex items-center gap-2 z-10 font-bold">
+                        @svg('fab-docker', 'w-6 h-6 mr-2 text-white z-10')
+                        <div class="flex flex-col text-left">
+                            <span>Get started</span>
+                            <span class="text-xs">Docker Container</span>
+                        </div>
+                        @svg('heroicon-o-arrow-right', 'w-6 h-6 text-white ml-8 z-10')
+                    </div>
+                </button>
+
+                <button class="magic-button">
+                    <div class="flex items-center gap-2 z-10 font-bold">
+                        @svg('heroicon-o-cloud', 'w-6 h-6 mr-2 text-white z-10')
+                        <div class="flex flex-col text-left">
+                            <span>Try it for free</span>
+                            <span class="text-xs">Data Wizard Cloud</span>
+                        </div>
+                        @svg('heroicon-o-arrow-right', 'w-6 h-6 text-white ml-8 z-10')
+                    </div>
+                </button>
             </div>
 
 

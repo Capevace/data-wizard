@@ -169,18 +169,18 @@ class ExtractionRunResource extends Resource
                 SelectFilter::make('model')
                     ->label('Model')
                     ->options(fn () => Magic::models())
-                    ->modifyQueryUsing(fn (Builder $query, $state) => $state['value'] ? $query->where('model', $state['value']) : $query),
+                    ->modifyQueryUsing(fn (Builder $query, $state) => ($state['value'] ?? null) ? $query->where('model', $state['value']) : $query),
 
                 SelectFilter::make('strategy')
                     ->label('Strategy')
-                    ->options(fn () => DB::table('extraction_runs')->distinct('strategy')->pluck('strategy', 'strategy')->map(fn ($value) => Str::title($value))->toArray()),
-
-                SelectFilter::make('bucket')
-                    ->relationship('bucket', 'description')
-                    ->searchable()
-                    ->preload()
-                    ->label('Buckets'),
-
+                    ->options(fn () => DB::table('extraction_runs')->distinct('strategy')->pluck('strategy', 'strategy')->map(fn ($value) => Str::title($value))->filter()->toArray()),
+//
+//                SelectFilter::make('bucket')
+//                    ->relationship('bucket', 'description')
+//                    ->searchable()
+//                    ->preload()
+//                    ->label('Buckets'),
+//
                 SelectFilter::make('evaluation_type')
                     ->label('Evaluation Type')
                     ->options(

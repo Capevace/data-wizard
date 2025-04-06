@@ -1,5 +1,6 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
-@import "/vendor/tempest/highlight/src/Themes/Css/highlight-light-lite.css";
+/*@import "/vendor/tempest/highlight/src/Themes/Css/highlight-light-lite.css";*/
+@import "/vendor/tempest/highlight/src/Themes/Css/highlight-dark-lite.css";
 
 html {
     scrollbar-gutter: stable;
@@ -47,6 +48,51 @@ html {
     background: radial-gradient(circle at 50% 50%, rgba(var(--gray-200),0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%);
 }
 
+.magic-button {
+  position: relative;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
+  padding: 14px 25px;
+  border-radius: 10px;
+  font-size: 1.25em;
+  cursor: pointer;
+}
+
+.magic-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.magic-button::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: #272727;
+  border-radius: 9px;
+  transition: 0.5s;
+}
+
+.magic-button:hover::before {
+  opacity: 0.7;
+}
+
+.magic-button::after {
+  content: "";
+  position: absolute;
+  inset: 0px;
+  background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
+  border-radius: 9px;
+  transition: 0.5s;
+  opacity: 0;
+  filter: blur(20px);
+}
+
+.magic-button:hover:after {
+  opacity: 1;
+}
+
 
 
 @config 'tailwind.config.js';
+

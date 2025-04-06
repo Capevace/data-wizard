@@ -6,7 +6,9 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/filament/app/theme.css',
+                'resources/css/landing.css',
                 'resources/js/src/magic-extract.ts',
+                'resources/js/src/landing.ts',
             ],
             refresh: true,
         }),

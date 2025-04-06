@@ -1,0 +1,146 @@
+@import './zoomable.css';
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Keyframes */
+@keyframes pulse-glow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.03); }
+}
+@keyframes pulse-glow-subtle { /* Slower, less intense pulse for always-on */
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.01); }
+}
+@keyframes scroll-gradient { /* For Hero Text */
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* Gradient Shadow Base Classes */
+.gradient-shadow-card,
+.gradient-shadow-always-on,
+.icon-gradient-wrapper { /* Added icon wrapper */
+    position: relative;
+    z-index: 1;
+    border-radius: inherit; /* Ensure pseudo-element inherits radius */
+    transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+}
+
+/* Gradient Shadow Pseudo-Element */
+.gradient-shadow-card::before,
+.gradient-shadow-always-on::before,
+.icon-gradient-wrapper::before { /* Added icon wrapper */
+    content: '';
+    position: absolute;
+    /* Increased offset slightly & blur for more "bleed" */
+    top: -3px; left: -3px;
+    right: -3px; bottom: -3px;
+    background: conic-gradient(from 180deg at 50% 50%, #06b6d4, #a855f7, #ec4899, #06b6d4); /* Cyan -> Purple -> Fuchsia -> Cyan */
+    filter: blur(20px); /* Increased blur */
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+}
+/* Specific radius for icon wrapper shadow if needed */
+ .icon-gradient-wrapper::before {
+     border-radius: 0.75rem; /* Example: Adjust to match icon wrapper rounding */
+ }
+
+
+/* Hover effect for gradient-shadow-card */
+.group:hover .gradient-shadow-card::before,
+.group:hover .icon-gradient-wrapper::before { /* Added icon wrapper */
+    opacity: 0.7; /* Slightly increased opacity */
+    animation: pulse-glow 2.5s infinite ease-in-out;
+}
+
+/* Always-on effect */
+.gradient-shadow-always-on::before {
+    opacity: 0.35; /* Slightly increased base opacity */
+    animation: pulse-glow-subtle 4s infinite ease-in-out;
+}
+
+/* Card hover scale effect */
+/* Apply directly to the card if shadow is on the same element */
+.group:hover .gradient-shadow-card {
+    transform: scale(1.02);
+    transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+}
+/* Or apply to a specific inner element if needed */
+.group:hover .scale-on-hover {
+    transform: scale(1.02);
+    transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+}
+ /* Scale effect for icon wrapper */
+ .group:hover .icon-gradient-wrapper {
+     transform: scale(1.1); /* Slightly larger scale for icon */
+     transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+ }
+
+/* Ensure sticky elements work with transforms */
+.sticky {
+  transform: translateZ(0);
+}
+
+/* Base Glass Card Style (for Steps, Strategies, Use Cases, Process) */
+.glass-card {
+    @apply h-full bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/15 shadow-lg rounded-2xl;
+     /* Added h-full for equal height */
+}
+
+ /* Style for Feature Cards (now boxed) */
+.feature-card-box {
+    @apply h-full relative p-6 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/15 shadow-lg rounded-xl flex items-start space-x-4;
+     /* Added h-full, flex layout directly on box */
+    border-radius: 0.75rem; /* Corresponds to rounded-xl */
+}
+/* Wrapper for Feature Icon to apply gradient shadow */
+.icon-gradient-wrapper {
+     @apply p-3 rounded-lg shrink-0 mt-1 backdrop-blur-sm;
+      /* Ensure it inherits radius for the shadow */
+     border-radius: 0.5rem; /* rounded-lg */
+     /* Add transition for scale */
+     transition: transform 0.3s ease;
+}
+ .feature-card-box .icon-color {
+     /* Use consistent bright color */
+     @apply text-cyan-300;
+ }
+
+/* Animated Hero Gradient */
+.animated-hero-gradient {
+    background-size: 200% auto; /* Make gradient wider than element */
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: scroll-gradient 5s linear infinite; /* Apply animation */
+    /*from-white via-cyan-300 to-fuchsia-400*/
+
+    --tw-gradient-stops: var(--tw-gradient-from), #67e8f9 var(--tw-gradient-via-position), var(--tw-gradient-to), #67e8f9 var(--tw-gradient-via-position), var(--tw-gradient-from);
+}
+
+/* Brighter Strong Tag Style */
+.what-is-strong {
+    @apply font-bold text-cyan-300; /* Example: Use cyan, adjust as needed */
+}
+
+/* Text Shadow Utilities */
+.text-shadow {
+     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.text-shadow-md {
+     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Basic code syntax highlighting */
+pre code.language-json .token.property { color: #9cdcfe; } /* Light blue */
+pre code.language-json .token.string { color: #ce9178; } /* Orange */
+pre code.language-json .token.number { color: #b5cea8; } /* Green */
+pre code.language-json .token.boolean { color: #569cd6; } /* Blue */
+pre code.language-json .token.keyword { color: #c586c0; } /* Pink */
+pre code.language-json .token.comment { color: #6a9955; font-style: italic; } /* Green italic */
+pre code.language-json .token.punctuation { color: #d4d4d4; } /* Light gray */

@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\OpenApi\Model\Operation;
 use App\Filament\Resources\ExtractionRunResource\Pages\RunPage;
 use App\Jobs\GenerateDataJob;
 use App\Livewire\Components\EmbeddedExtractor;
@@ -20,6 +21,8 @@ use App\Models\Concerns\UsesUuid;
 use App\Models\ExtractionRun\RunStatus;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
+use Closure;
+use ErrorException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -72,7 +75,11 @@ use Swaggest\JsonSchema\SchemaContract;
 #[ApiResource(
     uriTemplate: '/runs',
     operations: [
-        new GetCollection
+        new GetCollection(
+            openapi: new Operation(
+                summary: 'List all runs',
+            ),
+        )
     ],
     middleware: ['auth:sanctum']
 )]
@@ -80,7 +87,11 @@ use Swaggest\JsonSchema\SchemaContract;
     uriTemplate: '/runs/{id}',
     description: 'An in-progress or completed extraction run',
     operations: [
-        new Get
+        new Get(
+            openapi: new Operation(
+                summary: 'Get a single run',
+            ),
+        )
     ],
     middleware: ['auth:sanctum']
 )]
@@ -350,7 +361,7 @@ class ExtractionRun extends Model
         );
     }
 
-    public function makeMagicExtractor(): ExtractionLLMBuilder
+    public function makeMagicExtractor(?Closure $onDataProgress = null): ExtractionLLMBuilder
     {
         return Magic::extract()
             ->model(ElElEm::fromString($this->model))
@@ -390,9 +401,13 @@ class ExtractionRun extends Model
                 $actor->fill($telemetry->toDatabase());
                 $actor->save();
             })
-            ->onDataProgress(function (array $data) {
+            ->onDataProgress(function (array $data) use ($onDataProgress) {
                 $this->partial_data = $data;
                 $this->save();
+
+                if ($onDataProgress) {
+                    $onDataProgress($data);
+                }
             });
     }
 
@@ -423,5 +438,39 @@ class ExtractionRun extends Model
         GenerateDataJob::dispatch(run: $run);
 
         return $run;
+    }
+
+    public function execute(?Closure $onDataProgress = null): void
+    {
+        try {
+            $this->bucket?->touch();
+            $this->saved_extractor?->touch();
+
+            $this->status = RunStatus::Running;
+            $this->started_at = now();
+            $this->save();
+
+            $data = $this
+                ->makeMagicExtractor(onDataProgress: $onDataProgress)
+                ->stream();
+
+            $this->data = $data;
+            $this->status = RunStatus::Completed;
+            $this->finished_at = now();
+            $this->save();
+        } catch (\Throwable|ErrorException $e) {
+            $this->error = [
+                'title' => method_exists($e, 'getTitle') ? $e->getTitle() : null,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ];
+            $this->status = RunStatus::Failed;
+            $this->finished_at = now();
+            $this->save();
+
+            throw $e;
+        }
+
+        $this->dispatchWebhook();
     }
 }

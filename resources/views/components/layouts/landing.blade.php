@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,9 +34,15 @@
             }
         </style>
 
-        @vite(['resources/css/filament/app/theme.css'])
+        @vite([
+            'resources/css/filament/app/theme.css',
+            'resources/css/landing.css',
+            'resources/js/src/landing.ts'
+        ])
+
+        <script defer data-domain="data-wizard.ai" src="https://plausible.io/js/script.js"></script>
     </head>
     <body class="antialiased font-sans">
-        <x-landing />
+        {{ $slot }}
     </body>
 </html>
