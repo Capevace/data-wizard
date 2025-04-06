@@ -6,7 +6,7 @@
 <p><strong>Extract Structured Data from Any Document with LLMs</strong></p>
 <p>Data Wizard is an open-source tool designed to simplify and automate the extraction of structured data from unstructured documents like PDFs, Word files, and images using Large Language Models. Turn complex documents into validated, machine-readable JSON effortlessly.</p>
 
-[**View Documentation**](https://docs.data-wizard.ai) | [**Quick Start Guide**](https://docs.data-wizard.ai/quick-start) | [**Homepage**](https://data-wizard.ai) | [**Made by Lukas Mateffy**](https://mateffy.me)
+[**Quick Start Guide**](https://docs.data-wizard.ai/quick-start) | [**Documentation**](https://docs.data-wizard.ai) | [**Homepage**](https://data-wizard.ai) | [**Made by Lukas Mateffy**](https://mateffy.me)
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![GitHub Repo stars](https://img.shields.io/github/stars/capevace/data-wizard)](https://github.com/capevace/data-wizard)
