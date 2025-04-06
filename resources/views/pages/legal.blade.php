@@ -1,3 +1,9 @@
+@seo(['title' => 'Legal Notice – Data Wizard'])
+@seo(['description' => 'This website provides legal information about the open-source project "Data Wizard".'])
+@seo(['twitterSite' => 'capevace'])
+@seo(['locale' => 'en_US'])
+@seo(['image' => url('images/thumbnail.png')])
+
 <x-layouts.landing>
     <div class="bg-[#0A0F1A] text-gray-200 font-sans">
 

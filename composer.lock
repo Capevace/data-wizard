@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "63a20e7495357fbd8eb6ee105d6b675f",
+    "content-hash": "b63459f3cbc0dfcab91c233585fd2439",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -1150,6 +1150,64 @@
                 "source": "https://github.com/api-platform/state/tree/v4.1.0"
             },
             "time": "2025-02-28T10:08:08+00:00"
+        },
+        {
+            "name": "archtechx/laravel-seo",
+            "version": "v0.10.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/archtechx/laravel-seo.git",
+                "reference": "0a2eef4db49f41b3d55d4270b9d4767bac1d8ec9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/archtechx/laravel-seo/zipball/0a2eef4db49f41b3d55d4270b9d4767bac1d8ec9",
+                "reference": "0a2eef4db49f41b3d55d4270b9d4767bac1d8ec9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "illuminate/view": "^10.0|^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "intervention/image": "^2.7",
+                "nunomaduro/larastan": ">=2.4",
+                "orchestra/testbench": ">=8.0",
+                "pestphp/pest": ">=2.0",
+                "pestphp/pest-plugin-laravel": ">=2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ArchTech\\SEO\\SEOServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "ArchTech\\SEO\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Samuel Štancl",
+                    "email": "samuel@archte.ch"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/archtechx/laravel-seo/issues",
+                "source": "https://github.com/archtechx/laravel-seo/tree/v0.10.3"
+            },
+            "time": "2025-03-06T16:38:20+00:00"
         },
         {
             "name": "aws/aws-crt-php",

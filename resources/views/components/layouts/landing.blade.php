@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Data Wizard – Extract structured data from PDFs, images and documents</title>
+        <x-seo::meta />
 
         <?php
             \Filament\Support\Facades\FilamentColor::register([

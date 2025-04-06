@@ -16,6 +16,7 @@
 		"akaunting/laravel-money": "^5.2",
 		"api-platform/graphql": "^4",
 		"api-platform/laravel": "^4.1",
+		"archtechx/laravel-seo": "^0.10.3",
 		"blade-ui-kit/blade-heroicons": "^2.3",
 		"blade-ui-kit/blade-icons": "^1.6",
 		"davidhsianturi/blade-bootstrap-icons": "^1.5",
