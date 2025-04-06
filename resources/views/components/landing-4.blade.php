@@ -8,7 +8,7 @@
       <div class="absolute inset-0 bg-gradient-to-b from-black/10 to-black/30 backdrop-blur-sm"></div>
         <div class="relative z-10 container mx-auto px-6">
             <h2 class="text-4xl font-bold text-center mb-16 text-gray-100 text-shadow-md">What is Data Wizard?</h2>
-            <div class="grid md:grid-cols-2 gap-16 items-center"> {{-- items-stretch might be needed if content differs vastly --}}
+            <div class="grid lg:grid-cols-2 gap-16 items-center"> {{-- items-stretch might be needed if content differs vastly --}}
                 <div class="text-lg text-gray-300 space-y-6">
                     <p>
                         Data Wizard is an open-source tool that uses Large Language Models to pull structured data from various documents – <strong class="what-is-strong">regardless of their size or format</strong>.

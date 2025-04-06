@@ -20,7 +20,7 @@
 
     {{-- Navigation --}}
     <nav class="relative z-10 container mx-auto px-6 py-6">
-         <div class="flex items-center justify-between">
+         <div class="flex items-center flex-col gap-10 md:gap-0 md:flex-row justify-between">
             <a href="/" class="relative flex items-center space-x-2 group">
                 <img
                     src="{{ asset('images/logo.svg') }}"
@@ -38,7 +38,7 @@
                     <x-icon name="lucide-file-text" class="h-5 w-5"/>
                     <span>Docs</span>
                 </a>
-                <a href="https://mateffy.me" class="flex items-center space-x-2 text-gray-300 hover:text-cyan-300 transition-colors">
+                <a href="https://mateffy.me" class="flex-shrink-0 flex items-center space-x-2 text-gray-300 hover:text-cyan-300 transition-colors">
                     <x-icon name="fas-user-ninja" class="h-5 w-5"/>
                     <span>Made by Lukas Mateffy</span>
                 </a>
@@ -66,6 +66,16 @@
                 <a href="{{ config('landing.documentation-url') }}" class="flex items-center gap-5 justify-between px-8 py-3 bg-white/10 rounded-lg font-semibold backdrop-blur-sm hover:bg-white/20 transition-colors border border-white/20 transform hover:scale-105">
                     View Documentation
                     <x-icon name="lucide-book" class="h-5 w-5 inline-block"/>
+                </a>
+            </div>
+            <div class="grid md:grid-cols-2 md:w-fit items-center text-lg gap-4 mt-6">
+                <a
+                    href="{{ route('filament.app.auth.login') }}"
+                    class="flex items-center gap-2 text-gray-300 hover:text-cyan-300 transition-colors opacity-50 hover:opacity-100 transition-opacity"
+                >
+                    <x-icon name="bi-mortarboard" class="h-5 w-5"/>
+                    <span>Academic Login for Students and Professors</span>
+                    <x-icon name="bi-arrow-right" class="h-5 w-5"/>
                 </a>
             </div>
         </div>

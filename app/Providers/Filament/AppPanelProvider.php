@@ -131,6 +131,12 @@ class AppPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->renderHook(
+                PanelsRenderHook::SCRIPTS_AFTER,
+                fn () => ($domain = config('landing.plausible-domain'))
+                    ? "<script defer data-domain=\"{$domain}\" src=\"https://plausible.io/js/script.js\"></script>"
+                    : null
+            )
             ->bootUsing(function () {
                 FilamentView::registerRenderHook(
                     PanelsRenderHook::SCRIPTS_BEFORE,
