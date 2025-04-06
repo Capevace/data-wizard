@@ -34,6 +34,18 @@
         </form>
     @endif
 
+    @if ($step === 2)
+        <div class="w-full mx-auto prose dark:prose-invert">
+            <h3>Initial LLM Provider</h3>
+            <p>Data Wizard requires an LLM provider to work. Choose one from the list and enter your API token to get started. You can always change the provider and add more later.</p>
+        </div>
+        <form class="mb-5" wire:submit.prevent="finish">
+            {{ $this->llmForm }}
+
+            <button type="submit" class="hidden"></button>
+        </form>
+    @endif
+
     <nav class="flex justify-between">
         @if ($this->step > 0)
             <x-filament::button

@@ -363,8 +363,8 @@ class SavedExtractorResource extends Resource
     {
         return [
             'index' => Pages\ListSavedExtractors::route('/'),
-            'quick-create' => Pages\CreateSavedExtractor::route('/quick-create'),
-            'create' => Pages\CreationWizard::route('/create'),
+            'quick-create' => Pages\CreationWizard::route('/quick-create'),
+            'create' => Pages\CreateSavedExtractor::route('/create'),
             'edit' => SavedExtractorResource\Pages\EditSavedExtractor::route('/{record}/edit'),
         ];
     }

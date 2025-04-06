@@ -6,6 +6,7 @@ use App\Filament\Forms\JsonEditor;
 use App\Filament\Resources\SavedExtractorResource;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateSchemaAction;
 use App\Magic\Prompts\GenerateSchemaPrompt;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
@@ -20,6 +21,22 @@ use Mateffy\Magic\Exceptions\UnknownInferenceException;
 class CreationWizard extends CreateRecord
 {
     protected static string $resource = SavedExtractorResource::class;
+
+    protected static bool $canCreateAnother = false;
+
+    protected function getCreateFormAction(): Action
+    {
+        return parent::getCreateFormAction()
+            ->hidden(fn () => ($this->data['json_schema'] ?? null) === null);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHeading(): string
+    {
+        return __('Extraction Configuration Wizard');
+    }
 
     public ?string $generateWith = null;
 
@@ -83,6 +100,7 @@ class CreationWizard extends CreateRecord
                     Wizard\Step::make('What are you extracting?')
                         ->schema([
                             TextInput::make('label')
+                                ->required()
                                 ->label('What are you extracting?')
                                 ->placeholder('e.g. `Product data from competitor brochures` or `Financial KPIs from q4 reports`'),
 

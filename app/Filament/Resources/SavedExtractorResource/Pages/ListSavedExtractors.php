@@ -16,7 +16,13 @@ class ListSavedExtractors extends ListRecords
         return [
             CreateAction::make()
                 ->icon('heroicon-o-plus'),
+            CreateAction::make('quickCreate')
+                ->color('gray')
+                ->label(__('Generate Extractor'))
+                ->url(SavedExtractorResource::getUrl('quick-create'))
+                ->icon('heroicon-o-plus'),
             ImportExtractorAction::make()
+                ->color('gray')
         ];
     }
 }

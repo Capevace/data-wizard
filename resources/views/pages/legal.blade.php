@@ -60,7 +60,7 @@
 
         <p>This website respects your privacy.</p>
 
-        <p><strong>Website Analytics:</strong> To understand visitor trends and improve our website, we use Plausible Analytics. Plausible is a privacy-focused web analytics service that collects only anonymous, aggregate data.
+        <p><strong>Website Analytics:</strong> To understand visitor trends and improve our website, we use Plausible Analytics. Plausible is a privacy-focused web analytics service hosted in the EU that collects only anonymous, aggregate data.
             <ul>
                 <li>It does <strong>not</strong> use cookies.</li>
                 <li>It does <strong>not</strong> collect any personal data or personally identifiable information (PII).</li>
@@ -69,11 +69,13 @@
             You can learn more about Plausible's data practices on their website: <a href="https://plausible.io/data-policy" target="_blank" rel="noopener noreferrer">Plausible Data Policy</a>. Using Plausible helps us understand how the site is used without compromising your privacy.
         </p>
 
+        <p><strong>Fonts:</strong> We use Bunny Fonts to display text on this website. Bunny Fonts is a service provided by BunnyWay d.o.o., an EU-based company. According to their policy, Bunny Fonts is designed for GDPR compliance and does not collect personal data, logs, or track end-users in any way when delivering fonts. This allows us to use custom typography without compromising your privacy through font loading. You can learn more here: <a href="https://bunny.net/fonts/" target="_blank" rel="noopener noreferrer">Bunny Fonts</a>.</p>
+
         <p>We do <strong>not</strong> use tracking cookies or pixels from advertising networks.</p>
 
-        <p>We do <strong>not</strong> embed third-party content that could track you (like social media widgets, external fonts loaded from third parties, etc.).</p>
+        <p>We avoid embedding other third-party content or scripts that are known to track users (like social media widgets, advertising network scripts, etc.).</p>
 
-        <p><strong>Server Logs:</strong> Standard server logs may be kept for technical operation, security, and debugging purposes. These typically include IP addresses, browser types, requested URLs, and timestamps. This data is not used for user profiling and is regularly deleted according to operational needs.</p>
+        <p><strong>Server Logs:</strong> Standard server logs may be kept for technical operation, security, and debugging purposes. These include IP addresses, browser types, requested URLs, and timestamps. This data is not used for user profiling and is deleted on a weekly basis.</p>
 
         <p><strong>Session Cookies:</strong> For login functionality, if implemented on any part of this software instance, essential session cookies may be used solely to manage your logged-in state. These are necessary for the technical operation of the login feature and are not used for tracking purposes.</p>
 

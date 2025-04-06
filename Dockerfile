@@ -82,4 +82,7 @@ WORKDIR /app/vendor/mateffy/llm-magic/python
 RUN uv add mupdf
 WORKDIR /app
 
+# Hotfix: OpenAI Gemini Issue: https://github.com/openai-php/client/pull/502
+COPY ./resources/OpenAiPhpHotfixCreateStreamedResponse.php ./vendor/openai-php/client/src/Responses/Chat/CreateStreamedResponse.php
+
 ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

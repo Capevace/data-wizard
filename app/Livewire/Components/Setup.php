@@ -3,11 +3,13 @@
 namespace App\Livewire\Components;
 
 use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\LlmSettings;
 use App\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\SimplePage;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\Hash;
@@ -34,7 +36,7 @@ class Setup extends SimplePage implements HasForms
     public function mount()
     {
         // Do not ever show this page if there is already a user.
-        if (User::query()->exists()) {
+        if (User::query()->exists() && false) {
             $this->redirect(route('filament.app.auth.login'));
 
             // If for some reason the redirect doesn't work, we'll abort here
@@ -87,19 +89,30 @@ class Setup extends SimplePage implements HasForms
         $data = $this->form->getState();
 
         // Failsafe to prevent this from being run if there is already a superadmin.
-        if (User::query()->exists()) {
-            return;
+        if (!User::query()->exists()) {
+            $user = User::create([
+                'name' => 'Superadmin',
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+            ]);
+
+            auth()->login($user);
+        } else {
+            Notification::make()
+                ->danger()
+                ->title('Superadmin already exists')
+                ->body('There is already a user in the system.')
+                ->send();
         }
 
-        $user = User::create([
-            'name' => 'Superadmin',
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        Notification::make()
+            ->info()
+            ->title('Next Step: Setup an LLM Provider')
+            ->body('Data Wizard needs an LLM to work. Setup your preferred provider in the settings page.')
+            ->seconds(10)
+            ->send();
 
-        auth()->login($user);
-
-        $this->redirect(Dashboard::getUrl(panel: 'app'));
+        $this->redirect(LlmSettings::getUrl(panel: 'app'));
     }
 
     public function form(Form $form): Form
