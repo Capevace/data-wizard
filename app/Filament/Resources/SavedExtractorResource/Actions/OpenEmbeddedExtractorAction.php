@@ -18,7 +18,7 @@ class OpenEmbeddedExtractorAction extends Action
         parent::setUp();
 
         $this
-            ->label('Launch embeded extractor')
+            ->label('Launch embedded extractor')
             ->translateLabel()
             ->icon('heroicon-o-play')
             ->url(fn (SavedExtractor $record) => $record->getEmbeddedUrl(horizontalAlignment: WidgetAlignment::Center, verticalAlignment: WidgetAlignment::Center))
