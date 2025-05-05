@@ -45,7 +45,7 @@ Route::get('/legal', function () {
     return view('pages.legal');
 })
     ->middleware(['cache.headers'])
-    ->name('landing');
+    ->name('legal');
 
 Route::middleware(['auth'])
     ->group(function () {
