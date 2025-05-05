@@ -15,6 +15,6 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'livewire/embed',
     ];
 }

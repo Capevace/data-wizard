@@ -71,15 +71,23 @@ Route::get('/files/{fileId}/thumbnail', FileThumbnailController::class)
     ->name('files.thumbnail');
 
 // The embedded extractor route is used to show the extractor in an iframe.
-Route::get('/embed/{extractorId}', EmbeddedExtractor::class)
+//Route::get('/embed/{extractorId}', EmbeddedExtractor::class)
+//    ->middleware([AllowEmbeddingMiddleware::class])
+//    ->name('embedded-extractor');
+//
+//// The full page extractor route is used to show the extractor in a full page.
+//Route::get('/full-page/{extractorId}', EmbeddedExtractor::class)
+//    ->name('full-page-extractor');
+
+Route::get('/embed/{extractorId}', function (string $extractorId) {
+    return view('pages.embed', [
+        'extractorId' => $extractorId,
+    ])
+        ->layout('components.layouts.app');
+})
     ->middleware([AllowEmbeddingMiddleware::class])
     ->name('embedded-extractor');
 
 // The full page extractor route is used to show the extractor in a full page.
 Route::get('/full-page/{extractorId}', EmbeddedExtractor::class)
     ->name('full-page-extractor');
-
-
-Route::get('test', function () {
-    return 'test';
-})->middleware('auth:sanctum');

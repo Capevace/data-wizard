@@ -17,7 +17,7 @@ return [
 
     'paths' => ['livewire/*', 'api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['*', 'POST'],
 
     'allowed_origins' => ['*'],
 

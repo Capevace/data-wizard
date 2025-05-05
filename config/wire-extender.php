@@ -6,6 +6,6 @@ return [
      * Add the 'web' middleware if you want to support sessions.
      */
     'middlewares' => [
-
+        'web'
     ],
 ];

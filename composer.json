@@ -32,7 +32,7 @@
 		"livewire/livewire": "^3.5",
 		"mallardduck/blade-lucide-icons": "^1.23",
 		"mateffy/color": "^1.0",
-		"mateffy/llm-magic": "^1.0",
+		"mateffy/llm-magic": "^1.1.0",
 		"novadaemon/filament-pretty-json": "^2.2",
 		"nyholm/psr7": "^1.8",
 		"owenvoke/blade-fontawesome": "^2.9",
