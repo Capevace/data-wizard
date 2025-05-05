@@ -33,6 +33,7 @@
 		"mallardduck/blade-lucide-icons": "^1.23",
 		"mateffy/color": "^1.0",
 		"mateffy/llm-magic": "^1.1.0",
+		"mateffy/llm-magic-ui": "dev-main",
 		"novadaemon/filament-pretty-json": "^2.2",
 		"nyholm/psr7": "^1.8",
 		"owenvoke/blade-fontawesome": "^2.9",
@@ -112,10 +113,10 @@
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
-    "__repositories": [
+    "repositories": [
         {
 			"type": "path",
-			"url": "../magic/llm-magic"
+			"url": "../magic/llm-magic-ui"
 		}
 	]
 }

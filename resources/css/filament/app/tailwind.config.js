@@ -8,6 +8,7 @@ export default {
         './resources/views/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
         './vendor/mateffy/llm-magic/resources/**/*.blade.php',
+        './vendor/mateffy/llm-magic-ui/resources/**/*.blade.php',
     ],
     plugins: [
         require('tailwindcss-animated'),

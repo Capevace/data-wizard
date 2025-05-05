@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e6d87e8ca1f92d5b4b3d70d6a0567dd",
+    "content-hash": "8e77b456efaac8664c1ed1bfd2f6eed7",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -5732,6 +5732,46 @@
                 "source": "https://github.com/Capevace/llm-magic/tree/1.1.1"
             },
             "time": "2025-05-05T14:32:02+00:00"
+        },
+        {
+            "name": "mateffy/llm-magic-ui",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../magic/llm-magic-ui",
+                "reference": "a217f6ce9304c657c22d259c554e195aa2e82ec6"
+            },
+            "require": {
+                "illuminate/collections": "*",
+                "livewire/livewire": "^3.5",
+                "mateffy/llm-magic": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mateffy\\Magic\\MagicChatServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mateffy\\Magic\\": "src/"
+                }
+            },
+            "license": [
+                "AGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Lukas Mateffy",
+                    "email": "hey@mateffy.me"
+                }
+            ],
+            "description": "Ready-made Livewire components for use with mateffy/llm-magic.",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "monolog/monolog",
@@ -18844,7 +18884,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": {
+        "mateffy/llm-magic-ui": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

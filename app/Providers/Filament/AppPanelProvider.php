@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\ApiTokenSettings;
+use App\Filament\Pages\ChatTest;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\GeneratePage;
 use App\Filament\Pages\LlmSettings;
@@ -36,6 +37,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use OpenAI\Resources\Chat;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -63,6 +65,7 @@ class AppPanelProvider extends PanelProvider
                     ...ExtractionBucketResource::getNavigationItems(),
                     ...SavedExtractorResource::getNavigationItems(),
                     ...ExtractionRunResource::getNavigationItems(),
+                    ...ChatTest::getNavigationItems(),
                 ])
                 ->group(
                     NavigationGroup::make(__('Settings'))
@@ -110,6 +113,7 @@ class AppPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Dashboard::class,
+                ChatTest::class
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
