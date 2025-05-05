@@ -5656,16 +5656,16 @@
         },
         {
             "name": "mateffy/llm-magic",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Capevace/llm-magic.git",
-                "reference": "c8ce865d0d1762c334aae2ffcec1c872ed9465bf"
+                "reference": "3c0bcd2cb0644428850017be26d6c57aced2ba8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Capevace/llm-magic/zipball/c8ce865d0d1762c334aae2ffcec1c872ed9465bf",
-                "reference": "c8ce865d0d1762c334aae2ffcec1c872ed9465bf",
+                "url": "https://api.github.com/repos/Capevace/llm-magic/zipball/3c0bcd2cb0644428850017be26d6c57aced2ba8c",
+                "reference": "3c0bcd2cb0644428850017be26d6c57aced2ba8c",
                 "shasum": ""
             },
             "require": {
@@ -5729,9 +5729,9 @@
             "description": "A universal LLM package for Laravel",
             "support": {
                 "issues": "https://github.com/Capevace/llm-magic/issues",
-                "source": "https://github.com/Capevace/llm-magic/tree/1.1.0"
+                "source": "https://github.com/Capevace/llm-magic/tree/1.1.1"
             },
-            "time": "2025-05-05T14:03:01+00:00"
+            "time": "2025-05-05T14:32:02+00:00"
         },
         {
             "name": "monolog/monolog",
