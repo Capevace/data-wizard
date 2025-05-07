@@ -6,6 +6,7 @@ use App\Filament\Pages\ApiTokenSettings;
 use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\GeneratePage;
 use App\Filament\Pages\LlmSettings;
+use App\Filament\Pages\Playground;
 use App\Filament\Resources\ExtractionBucketResource;
 use App\Filament\Resources\ExtractionRunResource;
 use App\Filament\Resources\SavedExtractorResource;
@@ -63,6 +64,7 @@ class AppPanelProvider extends PanelProvider
                     ...ExtractionBucketResource::getNavigationItems(),
                     ...SavedExtractorResource::getNavigationItems(),
                     ...ExtractionRunResource::getNavigationItems(),
+                    ...Playground::getNavigationItems(),
                 ])
                 ->group(
                     NavigationGroup::make(__('Settings'))
@@ -110,6 +112,7 @@ class AppPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Dashboard::class,
+                Playground::class
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')

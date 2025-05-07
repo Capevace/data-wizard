@@ -280,6 +280,17 @@ class SavedExtractor extends Model
         }
     }
 
+//    public function getSchemaAttribute(): array
+//    {
+//        try {
+//            return json_decode($this->json_schema ?? [], true);
+//        } catch (\Throwable $exception) {
+//            report($exception);
+//
+//            return [];
+//        }
+//    }
+
     public function getEmbeddedUrl(?ExtractorSteps $step = null, ?WidgetAlignment $horizontalAlignment = null, ?WidgetAlignment $verticalAlignment = null): string
     {
         $step = $step ?? ExtractorSteps::Introduction;

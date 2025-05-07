@@ -35,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         Route::model('run', ExtractionRun::class);
 
         Livewire::component('embedded-extractor', \App\Livewire\Components\EmbeddedExtractor::class);
+        Livewire::component('playground.bucket', \App\Livewire\Components\PlaygroundBucket::class);
 
         $this->app->bind(TokenResolver::class, function () {
             return new DatabaseTokenResolver();

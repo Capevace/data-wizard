@@ -40,9 +40,7 @@
             'resources/js/src/landing.ts'
         ])
 
-        @if ($domain = config('landing.plausible-domain'))
-            <script defer data-domain="{{ $domain }}" src="https://plausible.io/js/script.js"></script>
-        @endif
+        <x-plausible />
     </head>
     <body class="antialiased font-sans">
         {{ $slot }}

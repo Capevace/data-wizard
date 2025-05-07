@@ -4,6 +4,7 @@ import type { Alpine } from 'alpinejs';
 
 import {EditorView, basicSetup} from "codemirror";
 import {json} from "@codemirror/lang-json";
+import {markdown} from "@codemirror/lang-markdown";
 
 // import { basicSetup } from "codemirror";
 import { EditorState, Compartment } from '@codemirror/state';
@@ -69,12 +70,13 @@ import { basicLight } from 'cm6-theme-basic-light'
 //
 
 
-export function JsonEditorComponent({ statePath, state }) {
+export function JsonEditorComponent({ statePath, state, language = 'json', disabled = false }) {
     return {
         state,
         editor: null,
         statePath,
         compartment: null,
+        isReadOnly: disabled,
 
         toggleTheme(theme) {
             const of = theme === 'dark'
@@ -91,9 +93,23 @@ export function JsonEditorComponent({ statePath, state }) {
 
             this.compartment = new Compartment();
 
+            let languageExtension = null;
+
+            switch (language) {
+                case 'json':
+                    languageExtension = json();
+                    break;
+                case 'markdown':
+                    languageExtension = markdown();
+                    break;
+                default:
+                    console.error('Unsupported language: ' + language);
+                    return;
+            }
+
             const extensions = [
                 basicSetup,
-                json(),
+                languageExtension,
                 this.compartment.of({
                     extension: window.Alpine.store('theme') === 'dark' ? dark : light
                 }),
@@ -112,11 +128,20 @@ export function JsonEditorComponent({ statePath, state }) {
 
 
                 }),
-                EditorState.readOnly.of(this.isReadOnly)
-            ];
+                EditorState.readOnly.of(this.isReadOnly),
+                // wrap lines
+                language === 'markdown' ? EditorView.lineWrapping : null,
+            ].filter(Boolean);
+
+            const ensureString = (value) => {
+                if (typeof value !== 'string') {
+                    return JSON.stringify(value, null, 2);
+                }
+                return value;
+            };
 
             const startState = EditorState.create({
-              doc: this.$wire.$get(this.statePath),
+              doc: ensureString(this.$wire.$get(this.statePath)),
               extensions
             });
 
@@ -124,7 +149,19 @@ export function JsonEditorComponent({ statePath, state }) {
                 state: startState,
                 extensions,
                 parent: this.$refs.editor,
-            })
+            });
+
+            this.$wire.$watch(this.statePath, (value) => {
+                if (this.editor.state.doc.toString() !== value) {
+                    this.editor.dispatch({
+                        changes: {
+                            from: 0,
+                            to: this.editor.state.doc.length,
+                            insert: ensureString(value)
+                        }
+                    });
+                }
+            });
         },
 
         destroy() {

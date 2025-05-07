@@ -8,6 +8,7 @@ use App\Filament\Resources\SavedExtractorResource\Actions\ExportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\GenerateStepLabelsAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\ImportExtractorAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\OpenEmbeddedExtractorAction;
+use App\Filament\Resources\SavedExtractorResource\Actions\OpenInPlaygroundAction;
 use App\Filament\Resources\SavedExtractorResource\Actions\StartWithBucketActionGroup;
 use App\Filament\Resources\SavedExtractorResource\Actions\TestWebhookAction;
 use Filament\Actions\ActionGroup;
@@ -39,6 +40,8 @@ class EditSavedExtractor extends EditRecord
             RestoreAction::make(),
 
             StartWithBucketActionGroup::make(),
+
+            OpenInPlaygroundAction::make(),
 
             ActionGroup::make([
                 ConfigureIFrameAction::make(),
